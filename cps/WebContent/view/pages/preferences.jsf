@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j">
+
+<h:panelGrid>
+	<h:column>
+		<rich:spacer height="10"/>
+		<h:graphicImage url="/view/images/preferences.png"/>
+		<rich:spacer height="5"/>
+		<h:outputText value="#{msg.usermanager_preferences}" styleClass="letrasTitulo" />
+		<rich:separator lineType="solid" height="1" width="1000"/>
+		<rich:spacer height="10"/>
+		<h:panelGrid columns="2">
+			<h:column>
+				<h:outputText value="#{msg.preferences_modify_password}" styleClass="letras" rendered="#{not userManagementBean.firstAccess}"/>			
+			</h:column>
+			<h:column>
+			</h:column>
+			<h:column>
+				<h:outputText value="#{msg.preferences_old_password}" styleClass="letras" rendered="#{not userManagementBean.firstAccess}"/>
+			</h:column>
+			<h:column>
+				<h:inputSecret id="senhaantiga" rendered="#{not userManagementBean.firstAccess}" value="#{userManagementBean.senha_antiga}" maxlength="8" size="10" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+			</h:column>
+			<h:column>
+				<h:outputText value="#{msg.preferences_new_password}" rendered="#{not userManagementBean.firstAccess}" styleClass="letras"/>
+				<h:outputText value="#{msg.preferences_password}" rendered="#{userManagementBean.firstAccess}" styleClass="letras"/>
+			</h:column>
+			<h:column>
+				<h:inputSecret id="novasenha" value="#{userManagementBean.nova_senha}" maxlength="8" size="10" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+			</h:column>
+			<h:column>
+				<h:outputText value="#{msg.preferences_repeat_password}" styleClass="letras"/>
+			</h:column>
+			<h:column>
+				<h:inputSecret id="confirmasenha" value="#{userManagementBean.confirma_senha}" maxlength="8" size="10" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+			</h:column>
+		</h:panelGrid>
+	</h:column>
+</h:panelGrid>
+</jsp:root>

@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j">
+	
+<h:form id="userEditForm">
+	<!-- personalData -->
+	<h:panelGrid>
+	<h:column>
+		<rich:spacer height="10"/>
+		<h:graphicImage url="/view/images/editPeople.png" />
+		<h:outputText value="#{msg.usermanager_personal_data}" styleClass="letrasTitulo"/>
+		<rich:separator lineType="solid" height="1" width="1000"/>
+		<rich:spacer height="10"/>
+		<h:panelGrid columns="2">
+		<h:column>
+			<h:outputText value="#{msg.personaldata_name} " styleClass="letras"/>
+		</h:column>
+		<h:column>
+			<h:inputText id="inputNome" required="true" value="#{userManagementBean.nome}" size="30" maxlength="20" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>*
+			<rich:spacer width="3"/>
+			<rich:message rendered="true" for="inputNome" styleClass="camposObr"/>
+		</h:column>
+		<h:column>
+			<h:outputText value="#{msg.personaldata_lastname} " styleClass="letras"/>
+		</h:column>
+		<h:column>
+			<h:inputText id="inputSobrenome" required="true" value="#{userManagementBean.sobrenome}" size="40" maxlength="30" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>*
+			<rich:spacer width="3"/>
+			<rich:message rendered="true" for="inputSobrenome" styleClass="camposObr"/>
+		</h:column>
+		<h:column>
+			<h:outputText value="#{msg.personaldata_born} " styleClass="letras"/>	
+		</h:column>
+		<h:column>
+			<rich:calendar id="inputData" required="true" value="#{userManagementBean.aniversario}" inputSize="13" styleClass="barraDefault" datePattern="dd/MM/yyyy" inputStyle="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>*
+			<rich:spacer width="3"/>
+			<rich:message rendered="true" for="inputData" styleClass="camposObr"/>
+		</h:column>
+		<h:column>
+			<h:outputText value="#{msg.personaldata_cpf} " styleClass="letras"/>
+		</h:column>
+		<h:column>
+			<h:inputText id="inputCpf" required="true" value="#{userManagementBean.cpf}" size="17" maxlength="14" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>*
+			<h:outputText value="#{msg.personaldata_cpf_info}" styleClass="letrasInfo"/>
+			<rich:spacer width="3"/>
+			<rich:message rendered="true" for="inputCpf" styleClass="camposObr"/>
+		</h:column>
+		<h:column>
+			<h:outputText value="#{msg.personaldata_rg} " styleClass="letras"/>
+		</h:column>
+		<h:column>
+			<h:inputText id="inputRg" required="true" value="#{userManagementBean.rg}" size="17" maxlength="15" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>*
+			<h:outputText value="#{msg.personaldata_rg_info}" styleClass="letrasInfo"/>
+			<rich:spacer width="3"/>
+			<rich:message rendered="true" for="inputRg" styleClass="camposObr"/>
+		</h:column>
+		<h:column>
+			<h:outputText value="#{msg.personaldata_exped} " styleClass="letras"/>
+		</h:column>
+		<h:column>
+			<h:inputText value="#{userManagementBean.orgao_expeditor}" size="5" maxlength="3" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>		
+		</h:column>
+		</h:panelGrid>
+	</h:column>
+</h:panelGrid>
+<!-- personal Contact -->
+<h:panelGrid>
+	<h:column>
+		<rich:spacer height="10"/>
+		<h:graphicImage url="/view/images/contact.png"/>
+		<rich:spacer height="5"/>
+		<h:outputText value="#{msg.usermanager_contact}" styleClass="letrasTitulo" />
+		<rich:separator lineType="solid" height="1" width="1000"/>
+		<rich:spacer height="10"/>
+		<h:panelGrid columns="2">
+			<h:column>
+				<h:outputText value="#{msg.personalcontact_mail}" styleClass="letras"/>
+			</h:column>
+			<h:column>
+				<h:inputText id="inputEmail" required="true" value="#{userManagementBean.email}" maxlength="50" size="52" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>*
+				<rich:spacer width="3"/>
+				<rich:message rendered="true" for="inputEmail" styleClass="camposObr"/>
+			</h:column>
+			<h:column>
+				<h:outputText value="#{msg.personalcontact_CEP}" styleClass="letras"/>
+			</h:column>
+			<h:column>
+				<h:inputText id="inputCep" required="true" value="#{userManagementBean.cep}" maxlength="9" size="10" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
+					<a4j:support event="onblur" ajaxSingle="true" action="#{userManagementBean.find}" reRender="inputRua,inputBairro,inputCidade,selectEstado,panelErrMsg"/>
+				</h:inputText>*
+				<rich:spacer width="2"/>
+				<h:outputText value="#{msg.personalcontatc_CEP_info}" styleClass="letrasInfo"/>
+				<rich:message rendered="true" for="inputCep" styleClass="camposObr"/>
+				<rich:spacer width="3"/>
+				<h:outputLink target="_blank" value="http://www.buscacep.correios.com.br/">
+					<h:outputText value="#{msg.personalcontact_CEP_unknown}"/>
+				</h:outputLink>
+			</h:column>
+			<h:column>
+				<h:outputText value="#{msg.personalcontact_street}" styleClass="letras"/>
+			</h:column>
+			<h:column>
+				<h:inputText readonly="true" value="#{userManagementBean.logradouro}" id="inputRua" maxlength="50" size="52" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>*
+			</h:column>
+			<h:column>
+				<h:outputText value="#{msg.personalcontact_number}" styleClass="letras"/>
+			</h:column>
+			<h:column>
+				<h:inputText value="#{userManagementBean.numero_res}" id="inputNumero" required="true" maxlength="6" size="8" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>*
+				<rich:spacer width="3"/>
+				<rich:message rendered="true" for="inputNumero" styleClass="camposObr"/>
+			</h:column>	
+			<h:column>
+				<h:outputText value="#{msg.personalcontact_compl}" styleClass="letras"/>
+			</h:column>
+			<h:column>
+				<h:inputText value="#{userManagementBean.complemento}" maxlength="20" size="22" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+			</h:column>
+			<h:column>
+				<h:outputText value="#{msg.personalcontact_district}" styleClass="letras"/>
+			</h:column>
+			<h:column>
+				<h:inputText readonly="true" id="inputBairro" value="#{userManagementBean.bairro}" maxlength="50" size="52" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>*
+			</h:column>
+			<h:column>
+				<h:outputText value="#{msg.personalcontact_city}" styleClass="letras"/>
+			</h:column>
+			<h:column>
+				<h:inputText readonly="true" value="#{userManagementBean.cidade}" id="inputCidade" maxlength="50" size="52" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>*
+			</h:column>
+			<h:column>
+				<h:outputText value="#{msg.personalcontact_state}" styleClass="letras"/>
+			</h:column>
+			<h:column>
+				<h:inputText readonly="true" value="#{userManagementBean.estado}" id="selectEstado" maxlength="25" size="27" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>*
+			</h:column>
+			</h:panelGrid>
+			<rich:spacer height="10"/>
+			<rich:separator lineType="dashed" height="1" width="1000"/>
+			<rich:spacer height="10"/>
+			<h:panelGrid columns="2">
+			<h:column>
+				<h:outputText value="#{msg.personalcontact_tel_res}" styleClass="letras"/>
+			</h:column>
+			<h:column>
+				<h:outputText value="#{msg.personalcontact_ddd_tel}" styleClass="letras"/>
+				<h:inputText value="#{userManagementBean.ddd_tel_res}" maxlength="3" size="4" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+				<h:outputText value="#{msg.personalcontact_ddd_info}" styleClass="letrasInfo"/>
+				<rich:spacer width="5"/>
+				<h:outputText value="#{msg.personalcontact_tel_number}" styleClass="letras"/>
+				<h:inputText value="#{userManagementBean.tel_res}" maxlength="9" size="10" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+				<h:outputText value="#{msg.personalcontact_tel_info}" styleClass="letrasInfo"/>
+			</h:column>
+			<h:column>
+				<h:outputText value="#{msg.personalcontact_tel_cel}" styleClass="letras"/>
+			</h:column>
+			<h:column>
+				<h:outputText value="#{msg.personalcontact_ddd_tel}" styleClass="letras"/>
+				<h:inputText value="#{userManagementBean.ddd_tel_cel}" maxlength="3" size="4" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+				<h:outputText value="#{msg.personalcontact_ddd_info}" styleClass="letrasInfo"/>
+				<rich:spacer width="5"/>
+				<h:outputText value="#{msg.personalcontact_tel_number}" styleClass="letras"/>
+				<h:inputText value="#{userManagementBean.tel_cel}" maxlength="9" size="10" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+				<h:outputText value="#{msg.personalcontact_tel_info}" styleClass="letrasInfo"/>
+			</h:column>
+			</h:panelGrid>
+	</h:column>
+</h:panelGrid>
+<!-- preferences -->
+<h:panelGroup id="panelFirstAccess" rendered="#{userManagementBean.firstAccess}">
+<h:panelGrid>
+	<h:column>
+		<rich:spacer height="10"/>
+		<h:graphicImage url="/view/images/preferences.png"/>
+		<rich:spacer height="5"/>
+		<h:outputText value="#{msg.usermanager_preferences}" styleClass="letrasTitulo" />
+		<rich:separator lineType="solid" height="1" width="1000"/>
+		<rich:spacer height="10"/>
+		<h:panelGrid columns="2">
+			<h:column>
+				<h:outputText value="#{msg.preferences_username}" styleClass="letras"/>
+			</h:column>
+			<h:column>
+				<h:inputText required="true" size="31" maxlength="30" value="#{userManagementBean.username}" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
+					<a4j:support action="#{userManagementBean.findUser}" ajaxSingle="true" event="onblur" reRender="userEditForm,imgUsernameInvalid,usernameInvalid"/>
+				</h:inputText>*		
+				<h:graphicImage id="imgUsernameInvalid" url="/view/images/information.png" rendered="#{not userManagementBean.validUsername}"/>
+				<rich:spacer width="3"/>
+				<h:outputText id="usernameInvalid" value="#{userManagementBean.mensagem_informacao}" rendered="#{not userManagementBean.validUsername}" styleClass="camposObr"/>
+			</h:column>
+			<h:column>
+				<h:outputText value="#{msg.preferences_password}" rendered="#{userManagementBean.firstAccess}" styleClass="letras"/>
+			</h:column>
+			<h:column>
+				<h:inputSecret required="true" value="#{userManagementBean.nova_senha}" maxlength="8" size="10" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
+					<f:validateLength minimum="5" maximum="8"/>
+				</h:inputSecret>*
+			</h:column>
+			<h:column>
+				<h:outputText value="#{msg.preferences_repeat_password}" styleClass="letras"/>
+			</h:column>
+			<h:column>
+				<h:inputSecret required="true" value="#{userManagementBean.confirma_senha}" maxlength="8" size="10" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
+					<f:validateLength minimum="5" maximum="8"/>
+				</h:inputSecret>*
+			</h:column>
+		</h:panelGrid>
+	</h:column>
+</h:panelGrid>
+</h:panelGroup>
+<h:panelGroup id="panelNAccess" rendered="#{not userManagementBean.firstAccess}">
+<h:panelGrid>
+	<h:column>
+		<rich:spacer height="10"/>
+		<h:graphicImage url="/view/images/preferences.png"/>
+		<rich:spacer height="5"/>
+		<h:outputText value="#{msg.usermanager_preferences}" styleClass="letrasTitulo" />
+		<rich:separator lineType="solid" height="1" width="1000"/>
+		<rich:spacer height="10"/>
+		<h:panelGrid columns="2">
+			<h:column>
+				<h:outputText value="#{msg.preferences_username}" styleClass="letras"/>
+			</h:column>
+			<h:column>
+				<h:inputText size="31" maxlength="30" value="#{userManagementBean.username}" readonly="true" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>			
+			</h:column>
+		</h:panelGrid>
+		<rich:spacer height="3"/>
+		<rich:separator lineType="dotted" height="1" width="1000"/>
+		<rich:spacer height="5"/>
+		<h:panelGrid columns="2">
+			<h:column>
+				<h:outputText value="#{msg.preferences_modify_password}" style="color:red;font-style: italic;"/>			
+			</h:column>
+			<h:column>
+			</h:column>
+			<h:column>
+				<h:outputText value="#{msg.preferences_old_password}" styleClass="letras" />
+			</h:column>
+			<h:column>
+				<h:inputSecret  value="#{userManagementBean.senha_antiga}" maxlength="8" size="10" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+			</h:column>
+			<h:column>
+				<h:outputText value="#{msg.preferences_new_password}" rendered="#{not userManagementBean.firstAccess}" styleClass="letras"/>
+			</h:column>
+			<h:column>
+				<h:inputSecret  value="#{userManagementBean.nova_senha}" maxlength="8" size="10" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+			</h:column>
+			<h:column>
+				<h:outputText value="#{msg.preferences_repeat_password}" styleClass="letras"/>
+			</h:column>
+			<h:column>
+				<h:inputSecret value="#{userManagementBean.confirma_senha}" maxlength="8" size="10" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+			</h:column>
+		</h:panelGrid>
+	</h:column>
+</h:panelGrid>
+</h:panelGroup>
+
+	<rich:spacer height="8"/>
+	<rich:separator lineType="dotted" height="1" width="1000"/>
+	
+	<center>
+	<h:commandButton action="#{userManagementBean.salva}" rendered="#{userManagementBean.firstAccess}" image="/view/images/save.png" title="#{msg.personaldata_save}" value="#{msg.personaldata_save}"/>
+	<h:commandButton action="#{userManagementBean.atualiza}" rendered="#{not userManagementBean.firstAccess}" image="/view/images/save.png" title="#{msg.personaldata_save}" value="#{msg.personaldata_save}"/>
+	<rich:spacer width="5"/>
+	<h:commandButton action="#{userManagementBean.limpa}" image="/view/images/cancel.png" title="#{msg.personaldata_cancel}" value="#{msg.personaldata_cancel}"/>
+	</center>
+	</h:form>
+</jsp:root>

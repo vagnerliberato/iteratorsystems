@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf12690883301200" configfile="/cps/WebContent/WEB-INF/faces-config.xml">
+  <nodes xsi:type="pageflow:PFPage" name="view/default.jsf" id="pf12715475555230" referenceLink="//@navigationRule.0/@fromViewId|" outlinks="pf12715475555231" path="/view/default.jsf"/>
+  <nodes xsi:type="pageflow:PFPage" name="view/pages/addFilters.jsf" id="pf12715475555232" referenceLink="//@navigationRule.0/@navigationCase.0/@toViewId|" inlinks="pf12715475555231" path="/view/pages/addFilters.jsf"/>
+  <nodes xsi:type="pageflow:PFPage" name="view/pages/userAccess.jsf" id="pf12715475555233" referenceLink="//@navigationRule.1/@fromViewId|" outlinks="pf12715475555234" path="/view/pages/userAccess.jsf"/>
+  <nodes xsi:type="pageflow:PFPage" name="view/pages/userManager.jsf" id="pf12715475555235" referenceLink="//@navigationRule.1/@navigationCase.0/@toViewId|" inlinks="pf12715475555234" path="/view/pages/userManager.jsf"/>
+  <links id="pf12715475555231" target="pf12715475555232" source="pf12715475555230" outcome="filtersOk"/>
+  <links id="pf12715475555234" target="pf12715475555235" source="pf12715475555233" outcome="toCadUser"/>
+</pageflow:Pageflow>
