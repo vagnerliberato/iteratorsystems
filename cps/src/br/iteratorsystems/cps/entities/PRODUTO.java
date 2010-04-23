@@ -26,8 +26,8 @@ import br.iteratorsystems.cps.interfaces.EntityAble;
 )
 public class PRODUTO  implements java.io.Serializable, EntityAble {
 
-
 	 private static final long serialVersionUID = 2396720478904300397L;
+	 
 	 private PRODUTOID id;
      private LOJA loja;
      private String descricao;
@@ -69,7 +69,7 @@ public class PRODUTO  implements java.io.Serializable, EntityAble {
     public void setId(PRODUTOID id) {
         this.id = id;
     }
-@ManyToOne(fetch=FetchType.LAZY)
+@ManyToOne(fetch=FetchType.EAGER)
     @JoinColumns( { 
         @JoinColumn(name="id_loja", referencedColumnName="id_loja", nullable=false, insertable=false, updatable=false), 
         @JoinColumn(name="id_rede", referencedColumnName="id_rede", nullable=false, insertable=false, updatable=false) } )
@@ -126,6 +126,9 @@ public class PRODUTO  implements java.io.Serializable, EntityAble {
     }
 
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -136,7 +139,6 @@ public class PRODUTO  implements java.io.Serializable, EntityAble {
 				+ ((embalagem == null) ? 0 : embalagem.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((loja == null) ? 0 : loja.hashCode());
-		result = prime * result + ((precos == null) ? 0 : precos.hashCode());
 		result = prime * result + status;
 		result = prime * result
 				+ ((unidadeMedida == null) ? 0 : unidadeMedida.hashCode());
@@ -144,58 +146,70 @@ public class PRODUTO  implements java.io.Serializable, EntityAble {
 	}
 
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (!(obj instanceof PRODUTO))
+		}
+		if (!(obj instanceof PRODUTO)) {
 			return false;
+		}
 		PRODUTO other = (PRODUTO) obj;
 		if (descricao == null) {
-			if (other.descricao != null)
+			if (other.descricao != null) {
 				return false;
-		} else if (!descricao.equals(other.descricao))
+			}
+		} else if (!descricao.equals(other.descricao)) {
 			return false;
+		}
 		if (embalagem == null) {
-			if (other.embalagem != null)
+			if (other.embalagem != null) {
 				return false;
-		} else if (!embalagem.equals(other.embalagem))
+			}
+		} else if (!embalagem.equals(other.embalagem)) {
 			return false;
+		}
 		if (id == null) {
-			if (other.id != null)
+			if (other.id != null) {
 				return false;
-		} else if (!id.equals(other.id))
+			}
+		} else if (!id.equals(other.id)) {
 			return false;
+		}
 		if (loja == null) {
-			if (other.loja != null)
+			if (other.loja != null) {
 				return false;
-		} else if (!loja.equals(other.loja))
+			}
+		} else if (!loja.equals(other.loja)) {
 			return false;
-		if (precos == null) {
-			if (other.precos != null)
-				return false;
-		} else if (!precos.equals(other.precos))
+		}
+		if (status != other.status) {
 			return false;
-		if (status != other.status)
-			return false;
+		}
 		if (unidadeMedida == null) {
-			if (other.unidadeMedida != null)
+			if (other.unidadeMedida != null) {
 				return false;
-		} else if (!unidadeMedida.equals(other.unidadeMedida))
+			}
+		} else if (!unidadeMedida.equals(other.unidadeMedida)) {
 			return false;
+		}
 		return true;
 	}
 
-
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString() {
 		return "PRODUTO [descricao=" + descricao + ", embalagem=" + embalagem
-				+ ", id=" + id + ", loja=" + loja + ", precos=" + precos
-				+ ", status=" + status + ", unidadeMedida=" + unidadeMedida
-				+ "]";
+				+ ", id=" + id + ", loja=" + loja + ", status=" + status
+				+ ", unidadeMedida=" + unidadeMedida + "]";
 	}
-    
-    
+
 }

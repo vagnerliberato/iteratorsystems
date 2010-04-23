@@ -15,13 +15,15 @@
 		<h:outputText value="#{msg.usermanager_personal_data}" styleClass="letrasTitulo"/>
 		<rich:separator lineType="solid" height="1" width="1000"/>
 		<rich:spacer height="10"/>
-		<h:panelGrid columns="2">
+		<h:panelGrid columns="3">
 		<h:column>
 			<h:outputText value="#{msg.personaldata_name} " styleClass="letras"/>
 		</h:column>
 		<h:column>
 			<h:inputText id="inputNome" required="true" value="#{userManagementBean.nome}" size="30" maxlength="20" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>*
 			<rich:spacer width="3"/>
+		</h:column>
+		<h:column>
 			<rich:message rendered="true" for="inputNome" styleClass="camposObr"/>
 		</h:column>
 		<h:column>
@@ -30,7 +32,9 @@
 		<h:column>
 			<h:inputText id="inputSobrenome" required="true" value="#{userManagementBean.sobrenome}" size="40" maxlength="30" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>*
 			<rich:spacer width="3"/>
-			<rich:message rendered="true" for="inputSobrenome" styleClass="camposObr"/>
+		</h:column>
+		<h:column>
+			<rich:message rendered="true" for="inputSobrenome" styleClass="camposObr"/>			
 		</h:column>
 		<h:column>
 			<h:outputText value="#{msg.personaldata_born} " styleClass="letras"/>	
@@ -38,6 +42,8 @@
 		<h:column>
 			<rich:calendar id="inputData" required="true" value="#{userManagementBean.aniversario}" inputSize="13" styleClass="barraDefault" datePattern="dd/MM/yyyy" inputStyle="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>*
 			<rich:spacer width="3"/>
+		</h:column>
+		<h:column>
 			<rich:message rendered="true" for="inputData" styleClass="camposObr"/>
 		</h:column>
 		<h:column>
@@ -47,6 +53,8 @@
 			<h:inputText id="inputCpf" required="true" value="#{userManagementBean.cpf}" size="17" maxlength="14" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>*
 			<h:outputText value="#{msg.personaldata_cpf_info}" styleClass="letrasInfo"/>
 			<rich:spacer width="3"/>
+		</h:column>
+		<h:column>
 			<rich:message rendered="true" for="inputCpf" styleClass="camposObr"/>
 		</h:column>
 		<h:column>
@@ -56,6 +64,8 @@
 			<h:inputText id="inputRg" required="true" value="#{userManagementBean.rg}" size="17" maxlength="15" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>*
 			<h:outputText value="#{msg.personaldata_rg_info}" styleClass="letrasInfo"/>
 			<rich:spacer width="3"/>
+		</h:column>
+		<h:column>
 			<rich:message rendered="true" for="inputRg" styleClass="camposObr"/>
 		</h:column>
 		<h:column>
@@ -64,6 +74,7 @@
 		<h:column>
 			<h:inputText value="#{userManagementBean.orgao_expeditor}" size="5" maxlength="3" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>		
 		</h:column>
+		<h:column></h:column>
 		</h:panelGrid>
 	</h:column>
 </h:panelGrid>
@@ -76,13 +87,16 @@
 		<h:outputText value="#{msg.usermanager_contact}" styleClass="letrasTitulo" />
 		<rich:separator lineType="solid" height="1" width="1000"/>
 		<rich:spacer height="10"/>
-		<h:panelGrid columns="2">
+		<h:panelGrid columns="3">
 			<h:column>
 				<h:outputText value="#{msg.personalcontact_mail}" styleClass="letras"/>
 			</h:column>
 			<h:column>
-				<h:inputText id="inputEmail" required="true" value="#{userManagementBean.email}" maxlength="50" size="52" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>*
+				<h:inputText id="inputEmailFirst" readonly="true" rendered="#{userManagementBean.firstAccess}" required="true" value="#{userManagementBean.email}" maxlength="50" size="52" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+				<h:inputText id="inputEmail" rendered="#{not userManagementBean.firstAccess}" required="true" value="#{userManagementBean.email}" maxlength="50" size="52" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>*
 				<rich:spacer width="3"/>
+			</h:column>
+			<h:column>
 				<rich:message rendered="true" for="inputEmail" styleClass="camposObr"/>
 			</h:column>
 			<h:column>
@@ -94,17 +108,22 @@
 				</h:inputText>*
 				<rich:spacer width="2"/>
 				<h:outputText value="#{msg.personalcontatc_CEP_info}" styleClass="letrasInfo"/>
-				<rich:message rendered="true" for="inputCep" styleClass="camposObr"/>
 				<rich:spacer width="3"/>
 				<h:outputLink target="_blank" value="http://www.buscacep.correios.com.br/">
 					<h:outputText value="#{msg.personalcontact_CEP_unknown}"/>
 				</h:outputLink>
 			</h:column>
 			<h:column>
+				<rich:message rendered="true" for="inputCep" styleClass="camposObr"/>
+			</h:column>
+			<h:column>
 				<h:outputText value="#{msg.personalcontact_street}" styleClass="letras"/>
 			</h:column>
 			<h:column>
-				<h:inputText readonly="true" value="#{userManagementBean.logradouro}" id="inputRua" maxlength="50" size="52" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>*
+				<h:inputText readonly="true" value="#{userManagementBean.logradouro}" id="inputRua" maxlength="50" size="52" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+			</h:column>
+			<h:column>
+				<rich:message rendered="true" for="inputRua" styleClass="camposObr"/>
 			</h:column>
 			<h:column>
 				<h:outputText value="#{msg.personalcontact_number}" styleClass="letras"/>
@@ -112,32 +131,42 @@
 			<h:column>
 				<h:inputText value="#{userManagementBean.numero_res}" id="inputNumero" required="true" maxlength="6" size="8" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>*
 				<rich:spacer width="3"/>
-				<rich:message rendered="true" for="inputNumero" styleClass="camposObr"/>
 			</h:column>	
+			<h:column>
+				<rich:message rendered="true" for="inputNumero" styleClass="camposObr"/>
+			</h:column>
 			<h:column>
 				<h:outputText value="#{msg.personalcontact_compl}" styleClass="letras"/>
 			</h:column>
 			<h:column>
 				<h:inputText value="#{userManagementBean.complemento}" maxlength="20" size="22" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
 			</h:column>
+			<h:column></h:column>
 			<h:column>
 				<h:outputText value="#{msg.personalcontact_district}" styleClass="letras"/>
 			</h:column>
 			<h:column>
-				<h:inputText readonly="true" id="inputBairro" value="#{userManagementBean.bairro}" maxlength="50" size="52" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>*
+				<h:inputText readonly="true" id="inputBairro" value="#{userManagementBean.bairro}" maxlength="50" size="52" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+			</h:column>
+			<h:column>
+				<rich:message rendered="true" for="inputBairro" styleClass="camposObr"/>
 			</h:column>
 			<h:column>
 				<h:outputText value="#{msg.personalcontact_city}" styleClass="letras"/>
 			</h:column>
 			<h:column>
-				<h:inputText readonly="true" value="#{userManagementBean.cidade}" id="inputCidade" maxlength="50" size="52" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>*
+				<h:inputText readonly="true" value="#{userManagementBean.cidade}" id="inputCidade" maxlength="50" size="52" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+			</h:column>
+			<h:column>
+				<rich:message rendered="true" for="inputCidade" styleClass="camposObr"/>
 			</h:column>
 			<h:column>
 				<h:outputText value="#{msg.personalcontact_state}" styleClass="letras"/>
 			</h:column>
 			<h:column>
-				<h:inputText readonly="true" value="#{userManagementBean.estado}" id="selectEstado" maxlength="25" size="27" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>*
+				<h:inputText readonly="true" value="#{userManagementBean.estado}" id="selectEstado" maxlength="25" size="27" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
 			</h:column>
+			<h:column></h:column>
 			</h:panelGrid>
 			<rich:spacer height="10"/>
 			<rich:separator lineType="dashed" height="1" width="1000"/>
@@ -186,11 +215,13 @@
 			</h:column>
 			<h:column>
 				<h:inputText required="true" size="31" maxlength="30" value="#{userManagementBean.username}" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
-					<a4j:support action="#{userManagementBean.findUser}" ajaxSingle="true" event="onblur" reRender="userEditForm,imgUsernameInvalid,usernameInvalid"/>
-				</h:inputText>*		
-				<h:graphicImage id="imgUsernameInvalid" url="/view/images/information.png" rendered="#{not userManagementBean.validUsername}"/>
-				<rich:spacer width="3"/>
-				<h:outputText id="usernameInvalid" value="#{userManagementBean.mensagem_informacao}" rendered="#{not userManagementBean.validUsername}" styleClass="camposObr"/>
+					<a4j:support action="#{userManagementBean.userExists}" ajaxSingle="true" event="onblur" reRender="panelErrUsername"/>
+				</h:inputText>*	
+				<a4j:outputPanel id="panelErrUsername" rendered="true">
+					<h:graphicImage id="imgUsernameInvalid" url="/view/images/information.png" rendered="#{not userManagementBean.validUsername}"/>
+					<rich:spacer id="spacerUsername" width="3" />
+					<h:outputText id="usernameInvalid" value="#{userManagementBean.mensagem_informacao}" rendered="#{not userManagementBean.validUsername}" styleClass="camposObr"/>
+				</a4j:outputPanel>
 			</h:column>
 			<h:column>
 				<h:outputText value="#{msg.preferences_password}" rendered="#{userManagementBean.firstAccess}" styleClass="letras"/>
@@ -266,7 +297,7 @@
 	
 	<center>
 	<h:commandButton action="#{userManagementBean.salva}" rendered="#{userManagementBean.firstAccess}" image="/view/images/save.png" title="#{msg.personaldata_save}" value="#{msg.personaldata_save}"/>
-	<h:commandButton action="#{userManagementBean.atualiza}" rendered="#{not userManagementBean.firstAccess}" image="/view/images/save.png" title="#{msg.personaldata_save}" value="#{msg.personaldata_save}"/>
+	<h:commandButton action="#{userManagementBean.atualiza}" rendered="#{not userManagementBean.firstAccess}" image="/view/images/save.png" title="#{msg.personaldata_update}" value="#{msg.personaldata_update}"/>
 	<rich:spacer width="5"/>
 	<h:commandButton action="#{userManagementBean.limpa}" image="/view/images/cancel.png" title="#{msg.personaldata_cancel}" value="#{msg.personaldata_cancel}"/>
 	</center>

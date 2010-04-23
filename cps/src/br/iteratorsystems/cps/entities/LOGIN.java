@@ -21,8 +21,8 @@ import br.iteratorsystems.cps.interfaces.EntityAble;
 )
 public class LOGIN  implements java.io.Serializable,EntityAble {
 
-
 	 private static final long serialVersionUID = 7263774640282848776L;
+	 
 	 private Integer idLogin;
      private USUARIO usuario;
      private String nomeLogin;
@@ -40,8 +40,7 @@ public class LOGIN  implements java.io.Serializable,EntityAble {
        this.tipoUsuario = tipoUsuario;
     }
    
-     @Id 
-    
+    @Id 
     @Column(name="id_login", unique=true, nullable=false)
     public Integer getIdLogin() {
         return this.idLogin;
@@ -50,7 +49,7 @@ public class LOGIN  implements java.io.Serializable,EntityAble {
     public void setIdLogin(Integer idLogin) {
         this.idLogin = idLogin;
     }
-@ManyToOne(fetch=FetchType.LAZY)
+@ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="id_login", unique=true, nullable=false, insertable=false, updatable=false)
     public USUARIO getUsuario() {
         return this.usuario;
@@ -140,6 +139,4 @@ public class LOGIN  implements java.io.Serializable,EntityAble {
 				+ ", senha=" + senha + ", tipoUsuario=" + tipoUsuario
 				+ ", usuario=" + usuario + "]";
 	}
-    
-    
 }

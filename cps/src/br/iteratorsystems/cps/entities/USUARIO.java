@@ -3,12 +3,16 @@ package br.iteratorsystems.cps.entities;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -18,13 +22,12 @@ import br.iteratorsystems.cps.interfaces.EntityAble;
 
 
 @Entity
-@Table(name="usuario"
-    ,schema="tabelas"
-    , uniqueConstraints = {@UniqueConstraint(columnNames="cpf_usuario"), @UniqueConstraint(columnNames="email")} 
-)
-public class USUARIO  implements java.io.Serializable, EntityAble {
+@Table(name="usuario",schema="tabelas", uniqueConstraints = {@UniqueConstraint(columnNames="cpf_usuario"), @UniqueConstraint(columnNames="email")})
+@SequenceGenerator(name="usuarioGenerator",sequenceName="usuario_id_usuario_seq",allocationSize=1)
+public class USUARIO implements java.io.Serializable, EntityAble {
 
 	 private static final long serialVersionUID = -6286759417748518151L;
+	 
 	 private Integer idUsuario;
      private String nomeUsuario;
      private String sobrenomeUsuario;
@@ -43,7 +46,6 @@ public class USUARIO  implements java.io.Serializable, EntityAble {
 
     public USUARIO() {
     }
-
 	
     public USUARIO(Integer idUsuario, String nomeUsuario, String sobrenomeUsuario, String cpfUsuario, String rgUsuario, String email, Date dataultimamodificacao) {
         this.idUsuario = idUsuario;
@@ -72,8 +74,8 @@ public class USUARIO  implements java.io.Serializable, EntityAble {
        this.enderecos = enderecos;
     }
    
-     @Id 
-    
+    @Id 
+    @GeneratedValue(strategy=GenerationType.IDENTITY,generator="usuarioGenerator")
     @Column(name="id_usuario", unique=true, nullable=false)
     public Integer getIdUsuario() {
         return this.idUsuario;
@@ -207,6 +209,9 @@ public class USUARIO  implements java.io.Serializable, EntityAble {
     }
 
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -221,12 +226,7 @@ public class USUARIO  implements java.io.Serializable, EntityAble {
 		result = prime * result + ((dddRes == null) ? 0 : dddRes.hashCode());
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
 		result = prime * result
-				+ ((enderecos == null) ? 0 : enderecos.hashCode());
-		result = prime * result
 				+ ((idUsuario == null) ? 0 : idUsuario.hashCode());
-		result = prime * result
-				+ ((listaProdutos == null) ? 0 : listaProdutos.hashCode());
-		result = prime * result + ((logins == null) ? 0 : logins.hashCode());
 		result = prime * result
 				+ ((nomeUsuario == null) ? 0 : nomeUsuario.hashCode());
 		result = prime
@@ -243,97 +243,121 @@ public class USUARIO  implements java.io.Serializable, EntityAble {
 		return result;
 	}
 
-	@Override
-	public String toString() {
-		return super.toString();
-	}
-	
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (!(obj instanceof USUARIO))
+		}
+		if (!(obj instanceof USUARIO)) {
 			return false;
+		}
 		USUARIO other = (USUARIO) obj;
 		if (cpfUsuario == null) {
-			if (other.cpfUsuario != null)
+			if (other.cpfUsuario != null) {
 				return false;
-		} else if (!cpfUsuario.equals(other.cpfUsuario))
+			}
+		} else if (!cpfUsuario.equals(other.cpfUsuario)) {
 			return false;
+		}
 		if (dataultimamodificacao == null) {
-			if (other.dataultimamodificacao != null)
+			if (other.dataultimamodificacao != null) {
 				return false;
-		} else if (!dataultimamodificacao.equals(other.dataultimamodificacao))
+			}
+		} else if (!dataultimamodificacao.equals(other.dataultimamodificacao)) {
 			return false;
+		}
 		if (dddCel == null) {
-			if (other.dddCel != null)
+			if (other.dddCel != null) {
 				return false;
-		} else if (!dddCel.equals(other.dddCel))
+			}
+		} else if (!dddCel.equals(other.dddCel)) {
 			return false;
+		}
 		if (dddRes == null) {
-			if (other.dddRes != null)
+			if (other.dddRes != null) {
 				return false;
-		} else if (!dddRes.equals(other.dddRes))
+			}
+		} else if (!dddRes.equals(other.dddRes)) {
 			return false;
+		}
 		if (email == null) {
-			if (other.email != null)
+			if (other.email != null) {
 				return false;
-		} else if (!email.equals(other.email))
+			}
+		} else if (!email.equals(other.email)) {
 			return false;
-		if (enderecos == null) {
-			if (other.enderecos != null)
-				return false;
-		} else if (!enderecos.equals(other.enderecos))
-			return false;
+		}
 		if (idUsuario == null) {
-			if (other.idUsuario != null)
+			if (other.idUsuario != null) {
 				return false;
-		} else if (!idUsuario.equals(other.idUsuario))
+			}
+		} else if (!idUsuario.equals(other.idUsuario)) {
 			return false;
-		if (listaProdutos == null) {
-			if (other.listaProdutos != null)
-				return false;
-		} else if (!listaProdutos.equals(other.listaProdutos))
-			return false;
-		if (logins == null) {
-			if (other.logins != null)
-				return false;
-		} else if (!logins.equals(other.logins))
-			return false;
+		}
 		if (nomeUsuario == null) {
-			if (other.nomeUsuario != null)
+			if (other.nomeUsuario != null) {
 				return false;
-		} else if (!nomeUsuario.equals(other.nomeUsuario))
+			}
+		} else if (!nomeUsuario.equals(other.nomeUsuario)) {
 			return false;
+		}
 		if (orgaoEspedidorUsu == null) {
-			if (other.orgaoEspedidorUsu != null)
+			if (other.orgaoEspedidorUsu != null) {
 				return false;
-		} else if (!orgaoEspedidorUsu.equals(other.orgaoEspedidorUsu))
+			}
+		} else if (!orgaoEspedidorUsu.equals(other.orgaoEspedidorUsu)) {
 			return false;
+		}
 		if (rgUsuario == null) {
-			if (other.rgUsuario != null)
+			if (other.rgUsuario != null) {
 				return false;
-		} else if (!rgUsuario.equals(other.rgUsuario))
+			}
+		} else if (!rgUsuario.equals(other.rgUsuario)) {
 			return false;
+		}
 		if (sobrenomeUsuario == null) {
-			if (other.sobrenomeUsuario != null)
+			if (other.sobrenomeUsuario != null) {
 				return false;
-		} else if (!sobrenomeUsuario.equals(other.sobrenomeUsuario))
+			}
+		} else if (!sobrenomeUsuario.equals(other.sobrenomeUsuario)) {
 			return false;
+		}
 		if (telCel == null) {
-			if (other.telCel != null)
+			if (other.telCel != null) {
 				return false;
-		} else if (!telCel.equals(other.telCel))
+			}
+		} else if (!telCel.equals(other.telCel)) {
 			return false;
+		}
 		if (telRes == null) {
-			if (other.telRes != null)
+			if (other.telRes != null) {
 				return false;
-		} else if (!telRes.equals(other.telRes))
+			}
+		} else if (!telRes.equals(other.telRes)) {
 			return false;
+		}
 		return true;
 	}
-    
-    
+
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "USUARIO [cpfUsuario=" + cpfUsuario + ", dataultimamodificacao="
+				+ dataultimamodificacao + ", dddCel=" + dddCel + ", dddRes="
+				+ dddRes + ", email=" + email + ", idUsuario=" + idUsuario
+				+ ", nomeUsuario=" + nomeUsuario + ", orgaoEspedidorUsu="
+				+ orgaoEspedidorUsu + ", rgUsuario=" + rgUsuario
+				+ ", sobrenomeUsuario=" + sobrenomeUsuario + ", telCel="
+				+ telCel + ", telRes=" + telRes + "]";
+	}
 }

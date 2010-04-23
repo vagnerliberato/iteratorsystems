@@ -24,8 +24,8 @@ import br.iteratorsystems.cps.interfaces.EntityAble;
 )
 public class REDE  implements java.io.Serializable, EntityAble {
 
-
      private static final long serialVersionUID = 3951762454780488997L;
+     
 	 private Integer idRede;
      private String nome;
      private Date dataultimamodificacao;
@@ -85,6 +85,10 @@ public class REDE  implements java.io.Serializable, EntityAble {
         this.lojas = lojas;
     }
 
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -94,40 +98,58 @@ public class REDE  implements java.io.Serializable, EntityAble {
 				+ ((dataultimamodificacao == null) ? 0 : dataultimamodificacao
 						.hashCode());
 		result = prime * result + ((idRede == null) ? 0 : idRede.hashCode());
-		result = prime * result + ((lojas == null) ? 0 : lojas.hashCode());
 		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
 		return result;
 	}
 
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (!(obj instanceof REDE))
+		}
+		if (!(obj instanceof REDE)) {
 			return false;
+		}
 		REDE other = (REDE) obj;
 		if (dataultimamodificacao == null) {
-			if (other.dataultimamodificacao != null)
+			if (other.dataultimamodificacao != null) {
 				return false;
-		} else if (!dataultimamodificacao.equals(other.dataultimamodificacao))
+			}
+		} else if (!dataultimamodificacao.equals(other.dataultimamodificacao)) {
 			return false;
+		}
 		if (idRede == null) {
-			if (other.idRede != null)
+			if (other.idRede != null) {
 				return false;
-		} else if (!idRede.equals(other.idRede))
+			}
+		} else if (!idRede.equals(other.idRede)) {
 			return false;
-		if (lojas == null) {
-			if (other.lojas != null)
-				return false;
-		} else if (!lojas.equals(other.lojas))
-			return false;
+		}
 		if (nome == null) {
-			if (other.nome != null)
+			if (other.nome != null) {
 				return false;
-		} else if (!nome.equals(other.nome))
+			}
+		} else if (!nome.equals(other.nome)) {
 			return false;
+		}
 		return true;
 	}
+
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "REDE [dataultimamodificacao=" + dataultimamodificacao
+				+ ", idRede=" + idRede + ", nome=" + nome + "]";
+	}
+    
 }

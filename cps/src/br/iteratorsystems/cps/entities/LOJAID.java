@@ -11,8 +11,8 @@ import br.iteratorsystems.cps.interfaces.EntityAble;
 @Embeddable
 public class LOJAID  implements java.io.Serializable,EntityAble {
 
-
 	 private static final long serialVersionUID = 4230452352558079492L;
+	 
 	 private Integer idLoja;
      private Integer idRede;
 
@@ -66,6 +66,5 @@ public class LOJAID  implements java.io.Serializable,EntityAble {
 public String toString() {
 	return "LOJAID [idLoja=" + idLoja + ", idRede=" + idRede + "]";
 }  
-   
    
 }

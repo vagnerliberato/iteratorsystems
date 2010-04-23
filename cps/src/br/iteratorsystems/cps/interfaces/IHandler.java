@@ -18,7 +18,7 @@ public interface IHandler {
 	 * @param instance Objeto a ser excluido.
 	 * @throws CpsHandlerException Se algum erro ocorrer na camada handler da aplicação.
 	 */
-	void save(Object instance) throws CpsHandlerException;
+	void save(Object... instance) throws CpsHandlerException;
 
 	/**
 	 * Método utilizado para recuperar um registro do banco com base em um paramêtro.

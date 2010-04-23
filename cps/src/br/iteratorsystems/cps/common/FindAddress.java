@@ -5,13 +5,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.faces.component.html.HtmlSelectOneMenu;
-import javax.faces.model.SelectItem;
 import br.iteratorsystems.cps.enums.EEstados;
 import br.iteratorsystems.cps.exceptions.FindAddressException;
 
@@ -22,6 +18,7 @@ public class FindAddress {
 	protected String cidade;
 	protected String pais;
 	protected String estado;
+	protected String estadoSigla;
 
 	//private static final String baseUrl2 = "http://www.buscarcep.com.br/index.php";
 	//private static final String CHAVE = "1Maco/svVvWvqJ1sNk5prmVd9kbaK7";
@@ -78,15 +75,12 @@ public class FindAddress {
 		String semHtml = m.replaceAll(" ");
 		String[] resultado = semHtml.split("  ");
 		
-//		if(resultado.length==5){
-//			throw new FindAddressException("Limite de buscas execedidas");
-//		}
-		
 		if(resultado.length!=8){
 			throw new FindAddressException("CEP não encontrado");
 		}
-
-		this.setEstado(this.recuperaEstado(resultado[3]));
+		
+		this.setEstadoSigla(resultado[3]);
+		this.setEstado(this.recuperaEstado(this.getEstadoSigla()));
 		this.setCidade(resultado[4]);
 		this.setBairro(resultado[5]);
 		this.setLogradouro(resultado[6] + " " + resultado[7]);
@@ -230,5 +224,19 @@ public class FindAddress {
 	 */
 	public void setEstado(String estado) {
 		this.estado = estado;
+	}
+
+	/**
+	 * @return the estadoSigla
+	 */
+	public String getEstadoSigla() {
+		return estadoSigla;
+	}
+
+	/**
+	 * @param estadoSigla the estadoSigla to set
+	 */
+	public void setEstadoSigla(String estadoSigla) {
+		this.estadoSigla = estadoSigla;
 	}
 }

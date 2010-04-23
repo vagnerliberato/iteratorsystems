@@ -77,7 +77,7 @@ public class CONTATOLOJA  implements java.io.Serializable, EntityAble {
     public void setId(CONTATOLOJAID id) {
         this.id = id;
     }
-@ManyToOne(fetch=FetchType.LAZY)
+@ManyToOne(fetch=FetchType.EAGER)
     @JoinColumns( { 
         @JoinColumn(name="id_loja", referencedColumnName="id_loja", nullable=false, insertable=false, updatable=false), 
         @JoinColumn(name="id_rede", referencedColumnName="id_rede", nullable=false, insertable=false, updatable=false) } )

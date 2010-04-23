@@ -9,7 +9,7 @@ public interface IDao<T extends EntityAble> {
 	
 	Integer save(T instance) throws CpsDaoException,CpsConstraintException;
 	T get(T instance) throws CpsDaoException;
-	Collection<T> getAll() throws CpsDaoException;
+	Collection<T> getAll(Object type) throws CpsDaoException;
 	void update(T instance) throws CpsDaoException,CpsConstraintException;
 	void delete(T instance) throws CpsDaoException,CpsConstraintException;
 }

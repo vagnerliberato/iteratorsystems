@@ -21,8 +21,8 @@ import br.iteratorsystems.cps.interfaces.EntityAble;
 )
 public class LOCALIDADE  implements java.io.Serializable, EntityAble {
 
-
 	 private static final long serialVersionUID = -1030682682618788019L;
+	 
 	 private String idLocalidade;
      private String localidade;
      private String cepLocalidade;
@@ -116,14 +116,15 @@ public class LOCALIDADE  implements java.io.Serializable, EntityAble {
     }
 
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((bairros == null) ? 0 : bairros.hashCode());
 		result = prime * result
 				+ ((cepLocalidade == null) ? 0 : cepLocalidade.hashCode());
-		result = prime * result + ((ceps == null) ? 0 : ceps.hashCode());
 		result = prime * result
 				+ ((idLocalidade == null) ? 0 : idLocalidade.hashCode());
 		result = prime * result
@@ -135,61 +136,67 @@ public class LOCALIDADE  implements java.io.Serializable, EntityAble {
 	}
 
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (!(obj instanceof LOCALIDADE))
+		}
+		if (!(obj instanceof LOCALIDADE)) {
 			return false;
+		}
 		LOCALIDADE other = (LOCALIDADE) obj;
-		if (bairros == null) {
-			if (other.bairros != null)
-				return false;
-		} else if (!bairros.equals(other.bairros))
-			return false;
 		if (cepLocalidade == null) {
-			if (other.cepLocalidade != null)
+			if (other.cepLocalidade != null) {
 				return false;
-		} else if (!cepLocalidade.equals(other.cepLocalidade))
+			}
+		} else if (!cepLocalidade.equals(other.cepLocalidade)) {
 			return false;
-		if (ceps == null) {
-			if (other.ceps != null)
-				return false;
-		} else if (!ceps.equals(other.ceps))
-			return false;
+		}
 		if (idLocalidade == null) {
-			if (other.idLocalidade != null)
+			if (other.idLocalidade != null) {
 				return false;
-		} else if (!idLocalidade.equals(other.idLocalidade))
+			}
+		} else if (!idLocalidade.equals(other.idLocalidade)) {
 			return false;
+		}
 		if (idSublocalidade == null) {
-			if (other.idSublocalidade != null)
+			if (other.idSublocalidade != null) {
 				return false;
-		} else if (!idSublocalidade.equals(other.idSublocalidade))
+			}
+		} else if (!idSublocalidade.equals(other.idSublocalidade)) {
 			return false;
+		}
 		if (localidade == null) {
-			if (other.localidade != null)
+			if (other.localidade != null) {
 				return false;
-		} else if (!localidade.equals(other.localidade))
+			}
+		} else if (!localidade.equals(other.localidade)) {
 			return false;
+		}
 		if (uf == null) {
-			if (other.uf != null)
+			if (other.uf != null) {
 				return false;
-		} else if (!uf.equals(other.uf))
+			}
+		} else if (!uf.equals(other.uf)) {
 			return false;
+		}
 		return true;
 	}
 
-
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString() {
-		return "LOCALIDADE [bairros=" + bairros + ", cepLocalidade="
-				+ cepLocalidade + ", ceps=" + ceps + ", idLocalidade="
+		return "LOCALIDADE [cepLocalidade=" + cepLocalidade + ", idLocalidade="
 				+ idLocalidade + ", idSublocalidade=" + idSublocalidade
 				+ ", localidade=" + localidade + ", uf=" + uf + "]";
 	}
-    
     
 }

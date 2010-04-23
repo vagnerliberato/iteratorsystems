@@ -1,15 +1,7 @@
 package br.iteratorsystems.cps.test;
-/*
- *@Author 
- * Eduardo Hiroshi Campos Tamaki
- * edhiroshi86@yahoo.com.br
- */
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Iterator;

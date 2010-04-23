@@ -24,6 +24,7 @@ import br.iteratorsystems.cps.interfaces.EntityAble;
 public class CEP  implements java.io.Serializable, EntityAble {
 
      private static final long serialVersionUID = -7084599274868779517L;
+     
 	 private String cep;
      private LOCALIDADE localidade;
      private String uf;
@@ -71,7 +72,7 @@ public class CEP  implements java.io.Serializable, EntityAble {
     public void setCep(String cep) {
         this.cep = cep;
     }
-@ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="id_localidade", nullable=false)
     public LOCALIDADE getLocalidade() {
         return this.localidade;
@@ -151,6 +152,9 @@ public class CEP  implements java.io.Serializable, EntityAble {
         this.lojas = lojas;
     }
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -160,8 +164,6 @@ public class CEP  implements java.io.Serializable, EntityAble {
 		result = prime * result + ((cep == null) ? 0 : cep.hashCode());
 		result = prime * result
 				+ ((complemento == null) ? 0 : complemento.hashCode());
-		result = prime * result
-				+ ((enderecos == null) ? 0 : enderecos.hashCode());
 		result = prime
 				* result
 				+ ((idTipologradouro == null) ? 0 : idTipologradouro.hashCode());
@@ -169,81 +171,93 @@ public class CEP  implements java.io.Serializable, EntityAble {
 				+ ((localidade == null) ? 0 : localidade.hashCode());
 		result = prime * result
 				+ ((logradouro == null) ? 0 : logradouro.hashCode());
-		result = prime * result + ((lojas == null) ? 0 : lojas.hashCode());
 		result = prime * result + ((uf == null) ? 0 : uf.hashCode());
 		return result;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (!(obj instanceof CEP))
+		}
+		if (!(obj instanceof CEP)) {
 			return false;
+		}
 		CEP other = (CEP) obj;
 		if (bairro1 == null) {
-			if (other.bairro1 != null)
+			if (other.bairro1 != null) {
 				return false;
-		} else if (!bairro1.equals(other.bairro1))
+			}
+		} else if (!bairro1.equals(other.bairro1)) {
 			return false;
+		}
 		if (bairro2 == null) {
-			if (other.bairro2 != null)
+			if (other.bairro2 != null) {
 				return false;
-		} else if (!bairro2.equals(other.bairro2))
+			}
+		} else if (!bairro2.equals(other.bairro2)) {
 			return false;
+		}
 		if (cep == null) {
-			if (other.cep != null)
+			if (other.cep != null) {
 				return false;
-		} else if (!cep.equals(other.cep))
+			}
+		} else if (!cep.equals(other.cep)) {
 			return false;
+		}
 		if (complemento == null) {
-			if (other.complemento != null)
+			if (other.complemento != null) {
 				return false;
-		} else if (!complemento.equals(other.complemento))
+			}
+		} else if (!complemento.equals(other.complemento)) {
 			return false;
-		if (enderecos == null) {
-			if (other.enderecos != null)
-				return false;
-		} else if (!enderecos.equals(other.enderecos))
-			return false;
+		}
 		if (idTipologradouro == null) {
-			if (other.idTipologradouro != null)
+			if (other.idTipologradouro != null) {
 				return false;
-		} else if (!idTipologradouro.equals(other.idTipologradouro))
+			}
+		} else if (!idTipologradouro.equals(other.idTipologradouro)) {
 			return false;
+		}
 		if (localidade == null) {
-			if (other.localidade != null)
+			if (other.localidade != null) {
 				return false;
-		} else if (!localidade.equals(other.localidade))
+			}
+		} else if (!localidade.equals(other.localidade)) {
 			return false;
+		}
 		if (logradouro == null) {
-			if (other.logradouro != null)
+			if (other.logradouro != null) {
 				return false;
-		} else if (!logradouro.equals(other.logradouro))
+			}
+		} else if (!logradouro.equals(other.logradouro)) {
 			return false;
-		if (lojas == null) {
-			if (other.lojas != null)
-				return false;
-		} else if (!lojas.equals(other.lojas))
-			return false;
+		}
 		if (uf == null) {
-			if (other.uf != null)
+			if (other.uf != null) {
 				return false;
-		} else if (!uf.equals(other.uf))
+			}
+		} else if (!uf.equals(other.uf)) {
 			return false;
+		}
 		return true;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString() {
 		return "CEP [bairro1=" + bairro1 + ", bairro2=" + bairro2 + ", cep="
-				+ cep + ", complemento=" + complemento + ", enderecos="
-				+ enderecos + ", idTipologradouro=" + idTipologradouro
-				+ ", localidade=" + localidade + ", logradouro=" + logradouro
-				+ ", lojas=" + lojas + ", uf=" + uf + "]";
+				+ cep + ", complemento=" + complemento + ", idTipologradouro="
+				+ idTipologradouro + ", localidade=" + localidade
+				+ ", logradouro=" + logradouro + ", uf=" + uf + "]";
 	}
-    
-    
+
 }

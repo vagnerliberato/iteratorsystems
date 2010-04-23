@@ -36,8 +36,7 @@ public class LISTAPRODUTOITEM  implements java.io.Serializable, EntityAble {
        this.quantidade = quantidade;
     }
    
-     @Id 
-    
+    @Id 
     @Column(name="id_itens_lista", unique=true, nullable=false)
     public Integer getIdItensLista() {
         return this.idItensLista;
@@ -46,7 +45,7 @@ public class LISTAPRODUTOITEM  implements java.io.Serializable, EntityAble {
     public void setIdItensLista(Integer idItensLista) {
         this.idItensLista = idItensLista;
     }
-@ManyToOne(fetch=FetchType.LAZY)
+@ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="id_lista", nullable=false)
     public LISTAPRODUTO getListaProduto() {
         return this.listaProduto;
@@ -55,7 +54,7 @@ public class LISTAPRODUTOITEM  implements java.io.Serializable, EntityAble {
     public void setListaProduto(LISTAPRODUTO listaProduto) {
         this.listaProduto = listaProduto;
     }
-@ManyToOne(fetch=FetchType.LAZY)
+@ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="codigo_barras", nullable=false)
     public PRODUTOGERAL getProdutogeral() {
         return this.produtogeral;
@@ -127,6 +126,4 @@ public class LISTAPRODUTOITEM  implements java.io.Serializable, EntityAble {
 				+ ", listaProduto=" + listaProduto + ", produtogeral="
 				+ produtogeral + ", quantidade=" + quantidade + "]";
 	}
-    
-    
 }

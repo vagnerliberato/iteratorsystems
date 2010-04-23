@@ -24,8 +24,8 @@ import javax.persistence.TemporalType;
 )
 public class LISTAPRODUTO  implements java.io.Serializable {
 
-
 	 private static final long serialVersionUID = 8790039664826383450L;
+	 
 	 private Integer idLista;
      private USUARIO usuario;
      private String nomeLista;
@@ -60,7 +60,7 @@ public class LISTAPRODUTO  implements java.io.Serializable {
     public void setIdLista(Integer idLista) {
         this.idLista = idLista;
     }
-@ManyToOne(fetch=FetchType.LAZY)
+@ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="id_usuario", nullable=false)
     public USUARIO getUsuario() {
         return this.usuario;
@@ -97,6 +97,9 @@ public class LISTAPRODUTO  implements java.io.Serializable {
     }
 
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -104,10 +107,6 @@ public class LISTAPRODUTO  implements java.io.Serializable {
 		result = prime * result
 				+ ((dataCriacao == null) ? 0 : dataCriacao.hashCode());
 		result = prime * result + ((idLista == null) ? 0 : idLista.hashCode());
-		result = prime
-				* result
-				+ ((listaProdutoItems == null) ? 0 : listaProdutoItems
-						.hashCode());
 		result = prime * result
 				+ ((nomeLista == null) ? 0 : nomeLista.hashCode());
 		result = prime * result + ((usuario == null) ? 0 : usuario.hashCode());
@@ -115,50 +114,59 @@ public class LISTAPRODUTO  implements java.io.Serializable {
 	}
 
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (!(obj instanceof LISTAPRODUTO))
+		}
+		if (!(obj instanceof LISTAPRODUTO)) {
 			return false;
+		}
 		LISTAPRODUTO other = (LISTAPRODUTO) obj;
 		if (dataCriacao == null) {
-			if (other.dataCriacao != null)
+			if (other.dataCriacao != null) {
 				return false;
-		} else if (!dataCriacao.equals(other.dataCriacao))
+			}
+		} else if (!dataCriacao.equals(other.dataCriacao)) {
 			return false;
+		}
 		if (idLista == null) {
-			if (other.idLista != null)
+			if (other.idLista != null) {
 				return false;
-		} else if (!idLista.equals(other.idLista))
+			}
+		} else if (!idLista.equals(other.idLista)) {
 			return false;
-		if (listaProdutoItems == null) {
-			if (other.listaProdutoItems != null)
-				return false;
-		} else if (!listaProdutoItems.equals(other.listaProdutoItems))
-			return false;
+		}
 		if (nomeLista == null) {
-			if (other.nomeLista != null)
+			if (other.nomeLista != null) {
 				return false;
-		} else if (!nomeLista.equals(other.nomeLista))
+			}
+		} else if (!nomeLista.equals(other.nomeLista)) {
 			return false;
+		}
 		if (usuario == null) {
-			if (other.usuario != null)
+			if (other.usuario != null) {
 				return false;
-		} else if (!usuario.equals(other.usuario))
+			}
+		} else if (!usuario.equals(other.usuario)) {
 			return false;
+		}
 		return true;
 	}
 
-
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString() {
 		return "LISTAPRODUTO [dataCriacao=" + dataCriacao + ", idLista="
-				+ idLista + ", listaProdutoItems=" + listaProdutoItems
-				+ ", nomeLista=" + nomeLista + ", usuario=" + usuario + "]";
+				+ idLista + ", nomeLista=" + nomeLista + ", usuario=" + usuario
+				+ "]";
 	}
-    
-    
 }

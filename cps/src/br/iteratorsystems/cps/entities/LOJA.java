@@ -28,8 +28,8 @@ import br.iteratorsystems.cps.interfaces.EntityAble;
 )
 public class LOJA  implements java.io.Serializable,EntityAble {
 
-
 	 private static final long serialVersionUID = 6422147577536975375L;
+	 
 	 private LOJAID id;
      private REDE rede;
      private CEP cep;
@@ -103,7 +103,7 @@ public class LOJA  implements java.io.Serializable,EntityAble {
     public void setId(LOJAID id) {
         this.id = id;
     }
-@ManyToOne(fetch=FetchType.LAZY)
+@ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="id_rede", nullable=false, insertable=false, updatable=false)
     public REDE getRede() {
         return this.rede;
@@ -112,7 +112,7 @@ public class LOJA  implements java.io.Serializable,EntityAble {
     public void setRede(REDE rede) {
         this.rede = rede;
     }
-@ManyToOne(fetch=FetchType.LAZY)
+@ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="cep", nullable=false)
     public CEP getCep() {
         return this.cep;
@@ -265,6 +265,9 @@ public class LOJA  implements java.io.Serializable,EntityAble {
     }
 
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -275,8 +278,6 @@ public class LOJA  implements java.io.Serializable,EntityAble {
 		result = prime * result + ((cnpj == null) ? 0 : cnpj.hashCode());
 		result = prime * result
 				+ ((complemento == null) ? 0 : complemento.hashCode());
-		result = prime * result
-				+ ((contatoLojas == null) ? 0 : contatoLojas.hashCode());
 		result = prime
 				* result
 				+ ((dataultimamodificacao == null) ? 0 : dataultimamodificacao
@@ -302,137 +303,165 @@ public class LOJA  implements java.io.Serializable,EntityAble {
 		result = prime * result + ((numero == null) ? 0 : numero.hashCode());
 		result = prime * result + ((pais == null) ? 0 : pais.hashCode());
 		result = prime * result
-				+ ((produtos == null) ? 0 : produtos.hashCode());
-		result = prime * result
 				+ ((razaosocial == null) ? 0 : razaosocial.hashCode());
 		result = prime * result + ((rede == null) ? 0 : rede.hashCode());
 		return result;
 	}
 
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (!(obj instanceof LOJA))
+		}
+		if (!(obj instanceof LOJA)) {
 			return false;
+		}
 		LOJA other = (LOJA) obj;
 		if (bairro == null) {
-			if (other.bairro != null)
+			if (other.bairro != null) {
 				return false;
-		} else if (!bairro.equals(other.bairro))
+			}
+		} else if (!bairro.equals(other.bairro)) {
 			return false;
+		}
 		if (cep == null) {
-			if (other.cep != null)
+			if (other.cep != null) {
 				return false;
-		} else if (!cep.equals(other.cep))
+			}
+		} else if (!cep.equals(other.cep)) {
 			return false;
+		}
 		if (cidade == null) {
-			if (other.cidade != null)
+			if (other.cidade != null) {
 				return false;
-		} else if (!cidade.equals(other.cidade))
+			}
+		} else if (!cidade.equals(other.cidade)) {
 			return false;
+		}
 		if (cnpj == null) {
-			if (other.cnpj != null)
+			if (other.cnpj != null) {
 				return false;
-		} else if (!cnpj.equals(other.cnpj))
+			}
+		} else if (!cnpj.equals(other.cnpj)) {
 			return false;
+		}
 		if (complemento == null) {
-			if (other.complemento != null)
+			if (other.complemento != null) {
 				return false;
-		} else if (!complemento.equals(other.complemento))
+			}
+		} else if (!complemento.equals(other.complemento)) {
 			return false;
-		if (contatoLojas == null) {
-			if (other.contatoLojas != null)
-				return false;
-		} else if (!contatoLojas.equals(other.contatoLojas))
-			return false;
+		}
 		if (dataultimamodificacao == null) {
-			if (other.dataultimamodificacao != null)
+			if (other.dataultimamodificacao != null) {
 				return false;
-		} else if (!dataultimamodificacao.equals(other.dataultimamodificacao))
+			}
+		} else if (!dataultimamodificacao.equals(other.dataultimamodificacao)) {
 			return false;
+		}
 		if (estado == null) {
-			if (other.estado != null)
+			if (other.estado != null) {
 				return false;
-		} else if (!estado.equals(other.estado))
+			}
+		} else if (!estado.equals(other.estado)) {
 			return false;
+		}
 		if (id == null) {
-			if (other.id != null)
+			if (other.id != null) {
 				return false;
-		} else if (!id.equals(other.id))
+			}
+		} else if (!id.equals(other.id)) {
 			return false;
+		}
 		if (inscricaoestadual == null) {
-			if (other.inscricaoestadual != null)
+			if (other.inscricaoestadual != null) {
 				return false;
-		} else if (!inscricaoestadual.equals(other.inscricaoestadual))
+			}
+		} else if (!inscricaoestadual.equals(other.inscricaoestadual)) {
 			return false;
+		}
 		if (inscricaomunicipal == null) {
-			if (other.inscricaomunicipal != null)
+			if (other.inscricaomunicipal != null) {
 				return false;
-		} else if (!inscricaomunicipal.equals(other.inscricaomunicipal))
+			}
+		} else if (!inscricaomunicipal.equals(other.inscricaomunicipal)) {
 			return false;
+		}
 		if (logradouro == null) {
-			if (other.logradouro != null)
+			if (other.logradouro != null) {
 				return false;
-		} else if (!logradouro.equals(other.logradouro))
+			}
+		} else if (!logradouro.equals(other.logradouro)) {
 			return false;
+		}
 		if (nomedoresponsavelpelaloja == null) {
-			if (other.nomedoresponsavelpelaloja != null)
+			if (other.nomedoresponsavelpelaloja != null) {
 				return false;
+			}
 		} else if (!nomedoresponsavelpelaloja
-				.equals(other.nomedoresponsavelpelaloja))
+				.equals(other.nomedoresponsavelpelaloja)) {
 			return false;
+		}
 		if (nomefantasia == null) {
-			if (other.nomefantasia != null)
+			if (other.nomefantasia != null) {
 				return false;
-		} else if (!nomefantasia.equals(other.nomefantasia))
+			}
+		} else if (!nomefantasia.equals(other.nomefantasia)) {
 			return false;
+		}
 		if (numero == null) {
-			if (other.numero != null)
+			if (other.numero != null) {
 				return false;
-		} else if (!numero.equals(other.numero))
+			}
+		} else if (!numero.equals(other.numero)) {
 			return false;
+		}
 		if (pais == null) {
-			if (other.pais != null)
+			if (other.pais != null) {
 				return false;
-		} else if (!pais.equals(other.pais))
+			}
+		} else if (!pais.equals(other.pais)) {
 			return false;
-		if (produtos == null) {
-			if (other.produtos != null)
-				return false;
-		} else if (!produtos.equals(other.produtos))
-			return false;
+		}
 		if (razaosocial == null) {
-			if (other.razaosocial != null)
+			if (other.razaosocial != null) {
 				return false;
-		} else if (!razaosocial.equals(other.razaosocial))
+			}
+		} else if (!razaosocial.equals(other.razaosocial)) {
 			return false;
+		}
 		if (rede == null) {
-			if (other.rede != null)
+			if (other.rede != null) {
 				return false;
-		} else if (!rede.equals(other.rede))
+			}
+		} else if (!rede.equals(other.rede)) {
 			return false;
+		}
 		return true;
 	}
 
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString() {
 		return "LOJA [bairro=" + bairro + ", cep=" + cep + ", cidade=" + cidade
 				+ ", cnpj=" + cnpj + ", complemento=" + complemento
-				+ ", contatoLojas=" + contatoLojas + ", dataultimamodificacao="
-				+ dataultimamodificacao + ", estado=" + estado + ", id=" + id
-				+ ", inscricaoestadual=" + inscricaoestadual
-				+ ", inscricaomunicipal=" + inscricaomunicipal
-				+ ", logradouro=" + logradouro + ", nomedoresponsavelpelaloja="
-				+ nomedoresponsavelpelaloja + ", nomefantasia=" + nomefantasia
-				+ ", numero=" + numero + ", pais=" + pais + ", produtos="
-				+ produtos + ", razaosocial=" + razaosocial + ", rede=" + rede
-				+ "]";
+				+ ", dataultimamodificacao=" + dataultimamodificacao
+				+ ", estado=" + estado + ", id=" + id + ", inscricaoestadual="
+				+ inscricaoestadual + ", inscricaomunicipal="
+				+ inscricaomunicipal + ", logradouro=" + logradouro
+				+ ", nomedoresponsavelpelaloja=" + nomedoresponsavelpelaloja
+				+ ", nomefantasia=" + nomefantasia + ", numero=" + numero
+				+ ", pais=" + pais + ", razaosocial=" + razaosocial + ", rede="
+				+ rede + "]";
 	}
-    
-    
 }

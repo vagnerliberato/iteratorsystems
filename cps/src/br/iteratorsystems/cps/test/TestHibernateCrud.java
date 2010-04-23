@@ -1,7 +1,6 @@
 package br.iteratorsystems.cps.test;
 
 import java.util.Collection;
-import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;

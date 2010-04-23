@@ -36,8 +36,25 @@ public abstract class HibernateConfig {
 	}
 
 	private static void addMappedEntities(AnnotationConfiguration configuration) {
-		configuration.addAnnotatedClass(br.iteratorsystems.cps.entities.REDE.class);
+		configuration.addAnnotatedClass(br.iteratorsystems.cps.entities.BAIRRO.class);
+		configuration.addAnnotatedClass(br.iteratorsystems.cps.entities.BAIRROID.class);
+		configuration.addAnnotatedClass(br.iteratorsystems.cps.entities.CEP.class);
+		configuration.addAnnotatedClass(br.iteratorsystems.cps.entities.CONTATOLOJA.class);
+		configuration.addAnnotatedClass(br.iteratorsystems.cps.entities.CONTATOLOJAID.class);
+		configuration.addAnnotatedClass(br.iteratorsystems.cps.entities.ENDERECO.class);
+		configuration.addAnnotatedClass(br.iteratorsystems.cps.entities.LISTAPRODUTO.class);
+		configuration.addAnnotatedClass(br.iteratorsystems.cps.entities.LISTAPRODUTOITEM.class);
+		configuration.addAnnotatedClass(br.iteratorsystems.cps.entities.LOCALIDADE.class);
+		configuration.addAnnotatedClass(br.iteratorsystems.cps.entities.LOGIN.class);
 		configuration.addAnnotatedClass(br.iteratorsystems.cps.entities.LOJA.class);
+		configuration.addAnnotatedClass(br.iteratorsystems.cps.entities.LOJAID.class);
+		configuration.addAnnotatedClass(br.iteratorsystems.cps.entities.PRECO.class);
+		configuration.addAnnotatedClass(br.iteratorsystems.cps.entities.PRECOID.class);
+		configuration.addAnnotatedClass(br.iteratorsystems.cps.entities.PRODUTO.class);
+		configuration.addAnnotatedClass(br.iteratorsystems.cps.entities.PRODUTOGERAL.class);
+		configuration.addAnnotatedClass(br.iteratorsystems.cps.entities.PRODUTOID.class);
+		configuration.addAnnotatedClass(br.iteratorsystems.cps.entities.REDE.class);
+		configuration.addAnnotatedClass(br.iteratorsystems.cps.entities.USUARIO.class);
 	}
 
 	protected static void closeSession() {

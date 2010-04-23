@@ -1,10 +1,17 @@
 package br.iteratorsystems.cps.beans;
 
+import java.util.Collection;
 import java.util.Date;
 
 import br.iteratorsystems.cps.common.FacesUtil;
 import br.iteratorsystems.cps.common.FindAddress;
 import br.iteratorsystems.cps.common.Resources;
+import br.iteratorsystems.cps.entities.CEP;
+import br.iteratorsystems.cps.entities.ENDERECO;
+import br.iteratorsystems.cps.entities.LOGIN;
+import br.iteratorsystems.cps.entities.USUARIO;
+import br.iteratorsystems.cps.exceptions.CpsGeneralExceptions;
+import br.iteratorsystems.cps.handler.UserManagementHandler;
 
 public class UserManagementBean {
 
@@ -22,6 +29,7 @@ public class UserManagementBean {
 	private String bairro;
 	private String cidade;
 	private String estado;
+	private String estadoSigla;
 	private String ddd_tel_res;
 	private String tel_res;
 	private String ddd_tel_cel;
@@ -33,16 +41,22 @@ public class UserManagementBean {
 	private String mensagem_informacao;
 
 	private FindAddress findAddress;
-
+	private UserManagementHandler userHandler;
+	private USUARIO usuario;
+	private CEP cepEntity;
+	private ENDERECO endereco;
+	private LOGIN login;
+	
 	private boolean firstAccess;
 	private boolean validUsername = true;
+	
+	private static final char tipoUsuario = 'P';
 
 	public UserManagementBean() {}
 
-	public static final String[] msgs_informacao = 
-		{"Nome de usuário já cadastrado na base de dados",
-		"Não são permitidos espaços em branco",
-		"Sua mãe é minha!"};
+	public static final String[] msgs_informacao = {
+			"Nome de usuário já cadastrado na base de dados",
+			"E-mail já cadastrado na base de dados"};
 	
 	public void find() {
 		findAddress = new FindAddress();
@@ -52,26 +66,29 @@ public class UserManagementBean {
 		this.setBairro(findAddress.getBairro());
 		this.setCidade(findAddress.getCidade());
 		this.setEstado(findAddress.getEstado());
+		this.setEstadoSigla(findAddress.getEstadoSigla());
 		findAddress = null;
 	}
 
-	public String novo() {
+	public String novo() throws CpsGeneralExceptions {
 		String regex = "[A-Za-z0-9\\._-]+@[A-Za-z]+\\.[A-Za-z]+";
 
 		if (this.getEmail() == null || this.getCep() == null
 				|| "".equals(this.getEmail()) || "".equals(this.getCep())) {
-			FacesUtil.errorMessage("", Resources.getErrorProperties()
-					.getString("empty_email_cep"), "preencha email e cep");
+			FacesUtil.errorMessage("", Resources.getErrorProperties().getString("empty_email_cep"), "preencha email e cep");
 			return "";
 		}
 
 		if (this.getEmail().matches(regex)) {
+			if(this.mailExists()){
+				FacesUtil.errorMessage("", Resources.getErrorProperties().getString("email_exists"), "email já cadastrado");
+				return "";
+			}
 			this.find();
 			this.setFirstAccess(true);
 			return "toCadUser";
 		} else {
-			FacesUtil.errorMessage("", Resources.getErrorProperties()
-					.getString("invalid_email"), "email invalido");
+			FacesUtil.errorMessage("", Resources.getErrorProperties().getString("invalid_email"), "email invalido");
 			return "";
 		}
 	}
@@ -85,25 +102,80 @@ public class UserManagementBean {
 		return null;
 	}
 
-	public void findUser() {
-		System.out.println("find user with name " + this.getUsername());
-		this.setValidUsername(false);
-		int a = (int) (Math.random()*3);
-		this.setMensagem_informacao(msgs_informacao[a]);
+	public boolean mailExists() throws CpsGeneralExceptions{
+		userHandler  = new UserManagementHandler();
+		Collection<USUARIO> list =  userHandler.getAllUser();
+		
+		for(USUARIO user: list){
+			if(user.getEmail().equalsIgnoreCase(this.getEmail()))
+				return true;
+		}
+
+		return false;
+	}
+	
+	public boolean userExists() throws CpsGeneralExceptions {
+		final String nomeusuario = this.getUsername();
+		
+		userHandler = new UserManagementHandler();
+		Collection<LOGIN> list = userHandler.getAllLogin();
+		
+		for(LOGIN lo : list){
+			if(lo.getNomeLogin().equalsIgnoreCase(nomeusuario)) {
+				mensagem_informacao = msgs_informacao[0];
+				this.setValidUsername(false);
+				return true;
+			}
+		}
+		this.setValidUsername(true);
+		return false;
 	}
 
-	public void salva() {
-		if (!this.validateForm())
+	public void salva() throws CpsGeneralExceptions {
+		
+		if (!this.validateForm()){
 			return;
-		if(this.firstAccess){
-			
-		}else{
-			
 		}
+		
+		usuario = new USUARIO();
+		endereco = new ENDERECO();
+		login = new LOGIN();
+		cepEntity = new CEP();
+		
+		usuario.setNomeUsuario(this.getNome());
+		usuario.setSobrenomeUsuario(this.getSobrenome());
+		usuario.setCpfUsuario(this.getCpf().replace(".","").replace("-",""));
+		usuario.setRgUsuario(this.getRg().replace(".","").replace("-",""));
+		usuario.setOrgaoEspedidorUsu(this.getOrgao_expeditor());
+		usuario.setDddRes(this.getDdd_tel_res());
+		usuario.setTelRes(this.getTel_res().replace("-",""));
+		usuario.setDddCel(this.getDdd_tel_cel());
+		usuario.setTelCel(this.getTel_cel().replace("-",""));
+		usuario.setEmail(this.getEmail().toLowerCase());
+		usuario.setDataultimamodificacao(new Date());
+		
+		login.setNomeLogin(this.getUsername());
+		login.setSenha(this.getNova_senha());
+		login.setTipoUsuario(tipoUsuario);
+		
+		cepEntity.setCep(this.getCep().replace("-",""));
+		
+		endereco.setEstado(this.getEstadoSigla());
+		endereco.setCidade(this.getCidade());
+		endereco.setBairro(this.getBairro());
+		endereco.setLogradouro(this.getLogradouro());
+		endereco.setNumero(this.getNumero_res());
+		endereco.setComplemeto(this.getComplemento());
+		endereco.setPais("BRASIL");
+		endereco.setDataultimamodificacao(new Date());
+		endereco.setCep(cepEntity);
+		
+		userHandler = new UserManagementHandler();
+		userHandler.save(usuario,login,endereco);
 	}
 
 	public void atualiza() {
-
+		
 	}
 
 	public boolean validateForm() {
@@ -472,5 +544,13 @@ public class UserManagementBean {
 
 	public String getMensagem_informacao() {
 		return mensagem_informacao;
+	}
+
+	public void setEstadoSigla(String estadoSigla) {
+		this.estadoSigla = estadoSigla;
+	}
+
+	public String getEstadoSigla() {
+		return estadoSigla;
 	}
 }

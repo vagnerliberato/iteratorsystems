@@ -21,8 +21,8 @@ import br.iteratorsystems.cps.interfaces.EntityAble;
 )
 public class PRODUTOGERAL  implements java.io.Serializable,EntityAble {
 
-
 	 private static final long serialVersionUID = -2645769229904839400L;
+	 
 	 private String codigoBarras;
      private String descricao;
      private String unidadeMedida;
@@ -103,6 +103,9 @@ public class PRODUTOGERAL  implements java.io.Serializable,EntityAble {
     }
 
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -113,10 +116,6 @@ public class PRODUTOGERAL  implements java.io.Serializable,EntityAble {
 				+ ((descricao == null) ? 0 : descricao.hashCode());
 		result = prime * result
 				+ ((embalagem == null) ? 0 : embalagem.hashCode());
-		result = prime
-				* result
-				+ ((listaProdutoItems == null) ? 0 : listaProdutoItems
-						.hashCode());
 		result = prime * result + ((status == null) ? 0 : status.hashCode());
 		result = prime * result
 				+ ((unidadeMedida == null) ? 0 : unidadeMedida.hashCode());
@@ -124,47 +123,66 @@ public class PRODUTOGERAL  implements java.io.Serializable,EntityAble {
 	}
 
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (!(obj instanceof PRODUTOGERAL))
+		}
+		if (!(obj instanceof PRODUTOGERAL)) {
 			return false;
+		}
 		PRODUTOGERAL other = (PRODUTOGERAL) obj;
 		if (codigoBarras == null) {
-			if (other.codigoBarras != null)
+			if (other.codigoBarras != null) {
 				return false;
-		} else if (!codigoBarras.equals(other.codigoBarras))
+			}
+		} else if (!codigoBarras.equals(other.codigoBarras)) {
 			return false;
+		}
 		if (descricao == null) {
-			if (other.descricao != null)
+			if (other.descricao != null) {
 				return false;
-		} else if (!descricao.equals(other.descricao))
+			}
+		} else if (!descricao.equals(other.descricao)) {
 			return false;
+		}
 		if (embalagem == null) {
-			if (other.embalagem != null)
+			if (other.embalagem != null) {
 				return false;
-		} else if (!embalagem.equals(other.embalagem))
+			}
+		} else if (!embalagem.equals(other.embalagem)) {
 			return false;
-		if (listaProdutoItems == null) {
-			if (other.listaProdutoItems != null)
-				return false;
-		} else if (!listaProdutoItems.equals(other.listaProdutoItems))
-			return false;
+		}
 		if (status == null) {
-			if (other.status != null)
+			if (other.status != null) {
 				return false;
-		} else if (!status.equals(other.status))
+			}
+		} else if (!status.equals(other.status)) {
 			return false;
+		}
 		if (unidadeMedida == null) {
-			if (other.unidadeMedida != null)
+			if (other.unidadeMedida != null) {
 				return false;
-		} else if (!unidadeMedida.equals(other.unidadeMedida))
+			}
+		} else if (!unidadeMedida.equals(other.unidadeMedida)) {
 			return false;
+		}
 		return true;
 	}
-    
-    
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "PRODUTOGERAL [codigoBarras=" + codigoBarras + ", descricao="
+				+ descricao + ", embalagem=" + embalagem + ", status=" + status
+				+ ", unidadeMedida=" + unidadeMedida + "]";
+	}
 }

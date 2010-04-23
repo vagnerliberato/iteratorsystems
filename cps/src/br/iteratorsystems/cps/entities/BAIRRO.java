@@ -55,7 +55,7 @@ public class BAIRRO  implements java.io.Serializable, EntityAble {
     public void setId(BAIRROID id) {
         this.id = id;
     }
-@ManyToOne(fetch=FetchType.LAZY)
+@ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="id_localidade", nullable=false, insertable=false, updatable=false)
     public LOCALIDADE getLocalidade() {
         return this.localidade;

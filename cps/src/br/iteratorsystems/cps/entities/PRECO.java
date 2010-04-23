@@ -50,7 +50,7 @@ public class PRECO  implements java.io.Serializable, EntityAble {
     public void setId(PRECOID id) {
         this.id = id;
     }
-@ManyToOne(fetch=FetchType.LAZY)
+@ManyToOne(fetch=FetchType.EAGER)
     @JoinColumns( { 
         @JoinColumn(name="codigo_barras", referencedColumnName="codigo_barras", nullable=false, insertable=false, updatable=false), 
         @JoinColumn(name="id_loja", referencedColumnName="id_loja", nullable=false, insertable=false, updatable=false), 
