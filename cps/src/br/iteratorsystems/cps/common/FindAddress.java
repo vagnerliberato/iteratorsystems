@@ -51,7 +51,7 @@ public class FindAddress {
 			connection.setDoInput(true);
 			connection.setDoOutput(false);
 
-			this.createProxy(connection);
+//			this.createProxy(connection);
 
 			connection.connect();
 		} catch (Exception e) {
