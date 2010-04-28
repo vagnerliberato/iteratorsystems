@@ -50,26 +50,22 @@ public class UserManagementHandler extends Handler{
 		}
 	}
 	
-//	public boolean getMail(USUARIO usuario) throws CpsHandlerException{
-//		final String message = "getting object with instance: "+usuario;
-//		log.debug(message);
-//		try{
-//			idaoUsuario = new Dao<USUARIO>();
-//			if(idaoUsuario.get(usuario)==null);
-//			return false;
-//		}catch (CpsDaoException e) {
-//			final String errMsg = "error! "+message;
-//			log.error(errMsg,e);
-//			throw new CpsHandlerException(errMsg,e);
-//		}
-//	}
-	
 	public void delete(Object instance) throws CpsHandlerException {
 	}
 
-	public Object get(Object instance) throws CpsHandlerException {
-		return null;
-	}
+//	public LOGIN get(LOGIN instance) throws CpsHandlerException {
+//		final String message = "getting All LOGIN object WITH instances: "+instance;
+//		log.debug(message);
+//		try{
+//			idaoLogin = new Dao<LOGIN>();
+//			idaoLogin.get(instance)
+//		}catch (CpsDaoException e) {
+//		    final String errMsg = "error! "+message;
+//			log.error(errMsg,e);
+//			throw new CpsHandlerException(errMsg,e);
+//		}
+//		return null;
+//	}
 
 	public Collection<USUARIO> getAllUser() throws CpsHandlerException {
 		final String message = "getting All USUARIO object instances";

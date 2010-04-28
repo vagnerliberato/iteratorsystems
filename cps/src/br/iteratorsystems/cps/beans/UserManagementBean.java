@@ -3,6 +3,9 @@ package br.iteratorsystems.cps.beans;
 import java.util.Collection;
 import java.util.Date;
 
+import javax.el.ELResolver;
+import javax.faces.context.FacesContext;
+
 import br.iteratorsystems.cps.common.FacesUtil;
 import br.iteratorsystems.cps.common.FindAddress;
 import br.iteratorsystems.cps.common.Resources;
@@ -36,9 +39,11 @@ public class UserManagementBean {
 	private String tel_cel;
 	private String username;
 	private String senha_antiga;
+	private String newSenhaAntiga;
 	private String nova_senha;
 	private String confirma_senha;
-	private String mensagem_informacao;
+	private String mensagem_username;
+	private String mensagem_password;
 
 	private FindAddress findAddress;
 	private UserManagementHandler userHandler;
@@ -49,6 +54,7 @@ public class UserManagementBean {
 	
 	private boolean firstAccess;
 	private boolean validUsername = true;
+	private boolean validPassword = true;
 	
 	private static final char tipoUsuario = 'P';
 
@@ -56,7 +62,21 @@ public class UserManagementBean {
 
 	public static final String[] msgs_informacao = {
 			"Nome de usuário já cadastrado na base de dados",
-			"E-mail já cadastrado na base de dados"};
+			"E-mail já cadastrado na base de dados",
+			"A confirmação da senha não confere!"};
+	
+	public boolean validatePassword(){
+		boolean valid = false;
+		if(this.firstAccess){
+			if(!this.getNova_senha().equals(this.getConfirma_senha())){
+				this.setValidPassword(false);
+				this.setMensagem_password(msgs_informacao[2]);
+			}else {
+				valid = true;
+			}
+		}
+		return valid;
+	}
 	
 	public void find() {
 		findAddress = new FindAddress();
@@ -71,11 +91,10 @@ public class UserManagementBean {
 	}
 
 	public String novo() throws CpsGeneralExceptions {
-		String regex = "[A-Za-z0-9\\._-]+@[A-Za-z]+\\.[A-Za-z]+";
+		String regex = "[A-Za-z0-9\\._-]+@[A-Za-z]+\\.[A-Za-z\\.a-zA-Z]+";
 
 		if (this.getEmail() == null || this.getCep() == null
 				|| "".equals(this.getEmail()) || "".equals(this.getCep())) {
-			FacesUtil.errorMessage("", Resources.getErrorProperties().getString("empty_email_cep"), "preencha email e cep");
 			return "";
 		}
 
@@ -110,7 +129,6 @@ public class UserManagementBean {
 			if(user.getEmail().equalsIgnoreCase(this.getEmail()))
 				return true;
 		}
-
 		return false;
 	}
 	
@@ -122,7 +140,7 @@ public class UserManagementBean {
 		
 		for(LOGIN lo : list){
 			if(lo.getNomeLogin().equalsIgnoreCase(nomeusuario)) {
-				mensagem_informacao = msgs_informacao[0];
+				mensagem_username = msgs_informacao[0];
 				this.setValidUsername(false);
 				return true;
 			}
@@ -133,9 +151,11 @@ public class UserManagementBean {
 
 	public void salva() throws CpsGeneralExceptions {
 		
-		if (!this.validateForm()){
+		if(!this.validatePassword())
 			return;
-		}
+		
+		if(!this.validUsername)
+			return;
 		
 		usuario = new USUARIO();
 		endereco = new ENDERECO();
@@ -145,7 +165,7 @@ public class UserManagementBean {
 		usuario.setNomeUsuario(this.getNome());
 		usuario.setSobrenomeUsuario(this.getSobrenome());
 		usuario.setCpfUsuario(this.getCpf().replace(".","").replace("-",""));
-		usuario.setRgUsuario(this.getRg().replace(".","").replace("-",""));
+		usuario.setRgUsuario(this.getRg());
 		usuario.setOrgaoEspedidorUsu(this.getOrgao_expeditor());
 		usuario.setDddRes(this.getDdd_tel_res());
 		usuario.setTelRes(this.getTel_res().replace("-",""));
@@ -178,6 +198,38 @@ public class UserManagementBean {
 		
 	}
 
+	public void getDadosUsuario(LOGIN newLogin,USUARIO newUsuario,ENDERECO newEndereco){
+		this.login = newLogin;
+		this.usuario = newUsuario;
+		this.endereco = newEndereco;
+	}
+	
+	public void atualizaCampos(){
+		//recebe do faces config o parametro da classe de login, com suas respectivas propiedades
+		FacesContext context = FacesContext.getCurrentInstance();
+		ELResolver el = context.getApplication().getELResolver();
+		LoginUserBean newLoginUserInstance = (LoginUserBean) el.getValue(context.getELContext(),null,"loginUserBean");
+		
+		//inserindo os valores da classe de login nos campos apropiados para o usuario
+		this.setNome(newLoginUserInstance.getUsuario().getNomeUsuario());
+		this.setSobrenome(newLoginUserInstance.getUsuario().getSobrenomeUsuario());
+		//this.setAniversario(newLoginUserInstance.getUsuario().get)
+		this.setCpf(newLoginUserInstance.getUsuario().getCpfUsuario());
+		this.setRg(newLoginUserInstance.getUsuario().getRgUsuario());
+		this.setOrgao_expeditor(newLoginUserInstance.getUsuario().getOrgaoEspedidorUsu());
+		//inserindo os valores da classe de login nos campos apropiados para o contato
+		this.setEmail(newLoginUserInstance.getUsuario().getEmail());
+		this.setCep(newLoginUserInstance.getEndereco().getCep().getCep());
+		this.find();
+		this.setNumero_res(newLoginUserInstance.getEndereco().getNumero());
+		this.setDdd_tel_res(newLoginUserInstance.getUsuario().getDddRes());
+		this.setTel_res(newLoginUserInstance.getUsuario().getTelRes());
+		this.setDdd_tel_cel(newLoginUserInstance.getUsuario().getDddCel());
+		this.setTel_cel(newLoginUserInstance.getUsuario().getTelCel());
+		this.setUsername(newLoginUserInstance.getLogin().getNomeLogin());
+		this.setNewSenhaAntiga(newLoginUserInstance.getLogin().getSenha());
+	}
+	
 	public boolean validateForm() {
 		if (this.firstAccess) {
 			if (!this.validUsername) {
@@ -538,12 +590,12 @@ public class UserManagementBean {
 		return validUsername;
 	}
 
-	public void setMensagem_informacao(String mensagem_informacao) {
-		this.mensagem_informacao = mensagem_informacao;
+	public void setMensagem_username(String mensagem_username) {
+		this.mensagem_username = mensagem_username;
 	}
 
-	public String getMensagem_informacao() {
-		return mensagem_informacao;
+	public String getMensagem_username() {
+		return mensagem_username;
 	}
 
 	public void setEstadoSigla(String estadoSigla) {
@@ -552,5 +604,29 @@ public class UserManagementBean {
 
 	public String getEstadoSigla() {
 		return estadoSigla;
+	}
+
+	public void setValidPassword(boolean validPassword) {
+		this.validPassword = validPassword;
+	}
+
+	public boolean isValidPassword() {
+		return validPassword;
+	}
+
+	public void setMensagem_password(String mensagem_password) {
+		this.mensagem_password = mensagem_password;
+	}
+
+	public String getMensagem_password() {
+		return mensagem_password;
+	}
+
+	public void setNewSenhaAntiga(String newSenhaAntiga) {
+		this.newSenhaAntiga = newSenhaAntiga;
+	}
+
+	public String getNewSenhaAntiga() {
+		return newSenhaAntiga;
 	}
 }
