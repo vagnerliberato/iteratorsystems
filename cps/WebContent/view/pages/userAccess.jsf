@@ -8,9 +8,14 @@
 
 	<ui:composition template="../template/template.jsf">
 		<ui:define name="content">
-			<h:form id="userAccessForm">
 			<rich:spacer height="100" />
 			<h:panelGrid columns="3" width="50%">
+			<h:column></h:column>
+			<h:column>
+			<h:messages id="errorMsgCad" rendered="true" errorStyle="color:red;font-size:10pt;font-style: bold;" />
+			</h:column>
+			<h:column></h:column>
+			<h:form id="userAccessForm">
 			<h:column>
 					<rich:panel style="width: 350px;">
 						<f:facet name="header">
@@ -25,25 +30,27 @@
 								<h:outputText value="#{msg.useraccess_mailorusername}" styleClass="letras"/>
 							</h:column>
 							<h:column>
-								<h:inputText maxlength="50" size="40" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+								<h:inputText id="inputUsername" value="#{loginUserBean.nomeLogin}" maxlength="50" size="40" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
 							</h:column>
 							<h:column>
 								<h:outputText value="#{msg.useraccess_password}" styleClass="letras"/>
 							</h:column>
 							<h:column>
-								<h:inputSecret maxlength="10" size="12" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>		
+								<h:inputSecret id="inputPassword" value="#{loginUserBean.senha}" maxlength="10" size="12" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>		
 							</h:column>
 							<h:column>
-								<h:commandButton value="#{msg.useraccess_btn_login}" styleClass="letras"/>								
+								<h:commandButton action="#{loginUserBean.validaLogin}" value="#{msg.useraccess_btn_login}" styleClass="letras"/>								
 							</h:column>
 						</h:panelGrid>
 					</rich:panel>
 			</h:column>
+			</h:form>
 			<h:column>
 				<rich:spacer width="100px"/>
 				<h:outputText value="#{msg.useraccess_or}" styleClass="letras"/>
 				<rich:spacer width="100px"/>
 			</h:column>
+			<h:form id="userCadForm">
 			<h:column>
 				  <rich:panel style="width: 350px;">
 						<f:facet name="header">
@@ -53,7 +60,6 @@
 							<h:outputText value="#{msg.useraccess_create_login}" styleClass="letrasAba"/>
 						</h:panelGroup>
 						</f:facet>
-						<h:messages id="errorMsg" rendered="true" errorStyle="color:red;font-size:10pt;font-style: bold;" />
 						<h:panelGrid>
 							<h:column>
 								<h:outputText value="#{msg.useraccess_email}" styleClass="letras"/>
@@ -69,13 +75,13 @@
 								<h:outputText value="#{msg.personalcontatc_CEP_info}" styleClass="letrasInfo"/>
 							</h:column>
 							<h:column>
-								<h:commandButton action="#{userManagementBean.novo}" value="#{msg.useraccess_cad}" styleClass="letras"/>								
+								<h:commandButton action="#{userManagementBean.novo}" value="#{msg.useraccess_cad}" styleClass="letras" />								
 							</h:column>
 						</h:panelGrid>
 					</rich:panel>
 			</h:column>
+			</h:form>
 		</h:panelGrid>
-		</h:form>
 		</ui:define>
 	</ui:composition>
 </jsp:root>

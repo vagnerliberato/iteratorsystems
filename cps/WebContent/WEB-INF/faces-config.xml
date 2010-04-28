@@ -49,6 +49,21 @@
 		<managed-bean-class>br.iteratorsystems.cps.beans.FiltersBean</managed-bean-class>
 		<managed-bean-scope>session</managed-bean-scope>
 	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>loginUserBean</managed-bean-name>
+		<managed-bean-class>br.iteratorsystems.cps.beans.LoginUserBean</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>navigationBean</managed-bean-name>
+		<managed-bean-class>br.iteratorsystems.cps.beans.NavigationBean</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+	</managed-bean>
+
+	<!-- Filtro controlador de acesso -->
+	<lifecycle>
+		<phase-listener>br.iteratorsystems.cps.controller.AutorizationController</phase-listener>
+	</lifecycle>
 
 	<!-- Regras de navegação -->
 	<navigation-rule>
@@ -59,10 +74,34 @@
 		</navigation-case>
 	</navigation-rule>
 	<navigation-rule>
-		<from-view-id>/view/pages/userAccess.jsf</from-view-id>
+		<from-view-id>/*</from-view-id>
 		<navigation-case>
 			<from-outcome>toCadUser</from-outcome>
 			<to-view-id>/view/pages/userManager.jsf</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>toLoginPage</from-outcome>
+			<to-view-id>/view/pages/userAccess.jsf</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>toDefaultPage</from-outcome>
+			<to-view-id>/view/default.jsf</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>toMyCar</from-outcome>
+			<to-view-id>/view/pages/myCar.jsf</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>toMyLists</from-outcome>
+			<to-view-id>/view/pages/myLists.jsf</to-view-id>
 		</navigation-case>
 	</navigation-rule>
 </faces-config>
