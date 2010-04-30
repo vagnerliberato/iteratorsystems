@@ -65,17 +65,19 @@
 								<h:outputText value="#{msg.useraccess_email}" styleClass="letras"/>
 							</h:column>
 							<h:column>
-								<h:inputText id="newEmail" value="#{userManagementBean.email}" maxlength="50" size="40" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+								<h:inputText id="newEmail" value="#{loginUserBean.email}" maxlength="50" size="40" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
 							</h:column>
 							<h:column>
 								<h:outputText value="#{msg.useraccess_cep}" styleClass="letras"/>
 							</h:column>
 							<h:column>
-								<h:inputText id="newCep" value="#{userManagementBean.cep}" maxlength="9" size="10" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+								<h:inputText id="newCep" value="#{loginUserBean.cep}" maxlength="9" size="10" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
+									<rich:jQuery selector="#newCep" query="mask('99999-999')" timing="onload" />  								
+								</h:inputText>
 								<h:outputText value="#{msg.personalcontatc_CEP_info}" styleClass="letrasInfo"/>
 							</h:column>
 							<h:column>
-								<h:commandButton action="#{userManagementBean.novo}" value="#{msg.useraccess_cad}" styleClass="letras" />								
+								<h:commandButton action="#{loginUserBean.novo}" value="#{msg.useraccess_cad}" styleClass="letras" />								
 							</h:column>
 						</h:panelGrid>
 					</rich:panel>

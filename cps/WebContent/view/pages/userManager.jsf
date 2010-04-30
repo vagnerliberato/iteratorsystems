@@ -12,7 +12,7 @@
 		<rich:spacer height="50"/>
 		<center>
 			<rich:tabPanel width="100%" switchType="server" selectedTab="tab1">
-				<rich:tab name="tab1" immediate="true" action="#{userManagementBean.atualizaCampos}">
+				<rich:tab name="tab1">
 				<f:facet name="label">
 						<h:panelGroup>
 							<h:graphicImage url="/view/images/Acesso.png" />
@@ -22,7 +22,7 @@
 				</f:facet>
 				<ui:include src="userEdit.jsf"/>
 				</rich:tab>
-				<rich:tab name="tab2">
+				<rich:tab name="tab2" rendered="#{not userManagementBean.firstAccess}">
 				<f:facet name="label">
 					<h:panelGroup>
 						<h:graphicImage url="/view/images/list.png" />
@@ -32,7 +32,7 @@
 				</f:facet>
 				<ui:include src="myLists.jsf"/>
 				</rich:tab>
-				<rich:tab name="tab3">
+				<rich:tab name="tab3" rendered="#{userManagementBean.administrador}">
 				<f:facet name="label">
 					<h:panelGroup>
 						<h:graphicImage url="/view/images/restricted.png" />
