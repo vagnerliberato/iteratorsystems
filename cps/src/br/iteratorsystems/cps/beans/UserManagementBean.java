@@ -1,23 +1,28 @@
 package br.iteratorsystems.cps.beans;
 
-import java.util.Collection;
 import java.util.Date;
 
 import javax.el.ELResolver;
 import javax.faces.context.FacesContext;
 
-import br.iteratorsystems.cps.common.FacesUtil;
+import br.iteratorsystems.cps.common.CommonOperations;
 import br.iteratorsystems.cps.common.FindAddress;
-import br.iteratorsystems.cps.common.Resources;
 import br.iteratorsystems.cps.entities.CEP;
 import br.iteratorsystems.cps.entities.ENDERECO;
 import br.iteratorsystems.cps.entities.LOGIN;
 import br.iteratorsystems.cps.entities.USUARIO;
 import br.iteratorsystems.cps.exceptions.CpsGeneralExceptions;
+import br.iteratorsystems.cps.exceptions.CpsHandlerException;
 import br.iteratorsystems.cps.handler.UserManagementHandler;
 
 public class UserManagementBean {
 
+	private FindAddress findAddress;
+	private UserManagementHandler userHandler;
+	private USUARIO usuario;
+	private CEP cepEntity;
+	private ENDERECO endereco;
+	private LOGIN login;
 	private String nome;
 	private String sobrenome;
 	private Date aniversario;
@@ -44,35 +49,55 @@ public class UserManagementBean {
 	private String confirma_senha;
 	private String mensagem_username;
 	private String mensagem_password;
-
-	private FindAddress findAddress;
-	private UserManagementHandler userHandler;
-	private USUARIO usuario;
-	private CEP cepEntity;
-	private ENDERECO endereco;
-	private LOGIN login;
-	
-	private boolean firstAccess;
+	private boolean firstAccess = false;
 	private boolean validUsername = true;
 	private boolean validPassword = true;
+	private boolean administrador = false;
+
+	protected FacesContext context = FacesContext.getCurrentInstance();
+	protected ELResolver el = context.getApplication().getELResolver();
 	
-	private static final char tipoUsuario = 'P';
+	private static final char TIPO_USUARIO = 'P';
 
-	public UserManagementBean() {}
-
-	public static final String[] msgs_informacao = {
-			"Nome de usuário já cadastrado na base de dados",
+	//o faces ainda não possui um PERFEITO mecanismo de mensagens, então vai na mão!
+	public static final String[] MENSAGENS_JSF = 
+			{"Nome de usuário já cadastrado na base de dados",
 			"E-mail já cadastrado na base de dados",
-			"A confirmação da senha não confere!"};
+			"A confirmação da senha não confere!" };
+	
+	public UserManagementBean() {
+		passaOuRepassa();
+	}
+
+	//nome criativo não? kkkk
+	public void passaOuRepassa(){
+		LoginUserBean newLoginUserInstance = null;
+		
+		try{
+			newLoginUserInstance = (LoginUserBean) el.getValue(context.getELContext(),null,"loginUserBean");
+			this.setFirstAccess(newLoginUserInstance.isFirstAccess());
+			
+			if(this.firstAccess){
+				this.setCep(newLoginUserInstance.getCep());
+				this.setEmail(newLoginUserInstance.getEmail());
+				this.find();
+			} else{
+				this.atualizaCampos();
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
 	public boolean validatePassword(){
 		boolean valid = false;
 		if(this.firstAccess){
 			if(!this.getNova_senha().equals(this.getConfirma_senha())){
 				this.setValidPassword(false);
-				this.setMensagem_password(msgs_informacao[2]);
+				this.setMensagem_password(MENSAGENS_JSF[2]);
 			}else {
 				valid = true;
+				this.setValidPassword(true);
 			}
 		}
 		return valid;
@@ -80,137 +105,93 @@ public class UserManagementBean {
 	
 	public void find() {
 		findAddress = new FindAddress();
-		findAddress.find(this.getCep());
-
-		this.setLogradouro(findAddress.getLogradouro());
-		this.setBairro(findAddress.getBairro());
-		this.setCidade(findAddress.getCidade());
-		this.setEstado(findAddress.getEstado());
-		this.setEstadoSigla(findAddress.getEstadoSigla());
-		findAddress = null;
-	}
-
-	public String novo() throws CpsGeneralExceptions {
-		String regex = "[A-Za-z0-9\\._-]+@[A-Za-z]+\\.[A-Za-z\\.a-zA-Z]+";
-
-		if (this.getEmail() == null || this.getCep() == null
-				|| "".equals(this.getEmail()) || "".equals(this.getCep())) {
-			return "";
+		try{
+			findAddress.find(this.getCep());
+			
+			this.setLogradouro(findAddress.getLogradouro());
+			this.setBairro(findAddress.getBairro());
+			this.setCidade(findAddress.getCidade());
+			this.setEstado(findAddress.getEstado());
+			this.setEstadoSigla(findAddress.getEstadoSigla());
+		}catch (Exception e) {
+			e.printStackTrace();
 		}
-
-		if (this.getEmail().matches(regex)) {
-			if(this.mailExists()){
-				FacesUtil.errorMessage("", Resources.getErrorProperties().getString("email_exists"), "email já cadastrado");
-				return "";
-			}
-			this.find();
-			this.setFirstAccess(true);
-			return "toCadUser";
-		} else {
-			FacesUtil.errorMessage("", Resources.getErrorProperties().getString("invalid_email"), "email invalido");
-			return "";
+		finally {
+			findAddress = null;	
 		}
 	}
 
-	// TODO Fazer limpar o formulario!
-	public String limpa() {
-		this.cep = "";
-		this.nome = "";
-		this.setComplemento("");
-		this.nova_senha = "";
-		return null;
-	}
-
-	public boolean mailExists() throws CpsGeneralExceptions{
-		userHandler  = new UserManagementHandler();
-		Collection<USUARIO> list =  userHandler.getAllUser();
-		
-		for(USUARIO user: list){
-			if(user.getEmail().equalsIgnoreCase(this.getEmail()))
-				return true;
-		}
-		return false;
+	public boolean userExists() throws CpsGeneralExceptions{
+		return CommonOperations.userExists(this.getUsername());
 	}
 	
-	public boolean userExists() throws CpsGeneralExceptions {
-		final String nomeusuario = this.getUsername();
-		
-		userHandler = new UserManagementHandler();
-		Collection<LOGIN> list = userHandler.getAllLogin();
-		
-		for(LOGIN lo : list){
-			if(lo.getNomeLogin().equalsIgnoreCase(nomeusuario)) {
-				mensagem_username = msgs_informacao[0];
-				this.setValidUsername(false);
-				return true;
-			}
-		}
-		this.setValidUsername(true);
-		return false;
+	// TODO Fazer limpar o formulario!
+	public String limpa() {
+		return null;
 	}
-
-	public void salva() throws CpsGeneralExceptions {
+	
+	public String salva() throws CpsGeneralExceptions {
 		
 		if(!this.validatePassword())
-			return;
+			return "";
 		
 		if(!this.validUsername)
-			return;
+			return "";
 		
-		usuario = new USUARIO();
-		endereco = new ENDERECO();
-		login = new LOGIN();
-		cepEntity = new CEP();
-		
-		usuario.setNomeUsuario(this.getNome());
-		usuario.setSobrenomeUsuario(this.getSobrenome());
-		usuario.setCpfUsuario(this.getCpf().replace(".","").replace("-",""));
-		usuario.setRgUsuario(this.getRg());
-		usuario.setOrgaoEspedidorUsu(this.getOrgao_expeditor());
-		usuario.setDddRes(this.getDdd_tel_res());
-		usuario.setTelRes(this.getTel_res().replace("-",""));
-		usuario.setDddCel(this.getDdd_tel_cel());
-		usuario.setTelCel(this.getTel_cel().replace("-",""));
-		usuario.setEmail(this.getEmail().toLowerCase());
-		usuario.setDataultimamodificacao(new Date());
-		
-		login.setNomeLogin(this.getUsername());
-		login.setSenha(this.getNova_senha());
-		login.setTipoUsuario(tipoUsuario);
-		
-		cepEntity.setCep(this.getCep().replace("-",""));
-		
-		endereco.setEstado(this.getEstadoSigla());
-		endereco.setCidade(this.getCidade());
-		endereco.setBairro(this.getBairro());
-		endereco.setLogradouro(this.getLogradouro());
-		endereco.setNumero(this.getNumero_res());
-		endereco.setComplemeto(this.getComplemento());
-		endereco.setPais("BRASIL");
-		endereco.setDataultimamodificacao(new Date());
-		endereco.setCep(cepEntity);
-		
-		userHandler = new UserManagementHandler();
-		userHandler.save(usuario,login,endereco);
+		try{
+			
+			usuario = new USUARIO();
+			endereco = new ENDERECO();
+			login = new LOGIN();
+			cepEntity = new CEP();
+			
+			usuario.setNomeUsuario(this.getNome());
+			usuario.setSobrenomeUsuario(this.getSobrenome());
+			usuario.setCpfUsuario(this.getCpf().replace(".","").replace("-",""));
+			usuario.setRgUsuario(this.getRg());
+			usuario.setOrgaoEspedidorUsu(this.getOrgao_expeditor());
+			usuario.setDddRes(this.getDdd_tel_res());
+			usuario.setTelRes(this.getTel_res().replace("-",""));
+			usuario.setDddCel(this.getDdd_tel_cel());
+			usuario.setTelCel(this.getTel_cel().replace("-",""));
+			usuario.setEmail(this.getEmail().toLowerCase());
+			usuario.setDataultimamodificacao(new Date());
+			
+			login.setNomeLogin(this.getUsername());
+			login.setSenha(this.getNova_senha());
+			login.setTipoUsuario(TIPO_USUARIO);
+			
+			cepEntity.setCep(this.getCep().replace("-",""));
+			
+			endereco.setEstado(this.getEstadoSigla());
+			endereco.setCidade(this.getCidade());
+			endereco.setBairro(this.getBairro());
+			endereco.setLogradouro(this.getLogradouro());
+			endereco.setNumero(this.getNumero_res());
+			endereco.setComplemeto(this.getComplemento());
+			endereco.setPais("BRASIL");
+			endereco.setDataultimamodificacao(new Date());
+			endereco.setCep(cepEntity);
+			
+			userHandler = new UserManagementHandler();
+			userHandler.save(usuario,login,endereco);
+			
+			return "toLoginPage";
+		}catch (CpsHandlerException e) {
+			throw new CpsGeneralExceptions(e);
+		}
 	}
 
 	public void atualiza() {
-		
-	}
-
-	public void getDadosUsuario(LOGIN newLogin,USUARIO newUsuario,ENDERECO newEndereco){
-		this.login = newLogin;
-		this.usuario = newUsuario;
-		this.endereco = newEndereco;
 	}
 	
 	public void atualizaCampos(){
 		//recebe do faces config o parametro da classe de login, com suas respectivas propiedades
-		FacesContext context = FacesContext.getCurrentInstance();
-		ELResolver el = context.getApplication().getELResolver();
 		LoginUserBean newLoginUserInstance = (LoginUserBean) el.getValue(context.getELContext(),null,"loginUserBean");
 		
 		//inserindo os valores da classe de login nos campos apropiados para o usuario
+		char tipo_usuario = newLoginUserInstance.getLogin().getTipoUsuario();
+		this.setAdministrador(tipo_usuario == 'A' ? true : false);
 		this.setNome(newLoginUserInstance.getUsuario().getNomeUsuario());
 		this.setSobrenome(newLoginUserInstance.getUsuario().getSobrenomeUsuario());
 		//this.setAniversario(newLoginUserInstance.getUsuario().get)
@@ -230,41 +211,6 @@ public class UserManagementBean {
 		this.setNewSenhaAntiga(newLoginUserInstance.getLogin().getSenha());
 	}
 	
-	public boolean validateForm() {
-		if (this.firstAccess) {
-			if (!this.validUsername) {
-				return false;
-			}
-			if (this.getNova_senha() == null
-					|| this.getConfirma_senha() == null
-					|| "".equals(this.getNova_senha())
-					|| "".equals(this.getConfirma_senha())) {
-				FacesUtil.errorMessage("", Resources.getErrorProperties().getString("empty_password_field"),
-						"preencha campo senha");
-				return false;
-			}
-			if (!this.getConfirma_senha().equals(this.getNova_senha())) {
-				FacesUtil.errorMessage("", Resources.getErrorProperties().getString("wrong_password_confirmation"),"confirmaçao incorreta");
-				return false;
-			}
-			return true;
-		}
-		if (!this.firstAccess) {
-			if (this.getSenha_antiga() != null
-					|| !"".equals(this.getSenha_antiga())) {
-				if (this.getNova_senha() != null
-						&& this.getConfirma_senha() != null) {
-					if (!this.getNova_senha().equals(this.getConfirma_senha())) {
-						FacesUtil.errorMessage("", Resources.getErrorProperties().getString("wrong_password_confirmation"),"confirmaçao incorreta");
-						return false;
-					}
-				}
-				return true;
-			}
-		}
-		return true;
-	}
-
 	/**
 	 * @return the nome
 	 */
@@ -628,5 +574,13 @@ public class UserManagementBean {
 
 	public String getNewSenhaAntiga() {
 		return newSenhaAntiga;
+	}
+
+	public void setAdministrador(boolean administrador) {
+		this.administrador = administrador;
+	}
+
+	public boolean isAdministrador() {
+		return administrador;
 	}
 }

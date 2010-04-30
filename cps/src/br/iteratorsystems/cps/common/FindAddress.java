@@ -11,6 +11,14 @@ import java.util.regex.Pattern;
 import br.iteratorsystems.cps.enums.EEstados;
 import br.iteratorsystems.cps.exceptions.FindAddressException;
 
+/**
+ * Classe que faz a comunicação com o webService de CEP. No momento está feita para interagir com 
+ * 2 tipos de webServices diferentes, um do site www.buscarcep.com.br e o outro do site cep.republicavirtual.com.br
+ * Por enquanto ficará assim com os dois. Assim que as chamadas de cep á nossa base de dados estiver funcionando,
+ * o www.buscarcep.com.br será retirado.
+ * @author André
+ *
+ */
 public class FindAddress {
 
 	protected String logradouro;
@@ -24,17 +32,6 @@ public class FindAddress {
 	//private static final String CHAVE = "1Maco/svVvWvqJ1sNk5prmVd9kbaK7";
 	private static final String baseUrl = "http://cep.republicavirtual.com.br/web_cep.php";
 
-	// public SelectItem[] getTodosEstados(){
-	// EEstados[] ee = EEstados.values();
-	// SelectItem[] items = new SelectItem[ee.length];
-	//		
-	// for(int i = 0; i< EEstados.values().length;i++){
-	// items[i] = new SelectItem(ee[i],this.formataEstado(ee[i].getNome()));
-	// }
-	//		
-	// return items;
-	// }
-	
 	private void findByWebService(String cep) throws FindAddressException{
 		HttpURLConnection connection = null;
 		StringBuilder incomingData = null;
@@ -91,10 +88,8 @@ public class FindAddress {
 			this.findByWebService(cep);
 			return;
 		}catch (FindAddressException e) {
+			FacesUtil.errorMessage("",Resources.getErrorProperties().getString("cep_unknown"),"cep nao encontrado");
 			e.printStackTrace();
-			if(e.getMessage().contains("CEP")){
-				FacesUtil.errorMessage("",Resources.getErrorProperties().getString("cep_unknown"),"cep nao encontrado");
-			}
 		}
 		
 		this.findByDataBase(cep);

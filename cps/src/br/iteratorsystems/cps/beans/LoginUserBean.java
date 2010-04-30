@@ -1,5 +1,6 @@
 package br.iteratorsystems.cps.beans;
 
+import br.iteratorsystems.cps.common.CommonOperations;
 import br.iteratorsystems.cps.common.FacesUtil;
 import br.iteratorsystems.cps.common.Resources;
 import br.iteratorsystems.cps.entities.ENDERECO;
@@ -10,18 +11,16 @@ import br.iteratorsystems.cps.handler.LoginUserHandler;
 
 public class LoginUserBean {
 
-	private String nomeLogin;
-	private String senha;
-
-	private boolean logado = false;
-
 	private LOGIN login;
 	private USUARIO usuario;
 	private ENDERECO endereco;
 	private LoginUserHandler loginHandler;
-
-	public LoginUserBean() {
-	}
+	private String nomeLogin;
+	private String senha;
+	private String email;
+	private String cep;
+	private boolean logado = false;
+	private boolean firstAccess = false;
 
 	public String validaLogin() throws CpsGeneralExceptions {
 
@@ -42,6 +41,26 @@ public class LoginUserBean {
 		}
 	}
 
+	public String novo() throws CpsGeneralExceptions {
+		String regex = "[A-Za-z0-9\\._-]+@[A-Za-z]+\\.[A-Za-z\\.a-zA-Z]+";
+
+		if (this.getEmail() == null || this.getCep() == null || "".equals(this.getEmail()) || "".equals(this.getCep())) {
+			return "";
+		}
+
+		if (this.getEmail().matches(regex)) {
+			if(CommonOperations.mailExists(this.getEmail())){
+				FacesUtil.errorMessage("", Resources.getErrorProperties().getString("email_exists"), "email já cadastrado");
+				return "";
+			}
+			this.setFirstAccess(true);
+			return "toCadUser";
+		} else {
+			FacesUtil.errorMessage("", Resources.getErrorProperties().getString("invalid_email"), "email invalido");
+			return "";
+		}
+	}
+	
 	public String toUserManagerPage() {
 		if (!this.isLogado()) {
 			return NavigationBean.toUserAccess();
@@ -49,6 +68,7 @@ public class LoginUserBean {
 		return "toCadUser";
 	}
 
+	//TODO
 	public String logout() {
 		return "";
 	}
@@ -113,5 +133,29 @@ public class LoginUserBean {
 
 	public ENDERECO getEndereco() {
 		return endereco;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setCep(String cep) {
+		this.cep = cep;
+	}
+
+	public String getCep() {
+		return cep;
+	}
+
+	public void setFirstAccess(boolean firstAccess) {
+		this.firstAccess = firstAccess;
+	}
+
+	public boolean isFirstAccess() {
+		return firstAccess;
 	}
 }

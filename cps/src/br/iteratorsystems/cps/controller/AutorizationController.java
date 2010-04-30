@@ -28,8 +28,8 @@ public class AutorizationController implements PhaseListener{
 		
 		ELResolver el = context.getApplication().getELResolver();
 		LoginUserBean loginBean = (LoginUserBean) el.getValue(context.getELContext(),null,LOGINBEANEL); 
-		
-		if(loginBean == null || !loginBean.isLogado()){
+
+		if(loginBean == null || !loginBean.isLogado() && !loginBean.isFirstAccess()){
 			NavigationHandler navigation = context.getApplication().getNavigationHandler();
 			navigation.handleNavigation(context,null,NAVLOGIN);
 			context.renderResponse();
