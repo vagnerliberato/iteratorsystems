@@ -23,13 +23,23 @@ public class CommonOperations {
 	}
 	
 	public static boolean userExists(String username) throws CpsGeneralExceptions {
-		final String nomeusuario = username;
-		
 		userHandler = new UserManagementHandler();
 		Collection<LOGIN> list = userHandler.getAllLogin();
 		
 		for(LOGIN lo : list){
-			if(lo.getNomeLogin().equalsIgnoreCase(nomeusuario)) {
+			if(lo.getNomeLogin().equalsIgnoreCase(username)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public static boolean cpfExists(String cpf) throws CpsGeneralExceptions{
+		userHandler = new UserManagementHandler();
+		Collection<USUARIO> list = userHandler.getAllCpf();
+		
+		for(USUARIO user:list){
+			if(user.getCpfUsuario().equals(cpf)){
 				return true;
 			}
 		}
