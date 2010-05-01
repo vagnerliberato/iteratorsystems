@@ -53,20 +53,6 @@ public class UserManagementHandler extends Handler{
 	public void delete(Object instance) throws CpsHandlerException {
 	}
 
-//	public LOGIN get(LOGIN instance) throws CpsHandlerException {
-//		final String message = "getting All LOGIN object WITH instances: "+instance;
-//		log.debug(message);
-//		try{
-//			idaoLogin = new Dao<LOGIN>();
-//			idaoLogin.get(instance)
-//		}catch (CpsDaoException e) {
-//		    final String errMsg = "error! "+message;
-//			log.error(errMsg,e);
-//			throw new CpsHandlerException(errMsg,e);
-//		}
-//		return null;
-//	}
-
 	public Collection<USUARIO> getAllUser() throws CpsHandlerException {
 		final String message = "getting All USUARIO object instances";
 		log.debug(message);
@@ -89,6 +75,21 @@ public class UserManagementHandler extends Handler{
 		try{
 			idaoLogin = new Dao<LOGIN>();
 			dados = idaoLogin.getAll(new LOGIN());
+			return dados;
+		}catch (CpsDaoException e) {
+			final String errMsg = "error! "+message;
+			log.error(errMsg,e);
+			throw new CpsHandlerException(errMsg,e);
+		}
+	}
+	
+	public Collection<USUARIO> getAllCpf() throws CpsHandlerException {
+		final String message = "getting All CPF object instances";
+		log.debug(message);
+		Collection<USUARIO> dados= null;
+		try{
+			idaoUsuario = new Dao<USUARIO>();
+			dados = idaoUsuario.getAll(new USUARIO());
 			return dados;
 		}catch (CpsDaoException e) {
 			final String errMsg = "error! "+message;
