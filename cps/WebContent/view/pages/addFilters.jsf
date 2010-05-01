@@ -23,7 +23,9 @@
 							<h:inputText value="#{filtersBean.cep}" maxlength="9" size="11" disabled="true" rendered="false" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
 							<h:panelGrid columns="3">
 								<h:column>
-									<h:inputText value="#{filtersBean.cep}" maxlength="9" size="11" rendered="true" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold" title="#{msg.personalcontatc_CEP_info}"/>
+									<h:inputText id="addNewCep" value="#{filtersBean.cep}" maxlength="9" size="11" rendered="true" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold" title="#{msg.personalcontatc_CEP_info}">
+										<rich:jQuery selector="#addNewCep" query="mask('99999-999')" timing="onload" />
+									</h:inputText>
 									<rich:spacer width="2"/>
 									<h:outputText value="#{msg.personalcontatc_CEP_info}" rendered="true" styleClass="letrasInfo"/>
 								</h:column>
