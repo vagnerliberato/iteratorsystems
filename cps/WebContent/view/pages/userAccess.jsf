@@ -36,7 +36,7 @@
 								<h:outputText value="#{msg.useraccess_password}" styleClass="letras"/>
 							</h:column>
 							<h:column>
-								<h:inputSecret id="inputPassword" value="#{loginUserBean.senha}" maxlength="10" size="12" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>		
+								<h:inputSecret id="inputPassword" value="#{loginUserBean.senha}" maxlength="8" size="12" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>		
 							</h:column>
 							<h:column>
 								<h:commandButton action="#{loginUserBean.validaLogin}" value="#{msg.useraccess_btn_login}" styleClass="letras"/>								
