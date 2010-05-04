@@ -60,4 +60,19 @@ public class LoginUserHandler extends Handler {
 			throw new CpsHandlerException(errMsg, e);
 		}
 	}
+	
+	public boolean checkPassword(String pass) throws CpsHandlerException{
+		final String message = "checking if password existis: " + pass;
+		log.debug(message);
+		boolean exists = false;
+		try{
+			idaoLogin = new DaoLogin();
+			exists = idaoLogin.checkPassword(pass);
+			return exists;
+		}catch (CpsDaoException e) {
+			final String errMsg = "error! " + message;
+			log.error(errMsg, e);
+			throw new CpsHandlerException(errMsg,e);
+		}
+	}
 }

@@ -48,7 +48,7 @@ public class FindAddress {
 			connection.setDoInput(true);
 			connection.setDoOutput(false);
 
-			//this.createProxy(connection);
+			this.createProxy(connection);
 
 			connection.connect();
 		} catch (Exception e) {
@@ -81,6 +81,7 @@ public class FindAddress {
 		this.setCidade(resultado[4]);
 		this.setBairro(resultado[5]);
 		this.setLogradouro(resultado[6] + " " + resultado[7]);
+		this.setPais("BRASIL");
 	}
 
 	public void find(String cep) {

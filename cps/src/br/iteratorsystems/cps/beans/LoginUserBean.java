@@ -32,8 +32,6 @@ public class LoginUserBean {
 		
 		if (login != null) {
 			this.setLogado(true);
-			setUsuario(loginHandler.getUserRelated(login.getIdLogin()));
-			setEndereco(loginHandler.getEnderecoRelated(login.getIdLogin()));
 			return "toDefaultPage";
 		} else {
 			FacesUtil.errorMessage("", Resources.getErrorProperties().getString("incorrect_user_or_pass"),"usuario ou senha incorretos");
@@ -41,6 +39,12 @@ public class LoginUserBean {
 		}
 	}
 
+	public void getUserData() throws CpsGeneralExceptions {
+		loginHandler = new LoginUserHandler();
+		setUsuario(loginHandler.getUserRelated(login.getIdLogin()));
+		//setEndereco(loginHandler.getEnderecoRelated(login.getIdLogin()));
+	}
+	
 	public String novo() throws CpsGeneralExceptions {
 		String regex = "[A-Za-z0-9\\._-]+@[A-Za-z]+\\.[A-Za-z\\.a-zA-Z]+";
 
@@ -64,6 +68,11 @@ public class LoginUserBean {
 	public String toUserManagerPage() {
 		if (!this.isLogado()) {
 			return NavigationBean.toUserAccess();
+		}
+		try {
+			getUserData();
+		} catch (CpsGeneralExceptions e) {
+			e.printStackTrace();
 		}
 		return "toCadUser";
 	}

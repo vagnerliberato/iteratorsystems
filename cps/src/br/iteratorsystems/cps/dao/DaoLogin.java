@@ -32,4 +32,12 @@ public class DaoLogin extends Dao<EntityAble> {
 		criteria.add(Restrictions.eq("idUsuario",idUsuario));
 		return (ENDERECO) criteria.uniqueResult();
 	}
+
+	public boolean checkPassword(String pass) throws CpsDaoException{
+		LOGIN result = null;
+		Criteria criteria = getSession().createCriteria(LOGIN.class);
+		criteria.add(Restrictions.eq("senha",pass));
+		result = (LOGIN) criteria.uniqueResult();
+		return result == null ? false : true;
+	}
 }

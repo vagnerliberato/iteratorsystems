@@ -24,7 +24,7 @@ import br.iteratorsystems.cps.interfaces.EntityAble;
 @Table(name="produto"
     ,schema="tabelas"
 )
-public class PRODUTO  implements java.io.Serializable, EntityAble {
+public class PRODUTO implements java.io.Serializable, EntityAble {
 
 	 private static final long serialVersionUID = 2396720478904300397L;
 	 
