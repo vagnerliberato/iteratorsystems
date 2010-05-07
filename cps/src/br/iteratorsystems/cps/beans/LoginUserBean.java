@@ -1,5 +1,9 @@
 package br.iteratorsystems.cps.beans;
 
+import javax.el.ELResolver;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
+
 import br.iteratorsystems.cps.common.CommonOperations;
 import br.iteratorsystems.cps.common.FacesUtil;
 import br.iteratorsystems.cps.common.Resources;
@@ -15,6 +19,7 @@ public class LoginUserBean {
 	private USUARIO usuario;
 	private ENDERECO endereco;
 	private LoginUserHandler loginHandler;
+	
 	private String nomeLogin;
 	private String senha;
 	private String email;
@@ -42,7 +47,6 @@ public class LoginUserBean {
 	public void getUserData() throws CpsGeneralExceptions {
 		loginHandler = new LoginUserHandler();
 		setUsuario(loginHandler.getUserRelated(login.getIdLogin()));
-		//setEndereco(loginHandler.getEnderecoRelated(login.getIdLogin()));
 	}
 	
 	public String novo() throws CpsGeneralExceptions {
@@ -71,15 +75,21 @@ public class LoginUserBean {
 		}
 		try {
 			getUserData();
+			FacesContext context = FacesContext.getCurrentInstance();
+			ELResolver el = context.getApplication().getELResolver();
+			UserManagementBean temporaryUserBean = (UserManagementBean) el.getValue(context.getELContext(), null,"userManagementBean");
+			temporaryUserBean.atualizaCampos(this.getUsuario());
 		} catch (CpsGeneralExceptions e) {
 			e.printStackTrace();
 		}
 		return "toCadUser";
 	}
 
-	//TODO
 	public String logout() {
-		return "";
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(false);
+		session.invalidate();
+		return "toLoginPage";
 	}
 
 	/**

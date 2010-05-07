@@ -18,7 +18,7 @@ import br.iteratorsystems.cps.handler.UserManagementHandler;
 
 public class UserManagementBean {
 
-	private UserManagementHandler userHandler;
+	private UserManagementHandler userHandler = null;
 	private USUARIO usuarioEntity = new USUARIO();
 	private CEP cepEntity = new CEP();
 	private ENDERECO enderecoEntity = new ENDERECO();
@@ -32,6 +32,7 @@ public class UserManagementBean {
 	private String mensagem_password;
 	private String mensagem_cpf;
 	private String mensagem_senha_antiga;
+	
 	private boolean firstAccess = false;
 	private boolean validUsername = true;
 	private boolean validCpf = true;
@@ -66,6 +67,10 @@ public class UserManagementBean {
 				this.getEnderecoEntity().setCep(cepEntity);
 				this.getEnderecoEntity().getCep().setCep(newLoginUserInstance.getCep());
 				this.getUsuarioEntity().setEmail(newLoginUserInstance.getEmail());
+				
+				newLoginUserInstance.setEmail(null);
+				newLoginUserInstance.setCep(null);
+				
 				this.find();
 			} else{
 				this.atualizaCampos();
@@ -82,6 +87,14 @@ public class UserManagementBean {
 				this.setValidPassword(false);
 				this.setMensagem_password(MENSAGENS_JSF[2]);
 			}else {
+				valid = true;
+				this.setValidPassword(true);
+			}
+		}else{
+			if(!this.getNova_senha().equals(this.getConfirma_nova_senha())){
+				this.setValidPassword(false);
+				this.setMensagem_password(MENSAGENS_JSF[2]);
+			}else{
 				valid = true;
 				this.setValidPassword(true);
 			}
@@ -152,6 +165,9 @@ public class UserManagementBean {
 	
 	// TODO Fazer limpar o formulario!
 	public void limpa() {
+		this.setLoginEntity(null);
+		this.setUsuarioEntity(null);
+		this.setEnderecoEntity(null);
 	}
 	
 	public String salva() throws CpsGeneralExceptions {
@@ -179,11 +195,11 @@ public class UserManagementBean {
 	}
 
 	public void atualiza() throws CpsGeneralExceptions{
-		
+
 		if(!"".equals(this.getPut_senha_antiga())){
 			if(!this.validateOldPassword()) {
 				this.setValidOldPassword(false);
-				this.setMensagem_password(MENSAGENS_JSF[4]);
+				this.setMensagem_senha_antiga(MENSAGENS_JSF[4]);
 				return;
 			}else{
 				if(!this.validatePassword()) {
@@ -191,8 +207,6 @@ public class UserManagementBean {
 				}
 				this.setValidOldPassword(true);
 			}
-		}else{
-			System.out.println(this.getLoginEntity().getSenha());
 		}
 
 		if(!this.validUsername)
@@ -203,7 +217,7 @@ public class UserManagementBean {
 		
 		userHandler = new UserManagementHandler();
 		try{
-			userHandler.update(usuarioEntity,loginEntity,enderecoEntity);
+			userHandler.update(this.getUsuarioEntity(),this.getLoginEntity(),this.getEnderecoEntity());
 		}catch (CpsGeneralExceptions e) {
 			throw new CpsGeneralExceptions(e);
 		}
@@ -213,7 +227,6 @@ public class UserManagementBean {
 		//recebe do faces config o parametro da classe de login, com suas respectivas propiedades
 		LoginUserBean newLoginUserInstance = (LoginUserBean) el.getValue(context.getELContext(),null,"loginUserBean");
 		this.usuarioEntity = newLoginUserInstance.getUsuario();
-
 		//solução paliativa
 		for(ENDERECO endereco : this.getUsuarioEntity().getEnderecos()){
 			this.enderecoEntity = endereco;
@@ -221,8 +234,22 @@ public class UserManagementBean {
 		for(LOGIN login : this.getUsuarioEntity().getLogins()){
 			this.loginEntity = login;
 		}
+		this.setAdministrador(this.getLoginEntity().getTipoUsuario() == 'A' ? true : false);
 	}
-
+	
+	public void atualizaCampos(USUARIO paramUser){
+		this.usuarioEntity = paramUser;
+		//solução paliativa
+		for(ENDERECO endereco : this.getUsuarioEntity().getEnderecos()){
+			this.enderecoEntity = endereco;
+		}
+		for(LOGIN login : this.getUsuarioEntity().getLogins()){
+			this.loginEntity = login;
+		}
+		this.setFirstAccess(false);
+		this.setAdministrador(this.getLoginEntity().getTipoUsuario() == 'A' ? true : false);
+	}
+	
 	/**
 	 * @return the nova_senha
 	 */
