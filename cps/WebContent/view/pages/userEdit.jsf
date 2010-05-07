@@ -293,12 +293,11 @@
 			</h:column>
 			<h:column>
 				<h:inputSecret value="#{userManagementBean.put_senha_antiga}" maxlength="8" size="10" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
-				<h:inputHidden value="#{userManagementBean.loginEntity.senha}"/>
 				<a4j:outputPanel id="panelErrOldPass" rendered="true">
-				<h:graphicImage url="/view/images/information.png" rendered="#{not userManagementBean.validOldPassword}"/>
-				<rich:spacer width="3" />
-				<h:outputText value="#{userManagementBean.mensagem_senha_antiga}" rendered="#{not userManagementBean.validOldPassword}" styleClass="camposObr"/>
-			</a4j:outputPanel>
+					<h:graphicImage url="/view/images/information.png" rendered="#{not userManagementBean.validOldPassword}"/>
+					<rich:spacer width="3" />
+					<h:outputText value="#{userManagementBean.mensagem_senha_antiga}" rendered="#{not userManagementBean.validOldPassword}" styleClass="camposObr"/>
+				</a4j:outputPanel>
 			</h:column>
 			<h:column>
 				<h:outputText value="#{msg.preferences_new_password}" rendered="#{not userManagementBean.firstAccess}" styleClass="letras"/>

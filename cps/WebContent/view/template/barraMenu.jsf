@@ -53,10 +53,10 @@
 					<h:outputText value="#{loginUserBean.login.nomeLogin}" styleClass="letrasTopo" rendered="#{loginUserBean.logado}"/>
 					<rich:spacer width="5"/>
 					<h:graphicImage url="/view/images/loginTopo.png" rendered="#{not loginUserBean.logado}"/>
-					<a4j:commandLink value="#{msg.information_login}" styleClass="letrasTopo"  rendered="#{not loginUserBean.logado}"/>
+					<h:commandLink value="#{msg.information_login}" action="#{loginUserBean.toUserManagerPage}" styleClass="letrasTopo"  rendered="#{not loginUserBean.logado}"/>
 					<h:graphicImage url="/view/images/logoutTopo.png" rendered="#{loginUserBean.logado}"/>
 					<rich:spacer width="5"/>
-					<a4j:commandLink value="#{msg.information_logout}" styleClass="letrasTopo" rendered="#{loginUserBean.logado}"/>
+					<h:commandLink action="#{loginUserBean.logout}" value="#{msg.information_logout}" styleClass="letrasTopo" rendered="#{loginUserBean.logado}"/>
 				</h:panelGroup>
 	</rich:toolBar>
 	</td>
