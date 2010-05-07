@@ -2,9 +2,6 @@ package br.iteratorsystems.cps.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.SequenceGenerator;
 
 import br.iteratorsystems.cps.interfaces.EntityAble;
 
@@ -16,7 +13,7 @@ public class ENDERECOID implements java.io.Serializable, EntityAble {
 
 	private static final long serialVersionUID = -2195786669229991261L;
 	
-	private Integer idEndereco;
+	private Integer id;
 	private Integer idUsuario;
 
 	public ENDERECOID() {}
@@ -26,19 +23,17 @@ public class ENDERECOID implements java.io.Serializable, EntityAble {
 	}
 
 	public ENDERECOID(Integer idEndereco, Integer idUsuario) {
-		this.idEndereco = idEndereco;
+		this.id = idEndereco;
 		this.idUsuario = idUsuario;
 	}
 
 	@Column(name = "id_endereco", nullable = false)
-	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="generatorEndereco")
-	@SequenceGenerator(name="generatorEndereco",sequenceName="endereco_id_endereco_seq",initialValue=1,allocationSize=1)
-	public Integer getIdEndereco() {
-		return this.idEndereco;
+	public Integer getId() {
+		return this.id;
 	}
 
-	public void setIdEndereco(int idEndereco) {
-		this.idEndereco = idEndereco;
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	@Column(name = "id_usuario", nullable = false)
@@ -59,21 +54,21 @@ public class ENDERECOID implements java.io.Serializable, EntityAble {
 			return false;
 		ENDERECOID castOther = (ENDERECOID) other;
 
-		return (this.getIdEndereco() == castOther.getIdEndereco())
+		return (this.getId() == castOther.getId())
 				&& (this.getIdUsuario() == castOther.getIdUsuario());
 	}
 
 	public int hashCode() {
 		int result = 17;
 
-		result = 37 * result + this.getIdEndereco();
+		result = 37 * result + this.getId();
 		result = 37 * result + this.getIdUsuario();
 		return result;
 	}
 
 	@Override
 	public String toString() {
-		return "ENDERECOID [idEndereco=" + idEndereco + ", idUsuario="
+		return "ENDERECOID [idEndereco=" + id + ", idUsuario="
 				+ idUsuario + "]";
 	}
 	

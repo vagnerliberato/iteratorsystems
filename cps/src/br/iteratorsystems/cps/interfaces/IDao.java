@@ -13,10 +13,14 @@ public interface IDao<T extends EntityAble> {
 	T get(T instance) throws CpsDaoException;
 	
 	public Integer getIdUsuario(USUARIO instance) throws CpsDaoException;
+	
+	public Integer getLastIdFrom(EntityAble entity) throws CpsDaoException;
 
 	Collection<T> getAll(Object type) throws CpsDaoException;
 
 	void update(T instance) throws CpsDaoException, CpsConstraintException;
+	
+	public void updateUsuarioHQL(USUARIO instance) throws CpsDaoException,CpsConstraintException;
 
 	void delete(T instance) throws CpsDaoException, CpsConstraintException;
 }

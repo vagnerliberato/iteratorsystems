@@ -7,12 +7,16 @@ import org.hibernate.cfg.AnnotationConfiguration;
 public abstract class HibernateConfig {
 
 	private static SessionFactory sessionFactory;
-	private static Session session;
+	private static final ThreadLocal<Session> threadLocal = new ThreadLocal<Session>();
 
-	protected static Session getSession() {
+	public static Session getSession() {
+		Session session = (Session) threadLocal.get();
 		if (session == null || !session.isOpen()) {
-			rebuildSession();
-			session = sessionFactory.openSession();
+			if(sessionFactory == null){
+				rebuildSession();
+			}
+			session = (sessionFactory != null) ? sessionFactory.openSession() : null;
+			threadLocal.set(session);
 		}
 		return session;
 	}
@@ -25,7 +29,7 @@ public abstract class HibernateConfig {
 		configuration.setProperty("hibernate.dialect","org.hibernate.dialect.PostgreSQLDialect");
 		configuration.setProperty("hibernate.connection.username", "cps");
 		configuration.setProperty("hibernate.connection.password", "cps2010");
-		configuration.setProperty("show_sql", "true");
+		//configuration.setProperty("show_sql", "true");
 		configuration.setProperty("hibernate.c3p0.min_size", "2");
 		configuration.setProperty("hibernate.c3p0.max_size", "10");
 		configuration.setProperty("hibernate.c3p0.timeout", "200");
@@ -58,9 +62,15 @@ public abstract class HibernateConfig {
 		configuration.addAnnotatedClass(br.iteratorsystems.cps.entities.USUARIO.class);
 	}
 
-	protected static void closeSession() {
-		if (session != null || session.isOpen()) {
+	public static void closeSession() {
+		Session session = (Session) threadLocal.get();
+		threadLocal.set(null);
+		if (session != null) {
 			session.close();
 		}
+	}
+	
+	public static SessionFactory getSessionFactory(){
+		return sessionFactory;
 	}
 }
