@@ -59,6 +59,11 @@
 		<managed-bean-class>br.iteratorsystems.cps.beans.NavigationBean</managed-bean-class>
 		<managed-bean-scope>session</managed-bean-scope>
 	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>administrationBean</managed-bean-name>
+		<managed-bean-class>br.iteratorsystems.cps.beans.AdministrationBean</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+	</managed-bean>
 
 	<!-- Filtro controlador de acesso -->
 	<lifecycle>
