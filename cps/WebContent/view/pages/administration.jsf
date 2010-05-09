@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j">
+
+<h:form id="formAdmUser">
+	<rich:tabPanel>
+		<rich:tab>
+			<f:facet name="label">
+				<h:outputText value="#{msg.adm_aba_users}" styleClass="letrasAbaB" />
+			</f:facet>
+			<rich:spacer height="10" />
+			<h:outputText value="#{msg.adm_user_retrieve}" styleClass="letrasTitulo" />
+			<rich:separator lineType="beveled" />
+			<rich:spacer height="5" />
+			<h:panelGrid columns="3">
+			<h:column>
+				<h:outputText value="#{msg.adm_user_retrieve_name}"	styleClass="letras" />
+			</h:column>
+			<h:column>
+				<h:inputText value="#{administrationBean.loginEntity.nomeLogin}" size="41" maxlength="40" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+				<a4j:commandButton value="#{msg.adm_user_button_search}" action="#{administrationBean.findUsers}" styleClass="letras" reRender="formAdmUser,panelGrid2"/>
+			</h:column>
+			<h:column>
+			</h:column>
+			<h:column></h:column>
+			</h:panelGrid>
+			<rich:spacer height="10"/>
+			<rich:separator lineType="beveled" rendered="true"/>
+			<h:panelGrid id="panelGrid2" columns="3" rendered="#{not empty administrationBean.allLogins}">
+			<h:column></h:column>
+			<h:column>
+				<h:panelGroup id="panelResultUsers">
+					<rich:dataTable id="tableResultUsers" value="#{administrationBean.allLogins}" binding="#{administrationBean.richDataTable}" var="login" rows="10" columns="4" >
+						<rich:column>
+							<f:facet name="header">
+								<h:outputText value="#{msg.adm_user_table_header_id}" styleClass="letrasDefault"/>
+							</f:facet>
+							<h:outputText value="#{login.idLogin}"/>
+						</rich:column>
+						<rich:column>
+							<f:facet name="header">
+								<h:outputText value="#{msg.adm_user_table_header_username}" styleClass="letrasDefault"/>
+							</f:facet>
+							<h:outputText value="#{login.nomeLogin}"/>
+						</rich:column>
+						<rich:column>
+							<f:facet name="header">
+								<h:outputText value="#{msg.adm_user_table_header_type}" styleClass="letrasDefault"/>
+							</f:facet>
+							<h:outputText value="#{login.tipoUsuario}"/>
+						</rich:column>
+						<rich:column>
+							<f:facet name="header">
+								<h:outputText value="#{msg.adm_user_table_header_delete}" styleClass="letrasDefault"/>
+							</f:facet>
+							<a4j:commandLink value="#{msg.adm_user_table_delete}" action="#{administrationBean.deleteLogin}" reRender="formAdmUser,panelResultUsers,tableResultUsers"/>
+						</rich:column>
+					</rich:dataTable>
+					<rich:datascroller for="tableResultUsers"/>
+				</h:panelGroup>
+			</h:column>
+			<h:column></h:column>
+			</h:panelGrid>
+		</rich:tab>
+	</rich:tabPanel>
+</h:form>
+</jsp:root>

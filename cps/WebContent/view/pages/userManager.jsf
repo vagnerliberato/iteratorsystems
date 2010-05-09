@@ -40,6 +40,7 @@
 						<h:outputText value="#{msg.usermanager_adm}" styleClass="letrasAba" />
 					</h:panelGroup>
 				</f:facet>
+				<ui:include src="administration.jsf"/>
 				</rich:tab>
 			</rich:tabPanel>
 		</center>
