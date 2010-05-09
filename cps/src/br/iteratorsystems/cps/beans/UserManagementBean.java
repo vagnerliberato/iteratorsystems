@@ -28,6 +28,7 @@ public class UserManagementBean {
 	private String put_senha_antiga;
 	private String nova_senha;
 	private String confirma_nova_senha;
+	
 	private String mensagem_username;
 	private String mensagem_password;
 	private String mensagem_cpf;
@@ -227,6 +228,7 @@ public class UserManagementBean {
 		//recebe do faces config o parametro da classe de login, com suas respectivas propiedades
 		LoginUserBean newLoginUserInstance = (LoginUserBean) el.getValue(context.getELContext(),null,"loginUserBean");
 		this.usuarioEntity = newLoginUserInstance.getUsuario();
+		if(this.usuarioEntity == null) return;
 		//solução paliativa
 		for(ENDERECO endereco : this.getUsuarioEntity().getEnderecos()){
 			this.enderecoEntity = endereco;

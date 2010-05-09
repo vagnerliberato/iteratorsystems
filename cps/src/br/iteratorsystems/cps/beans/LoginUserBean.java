@@ -43,11 +43,6 @@ public class LoginUserBean {
 			return "";
 		}
 	}
-
-	public void getUserData() throws CpsGeneralExceptions {
-		loginHandler = new LoginUserHandler();
-		setUsuario(loginHandler.getUserRelated(login.getIdLogin()));
-	}
 	
 	public String novo() throws CpsGeneralExceptions {
 		String regex = "[A-Za-z0-9\\._-]+@[A-Za-z]+\\.[A-Za-z\\.a-zA-Z]+";
@@ -85,6 +80,11 @@ public class LoginUserBean {
 		return "toCadUser";
 	}
 
+	public void getUserData() throws CpsGeneralExceptions {
+		loginHandler = new LoginUserHandler();
+		setUsuario(loginHandler.getUserRelated(login.getIdLogin()));
+	}
+	
 	public String logout() {
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 		HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(false);

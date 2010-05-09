@@ -13,7 +13,6 @@ import br.iteratorsystems.cps.exceptions.CpsHandlerException;
 public class LoginUserHandler extends Handler {
 
 	private static final Log log = LogFactory.getLog(LoginUserHandler.class);
-
 	private DaoLogin idaoLogin;
 
 	public LOGIN doLogin(final String username, final String password) throws CpsHandlerException {

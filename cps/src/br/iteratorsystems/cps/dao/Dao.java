@@ -1,15 +1,19 @@
 package br.iteratorsystems.cps.dao;
 
 import java.util.Collection;
+import java.util.List;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.exception.ConstraintViolationException;
 
 import br.iteratorsystems.cps.config.HibernateConfig;
+import br.iteratorsystems.cps.entities.LOGIN;
 import br.iteratorsystems.cps.entities.USUARIO;
 import br.iteratorsystems.cps.exceptions.CpsConstraintException;
 import br.iteratorsystems.cps.exceptions.CpsDaoException;
@@ -55,6 +59,17 @@ public class Dao<T extends EntityAble> implements IDao<T> {
 	}
 	
 	public void delete(T instance) throws CpsDaoException,CpsConstraintException {
+		final String message = "dropping instance: "+instance;
+		log.debug(message);
+		try{
+			Session session = HibernateConfig.getSession();
+			session.delete(instance);
+			session.flush();
+		}catch (Exception e) {
+			String errMsg = "error!! "+message;
+			log.error(errMsg,e);
+			throw new CpsDaoException(errMsg,e);
+		}
 	}
 
 	public Integer getIdUsuario(USUARIO instance) throws CpsDaoException {
@@ -94,6 +109,14 @@ public class Dao<T extends EntityAble> implements IDao<T> {
 		return criteria.list();
 	}
 
+	@SuppressWarnings("unchecked")
+	public List<LOGIN> getAllLogin(String username) throws CpsDaoException {
+		Criteria criteria = HibernateConfig.getSession().createCriteria(LOGIN.class);
+		criteria.add(Restrictions.ilike("nomeLogin","%"+username+"%"));
+		criteria.addOrder(Order.asc("idLogin"));
+		return criteria.list();
+	}
+	
 	public void update(T instance) throws CpsDaoException,CpsConstraintException {
 		final String message = "merging with istance: "+instance;
 		log.debug(message);

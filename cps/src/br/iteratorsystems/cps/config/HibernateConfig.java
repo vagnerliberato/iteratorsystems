@@ -29,7 +29,8 @@ public abstract class HibernateConfig {
 		configuration.setProperty("hibernate.dialect","org.hibernate.dialect.PostgreSQLDialect");
 		configuration.setProperty("hibernate.connection.username", "cps");
 		configuration.setProperty("hibernate.connection.password", "cps2010");
-		//configuration.setProperty("show_sql", "true");
+		configuration.setProperty("hibernate.show_sql", "false");
+		configuration.setProperty("hibernate.format_sql", "false");
 		configuration.setProperty("hibernate.c3p0.min_size", "2");
 		configuration.setProperty("hibernate.c3p0.max_size", "10");
 		configuration.setProperty("hibernate.c3p0.timeout", "200");

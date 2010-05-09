@@ -18,6 +18,8 @@ import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 
 import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import br.iteratorsystems.cps.interfaces.EntityAble;
 
@@ -210,7 +212,7 @@ public class USUARIO implements java.io.Serializable, EntityAble {
 		this.dataultimamodificacao = dataultimamodificacao;
 	}
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "usuario")
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "usuario")
 	public Set<LISTAPRODUTO> getListaProdutos() {
 		return this.listaProdutos;
 	}
@@ -219,7 +221,7 @@ public class USUARIO implements java.io.Serializable, EntityAble {
 		this.listaProdutos = listaProdutos;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "usuario")
 	@Cascade(value=org.hibernate.annotations.CascadeType.DELETE)
 	public Set<LOGIN> getLogins() {
 		return this.logins;
@@ -229,7 +231,7 @@ public class USUARIO implements java.io.Serializable, EntityAble {
 		this.logins = logins;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "usuario")
 	@Cascade(value=org.hibernate.annotations.CascadeType.DELETE)
 	public Set<ENDERECO> getEnderecos() {
 		return this.enderecos;
