@@ -25,7 +25,7 @@ public class ENDERECO implements java.io.Serializable, EntityAble {
 
 	private static final long serialVersionUID = 2680669957284375254L;
 	private ENDERECOID id;
-	private CEP cep;
+	private String cep;
 	private USUARIO usuario;
 	private String pais;
 	private String estado;
@@ -39,7 +39,7 @@ public class ENDERECO implements java.io.Serializable, EntityAble {
 	public ENDERECO() {
 	}
 
-	public ENDERECO(ENDERECOID id, CEP cep, USUARIO usuario, String pais,
+	public ENDERECO(ENDERECOID id, String cep, USUARIO usuario, String pais,
 			String estado, String cidade, String bairro, String logradouro,
 			String numero, Date dataultimamodificacao) {
 		this.id = id;
@@ -54,7 +54,7 @@ public class ENDERECO implements java.io.Serializable, EntityAble {
 		this.dataultimamodificacao = dataultimamodificacao;
 	}
 
-	public ENDERECO(ENDERECOID id, CEP cep, USUARIO usuario, String pais,
+	public ENDERECO(ENDERECOID id, String cep, USUARIO usuario, String pais,
 			String estado, String cidade, String bairro, String logradouro,
 			String numero, String complemeto, Date dataultimamodificacao) {
 		this.id = id;
@@ -82,13 +82,12 @@ public class ENDERECO implements java.io.Serializable, EntityAble {
 		this.id = id;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "cep", nullable = false)
-	public CEP getCep() {
+	@Column(name="cep",length=10,nullable=false)
+	public String getCep() {
 		return this.cep;
 	}
 
-	public void setCep(CEP cep) {
+	public void setCep(String cep) {
 		this.cep = cep;
 	}
 

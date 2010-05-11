@@ -123,6 +123,7 @@ public class Dao<T extends EntityAble> implements IDao<T> {
 		try{
 			Session session = HibernateConfig.getSession(); 
 			session.merge(instance);
+//			session.saveOrUpdate(instance);
 			session.flush();
 			log.debug("success!");
 		}catch (ConstraintViolationException e) {

@@ -13,22 +13,22 @@ public class ENDERECOID implements java.io.Serializable, EntityAble {
 
 	private static final long serialVersionUID = -2195786669229991261L;
 	
-	private Integer id;
-	private Integer idUsuario;
+	private int id;
+	private int idUsuario;
 
 	public ENDERECOID() {}
 	
-	public ENDERECOID(Integer idUsuario) {
+	public ENDERECOID(int idUsuario) {
 		this.idUsuario = idUsuario;
 	}
 
-	public ENDERECOID(Integer idEndereco, Integer idUsuario) {
+	public ENDERECOID(int idEndereco, int idUsuario) {
 		this.id = idEndereco;
 		this.idUsuario = idUsuario;
 	}
 
 	@Column(name = "id_endereco", nullable = false)
-	public Integer getId() {
+	public int getId() {
 		return this.id;
 	}
 
@@ -37,7 +37,7 @@ public class ENDERECOID implements java.io.Serializable, EntityAble {
 	}
 
 	@Column(name = "id_usuario", nullable = false)
-	public Integer getIdUsuario() {
+	public int getIdUsuario() {
 		return this.idUsuario;
 	}
 

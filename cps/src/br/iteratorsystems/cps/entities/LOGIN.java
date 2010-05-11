@@ -20,7 +20,7 @@ public class LOGIN implements java.io.Serializable, EntityAble {
 
 	private static final long serialVersionUID = 7263774640282848776L;
 
-	private Integer idLogin;
+	private int idLogin;
 	private USUARIO usuario;
 	private String nomeLogin;
 	private String senha;
@@ -29,8 +29,8 @@ public class LOGIN implements java.io.Serializable, EntityAble {
 	public LOGIN() {
 	}
 
-	public LOGIN(Integer idLogin, USUARIO usuario, String nomeLogin,
-			String senha, char tipoUsuario) {
+	public LOGIN(int idLogin, USUARIO usuario, String nomeLogin, String senha,
+			char tipoUsuario) {
 		this.idLogin = idLogin;
 		this.usuario = usuario;
 		this.nomeLogin = nomeLogin;
@@ -86,10 +86,17 @@ public class LOGIN implements java.io.Serializable, EntityAble {
 	}
 
 	@Override
+	public String toString() {
+		return "LOGIN [idLogin=" + idLogin + ", nomeLogin=" + nomeLogin
+				+ ", senha=" + senha + ", tipoUsuario=" + tipoUsuario
+				+ ", usuario=" + usuario + "]";
+	}
+
+	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((idLogin == null) ? 0 : idLogin.hashCode());
+		result = prime * result + idLogin;
 		result = prime * result
 				+ ((nomeLogin == null) ? 0 : nomeLogin.hashCode());
 		result = prime * result + ((senha == null) ? 0 : senha.hashCode());
@@ -104,13 +111,10 @@ public class LOGIN implements java.io.Serializable, EntityAble {
 			return true;
 		if (obj == null)
 			return false;
-		if (!(obj instanceof LOGIN))
+		if (getClass() != obj.getClass())
 			return false;
 		LOGIN other = (LOGIN) obj;
-		if (idLogin == null) {
-			if (other.idLogin != null)
-				return false;
-		} else if (!idLogin.equals(other.idLogin))
+		if (idLogin != other.idLogin)
 			return false;
 		if (nomeLogin == null) {
 			if (other.nomeLogin != null)
@@ -132,10 +136,4 @@ public class LOGIN implements java.io.Serializable, EntityAble {
 		return true;
 	}
 
-	@Override
-	public String toString() {
-		return "LOGIN [idLogin=" + idLogin + ", nomeLogin=" + nomeLogin
-				+ ", senha=" + senha + ", tipoUsuario=" + tipoUsuario
-				+ ", usuario=" + usuario + "]";
-	}
 }

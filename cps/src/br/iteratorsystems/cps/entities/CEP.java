@@ -67,7 +67,7 @@ public class CEP implements java.io.Serializable, EntityAble {
 	}
 
 	@Id
-	@Column(name = "cep", unique = true, nullable = false, length = 8)
+	@Column(name = "cep", unique = true, nullable = false, length = 10)
 	public String getCep() {
 		return this.cep;
 	}

@@ -2,6 +2,7 @@ package br.iteratorsystems.cps.beans;
 
 import javax.el.ELResolver;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 
 import br.iteratorsystems.cps.common.CommonOperations;
 import br.iteratorsystems.cps.common.FacesUtil;
@@ -65,8 +66,8 @@ public class UserManagementBean {
 			this.setFirstAccess(newLoginUserInstance.isFirstAccess());
 			
 			if(this.firstAccess){
-				this.getEnderecoEntity().setCep(cepEntity);
-				this.getEnderecoEntity().getCep().setCep(newLoginUserInstance.getCep());
+				this.getEnderecoEntity().setCep(newLoginUserInstance.getCep());
+				//this.getEnderecoEntity().getCep().setCep();
 				this.getUsuarioEntity().setEmail(newLoginUserInstance.getEmail());
 				
 				newLoginUserInstance.setEmail(null);
@@ -117,7 +118,7 @@ public class UserManagementBean {
 	public void find() {
 		FindAddress findAddress = new FindAddress();
 		try{
-			findAddress.find(this.getEnderecoEntity().getCep().getCep());
+			findAddress.find(this.getEnderecoEntity().getCep());
 			this.enderecoEntity.setLogradouro(findAddress.getLogradouro());
 			this.enderecoEntity.setBairro(findAddress.getBairro());
 			this.enderecoEntity.setCidade(findAddress.getCidade());
@@ -182,12 +183,16 @@ public class UserManagementBean {
 			return "";
 		
 		userHandler = new UserManagementHandler();
+		
 		enderecoEntity.setEstado(this.getEstadoSigla());
 
 		try{
 			userHandler.save(usuarioEntity,loginEntity,enderecoEntity);
 			this.limpa();
 			FacesUtil.errorMessage("", Resources.getErrorProperties().getString("user_registered"),"usuario cadastrado");
+			HttpSession session = (HttpSession) context.getExternalContext().getSession(false);
+			
+			session.setAttribute("salvoComSucesso", true);
 			
 			return "toLoginPage";
 		}catch (CpsHandlerException e) {
@@ -207,6 +212,7 @@ public class UserManagementBean {
 					return;
 				}
 				this.setValidOldPassword(true);
+				this.getLoginEntity().setSenha(this.getConfirma_nova_senha());
 			}
 		}
 

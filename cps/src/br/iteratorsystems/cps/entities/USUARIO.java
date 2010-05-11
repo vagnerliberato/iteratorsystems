@@ -34,7 +34,7 @@ import br.iteratorsystems.cps.interfaces.EntityAble;
 public class USUARIO implements java.io.Serializable, EntityAble {
 
 	private static final long serialVersionUID = 8535312626838524292L;
-	private int idUsuario;
+	private Integer idUsuario;
 	private String nomeUsuario;
 	private String sobrenomeUsuario;
 	private Date dataNascimento;
@@ -54,7 +54,7 @@ public class USUARIO implements java.io.Serializable, EntityAble {
 	public USUARIO() {
 	}
 
-	public USUARIO(int idUsuario, String nomeUsuario, String sobrenomeUsuario,
+	public USUARIO(Integer idUsuario, String nomeUsuario, String sobrenomeUsuario,
 			Date dataNascimento, String cpfUsuario, String rgUsuario,
 			String email, Date dataultimamodificacao) {
 		this.idUsuario = idUsuario;
@@ -67,7 +67,7 @@ public class USUARIO implements java.io.Serializable, EntityAble {
 		this.dataultimamodificacao = dataultimamodificacao;
 	}
 
-	public USUARIO(int idUsuario, String nomeUsuario, String sobrenomeUsuario,
+	public USUARIO(Integer idUsuario, String nomeUsuario, String sobrenomeUsuario,
 			Date dataNascimento, String cpfUsuario, String rgUsuario,
 			String orgaoEspedidorUsu, String dddCel, String telCel,
 			String dddRes, String telRes, String email,
@@ -94,11 +94,11 @@ public class USUARIO implements java.io.Serializable, EntityAble {
 	@Id
 	@Column(name = "id_usuario", unique = true, nullable = false)
 	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "generatorUsuario")
-	public int getIdUsuario() {
+	public Integer getIdUsuario() {
 		return this.idUsuario;
 	}
 
-	public void setIdUsuario(int idUsuario) {
+	public void setIdUsuario(Integer idUsuario) {
 		this.idUsuario = idUsuario;
 	}
 
@@ -243,8 +243,8 @@ public class USUARIO implements java.io.Serializable, EntityAble {
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
+		final Integer prime = 31;
+		Integer result = 1;
 		result = prime * result
 				+ ((cpfUsuario == null) ? 0 : cpfUsuario.hashCode());
 		result = prime * result
