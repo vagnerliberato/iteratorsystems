@@ -183,17 +183,13 @@ public class UserManagementBean {
 			return "";
 		
 		userHandler = new UserManagementHandler();
-		
 		enderecoEntity.setEstado(this.getEstadoSigla());
 
 		try{
 			userHandler.save(usuarioEntity,loginEntity,enderecoEntity);
+			
 			this.limpa();
 			FacesUtil.errorMessage("", Resources.getErrorProperties().getString("user_registered"),"usuario cadastrado");
-			HttpSession session = (HttpSession) context.getExternalContext().getSession(false);
-			
-			session.setAttribute("salvoComSucesso", true);
-			
 			return "toLoginPage";
 		}catch (CpsHandlerException e) {
 			throw new CpsGeneralExceptions(e);

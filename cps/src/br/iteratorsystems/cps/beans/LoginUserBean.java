@@ -33,9 +33,9 @@ public class LoginUserBean {
 			return "";
 
 		loginHandler = new LoginUserHandler();
-		login = loginHandler.doLogin(this.getNomeLogin(), this.getSenha());
+		this.setLogin(loginHandler.doLogin(this.getNomeLogin(), this.getSenha()));
 		
-		if (login != null) {
+		if (this.getLogin() != null) {
 			this.setLogado(true);
 			return "toDefaultPage";
 		} else {

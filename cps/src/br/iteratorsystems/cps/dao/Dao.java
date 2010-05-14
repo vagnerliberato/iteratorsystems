@@ -23,15 +23,6 @@ import br.iteratorsystems.cps.interfaces.IDao;
 public class Dao<T extends EntityAble> implements IDao<T> {
 
 	private static final Log log = LogFactory.getLog(Dao.class);
-	private Class<T> persistentClass;
-	private Session session;
-	
-	public Dao(Session session,Class<T> persistentClass) {
-		this.session = session;
-		this.persistentClass = persistentClass;
-	}
-	
-	public Dao(){}
 	
 	public Integer save(T instance) throws CpsDaoException, CpsConstraintException {
 		final String message = "saving with istance: "+instance;
@@ -89,7 +80,7 @@ public class Dao<T extends EntityAble> implements IDao<T> {
 			Session session = HibernateConfig.getSession();
 			Query q = session.createQuery(query);
 			lastId = (Integer) q.uniqueResult();
-			return ++lastId;
+			return lastId == null ? 1 : ++lastId;
 		}catch (Exception e) {
 			String errMsg = "error!! "+message;
 			log.error(errMsg,e);

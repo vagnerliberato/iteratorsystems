@@ -8,6 +8,7 @@ import org.hibernate.Transaction;
 
 import br.iteratorsystems.cps.dao.Dao;
 import br.iteratorsystems.cps.entities.LOGIN;
+import br.iteratorsystems.cps.entities.REDE;
 import br.iteratorsystems.cps.entities.USUARIO;
 import br.iteratorsystems.cps.exceptions.CpsDaoException;
 import br.iteratorsystems.cps.exceptions.CpsHandlerException;
@@ -17,6 +18,22 @@ public class AdministrationHandler extends Handler {
 	
 	private static final Log log = LogFactory.getLog(LoginUserHandler.class);
 	private IDao<LOGIN> daoLogin = null;
+	private IDao<REDE> daoRede = null;
+	
+	public List<REDE> getAllRedes() throws CpsHandlerException{
+		final String message = "getting all REDE";
+		log.debug(message);
+		List<REDE> list = null;
+		try{
+			daoRede = new Dao<REDE>();
+			list = (List<REDE>) daoRede.getAll(new REDE());
+			return list;
+		}catch (CpsDaoException e) {
+			final String errMsg = "error! " + message;
+			log.error(errMsg, e);
+			throw new CpsHandlerException(errMsg, e);
+		}
+	}
 	
 	public List<LOGIN> getAllLogins(final String username) throws CpsHandlerException{
 		final String message = "getting all LOGIN with username like= "+username;

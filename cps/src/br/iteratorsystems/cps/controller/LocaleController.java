@@ -24,5 +24,4 @@ public class LocaleController {
 	public Locale getCurrentLocale() {
 		return currentLocale;
 	}
-
 }
