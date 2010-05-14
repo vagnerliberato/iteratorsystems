@@ -9,6 +9,7 @@
 	<f:view contentType="text/html" locale="#{localeController.currentLocale}">
 		<link href="#{facesContext.externalContext.requestContextPath}/view/style/geral.css" rel="stylesheet" type="text/css" />
 		<script language="JavaScript" src="#{facesContext.externalContext.request.contextPath}/view/js/jquerymaskedinput-121.js" type="text/javascript"></script>
+		<script language="JavaScript" src="#{facesContext.externalContext.request.contextPath}/view/js/jquery.watermarkinput.js" type="text/javascript"></script>
 	<h:form>
 	<table align="left">
 	<td width="150px">

@@ -6,30 +6,118 @@
 	xmlns:rich="http://richfaces.org/rich"
 	xmlns:a4j="http://richfaces.org/a4j">
 
-<h:form id="formAdmUser">
-	<rich:tabPanel>
-		<rich:tab>
+	<rich:tabPanel width="100%" switchType="server" selectedTab="tab1">
+		<rich:tab name="tab1">
 			<f:facet name="label">
-				<h:outputText value="#{msg.adm_aba_users}" styleClass="letrasAbaB" />
+			<h:panelGroup>
+				<h:graphicImage url="/view/images/configuration.png"/>
+				<rich:spacer width="5px"/>
+				<h:outputText value="#{msg.adm_aba_parameters}" styleClass="letrasAbaB" />
+			</h:panelGroup>
 			</f:facet>
+		<h:form id="formParam">
+		<h:panelGroup>
 			<rich:spacer height="10" />
-			<h:outputText value="#{msg.adm_user_retrieve}" styleClass="letrasTitulo" />
-			<rich:separator lineType="beveled" />
+			<h:outputText value="#{msg.adm_param_config_info}" styleClass="letrasTitulo" />
 			<rich:spacer height="5" />
+			<rich:separator lineType="solid" />	
+			<rich:spacer height="10" />
+		</h:panelGroup>
+		<h:panelGrid columns="3">
+			<h:column>
+				<h:outputText value="#{msg.adm_param_max_itens}" styleClass="letras"/>
+			</h:column>
+			<h:column>
+				<h:inputText size="5" maxlength="3" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
+					<f:validateLength minimum="100" maximum="300"/>
+				</h:inputText>
+			</h:column>
+			<h:column>
+			<a4j:commandButton image="/view/images/doubt.png">
+				<rich:toolTip followMouse="true">
+					<h:outputText value="#{msg.adm_param_tip_1}"/>
+				</rich:toolTip>
+			</a4j:commandButton>
+			</h:column>
+			<h:column>
+				<h:outputText value="#{msg.adm_param_max_stores}" styleClass="letras"/>
+			</h:column>
+			<h:column>
+				<h:inputText size="5" maxlength="3" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
+					<f:validateLength minimum="2" maximum="100"/>
+				</h:inputText>
+			</h:column>
+			<h:column>
+			<a4j:commandButton image="/view/images/doubt.png">
+				<rich:toolTip followMouse="true">
+					<h:outputText value="#{msg.adm_param_tip_2}"/>
+				</rich:toolTip>
+			</a4j:commandButton>			
+			</h:column>
+			<h:column>
+				<h:outputText value="#{msg.adm_param_xml_dir}" styleClass="letras"/>
+			</h:column>
+			<h:column>
+				<h:inputText size="80" maxlength="100" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+			</h:column>
+			<h:column>
+			<a4j:commandButton image="/view/images/doubt.png">
+				<rich:toolTip followMouse="true">
+					<h:outputText value="#{msg.adm_param_tip_3}"/>
+				</rich:toolTip>
+			</a4j:commandButton>
+			</h:column>
+			<h:column>
+				<h:outputText value="#{msg.adm_param_image_dir}" styleClass="letras"/>
+			</h:column>
+			<h:column>
+				<h:inputText size="80" maxlength="100" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+			</h:column>
+			<h:column>
+			<a4j:commandButton image="/view/images/doubt.png">
+				<rich:toolTip followMouse="true">
+					<h:outputText value="#{msg.adm_param_tip_4}"/>
+				</rich:toolTip>
+			</a4j:commandButton>
+			</h:column>
+		</h:panelGrid>
+		<rich:spacer height="10"/>
+		<rich:separator lineType="solid" />
+		<rich:spacer height="5"/>
+		<center>
+			<a4j:commandButton value="#{msg.adm_param_button_add}" styleClass="letras"/>
+		</center>
+		</h:form>
+		</rich:tab>
+		<rich:tab name="tab2">
+			<f:facet name="label">
+				<h:panelGroup>
+					<h:graphicImage url="/view/images/userAba.png"/>
+					<rich:spacer width="5px"/>
+					<h:outputText value="#{msg.adm_aba_users}" styleClass="letrasAbaB" />
+				</h:panelGroup>
+			</f:facet>
+			<h:form id="usersForm">
+			<h:panelGroup>
+				<rich:spacer height="10" />
+				<h:outputText value="#{msg.adm_user_retrieve}" styleClass="letrasTitulo" />
+				<rich:separator lineType="solid" />
+				<rich:spacer height="10" />
+			</h:panelGroup>
 			<h:panelGrid columns="3">
 			<h:column>
 				<h:outputText value="#{msg.adm_user_retrieve_name}"	styleClass="letras" />
 			</h:column>
 			<h:column>
 				<h:inputText value="#{administrationBean.loginEntity.nomeLogin}" size="41" maxlength="40" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
-				<a4j:commandButton value="#{msg.adm_user_button_search}" action="#{administrationBean.findUsers}" styleClass="letras" reRender="formAdmUser,panelGrid2"/>
+				<a4j:commandButton value="#{msg.adm_user_button_search}" action="#{administrationBean.findUsers}" styleClass="letras" reRender="usersForm,panelGrid2"/>
 			</h:column>
 			<h:column>
 			</h:column>
 			<h:column></h:column>
 			</h:panelGrid>
 			<rich:spacer height="10"/>
-			<rich:separator lineType="beveled" rendered="true"/>
+			<rich:separator lineType="solid" rendered="#{not empty administrationBean.allLogins}"/>
 			<h:panelGrid id="panelGrid2" columns="3" rendered="#{not empty administrationBean.allLogins}">
 			<h:column></h:column>
 			<h:column>
@@ -57,7 +145,7 @@
 							<f:facet name="header">
 								<h:outputText value="#{msg.adm_user_table_header_delete}" styleClass="letrasDefault"/>
 							</f:facet>
-							<a4j:commandLink value="#{msg.adm_user_table_delete}" action="#{administrationBean.deleteLogin}" reRender="formAdmUser,panelResultUsers,tableResultUsers"/>
+							<a4j:commandLink value="#{msg.adm_user_table_delete}" action="#{administrationBean.deleteLogin}" reRender="formParam,panelResultUsers,tableResultUsers"/>
 						</rich:column>
 					</rich:dataTable>
 					<rich:datascroller for="tableResultUsers"/>
@@ -65,7 +153,287 @@
 			</h:column>
 			<h:column></h:column>
 			</h:panelGrid>
+		</h:form>
 		</rich:tab>
+		<rich:tab name="tab3">
+			<f:facet name="label">
+				<h:panelGroup>
+					<h:graphicImage url="/view/images/store.png"/>
+					<rich:spacer width="5px"/>
+					<h:outputText value="#{msg.adm_aba_uv}" styleClass="letrasAbaB"/>
+				</h:panelGroup>
+			</f:facet>
+				<h:panelGroup>
+					<rich:spacer height="10" />
+					<h:outputText value="#{msg.adm_param_uv_info}" styleClass="letrasTitulo" />
+					<rich:spacer height="15" />
+					<rich:separator lineType="solid" />
+					<rich:spacer height="18" />
+				</h:panelGroup>
+				<h:form id="formLojas">
+				<h:panelGroup rendered="true">
+					<h:panelGrid columns="3">
+						<h:column>
+							<h:outputText value="#{msg.adm_param_uv_choose}" styleClass="letras"/>	
+						</h:column>
+						<h:column>
+							<h:selectOneMenu value="#{administrationBean.itemSelecionado}" styleClass="letrasDefault">
+								<f:selectItems value="#{administrationBean.items}"/>
+								<a4j:support event="onchange" action="#{administrationBean.selectOperation}" ajaxSingle="true" reRender="formLojas"/>
+							</h:selectOneMenu>
+						</h:column>
+						<h:column>
+							<!-- tagzinhas de ajuda -->
+							<h:panelGroup rendered="#{administrationBean.cadastrar}">
+								<a4j:commandButton image="/view/images/question.png">
+								<rich:toolTip value="#{msg.adm_param_uv_info_rede}" followMouse="true"/>
+								</a4j:commandButton>
+							</h:panelGroup>
+							<h:panelGroup rendered="#{administrationBean.alterar}">
+								<a4j:commandButton image="/view/images/question.png">
+								<rich:toolTip value="#{msg.adm_param_uv_info_alterar}" followMouse="true"/>
+								</a4j:commandButton>
+							</h:panelGroup>
+							<!-- fim das tagzinhas -->
+						</h:column>
+					</h:panelGrid>
+				</h:panelGroup>
+				<br />
+				
+				<!-- Aqui começa a ZICA! -->
+				
+				<!-- Cadastrar UV e REDE -->
+				<rich:spacer height="10"/>
+				<h:panelGroup id="panelCadastrarUV" rendered="#{administrationBean.cadastrar}">
+					<rich:separator lineType="solid" />
+					
+					<h:panelGrid id="panelRede" columns="2">
+						<h:column>
+							<h:outputText value="#{msg.adm_param_uv_rede_select}" styleClass="letras"/>
+						</h:column>
+						<h:column>
+							<h:selectOneMenu id="selectLojas" value="#{administrationBean.redeSelecionada}" styleClass="letrasDefault">
+								<f:selectItems value="#{administrationBean.allRedes}"/>
+								<a4j:support action="#{administrationBean.openLoja}" ajaxSingle="true" event="onchange" reRender="formLojas,panelLoja,panelRede" />
+							</h:selectOneMenu>
+							<rich:spacer height="8"/>
+							<h:outputText value="#{msg.adm_param_uv_rede_or}" styleClass="letras" rendered="#{administrationBean.mostrarCadastroRede}"/>
+						</h:column>
+						<h:column>
+							<h:outputText value="#{msg.adm_param_uv_rede_name}" styleClass="letras" rendered="#{administrationBean.mostrarCadastroRede}"/>	
+						</h:column>
+						<h:column>
+							<h:inputText value="#{administrationBean.redeEntity.nome}" rendered="#{administrationBean.mostrarCadastroRede}" maxlength="30" size="31" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+							<a4j:commandButton value="#{msg.adm_param_uv_rede_buttonadd}" rendered="#{administrationBean.mostrarCadastroRede}" action="#{administrationBean.cadastrarRede}" reRender="formLojas,selectLojas"/>
+						</h:column>
+					</h:panelGrid>
+					
+					<h:panelGroup id="panelLoja" rendered="#{administrationBean.mostrarLoja}">
+					<h:graphicImage url="/view/images/editstore.png"/>
+					<rich:spacer width="5"/>
+					<h:outputText value="#{msg.adm_param_uv_loja_info_dados_basicos}" styleClass="letrasTitulo"/>
+					<rich:separator lineType="solid"/>
+					<h:panelGrid columns="2">
+						<h:column>
+							<h:outputText value="#{msg.adm_param_uv_loja_razao_social}" styleClass="letras"/>
+						</h:column>	
+						<h:column>
+							<h:inputText value="#{administrationBean.lojaEntity.razaosocial}" maxlength="60" size="61" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+						</h:column>
+						<h:column>
+							<h:outputText value="#{msg.adm_param_uv_loja_nomefantasia}" styleClass="letras"/>
+						</h:column>
+						<h:column>
+							<h:inputText value="#{administrationBean.lojaEntity.nomefantasia}" maxlength="60" size="61" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+						</h:column>
+						<h:column>
+							<h:outputText value="#{msg.adm_param_uv_loja_cnpj}" styleClass="letras"/>
+						</h:column>
+						<h:column>
+							<h:inputText value="#{administrationBean.lojaEntity.cnpj}" id="cnpj" maxlength="20" size="21" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
+								<rich:jQuery selector="#cnpj" query="mask('99.999.999/9999-99')" timing="onload"/>
+							</h:inputText>
+						</h:column>
+						<h:column>
+							<h:outputText value="#{msg.adm_param_uv_loja_inscricaoestadual}" styleClass="letras"/>
+						</h:column>
+						<h:column>
+							<h:inputText value="#{administrationBean.lojaEntity.inscricaoestadual}" maxlength="20" size="21" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+						</h:column>
+						<h:column>
+							<h:outputText value="#{msg.adm_param_uv_loja_inscricaomunicipal}" styleClass="letras"/>
+						</h:column>
+						<h:column>
+							<h:inputText value="#{administrationBean.lojaEntity.inscricaomunicipal}" maxlength="20" size="21" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+						</h:column>
+						<h:column>
+							<h:outputText value="#{msg.adm_param_uv_loja_responsavel}" styleClass="letras"/>
+						</h:column>
+						<h:column>
+							<h:inputText value="#{administrationBean.lojaEntity.nomedoresponsavelpelaloja}" maxlength="30" size="31" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+						</h:column>
+						<h:column>
+							<h:outputText value="#{msg.adm_param_uv_loja_tipodevenda}" styleClass="letras"/>
+						</h:column>
+						<h:column>
+							<h:selectOneMenu id="selectTipoVenda" disabled="true" value="#{administrationBean.tipoVendaSelecionada}" styleClass="letrasDefault">
+								<f:selectItems value="#{administrationBean.tipoVendas}"/>
+							</h:selectOneMenu>
+						</h:column>
+					</h:panelGrid>
+					</h:panelGroup>
+					
+					<h:panelGroup id="panelContatoLoja" rendered="#{administrationBean.mostrarLoja}">
+					<h:graphicImage url="/view/images/contact.png"/>
+					<rich:spacer width="5"/>
+					<h:outputText value="#{msg.adm_param_uv_loja_info_contato}" styleClass="letrasTitulo"/>
+					<rich:separator lineType="solid"/>
+					
+					<h:panelGrid id="panelCep" columns="2">
+						<h:column>
+							<h:outputText value="#{msg.personalcontact_CEP}" styleClass="letras"/>
+						</h:column>
+						<h:column>
+							<h:panelGrid columns="2">	
+							<h:column>
+								<h:inputText value="#{administrationBean.cep}" id="inputCep" maxlength="9" size="10" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
+									<rich:jQuery selector="#inputCep" query="mask('99999-999')" timing="onload" />
+								</h:inputText> 
+							</h:column>
+							<h:column>
+								<a4j:commandButton image="/view/images/Lupa.png" title="#{msg.addfilters_findCep}" style="width: 80%;" action="#{administrationBean.find}"/>
+							</h:column>
+							</h:panelGrid>
+						</h:column>
+					</h:panelGrid>
+					<rich:separator lineType="solid"/>
+					<h:panelGrid id="panelCep2" columns="2">
+						<h:column>
+							<h:outputText value="#{msg.personalcontact_street}" styleClass="letras"/>
+						</h:column>
+						<h:column>
+							<h:inputText readonly="true" id="inputRua" maxlength="50" size="52" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+						</h:column>
+						<h:column>
+							<h:outputText value="#{msg.personalcontact_number}" styleClass="letras"/>
+						</h:column>
+						<h:column>
+							<h:inputText id="inputNumero" required="true" maxlength="6" size="8" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+						</h:column>
+						<h:column>
+							<h:outputText value="#{msg.personalcontact_compl}" styleClass="letras"/>
+						</h:column>
+						<h:column>
+							<h:inputText maxlength="20" size="22" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+						</h:column>
+						<h:column>
+							<h:outputText value="#{msg.personalcontact_district}" styleClass="letras"/>
+						</h:column>
+						<h:column>
+							<h:inputText readonly="true" id="inputBairro" maxlength="50" size="52" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+						</h:column>
+						<h:column>
+							<h:outputText value="#{msg.personalcontact_city}" styleClass="letras"/>
+						</h:column>
+						<h:column>
+							<h:inputText readonly="true" id="inputCidade" maxlength="50" size="52" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+						</h:column>
+						<h:column>
+							<h:outputText value="#{msg.personalcontact_state}" styleClass="letras"/>
+						</h:column>
+						<h:column>
+							<h:inputText readonly="true" id="selectEstado" maxlength="25" size="27" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+						</h:column>
+					</h:panelGrid>
+					
+					<h:panelGrid columns="4">
+						<h:column>
+							<h:outputText value="#{msg.personalcontact_tel_com}" styleClass="letras"/>
+						</h:column>
+						<h:column>
+							<h:outputText value="#{msg.personalcontact_ddd_tel}" styleClass="letras"/>
+						</h:column>
+						<h:column>
+							<h:inputText value="#{administrationBean.contatoLojaEntity.dddCom}" id="dddCom" maxlength="3" size="4" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
+								<rich:jQuery selector="#dddCom" query="mask('99')" timing="onload" />
+							</h:inputText>
+							<rich:spacer width="5"/>
+							<h:outputText value="#{msg.personalcontact_ddd_info}" styleClass="letrasInfo"/>
+						</h:column>
+						<h:column>
+							<h:inputText value="#{administrationBean.contatoLojaEntity.telCom}" id="telCom" maxlength="9" size="10" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
+								<rich:jQuery selector="#telCom" query="mask('9999-9999')" timing="onload" />
+							</h:inputText>
+							<rich:spacer width="5"/>
+							<h:outputText value="#{msg.personalcontact_tel_info}" styleClass="letrasInfo"/>
+						</h:column>
+						<h:column>
+							<h:outputText value="#{msg.personalcontact_tel_fax}" styleClass="letras"/>
+						</h:column>
+						<h:column>
+							<h:outputText value="#{msg.personalcontact_ddd_tel}" styleClass="letras"/>
+						</h:column>
+						<h:column>
+							<h:inputText value="#{administrationBean.contatoLojaEntity.dddFax}" id="dddFax" maxlength="3" size="4" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
+								<rich:jQuery selector="#dddFax" query="mask('99')" timing="onload" />
+							</h:inputText>
+							<rich:spacer width="5"/>
+							<h:outputText value="#{msg.personalcontact_ddd_info}" styleClass="letrasInfo"/>
+						</h:column>
+						<h:column>
+							<h:inputText value="#{administrationBean.contatoLojaEntity.telFax}" id="telFax" maxlength="9" size="10" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
+								<rich:jQuery selector="#telFax" query="mask('9999-9999')" timing="onload" />
+							</h:inputText>
+							<rich:spacer width="5"/>
+							<h:outputText value="#{msg.personalcontact_tel_info}" styleClass="letrasInfo"/>
+						</h:column>
+						<h:column>
+							<h:outputText value="#{msg.personalcontact_tel_cel}" styleClass="letras"/>
+						</h:column>
+						<h:column>
+							<h:outputText value="#{msg.personalcontact_ddd_tel}" styleClass="letras"/>
+						</h:column>
+						<h:column>
+							<h:inputText value="#{administrationBean.contatoLojaEntity.dddCelCom}" id="dddCelCom" maxlength="3" size="4" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
+								<rich:jQuery selector="#dddCelCom" query="mask('99')" timing="onload" />
+							</h:inputText>
+							<rich:spacer width="5"/>
+							<h:outputText value="#{msg.personalcontact_ddd_info}" styleClass="letrasInfo"/>
+						</h:column>
+						<h:column>
+							<h:inputText value="#{administrationBean.contatoLojaEntity.telFax}" id="telCelCom" maxlength="9" size="10" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
+								<rich:jQuery selector="#telCelCom" query="mask('9999-9999')" timing="onload" />
+							</h:inputText>
+							<rich:spacer width="5"/>
+							<h:outputText value="#{msg.personalcontact_tel_info}" styleClass="letrasInfo"/>
+						</h:column>
+					</h:panelGrid>
+						<h:panelGrid columns="2">
+							<h:column>
+								<h:outputText value="#{msg.personalcontact_mail}" styleClass="letras"/>
+							</h:column>
+							<h:column>
+								<h:inputText value="#{administrationBean.contatoLojaEntity.email}" maxlength="30" size="31" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+							</h:column>
+							<h:column>
+								<h:outputText value="#{msg.adm_param_uv_loja_homepage}" styleClass="letras"/>
+							</h:column>
+							<h:column>
+								<h:inputText value="#{administrationBean.contatoLojaEntity.homepage}" maxlength="100" size="60" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+							</h:column>
+						</h:panelGrid>
+					<rich:separator lineType="solid"/>
+					<center>
+						<a4j:commandButton value="#{msg.adm_param_uv_loja_button_cadastrar}"/>
+					</center>
+					</h:panelGroup>
+				</h:panelGroup>
+				
+				<!-- Alterar UV e REDE -->
+				<h:panelGroup id="panelAlterarUV" rendered="#{administrationBean.alterar}">
+					thau
+				</h:panelGroup>
+				</h:form>
+			</rich:tab>
 	</rich:tabPanel>
-</h:form>
 </jsp:root>

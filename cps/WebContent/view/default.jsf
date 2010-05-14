@@ -15,7 +15,9 @@
 					<h:outputText value="#{msg.default_information_search}" styleClass="letrasDefault"/>
 				</td>
 				<td bgcolor="blue">
-				<h:inputText maxlength="50" styleClass="barraPesquisa" style="font-size:20px; font-family:Verdana; color:black; font-weight:bold"/>
+				<h:inputText id="barraPesfq" alt="fffff" maxlength="50" styleClass="barraPesquisa" style="font-size:20px; font-family:Verdana; color:black; font-weight:bold">
+				</h:inputText>
+				<!-- <input type="text"  value="" id="barraPesq" size="50" maxlength="50" style="font-size:20px; font-family:Verdana; color:black; font-weight:bol" name="email" placeholder="fazer cocô" /> --> 
 				</td>
 				<td>
 				<a4j:commandButton image="/view/images/Lupa.png" title="#{msg.default_button_search}" />
@@ -83,7 +85,6 @@
 					<rich:datascroller for="tableResumo"/>
 				</h:column>
 				<h:column>
-				
 				</h:column>
 				<h:column>
 					<h:commandButton value="#{msg.default_button_compare}" styleClass="botaoDefault" action="#{defaultBean.toFilters}"/>

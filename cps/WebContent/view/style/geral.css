@@ -9,9 +9,8 @@
 }
 
 .letrasDefault {
-	font-weight: normal;
+	font-weight:lighter;
 	font-size: 11pt;
-	font-style: bold;
 	font-family: Verdana;
 	white-space: nowrap;
 }
@@ -34,6 +33,15 @@
 	color: green;
 }
 
+.letrasInformacao {
+	font-weight: bold;
+	font-size: 13pt;
+	font-style: italic;
+	font-family: Verdana;
+	white-space: nowrap;
+	color: green;
+}
+
 .letrasAba {
 	font-weight: normal;
 	font-size: 14pt;
@@ -48,7 +56,7 @@
 	font-size: 12pt;
 	font-family: serif;
 	white-space: normal;
-	color: black;
+	color: darkblue;
 }
 
 .letrasToolTip {

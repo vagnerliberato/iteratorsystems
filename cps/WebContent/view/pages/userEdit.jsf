@@ -9,7 +9,6 @@
 <h:form id="userEditForm">
 <!-- personalData -->
 	<h:panelGrid>
-	
 	<h:column>
 		<rich:spacer height="10"/>
 		<h:graphicImage url="/view/images/editPeople.png"/>
