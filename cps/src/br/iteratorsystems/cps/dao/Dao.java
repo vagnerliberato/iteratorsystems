@@ -14,6 +14,7 @@ import org.hibernate.exception.ConstraintViolationException;
 
 import br.iteratorsystems.cps.config.HibernateConfig;
 import br.iteratorsystems.cps.entities.LOGIN;
+import br.iteratorsystems.cps.entities.REDE;
 import br.iteratorsystems.cps.entities.USUARIO;
 import br.iteratorsystems.cps.exceptions.CpsConstraintException;
 import br.iteratorsystems.cps.exceptions.CpsDaoException;
@@ -88,6 +89,29 @@ public class Dao<T extends EntityAble> implements IDao<T> {
 		}
 	}
 	
+	public Integer getLastIdFromModel(EntityAble entity) throws CpsDaoException{
+		final String message = "retrieving last id from entity: "+entity.getClass().getSimpleName();
+		log.debug(message);
+		Integer lastId = null;
+		try{
+			String query = "select max(model.id) from "+entity.getClass().getSimpleName()+" model";
+			Session session = HibernateConfig.getSession();
+			Query q = session.createQuery(query);
+			lastId = (Integer) q.uniqueResult();
+			return lastId == null ? 1 : ++lastId;
+		}catch (Exception e) {
+			String errMsg = "error!! "+message;
+			log.error(errMsg,e);
+			throw new CpsDaoException(errMsg,e);
+		}
+	}
+	
+	public REDE getRede(String nome) throws CpsDaoException{
+		Criteria criteria = HibernateConfig.getSession().createCriteria(REDE.class);
+		criteria.add(Restrictions.eq("nome",nome));
+		return (REDE) criteria.uniqueResult();
+	}
+	
 	@SuppressWarnings("unchecked")
 	public T get(T instance) throws CpsDaoException {
 		Criteria criteria = HibernateConfig.getSession().createCriteria(instance.getClass());
@@ -114,7 +138,6 @@ public class Dao<T extends EntityAble> implements IDao<T> {
 		try{
 			Session session = HibernateConfig.getSession(); 
 			session.merge(instance);
-//			session.saveOrUpdate(instance);
 			session.flush();
 			log.debug("success!");
 		}catch (ConstraintViolationException e) {

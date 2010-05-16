@@ -5,6 +5,8 @@ import java.util.List;
 import javax.faces.model.SelectItem;
 import org.richfaces.component.html.HtmlDataTable;
 
+import br.iteratorsystems.cps.common.CommonOperations;
+import br.iteratorsystems.cps.common.FindAddress;
 import br.iteratorsystems.cps.entities.CONTATOLOJA;
 import br.iteratorsystems.cps.entities.LOGIN;
 import br.iteratorsystems.cps.entities.LOJA;
@@ -16,7 +18,7 @@ import br.iteratorsystems.cps.handler.AdministrationHandler;
 public class AdministrationBean {
 
 	private LOGIN loginEntity = new LOGIN();
-	private REDE redeEntity = new REDE();
+	private REDE redeEntity;
 	private LOJA lojaEntity = new LOJA();
 	private CONTATOLOJA contatoLojaEntity = new CONTATOLOJA();
 	private AdministrationHandler administrationHandler;
@@ -28,11 +30,15 @@ public class AdministrationBean {
 	private boolean consultar;
 	private boolean mostrarLoja;
 	private boolean mostrarCadastroRede = true;
+	private boolean cnpj_valido = true;
 	
 	private String itemSelecionado;
 	private String redeSelecionada;
 	private String tipoVendaSelecionada;
-	private String cep;
+	private String nomeRede;
+	private String mensagemCampoObrigatorio = "Campo de preenchimento obrigatório!";
+	private String mensagem_cnpj = "CNPJ já cadastrado na base de dados!";
+	
 	private List<LOGIN> allLogins;
 	private HtmlDataTable richDataTable;
 	
@@ -45,12 +51,33 @@ public class AdministrationBean {
 			new SelectItem(4,"Excluir uma Loja do Sistema"),
 	};
 	private SelectItem[] tipoVendas = {new SelectItem(0,"Varejo")};
-	
+
 	public AdministrationBean() {}
 	
-	public void cadastrarRede(){
-		if(true)
-			System.out.println(this.getRedeEntity().getNome());
+	public void cadastrarRede() throws CpsGeneralExceptions{
+		if(this.getNomeRede() == null || this.getNomeRede().equals("")) return;
+		administrationHandler  = new AdministrationHandler();
+		redeEntity = new REDE();
+		try{
+			redeEntity.setNome(this.getNomeRede());
+			administrationHandler.saveNewRede(redeEntity);
+			this.setNomeRede("");
+			this.getAllRedes();
+		}catch (CpsHandlerException e) {
+			throw new CpsGeneralExceptions(e);
+		}
+	}
+	
+	public void cnpjOk(){
+		try{
+			if(CommonOperations.cnpjExists(this.getLojaEntity().getCnpj())){
+				this.setCnpj_valido(false);
+				return;
+			}
+			this.setCnpj_valido(true);
+		}catch (CpsGeneralExceptions e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void openLoja(){
@@ -72,7 +99,7 @@ public class AdministrationBean {
 			redes[index] = new SelectItem(0,"Selecione...");;
 			for(REDE rede: list){
 				index ++;
-				redes[index] = new SelectItem(rede.getIdRede(),rede.getNome());
+				redes[index] = new SelectItem(rede.getId(),rede.getNome());
 			}
 			return redes;
 		}catch (CpsHandlerException e) {
@@ -136,10 +163,56 @@ public class AdministrationBean {
 		}
 	}
 	
-	public void find(){
-		System.out.println("find");
+	public void find() {
+		FindAddress findAddress = new FindAddress();
+		try{
+			findAddress.find(this.getLojaEntity().getCep());
+			this.getLojaEntity().setEstado(findAddress.getEstadoSigla());
+			this.getLojaEntity().setCidade(findAddress.getCidade());
+			this.getLojaEntity().setBairro(findAddress.getBairro());
+			this.getLojaEntity().setLogradouro(findAddress.getLogradouro());
+			this.getLojaEntity().setPais(findAddress.getPais());
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
+	public void convertToObj() throws CpsGeneralExceptions{
+		administrationHandler = new AdministrationHandler();
+		Integer index = new Integer(this.getRedeSelecionada());
+		try{
+			for(SelectItem item : redes){
+				if(item.getValue().equals(index)){
+					this.setRedeEntity(administrationHandler.getRede(item.getLabel()));
+					break;
+				}
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void cadastraLoja() throws CpsGeneralExceptions{
+		if(!this.isCnpj_valido()){
+			return;
+		}
+		
+		administrationHandler = new AdministrationHandler();
+		try{
+			this.getLojaEntity().setTipo_venda("1");
+			administrationHandler.saveNewLoja(this.getLojaEntity(),this.getRedeEntity());
+			this.limpaCampos();
+		}catch (CpsHandlerException e) {
+			throw new CpsGeneralExceptions(e);
+		}
+	}
+	
+	private void limpaCampos() {
+		this.setRedeEntity(null);
+		this.setLojaEntity(null);
+		this.setContatoLojaEntity(null);
+	}
+
 	public void setLoginEntity(LOGIN loginEntity) {
 		this.loginEntity = loginEntity;
 	}
@@ -242,14 +315,6 @@ public class AdministrationBean {
 		return itemSelecionado;
 	}
 
-	public void setRedeEntity(REDE redeEntity) {
-		this.redeEntity = redeEntity;
-	}
-
-	public REDE getRedeEntity() {
-		return redeEntity;
-	}
-
 	public void setRedeSelecionada(String redeSelecionada) {
 		this.redeSelecionada = redeSelecionada;
 	}
@@ -306,11 +371,49 @@ public class AdministrationBean {
 		return contatoLojaEntity;
 	}
 
-	public void setCep(String cep) {
-		this.cep = cep;
+	public void setMensagemCampoObrigatorio(String mensagemCampoObrigatorio) {
+		this.mensagemCampoObrigatorio = mensagemCampoObrigatorio;
 	}
 
-	public String getCep() {
-		return cep;
+	public String getMensagemCampoObrigatorio() {
+		return mensagemCampoObrigatorio;
+	}
+
+	public void setNomeRede(String nomeRede) {
+		this.nomeRede = nomeRede;
+	}
+
+	public String getNomeRede() {
+		return nomeRede;
+	}
+
+	public void setMensagem_cnpj(String mensagem_cnpj) {
+		this.mensagem_cnpj = mensagem_cnpj;
+	}
+
+	public String getMensagem_cnpj() {
+		return mensagem_cnpj;
+	}
+
+	public void setCnpj_valido(boolean cnpj_valido) {
+		this.cnpj_valido = cnpj_valido;
+	}
+
+	public boolean isCnpj_valido() {
+		return cnpj_valido;
+	}
+
+	/**
+	 * @return the redeEntity
+	 */
+	public REDE getRedeEntity() {
+		return redeEntity;
+	}
+
+	/**
+	 * @param redeEntity the redeEntity to set
+	 */
+	public void setRedeEntity(REDE redeEntity) {
+		this.redeEntity = redeEntity;
 	}
 }

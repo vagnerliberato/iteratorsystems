@@ -1,5 +1,6 @@
 package br.iteratorsystems.cps.handler;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -8,6 +9,8 @@ import org.hibernate.Transaction;
 
 import br.iteratorsystems.cps.dao.Dao;
 import br.iteratorsystems.cps.entities.LOGIN;
+import br.iteratorsystems.cps.entities.LOJA;
+import br.iteratorsystems.cps.entities.LOJAID;
 import br.iteratorsystems.cps.entities.REDE;
 import br.iteratorsystems.cps.entities.USUARIO;
 import br.iteratorsystems.cps.exceptions.CpsDaoException;
@@ -19,6 +22,85 @@ public class AdministrationHandler extends Handler {
 	private static final Log log = LogFactory.getLog(LoginUserHandler.class);
 	private IDao<LOGIN> daoLogin = null;
 	private IDao<REDE> daoRede = null;
+	private IDao<LOJA> daoLoja = null;
+	
+	public void saveNewRede(REDE instance) throws CpsHandlerException{
+		final String message = "saving new instance for REDE with: "+instance;
+		log.debug(message);
+		Transaction transaction = null;
+		try{
+			transaction = getSession().beginTransaction();
+			
+			daoRede = new Dao<REDE>();
+			instance.setDataultimamodificacao(new Date());
+			instance.setLojas(null);
+			instance.setId(daoRede.getLastIdFromModel(instance));
+			daoRede.save(instance);
+			
+			transaction.commit();
+			log.debug("success!");
+		}catch (CpsDaoException e) {
+			final String errMsg = "error! " + message;
+			log.error(errMsg, e);
+			transaction.rollback();
+			throw new CpsHandlerException(errMsg, e);
+		}
+	}
+	
+	public void saveNewLoja(LOJA loja,REDE rede) throws CpsHandlerException{
+		final String message = "saving new LOJA with instance: "+loja+", and REDE with instance: "+rede;
+		log.debug(message);
+		Transaction transaction = null;
+		try{
+			transaction = getSession().beginTransaction();
+			daoLoja = new Dao<LOJA>();
+			
+			LOJAID id = new LOJAID();
+			id.setId(daoLoja.getLastIdFrom(loja));
+			id.setIdRede(rede.getId());
+			loja.setId(id);
+			
+			loja.setDataultimamodificacao(new Date());
+			daoLoja.save(loja);
+			transaction.commit();
+			log.debug("success!");
+		}catch (CpsDaoException e) {
+			final String errMsg = "error! " + message;
+			log.error(errMsg, e);
+			transaction.rollback();
+			throw new CpsHandlerException(errMsg, e);
+		}
+	}
+	
+	public REDE getRede(String nome) throws CpsHandlerException{
+		final String message = "getting REDE with name: "+nome;
+		log.debug(message);
+		REDE result = null;
+		try{
+			daoRede = new Dao<REDE>();
+			result = daoRede.getRede(nome);
+			return result;
+		}catch (CpsDaoException e) {
+			final String errMsg = "error! " + message;
+			log.error(errMsg, e);
+			throw new CpsHandlerException(errMsg, e);
+		}
+	}
+	
+	public List<LOJA> getAllCnpj() throws CpsHandlerException{
+		final String message = "getting all REDE";
+		log.debug(message);
+		List<LOJA> lista = null;
+		try{
+			daoLoja = new Dao<LOJA>();
+			lista = (List<LOJA>) daoLoja.getAll(new LOJA());
+			return lista;
+		}catch (CpsDaoException e) {
+			final String errMsg = "error! " + message;
+			log.error(errMsg, e);
+			throw new CpsHandlerException(errMsg, e);
+		}
+	}
 	
 	public List<REDE> getAllRedes() throws CpsHandlerException{
 		final String message = "getting all REDE";
