@@ -104,7 +104,7 @@ public class CONTATOLOJA  implements java.io.Serializable, EntityAble {
     }
     
     public void setTelCom(String telCom) {
-        this.telCom = telCom;
+        this.telCom = telCom.replace("-","");
     }
     
     @Column(name="ddd_fax", length=3)

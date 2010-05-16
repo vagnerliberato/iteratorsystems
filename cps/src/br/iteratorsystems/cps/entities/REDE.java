@@ -24,7 +24,7 @@ public class REDE implements java.io.Serializable, EntityAble {
 
 	private static final long serialVersionUID = 3951762454780488997L;
 
-	private Integer idRede;
+	private Integer id;
 	private String nome;
 	private Date dataultimamodificacao;
 	private Set<LOJA> lojas = new HashSet<LOJA>(0);
@@ -33,14 +33,14 @@ public class REDE implements java.io.Serializable, EntityAble {
 	}
 
 	public REDE(Integer idRede, String nome, Date dataultimamodificacao) {
-		this.idRede = idRede;
+		this.id = idRede;
 		this.nome = nome;
 		this.dataultimamodificacao = dataultimamodificacao;
 	}
 
 	public REDE(Integer idRede, String nome, Date dataultimamodificacao,
 			Set<LOJA> lojas) {
-		this.idRede = idRede;
+		this.id = idRede;
 		this.nome = nome;
 		this.dataultimamodificacao = dataultimamodificacao;
 		this.lojas = lojas;
@@ -48,12 +48,12 @@ public class REDE implements java.io.Serializable, EntityAble {
 
 	@Id
 	@Column(name = "id_rede", unique = true, nullable = false)
-	public Integer getIdRede() {
-		return this.idRede;
+	public Integer getId() {
+		return this.id;
 	}
 
-	public void setIdRede(Integer idRede) {
-		this.idRede = idRede;
+	public void setId(Integer idRede) {
+		this.id = idRede;
 	}
 
 	@Column(name = "nome", nullable = false, length = 30)
@@ -62,7 +62,7 @@ public class REDE implements java.io.Serializable, EntityAble {
 	}
 
 	public void setNome(String nome) {
-		this.nome = nome;
+		this.nome = nome.toUpperCase();
 	}
 
 	@Temporal(TemporalType.DATE)
@@ -97,7 +97,7 @@ public class REDE implements java.io.Serializable, EntityAble {
 				* result
 				+ ((dataultimamodificacao == null) ? 0 : dataultimamodificacao
 						.hashCode());
-		result = prime * result + ((idRede == null) ? 0 : idRede.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
 		return result;
 	}
@@ -126,11 +126,11 @@ public class REDE implements java.io.Serializable, EntityAble {
 		} else if (!dataultimamodificacao.equals(other.dataultimamodificacao)) {
 			return false;
 		}
-		if (idRede == null) {
-			if (other.idRede != null) {
+		if (id == null) {
+			if (other.id != null) {
 				return false;
 			}
-		} else if (!idRede.equals(other.idRede)) {
+		} else if (!id.equals(other.id)) {
 			return false;
 		}
 		if (nome == null) {
@@ -151,7 +151,7 @@ public class REDE implements java.io.Serializable, EntityAble {
 	@Override
 	public String toString() {
 		return "REDE [dataultimamodificacao=" + dataultimamodificacao
-				+ ", idRede=" + idRede + ", nome=" + nome + "]";
+				+ ", idRede=" + id + ", nome=" + nome + "]";
 	}
 
 }

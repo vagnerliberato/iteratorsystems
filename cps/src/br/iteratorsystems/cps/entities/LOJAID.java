@@ -13,25 +13,25 @@ public class LOJAID  implements java.io.Serializable,EntityAble {
 
 	 private static final long serialVersionUID = 4230452352558079492L;
 	 
-	 private Integer idLoja;
+	 private Integer id;
      private Integer idRede;
 
     public LOJAID() {
     }
 
     public LOJAID(Integer idLoja, Integer idRede) {
-       this.idLoja = idLoja;
+       this.id = idLoja;
        this.idRede = idRede;
     }
    
 
     @Column(name="id_loja", nullable=false)
-    public Integer getIdLoja() {
-        return this.idLoja;
+    public Integer getId() {
+        return this.id;
     }
     
-    public void setIdLoja(Integer idLoja) {
-        this.idLoja = idLoja;
+    public void setId(Integer idLoja) {
+        this.id = idLoja;
     }
 
     @Column(name="id_rede", nullable=false)
@@ -50,21 +50,21 @@ public class LOJAID  implements java.io.Serializable,EntityAble {
 		 if ( !(other instanceof LOJAID) ) return false;
 		 LOJAID castOther = ( LOJAID ) other; 
          
-		 return (this.getIdLoja()==castOther.getIdLoja())
+		 return (this.getId()==castOther.getId())
  && (this.getIdRede()==castOther.getIdRede());
    }
    
    public int hashCode() {
          int result = 17;
          
-         result = 37 * result + this.getIdLoja();
+         result = 37 * result + this.getId();
          result = 37 * result + this.getIdRede();
          return result;
    }
 
 @Override
 public String toString() {
-	return "LOJAID [idLoja=" + idLoja + ", idRede=" + idRede + "]";
+	return "LOJAID [idLoja=" + id + ", idRede=" + idRede + "]";
 }  
    
 }
