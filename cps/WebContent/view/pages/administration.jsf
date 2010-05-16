@@ -215,6 +215,7 @@
 							<h:selectOneMenu id="selectLojas" value="#{administrationBean.redeSelecionada}" styleClass="letrasDefault">
 								<f:selectItems value="#{administrationBean.allRedes}"/>
 								<a4j:support action="#{administrationBean.openLoja}" ajaxSingle="true" event="onchange" reRender="formLojas,panelLoja,panelRede" />
+								<a4j:support action="#{administrationBean.convertToObj}" ajaxSingle="true" event="onblur"/>
 							</h:selectOneMenu>
 							<rich:spacer height="8"/>
 							<h:outputText value="#{msg.adm_param_uv_rede_or}" styleClass="letras" rendered="#{administrationBean.mostrarCadastroRede}"/>
@@ -223,8 +224,8 @@
 							<h:outputText value="#{msg.adm_param_uv_rede_name}" styleClass="letras" rendered="#{administrationBean.mostrarCadastroRede}"/>	
 						</h:column>
 						<h:column>
-							<h:inputText value="#{administrationBean.redeEntity.nome}" rendered="#{administrationBean.mostrarCadastroRede}" maxlength="30" size="31" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
-							<a4j:commandButton value="#{msg.adm_param_uv_rede_buttonadd}" rendered="#{administrationBean.mostrarCadastroRede}" action="#{administrationBean.cadastrarRede}" reRender="formLojas,selectLojas"/>
+							<h:inputText value="#{administrationBean.nomeRede}" rendered="#{administrationBean.mostrarCadastroRede}" maxlength="30" size="31" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+							<a4j:commandButton value="#{msg.adm_param_uv_rede_buttonadd}" rendered="#{administrationBean.mostrarCadastroRede}" action="#{administrationBean.cadastrarRede}" reRender="panelRede"/>
 						</h:column>
 					</h:panelGrid>
 					
@@ -238,21 +239,33 @@
 							<h:outputText value="#{msg.adm_param_uv_loja_razao_social}" styleClass="letras"/>
 						</h:column>	
 						<h:column>
-							<h:inputText value="#{administrationBean.lojaEntity.razaosocial}" maxlength="60" size="61" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+							<h:inputText id="razaosocial" requiredMessage="#{administrationBean.mensagemCampoObrigatorio}" required="true" value="#{administrationBean.lojaEntity.razaosocial}" maxlength="60" size="61" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>*
+							<rich:spacer width="5"/>
+							<h:message for="razaosocial" styleClass="camposObr"/>
 						</h:column>
 						<h:column>
 							<h:outputText value="#{msg.adm_param_uv_loja_nomefantasia}" styleClass="letras"/>
 						</h:column>
 						<h:column>
-							<h:inputText value="#{administrationBean.lojaEntity.nomefantasia}" maxlength="60" size="61" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+							<h:inputText id="nomefantasia" requiredMessage="#{administrationBean.mensagemCampoObrigatorio}" required="true" value="#{administrationBean.lojaEntity.nomefantasia}" maxlength="60" size="61" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>*
+							<rich:spacer width="5"/>
+							<h:message for="nomefantasia" styleClass="camposObr"/>
 						</h:column>
 						<h:column>
 							<h:outputText value="#{msg.adm_param_uv_loja_cnpj}" styleClass="letras"/>
 						</h:column>
 						<h:column>
-							<h:inputText value="#{administrationBean.lojaEntity.cnpj}" id="cnpj" maxlength="20" size="21" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
+							<h:inputText required="true" requiredMessage="#{administrationBean.mensagemCampoObrigatorio}" value="#{administrationBean.lojaEntity.cnpj}" id="cnpj" maxlength="20" size="21" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
 								<rich:jQuery selector="#cnpj" query="mask('99.999.999/9999-99')" timing="onload"/>
-							</h:inputText>
+								<a4j:support action="#{administrationBean.cnpjOk}" event="onblur" reRender="panelErrCnpj" ajaxSingle="true"/>
+							</h:inputText>*
+							<rich:spacer width="5"/>
+							<h:message for="cnpj" styleClass="camposObr"/>
+							<a4j:outputPanel id="panelErrCnpj" rendered="true">
+							<h:graphicImage url="/view/images/information.png" rendered="#{not administrationBean.cnpj_valido}"/>
+							<rich:spacer width="3" />
+							<h:outputText value="#{administrationBean.mensagem_cnpj}" rendered="#{not administrationBean.cnpj_valido}" styleClass="camposObr"/>
+							</a4j:outputPanel>
 						</h:column>
 						<h:column>
 							<h:outputText value="#{msg.adm_param_uv_loja_inscricaoestadual}" styleClass="letras"/>
@@ -296,53 +309,58 @@
 						<h:column>
 							<h:panelGrid columns="2">	
 							<h:column>
-								<h:inputText value="#{administrationBean.cep}" id="inputCep" maxlength="9" size="10" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
+								<h:inputText required="true" requiredMessage="#{administrationBean.mensagemCampoObrigatorio}" value="#{administrationBean.lojaEntity.cep}" id="inputCep" maxlength="9" size="10" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
 									<rich:jQuery selector="#inputCep" query="mask('99999-999')" timing="onload" />
-								</h:inputText> 
+									<a4j:support event="onblur" ajaxSingle="true" action="#{administrationBean.find}" reRender="inputRua,inputBairro,inputCidade,selectEstado"/>
+								</h:inputText>*
+								<rich:spacer width="5"/>
+								<h:message for="inputCep" styleClass="camposObr"/>
 							</h:column>
 							<h:column>
-								<a4j:commandButton image="/view/images/Lupa.png" title="#{msg.addfilters_findCep}" style="width: 80%;" action="#{administrationBean.find}"/>
 							</h:column>
 							</h:panelGrid>
 						</h:column>
 					</h:panelGrid>
+					
 					<rich:separator lineType="solid"/>
 					<h:panelGrid id="panelCep2" columns="2">
 						<h:column>
 							<h:outputText value="#{msg.personalcontact_street}" styleClass="letras"/>
 						</h:column>
 						<h:column>
-							<h:inputText readonly="true" id="inputRua" maxlength="50" size="52" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+							<h:inputText value="#{administrationBean.lojaEntity.logradouro}" readonly="true" id="inputRua" maxlength="50" size="52" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
 						</h:column>
 						<h:column>
 							<h:outputText value="#{msg.personalcontact_number}" styleClass="letras"/>
 						</h:column>
 						<h:column>
-							<h:inputText id="inputNumero" required="true" maxlength="6" size="8" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+							<h:inputText value="#{administrationBean.lojaEntity.numero}" id="inputNumero" required="true" requiredMessage="#{administrationBean.mensagemCampoObrigatorio}" maxlength="6" size="8" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>*
+							<rich:spacer width="5"/>
+							<h:message for="inputNumero" styleClass="camposObr"/>
 						</h:column>
 						<h:column>
 							<h:outputText value="#{msg.personalcontact_compl}" styleClass="letras"/>
 						</h:column>
 						<h:column>
-							<h:inputText maxlength="20" size="22" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+							<h:inputText value="#{administrationBean.lojaEntity.complemento}" maxlength="20" size="22" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
 						</h:column>
 						<h:column>
 							<h:outputText value="#{msg.personalcontact_district}" styleClass="letras"/>
 						</h:column>
 						<h:column>
-							<h:inputText readonly="true" id="inputBairro" maxlength="50" size="52" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+							<h:inputText value="#{administrationBean.lojaEntity.bairro}" readonly="true" id="inputBairro" maxlength="50" size="52" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
 						</h:column>
 						<h:column>
 							<h:outputText value="#{msg.personalcontact_city}" styleClass="letras"/>
 						</h:column>
 						<h:column>
-							<h:inputText readonly="true" id="inputCidade" maxlength="50" size="52" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+							<h:inputText value="#{administrationBean.lojaEntity.cidade}" readonly="true" id="inputCidade" maxlength="50" size="52" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
 						</h:column>
 						<h:column>
 							<h:outputText value="#{msg.personalcontact_state}" styleClass="letras"/>
 						</h:column>
 						<h:column>
-							<h:inputText readonly="true" id="selectEstado" maxlength="25" size="27" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+							<h:inputText value="#{administrationBean.lojaEntity.estado}" readonly="true" id="selectEstado" maxlength="25" size="27" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
 						</h:column>
 					</h:panelGrid>
 					
@@ -354,18 +372,21 @@
 							<h:outputText value="#{msg.personalcontact_ddd_tel}" styleClass="letras"/>
 						</h:column>
 						<h:column>
-							<h:inputText value="#{administrationBean.contatoLojaEntity.dddCom}" id="dddCom" maxlength="3" size="4" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
+							<h:inputText value="#{administrationBean.contatoLojaEntity.dddCom}" required="true" id="dddCom" requiredMessage="#{administrationBean.mensagemCampoObrigatorio}" maxlength="3" size="4" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
 								<rich:jQuery selector="#dddCom" query="mask('99')" timing="onload" />
-							</h:inputText>
+							</h:inputText>*
 							<rich:spacer width="5"/>
 							<h:outputText value="#{msg.personalcontact_ddd_info}" styleClass="letrasInfo"/>
+							<rich:spacer width="5"/>
 						</h:column>
 						<h:column>
-							<h:inputText value="#{administrationBean.contatoLojaEntity.telCom}" id="telCom" maxlength="9" size="10" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
+							<h:inputText required="true" value="#{administrationBean.contatoLojaEntity.telCom}" id="telCom" maxlength="9" requiredMessage="#{administrationBean.mensagemCampoObrigatorio}" size="10" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
 								<rich:jQuery selector="#telCom" query="mask('9999-9999')" timing="onload" />
-							</h:inputText>
+							</h:inputText>*
 							<rich:spacer width="5"/>
 							<h:outputText value="#{msg.personalcontact_tel_info}" styleClass="letrasInfo"/>
+							<rich:spacer width="5"/>
+							<h:message for="telCom" styleClass="camposObr"/>
 						</h:column>
 						<h:column>
 							<h:outputText value="#{msg.personalcontact_tel_fax}" styleClass="letras"/>
@@ -413,7 +434,9 @@
 								<h:outputText value="#{msg.personalcontact_mail}" styleClass="letras"/>
 							</h:column>
 							<h:column>
-								<h:inputText value="#{administrationBean.contatoLojaEntity.email}" maxlength="30" size="31" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+								<h:inputText id="inputEmail" requiredMessage="#{administrationBean.mensagemCampoObrigatorio}" required="true" value="#{administrationBean.contatoLojaEntity.email}" maxlength="30" size="31" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>*
+								<rich:spacer width="5"/>
+								<h:message for="inputEmail" styleClass="camposObr"/>								
 							</h:column>
 							<h:column>
 								<h:outputText value="#{msg.adm_param_uv_loja_homepage}" styleClass="letras"/>
@@ -424,7 +447,7 @@
 						</h:panelGrid>
 					<rich:separator lineType="solid"/>
 					<center>
-						<a4j:commandButton value="#{msg.adm_param_uv_loja_button_cadastrar}"/>
+						<h:commandButton value="#{msg.adm_param_uv_loja_button_cadastrar}" action="#{administrationBean.cadastraLoja}"/>
 					</center>
 					</h:panelGroup>
 				</h:panelGroup>
