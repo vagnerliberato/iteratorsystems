@@ -6,8 +6,11 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Transaction;
+import org.hibernate.Session;
 
 import br.iteratorsystems.cps.dao.Dao;
+import br.iteratorsystems.cps.dao.LojaDao;
+import br.iteratorsystems.cps.dao.RedeDao;
 import br.iteratorsystems.cps.entities.LOGIN;
 import br.iteratorsystems.cps.entities.LOJA;
 import br.iteratorsystems.cps.entities.LOJAID;
@@ -146,5 +149,19 @@ public class AdministrationHandler extends Handler {
 			log.error(errMsg, e);
 			throw new CpsHandlerException(errMsg, e);
 		}
+	}
+	
+	public void updateRede(final REDE rede){
+		Session session = getSession();
+		RedeDao redeDao = new RedeDao(REDE.class, session);
+		redeDao.update(rede);
+		session.flush();
+	}
+	
+	public void updateLoja(final LOJA loja){
+		Session session = getSession();
+		LojaDao lojaDao = new LojaDao(LOJA.class, session);
+		lojaDao.update(loja);
+		session.flush();
 	}
 }
