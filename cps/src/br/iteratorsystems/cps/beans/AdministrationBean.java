@@ -6,7 +6,9 @@ import javax.faces.model.SelectItem;
 import org.richfaces.component.html.HtmlDataTable;
 
 import br.iteratorsystems.cps.common.CommonOperations;
+import br.iteratorsystems.cps.common.FacesUtil;
 import br.iteratorsystems.cps.common.FindAddress;
+import br.iteratorsystems.cps.common.Resources;
 import br.iteratorsystems.cps.entities.CONTATOLOJA;
 import br.iteratorsystems.cps.entities.LOGIN;
 import br.iteratorsystems.cps.entities.LOJA;
@@ -24,11 +26,10 @@ public class AdministrationBean {
 	private AdministrationHandler administrationHandler;
 
 	//booleanos para controle da tela
-	private boolean cadastrar;
-	private boolean alterar;
-	private boolean excluir;
-	private boolean consultar;
+	private boolean cadastrarLoja;
 	private boolean mostrarLoja;
+	private boolean atualizarLoja;
+	private boolean atualizarRede;
 	private boolean mostrarCadastroRede = true;
 	private boolean cnpj_valido = true;
 	
@@ -36,19 +37,25 @@ public class AdministrationBean {
 	private String redeSelecionada;
 	private String tipoVendaSelecionada;
 	private String nomeRede;
+	private String nomeLoja;
 	private String mensagemCampoObrigatorio = "Campo de preenchimento obrigatório!";
 	private String mensagem_cnpj = "CNPJ já cadastrado na base de dados!";
 	
 	private List<LOGIN> allLogins;
+	private List<REDE> listRedes;
+	private List<LOJA> listLojas;
 	private HtmlDataTable richDataTable;
+	private HtmlDataTable redesDataTable;
+	private HtmlDataTable lojasDataTable;
 	
 	private SelectItem[] redes;
 	private SelectItem[] items = {
 			new SelectItem(0,"Selecione"),
-			new SelectItem(1,"Cadastrar Nova Loja"),
+			new SelectItem(1,"Cadastrar Nova Loja/Rede"),
 			new SelectItem(2,"Consultar Lojas Cadastradas"),
 			new SelectItem(3,"Atualizar Dados da Loja"),
 			new SelectItem(4,"Excluir uma Loja do Sistema"),
+			new SelectItem(5,"Gerenciar Redes Cadastradas"),
 	};
 	private SelectItem[] tipoVendas = {new SelectItem(0,"Varejo")};
 
@@ -63,6 +70,30 @@ public class AdministrationBean {
 			administrationHandler.saveNewRede(redeEntity);
 			this.setNomeRede("");
 			this.getAllRedes();
+		}catch (CpsHandlerException e) {
+			throw new CpsGeneralExceptions(e);
+		}
+	}
+	
+	public void getRedesByName() throws CpsGeneralExceptions{
+		if(this.getNomeRede() == null || "".equals(this.getNomeRede())){
+			return;
+		}
+		administrationHandler = new AdministrationHandler();
+		try{
+			listRedes = administrationHandler.getAllRedes(this.getNomeRede());
+		}catch (CpsHandlerException e) {
+			throw new CpsGeneralExceptions(e);
+		}
+	}
+	
+	public void getLojasByName() throws CpsGeneralExceptions{
+		if(this.getNomeLoja() == null || "".equals(this.getNomeLoja())){
+			return;
+		}
+		administrationHandler = new AdministrationHandler();
+		try{
+			listLojas = administrationHandler.getAllLojas(this.getNomeLoja());
 		}catch (CpsHandlerException e) {
 			throw new CpsGeneralExceptions(e);
 		}
@@ -110,36 +141,40 @@ public class AdministrationBean {
 	public void selectOperation() {
 		int i = Integer.parseInt(this.getItemSelecionado());
 		switch (i) {
-		case 0:
-			this.setCadastrar(false);
-			this.setAlterar(false);
-			this.setConsultar(false);
-			this.setExcluir(false);
+		case 0: // Selecione
+			this.setCadastrarLoja(false);
+			this.setAtualizarLoja(false);
+			this.setAtualizarRede(false);
+			this.setMostrarLoja(false);
 			break;
-		case 1:
-			this.setCadastrar(true);
-			this.setAlterar(false);
-			this.setConsultar(false);
-			this.setExcluir(false);
+		case 1: //Cadastrar Nova Loja
+			this.setNomeRede("");
+			this.setCadastrarLoja(true);
+			this.setAtualizarLoja(false);
+			this.setAtualizarRede(false);
 			break;
-		case 2:
-			this.setConsultar(true);
-			this.setCadastrar(false);
-			this.setAlterar(false);
-			this.setExcluir(false);
+		case 2: //Consultar Lojas Cadastradas
+			this.setCadastrarLoja(false);
+			this.setAtualizarLoja(false);
+			this.setAtualizarRede(false);
 			break;
-		case 3:
-			this.setAlterar(true);
-			this.setCadastrar(false);
-			this.setConsultar(false);
-			this.setExcluir(false);
+		case 3: //Atualizar Dados da Loja
+			this.setNomeRede("");
+			this.setAtualizarLoja(true);
+			this.setCadastrarLoja(false);
+			this.setAtualizarRede(false);
 			break;
-		case 4:
-			this.setExcluir(true);
-			this.setCadastrar(false);
-			this.setAlterar(false);
-			this.setConsultar(false);
+		case 4: //Excluir uma Loja do Sistema
+			this.setCadastrarLoja(false);
+			this.setAtualizarLoja(false);
+			this.setAtualizarRede(false);
+			this.setMostrarLoja(false);
 			break;
+		case 5: //Atualizar Redes Cadastradas
+			this.setAtualizarRede(true);
+			this.setCadastrarLoja(false);
+			this.setAtualizarLoja(false);
+			this.setMostrarLoja(false);
 		}
 	}
 	
@@ -207,6 +242,32 @@ public class AdministrationBean {
 		}
 	}
 	
+	public void atualizaRede() throws CpsGeneralExceptions{
+		this.setRedeEntity((REDE)this.getRedesDataTable().getRowData());
+		if(this.getRedeEntity().getNome() == null || this.getRedeEntity().getNome().equals("")) {
+			FacesUtil.errorMessage("", Resources.getErrorProperties().getString("rede_invalid_name"),"nome de rede vazio");
+			return;
+		}
+		try{
+			administrationHandler = new AdministrationHandler();
+			administrationHandler.updateRede(this.getRedeEntity());
+			this.setNomeRede("");
+		}catch (CpsHandlerException e) {
+			throw new CpsGeneralExceptions(e);
+		}
+	}
+	
+	//TODO
+	public void excluirRede() throws CpsGeneralExceptions{
+		administrationHandler = new AdministrationHandler();
+		try{
+			this.setRedeEntity((REDE) this.getRedesDataTable().getRowData());
+			administrationHandler.deleteLogin(new LOGIN());
+		}catch (CpsHandlerException e) {
+			throw new CpsGeneralExceptions(e);
+		}
+	}
+
 	private void limpaCampos() {
 		this.setRedeEntity(null);
 		this.setLojaEntity(null);
@@ -240,57 +301,15 @@ public class AdministrationBean {
 	/**
 	 * @return the cadastrar
 	 */
-	public boolean isCadastrar() {
-		return cadastrar;
+	public boolean isCadastrarLoja() {
+		return cadastrarLoja;
 	}
 
 	/**
 	 * @param cadastrar the cadastrar to set
 	 */
-	public void setCadastrar(boolean cadastrar) {
-		this.cadastrar = cadastrar;
-	}
-
-	/**
-	 * @return the atualizar
-	 */
-	public boolean isAlterar() {
-		return alterar;
-	}
-
-	/**
-	 * @param atualizar the atualizar to set
-	 */
-	public void setAlterar(boolean alterar) {
-		this.alterar = alterar;
-	}
-
-	/**
-	 * @return the excluir
-	 */
-	public boolean isExcluir() {
-		return excluir;
-	}
-
-	/**
-	 * @param excluir the excluir to set
-	 */
-	public void setExcluir(boolean excluir) {
-		this.excluir = excluir;
-	}
-
-	/**
-	 * @return the consultar
-	 */
-	public boolean isConsultar() {
-		return consultar;
-	}
-
-	/**
-	 * @param consultar the consultar to set
-	 */
-	public void setConsultar(boolean consultar) {
-		this.consultar = consultar;
+	public void setCadastrarLoja(boolean cadastrar) {
+		this.cadastrarLoja = cadastrar;
 	}
 
 	/**
@@ -415,5 +434,61 @@ public class AdministrationBean {
 	 */
 	public void setRedeEntity(REDE redeEntity) {
 		this.redeEntity = redeEntity;
+	}
+
+	public void setListRedes(List<REDE> listRedes) {
+		this.listRedes = listRedes;
+	}
+
+	public List<REDE> getListRedes() {
+		return listRedes;
+	}
+
+	public void setRedesDataTable(HtmlDataTable redesDataTable) {
+		this.redesDataTable = redesDataTable;
+	}
+
+	public HtmlDataTable getRedesDataTable() {
+		return redesDataTable;
+	}
+
+	public void setAtualizarLoja(boolean atualizarLoja) {
+		this.atualizarLoja = atualizarLoja;
+	}
+
+	public boolean isAtualizarLoja() {
+		return atualizarLoja;
+	}
+
+	public void setAtualizarRede(boolean atualizarRede) {
+		this.atualizarRede = atualizarRede;
+	}
+
+	public boolean isAtualizarRede() {
+		return atualizarRede;
+	}
+
+	public void setNomeLoja(String nomeLoja) {
+		this.nomeLoja = nomeLoja;
+	}
+
+	public String getNomeLoja() {
+		return nomeLoja;
+	}
+
+	public void setListLojas(List<LOJA> listLojas) {
+		this.listLojas = listLojas;
+	}
+
+	public List<LOJA> getListLojas() {
+		return listLojas;
+	}
+
+	public void setLojasDataTable(HtmlDataTable lojasDataTable) {
+		this.lojasDataTable = lojasDataTable;
+	}
+
+	public HtmlDataTable getLojasDataTable() {
+		return lojasDataTable;
 	}
 }

@@ -80,7 +80,7 @@ public class DaoGeneric<T, ID extends Serializable> implements InterfaceDao<T, I
 	}
 
 	public void update(T entity) {
-		getSession().update(entity);
+		getSession().merge(entity);
 	}
 	
 	public Session getSession(){

@@ -135,6 +135,10 @@ public class AdministrationHandler extends Handler {
 		}
 	}
 	
+	public List<LOJA> getAllLojas(String nomeLoja) throws CpsHandlerException{
+		return null;
+	}
+	
 	public List<LOGIN> getAllLogins(final String username) throws CpsHandlerException{
 		final String message = "getting all LOGIN with username like= "+username;
 		log.debug(message);
@@ -166,14 +170,14 @@ public class AdministrationHandler extends Handler {
 		}
 	}
 	
-	public void updateRede(final REDE rede){
+	public void updateRede(final REDE rede) throws CpsHandlerException{
 		Session session = getSession();
 		RedeDao redeDao = new RedeDao(REDE.class, session);
 		redeDao.update(rede);
 		session.flush();
 	}
 	
-	public void updateLoja(final LOJA loja){
+	public void updateLoja(final LOJA loja) throws CpsHandlerException{
 		Session session = getSession();
 		LojaDao lojaDao = new LojaDao(LOJA.class, session);
 		lojaDao.update(loja);

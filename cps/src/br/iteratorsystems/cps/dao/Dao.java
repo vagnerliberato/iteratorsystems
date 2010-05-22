@@ -113,6 +113,13 @@ public class Dao<T extends EntityAble> implements IDao<T> {
 	}
 	
 	@SuppressWarnings("unchecked")
+	public List<REDE> getRedesByName(String nome) throws CpsDaoException{
+		Criteria criteria = HibernateConfig.getSession().createCriteria(REDE.class);
+		criteria.add(Restrictions.ilike("nome","%"+nome+"%"));
+		return criteria.list();
+	}
+	
+	@SuppressWarnings("unchecked")
 	public T get(T instance) throws CpsDaoException {
 		Criteria criteria = HibernateConfig.getSession().createCriteria(instance.getClass());
 		return (T) criteria.uniqueResult();

@@ -24,6 +24,8 @@ public interface IDao<T extends EntityAble> {
 	Collection<T> getAll(Object type) throws CpsDaoException;
 	
 	List<LOGIN> getAllLogin(String username) throws CpsDaoException;
+	
+	public List<REDE> getRedesByName(String nome) throws CpsDaoException;
 
 	void update(T instance) throws CpsDaoException, CpsConstraintException;
 	
