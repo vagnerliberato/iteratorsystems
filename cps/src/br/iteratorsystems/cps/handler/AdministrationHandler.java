@@ -120,6 +120,21 @@ public class AdministrationHandler extends Handler {
 		}
 	}
 	
+	public List<REDE> getAllRedes(String partName) throws CpsHandlerException{
+		final String message = "getting all REDE with name like "+partName;
+		log.debug(message);
+		List<REDE> list = null;
+		try{
+			daoRede = new Dao<REDE>();
+			list = (List<REDE>) daoRede.getRedesByName(partName);
+			return list;
+		}catch (CpsDaoException e) {
+			final String errMsg = "error! " + message;
+			log.error(errMsg, e);
+			throw new CpsHandlerException(errMsg, e);
+		}
+	}
+	
 	public List<LOGIN> getAllLogins(final String username) throws CpsHandlerException{
 		final String message = "getting all LOGIN with username like= "+username;
 		log.debug(message);
