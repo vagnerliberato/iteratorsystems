@@ -184,14 +184,14 @@
 						</h:column>
 						<h:column>
 							<!-- tagzinhas de ajuda -->
-							<h:panelGroup rendered="#{administrationBean.cadastrar}">
+							<h:panelGroup rendered="#{administrationBean.cadastrarLoja}">
 								<a4j:commandButton image="/view/images/question.png">
 								<rich:toolTip value="#{msg.adm_param_uv_info_rede}" followMouse="true"/>
 								</a4j:commandButton>
 							</h:panelGroup>
-							<h:panelGroup rendered="#{administrationBean.alterar}">
+							<h:panelGroup rendered="#{administrationBean.atualizarRede}">
 								<a4j:commandButton image="/view/images/question.png">
-								<rich:toolTip value="#{msg.adm_param_uv_info_alterar}" followMouse="true"/>
+								<rich:toolTip value="#{msg.adm_param_uv_info_alterar_rede}" followMouse="true"/>
 								</a4j:commandButton>
 							</h:panelGroup>
 							<!-- fim das tagzinhas -->
@@ -204,7 +204,7 @@
 				
 				<!-- Cadastrar UV e REDE -->
 				<rich:spacer height="10"/>
-				<h:panelGroup id="panelCadastrarUV" rendered="#{administrationBean.cadastrar}">
+				<h:panelGroup id="panelCadastrarUV" rendered="#{administrationBean.cadastrarLoja}">
 					<rich:separator lineType="solid" />
 					
 					<h:panelGrid id="panelRede" columns="2">
@@ -452,10 +452,340 @@
 					</h:panelGroup>
 				</h:panelGroup>
 				
-				<!-- Alterar UV e REDE -->
-				<h:panelGroup id="panelAlterarUV" rendered="#{administrationBean.alterar}">
-					thau
+				<!-- Alterar REDE -->
+				<rich:separator lineType="solid" rendered="#{administrationBean.atualizarRede}"/>
+				<h:panelGroup id="panelAlterarRede" rendered="#{administrationBean.atualizarRede}">
+					<!-- Atualização de Rede -->
+					<h:panelGrid columns="2">
+						<h:column>
+							<h:outputText value="#{msg.adm_uv_rede_upd_nome}" styleClass="letras"/>
+						</h:column>
+						<h:column>
+							<rich:spacer width="38"/>
+							<h:inputText value="#{administrationBean.nomeRede}" maxlength="30" size="31" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+							<a4j:commandButton value="#{msg.adm_uv_rede_upd_button}" action="#{administrationBean.getRedesByName}" reRender="formLojas,panelAlterarUV,panelResultRede"/>
+						</h:column>
+						<h:column></h:column>
+						<h:column>
+							<h:panelGroup id="panelResultRede" rendered="#{not empty administrationBean.listRedes}">
+							<rich:dataTable id="resultRedeDataTable" binding="#{administrationBean.redesDataTable}" value="#{administrationBean.listRedes}" var="rede" rows="5">
+								<rich:column>
+									<f:facet name="header">
+										<h:outputText value="#{msg.adm_uv_rede_upd_table_id}" styleClass="letrasDefault"/>
+									</f:facet>
+									<h:outputText value="#{rede.id}"/>
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">
+										<h:outputText value="#{msg.adm_uv_rede_upd_table_name}" styleClass="letrasDefault"/>
+									</f:facet>
+									<h:inputText value="#{rede.nome}" size="31" maxlength="30" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">
+										<h:outputText value="#{msg.adm_uv_rede_upd_table_atualizar}" styleClass="letrasDefault"/>
+									</f:facet>
+									<a4j:commandLink value="#{msg.adm_uv_rede_upd_table_button}" action="#{administrationBean.atualizaRede}" reRender="panelAlterarRede,formLojas,panelResultRede,errorTableMsg"/>
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">
+										<h:outputText value="#{msg.adm_uv_rede_upd_table_excluir}" styleClass="letrasDefault"/>
+									</f:facet>
+									<a4j:commandLink value="#{msg.adm_uv_rede_del_table_button}" action="#{administrationBean.excluirRede}" reRender="panelAlterarRede,formLojas"/>
+								</rich:column>
+							</rich:dataTable>
+							<rich:datascroller for="resultRedeDataTable"/>
+							<center>
+								<rich:messages id="errorTableMsg" styleClass="camposObr"/>
+							</center>
+							</h:panelGroup>
+						</h:column>
+					</h:panelGrid>
 				</h:panelGroup>
+				
+				<!-- Atualização de Loja -->
+					<rich:separator lineType="solid" rendered="#{administrationBean.atualizarLoja}"/>
+					<!-- Tabela com consulta de lojas e exclusão -->
+					<h:panelGroup id="tableResultsLoja" rendered="#{administrationBean.atualizarLoja}">
+						<h:panelGrid columns="2">
+							<h:column>
+								<h:outputText value="#{msg.adm_uv_loja_upd_nome}" styleClass="letras"/>
+							</h:column>
+							<h:column>
+								<rich:spacer width="38"/>
+								<h:inputText value="#{administrationBean.nomeLoja}" maxlength="30" size="31" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+								<a4j:commandButton value="#{msg.adm_uv_loja_upd_button}" action="#{administrationBean.getLojasByName}" reRender="formLojas,panelResultLoja"/>
+							</h:column>
+						</h:panelGrid>
+						
+						<h:panelGroup id="panelResultLoja" rendered="#{not empty administrationBean.listLojas}">
+							<rich:dataTable id="panelAlterarLoja" value="#{administrationBean.listLojas}" var="loja" binding="#{administrationBean.lojasDataTable}">
+								<rich:column>
+									<f:facet name="header">
+										<h:outputText value="#{msg.adm_uv_loja_upd_table_id}" styleClass="letrasDefault"/>
+									</f:facet>
+									<h:outputText value="#{loja.id.id}"/>
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">
+										<h:outputText value="#{msg.adm_uv_loja_upd_table_nome_fantasia}" styleClass="letrasDefault"/>
+									</f:facet>
+									<h:outputText value="#{loja.nomefantasia}"/>
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">
+										<h:outputText value="#{msg.adm_uv_loja_upd_table_rede}" styleClass="letrasDefault"/>
+									</f:facet>
+									<h:outputText value="#{loja.rede.nome}"/>
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">
+										<h:outputText value="#{msg.adm_uv_loja_upd_table_resp}" styleClass="letrasDefault"/>
+									</f:facet>
+									<h:outputText value="#{loja.nomedoresponsavelpelaloja}"/>
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">
+										<h:outputText value="#{msg.adm_uv_loja_upd_table_estado}" styleClass="letrasDefault"/>
+									</f:facet>
+									<h:outputText value="#{loja.estado}"/>
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">
+										<h:outputText value="#{msg.adm_uv_rede_upd_table_atualizar}" styleClass="letrasDefault"/>
+									</f:facet>
+									<a4j:commandLink value="#{msg.adm_uv_loja_upd_button_upd}"/>
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">
+										<h:outputText value="#{msg.adm_uv_rede_upd_table_excluir}" styleClass="letrasDefault"/>
+									</f:facet>
+									<a4j:commandLink value="#{msg.adm_uv_loja_upd_button_delete}"/>
+								</rich:column>
+							</rich:dataTable>
+						</h:panelGroup>
+					</h:panelGroup>
+					<h:panelGroup id="panelUpdtLoja" rendered="#{administrationBean.atualizarLoja}">
+						<h:graphicImage url="/view/images/editstore.png"/>
+						<rich:spacer width="5"/>
+						<h:outputText value="#{msg.adm_param_uv_loja_info_dados_basicos}" styleClass="letrasTitulo"/>
+						<rich:separator lineType="solid"/>
+					<h:panelGrid columns="2">
+						<h:column>
+							<h:outputText value="#{msg.adm_param_uv_loja_razao_social}" styleClass="letras"/>
+						</h:column>	
+						<h:column>
+							<h:inputText id="updtrazaosocial" requiredMessage="#{administrationBean.mensagemCampoObrigatorio}" required="true" value="#{administrationBean.lojaEntity.razaosocial}" maxlength="60" size="61" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>*
+							<rich:spacer width="5"/>
+							<h:message for="updtrazaosocial" styleClass="camposObr"/>
+						</h:column>
+						<h:column>
+							<h:outputText value="#{msg.adm_param_uv_loja_nomefantasia}" styleClass="letras"/>
+						</h:column>
+						<h:column>
+							<h:inputText id="updtnomefantasia" requiredMessage="#{administrationBean.mensagemCampoObrigatorio}" required="true" value="#{administrationBean.lojaEntity.nomefantasia}" maxlength="60" size="61" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>*
+							<rich:spacer width="5"/>
+							<h:message for="updtnomefantasia" styleClass="camposObr"/>
+						</h:column>
+						<h:column>
+							<h:outputText value="#{msg.adm_param_uv_loja_cnpj}" styleClass="letras"/>
+						</h:column>
+						<h:column>
+							<h:inputText required="true" requiredMessage="#{administrationBean.mensagemCampoObrigatorio}" value="#{administrationBean.lojaEntity.cnpj}" id="updtcnpj" maxlength="20" size="21" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
+								<rich:jQuery selector="#updtcnpj" query="mask('99.999.999/9999-99')" timing="onload"/>
+								<a4j:support action="#{administrationBean.cnpjOk}" event="onblur" reRender="panelUpdtErrCnpj" ajaxSingle="true"/>
+							</h:inputText>*
+							<rich:spacer width="5"/>
+							<h:message for="updtcnpj" styleClass="camposObr"/>
+							<a4j:outputPanel id="panelUpdtErrCnpj" rendered="true">
+							<h:graphicImage url="/view/images/information.png" rendered="#{not administrationBean.cnpj_valido}"/>
+							<rich:spacer width="3" />
+							<h:outputText value="#{administrationBean.mensagem_cnpj}" rendered="#{not administrationBean.cnpj_valido}" styleClass="camposObr"/>
+							</a4j:outputPanel>
+						</h:column>
+						<h:column>
+							<h:outputText value="#{msg.adm_param_uv_loja_inscricaoestadual}" styleClass="letras"/>
+						</h:column>
+						<h:column>
+							<h:inputText value="#{administrationBean.lojaEntity.inscricaoestadual}" maxlength="20" size="21" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+						</h:column>
+						<h:column>
+							<h:outputText value="#{msg.adm_param_uv_loja_inscricaomunicipal}" styleClass="letras"/>
+						</h:column>
+						<h:column>
+							<h:inputText value="#{administrationBean.lojaEntity.inscricaomunicipal}" maxlength="20" size="21" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+						</h:column>
+						<h:column>
+							<h:outputText value="#{msg.adm_param_uv_loja_responsavel}" styleClass="letras"/>
+						</h:column>
+						<h:column>
+							<h:inputText value="#{administrationBean.lojaEntity.nomedoresponsavelpelaloja}" maxlength="30" size="31" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+						</h:column>
+						<h:column>
+							<h:outputText value="#{msg.adm_param_uv_loja_tipodevenda}" styleClass="letras"/>
+						</h:column>
+						<h:column>
+							<h:selectOneMenu id="selectUpdtTipoVenda" disabled="true" value="#{administrationBean.tipoVendaSelecionada}" styleClass="letrasDefault">
+								<f:selectItems value="#{administrationBean.tipoVendas}"/>
+							</h:selectOneMenu>
+						</h:column>
+					</h:panelGrid>
+					</h:panelGroup>
+					
+					<h:panelGroup id="panelUpdateLoja" rendered="#{administrationBean.atualizarLoja}">
+					<h:graphicImage url="/view/images/contact.png"/>
+					<rich:spacer width="5"/>
+					<h:outputText value="#{msg.adm_param_uv_loja_info_contato}" styleClass="letrasTitulo"/>
+					<rich:separator lineType="solid"/>
+					
+					<h:panelGrid id="panelUpdtCep" columns="2">
+						<h:column>
+							<h:outputText value="#{msg.personalcontact_CEP}" styleClass="letras"/>
+						</h:column>
+						<h:column>
+							<h:panelGrid columns="2">	
+							<h:column>
+								<h:inputText required="true" requiredMessage="#{administrationBean.mensagemCampoObrigatorio}" value="#{administrationBean.lojaEntity.cep}" id="inputUpdtCep" maxlength="9" size="10" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
+									<rich:jQuery selector="#inputUpdtCep" query="mask('99999-999')" timing="onload" />
+									<a4j:support event="onblur" ajaxSingle="true" action="#{administrationBean.find}" reRender="inputRua,inputBairro,inputCidade,selectEstado"/>
+								</h:inputText>*
+								<rich:spacer width="5"/>
+								<h:message for="inputUpdtCep" styleClass="camposObr"/>
+							</h:column>
+							<h:column>
+							</h:column>
+							</h:panelGrid>
+						</h:column>
+					</h:panelGrid>
+					
+					<rich:separator lineType="solid"/>
+					<h:panelGrid id="panelUpdtCep2" columns="2">
+						<h:column>
+							<h:outputText value="#{msg.personalcontact_street}" styleClass="letras"/>
+						</h:column>
+						<h:column>
+							<h:inputText value="#{administrationBean.lojaEntity.logradouro}" readonly="true" id="inputUpdtRua" maxlength="50" size="52" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+						</h:column>
+						<h:column>
+							<h:outputText value="#{msg.personalcontact_number}" styleClass="letras"/>
+						</h:column>
+						<h:column>
+							<h:inputText value="#{administrationBean.lojaEntity.numero}" id="inputUpdtNumero" required="true" requiredMessage="#{administrationBean.mensagemCampoObrigatorio}" maxlength="6" size="8" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>*
+							<rich:spacer width="5"/>
+							<h:message for="inputUpdtNumero" styleClass="camposObr"/>
+						</h:column>
+						<h:column>
+							<h:outputText value="#{msg.personalcontact_compl}" styleClass="letras"/>
+						</h:column>
+						<h:column>
+							<h:inputText value="#{administrationBean.lojaEntity.complemento}" maxlength="20" size="22" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+						</h:column>
+						<h:column>
+							<h:outputText value="#{msg.personalcontact_district}" styleClass="letras"/>
+						</h:column>
+						<h:column>
+							<h:inputText value="#{administrationBean.lojaEntity.bairro}" readonly="true" id="inputUpdtBairro" maxlength="50" size="52" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+						</h:column>
+						<h:column>
+							<h:outputText value="#{msg.personalcontact_city}" styleClass="letras"/>
+						</h:column>
+						<h:column>
+							<h:inputText value="#{administrationBean.lojaEntity.cidade}" readonly="true" id="inputUpdtCidade" maxlength="50" size="52" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+						</h:column>
+						<h:column>
+							<h:outputText value="#{msg.personalcontact_state}" styleClass="letras"/>
+						</h:column>
+						<h:column>
+							<h:inputText value="#{administrationBean.lojaEntity.estado}" readonly="true" id="selectUpdtEstado" maxlength="25" size="27" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+						</h:column>
+					</h:panelGrid>
+					
+					<h:panelGrid columns="4">
+						<h:column>
+							<h:outputText value="#{msg.personalcontact_tel_com}" styleClass="letras"/>
+						</h:column>
+						<h:column>
+							<h:outputText value="#{msg.personalcontact_ddd_tel}" styleClass="letras"/>
+						</h:column>
+						<h:column>
+							<h:inputText value="#{administrationBean.contatoLojaEntity.dddCom}" required="true" id="dddUpdtCom" requiredMessage="#{administrationBean.mensagemCampoObrigatorio}" maxlength="3" size="4" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
+								<rich:jQuery selector="#dddUpdtCom" query="mask('99')" timing="onload" />
+							</h:inputText>*
+							<rich:spacer width="5"/>
+							<h:outputText value="#{msg.personalcontact_ddd_info}" styleClass="letrasInfo"/>
+							<rich:spacer width="5"/>
+						</h:column>
+						<h:column>
+							<h:inputText required="true" value="#{administrationBean.contatoLojaEntity.telCom}" id="telUpdtCom" maxlength="9" requiredMessage="#{administrationBean.mensagemCampoObrigatorio}" size="10" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
+								<rich:jQuery selector="#telUpdtCom" query="mask('9999-9999')" timing="onload" />
+							</h:inputText>*
+							<rich:spacer width="5"/>
+							<h:outputText value="#{msg.personalcontact_tel_info}" styleClass="letrasInfo"/>
+							<rich:spacer width="5"/>
+							<h:message for="telUpdtCom" styleClass="camposObr"/>
+						</h:column>
+						<h:column>
+							<h:outputText value="#{msg.personalcontact_tel_fax}" styleClass="letras"/>
+						</h:column>
+						<h:column>
+							<h:outputText value="#{msg.personalcontact_ddd_tel}" styleClass="letras"/>
+						</h:column>
+						<h:column>
+							<h:inputText value="#{administrationBean.contatoLojaEntity.dddFax}" id="dddUpdtFax" maxlength="3" size="4" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
+								<rich:jQuery selector="#dddUpdtFax" query="mask('99')" timing="onload" />
+							</h:inputText>
+							<rich:spacer width="5"/>
+							<h:outputText value="#{msg.personalcontact_ddd_info}" styleClass="letrasInfo"/>
+						</h:column>
+						<h:column>
+							<h:inputText value="#{administrationBean.contatoLojaEntity.telFax}" id="telUpdtFax" maxlength="9" size="10" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
+								<rich:jQuery selector="#telUpdtFax" query="mask('9999-9999')" timing="onload" />
+							</h:inputText>
+							<rich:spacer width="5"/>
+							<h:outputText value="#{msg.personalcontact_tel_info}" styleClass="letrasInfo"/>
+						</h:column>
+						<h:column>
+							<h:outputText value="#{msg.personalcontact_tel_cel}" styleClass="letras"/>
+						</h:column>
+						<h:column>
+							<h:outputText value="#{msg.personalcontact_ddd_tel}" styleClass="letras"/>
+						</h:column>
+						<h:column>
+							<h:inputText value="#{administrationBean.contatoLojaEntity.dddCelCom}" id="dddUpdtCelCom" maxlength="3" size="4" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
+								<rich:jQuery selector="#dddUpdtCelCom" query="mask('99')" timing="onload" />
+							</h:inputText>
+							<rich:spacer width="5"/>
+							<h:outputText value="#{msg.personalcontact_ddd_info}" styleClass="letrasInfo"/>
+						</h:column>
+						<h:column>
+							<h:inputText value="#{administrationBean.contatoLojaEntity.telFax}" id="telUpdtCelCom" maxlength="9" size="10" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
+								<rich:jQuery selector="#telUpdtCelCom" query="mask('9999-9999')" timing="onload" />
+							</h:inputText>
+							<rich:spacer width="5"/>
+							<h:outputText value="#{msg.personalcontact_tel_info}" styleClass="letrasInfo"/>
+						</h:column>
+					</h:panelGrid>
+						<h:panelGrid columns="2">
+							<h:column>
+								<h:outputText value="#{msg.personalcontact_mail}" styleClass="letras"/>
+							</h:column>
+							<h:column>
+								<h:inputText id="inputUpdtEmail" requiredMessage="#{administrationBean.mensagemCampoObrigatorio}" required="true" value="#{administrationBean.contatoLojaEntity.email}" maxlength="30" size="31" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>*
+								<rich:spacer width="5"/>
+								<h:message for="inputUpdtEmail" styleClass="camposObr"/>								
+							</h:column>
+							<h:column>
+								<h:outputText value="#{msg.adm_param_uv_loja_homepage}" styleClass="letras"/>
+							</h:column>
+							<h:column>
+								<h:inputText value="#{administrationBean.contatoLojaEntity.homepage}" maxlength="100" size="60" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+							</h:column>
+						</h:panelGrid>
+					<rich:separator lineType="solid"/>
+					<center>
+						<h:commandButton value="#{msg.adm_param_uv_loja_button_atualizar}" action="#{administrationBean.cadastraLoja}"/>
+					</center>
+					</h:panelGroup>
 				</h:form>
 			</rich:tab>
 	</rich:tabPanel>
