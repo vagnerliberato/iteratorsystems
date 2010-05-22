@@ -266,7 +266,7 @@ public class LOJA implements java.io.Serializable, EntityAble {
 		this.produtos = produtos;
 	}
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "loja")
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "loja")
 	public Set<CONTATOLOJA> getContatoLojas() {
 		return this.contatoLojas;
 	}

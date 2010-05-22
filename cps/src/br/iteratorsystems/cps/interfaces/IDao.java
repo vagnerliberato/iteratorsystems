@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.List;
 
 import br.iteratorsystems.cps.entities.LOGIN;
+import br.iteratorsystems.cps.entities.LOJA;
 import br.iteratorsystems.cps.entities.REDE;
 import br.iteratorsystems.cps.entities.USUARIO;
 import br.iteratorsystems.cps.exceptions.CpsConstraintException;
@@ -25,12 +26,12 @@ public interface IDao<T extends EntityAble> {
 	
 	List<LOGIN> getAllLogin(String username) throws CpsDaoException;
 	
-	public List<REDE> getRedesByName(String nome) throws CpsDaoException;
+	List<REDE> getRedesByName(String nome) throws CpsDaoException;
+	
+	List<LOJA> getLojasByName(String nome) throws CpsDaoException;
 
 	void update(T instance) throws CpsDaoException, CpsConstraintException;
 	
-	void updateUsuarioHQL(USUARIO instance) throws CpsDaoException,CpsConstraintException;
-
 	void delete(T instance) throws CpsDaoException, CpsConstraintException;
 	 
 	REDE getRede(String nome) throws CpsDaoException;

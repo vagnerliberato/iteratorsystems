@@ -50,12 +50,12 @@ public class CommonOperations {
 		return false;
 	}
 
-	public static boolean cnpjExists(String cnpj) throws CpsGeneralExceptions {
+	public static boolean cnpjExists(String cnpj,LOJA obj) throws CpsGeneralExceptions {
 		admHandler = new AdministrationHandler();
 		List<LOJA> loja = admHandler.getAllCnpj();
 	
 		for(LOJA l: loja){
-			if(l.getCnpj().equals(cnpj)) {
+			if(l.getCnpj().equals(cnpj) && l.getId() != obj.getId()) {
 				return true;
 			}
 		}

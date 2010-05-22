@@ -135,8 +135,19 @@ public class AdministrationHandler extends Handler {
 		}
 	}
 	
-	public List<LOJA> getAllLojas(String nomeLoja) throws CpsHandlerException{
-		return null;
+	public List<LOJA> getAllLojas(String partName) throws CpsHandlerException{
+		final String message = "getting all LOJA with partName like= "+partName;
+		log.debug(message);
+		List<LOJA> list = null;
+		try{
+			daoLogin = new Dao<LOGIN>();
+			list = daoLogin.getLojasByName(partName);
+			return list;
+		}catch (CpsDaoException e) {
+			final String errMsg = "error! " + message;
+			log.error(errMsg, e);
+			throw new CpsHandlerException(errMsg, e);
+		}
 	}
 	
 	public List<LOGIN> getAllLogins(final String username) throws CpsHandlerException{
@@ -171,16 +182,80 @@ public class AdministrationHandler extends Handler {
 	}
 	
 	public void updateRede(final REDE rede) throws CpsHandlerException{
-		Session session = getSession();
-		RedeDao redeDao = new RedeDao(REDE.class, session);
-		redeDao.update(rede);
-		session.flush();
+		final String message = "updating REDE with instance: "+rede;
+		log.debug(message);
+		Transaction transaction = null;
+		Session session = null;
+		try {
+			transaction = getSession().beginTransaction();
+			session = getSession();
+			RedeDao redeDao = new RedeDao(REDE.class, session);
+			rede.setDataultimamodificacao(new Date());
+			redeDao.update(rede);
+			session.flush();
+			transaction.commit();
+		} catch (Exception e) {
+			final String errMsg = "error! " + message;
+			log.error(errMsg, e);
+			throw new CpsHandlerException(errMsg, e);
+		}
 	}
 	
 	public void updateLoja(final LOJA loja) throws CpsHandlerException{
-		Session session = getSession();
-		LojaDao lojaDao = new LojaDao(LOJA.class, session);
-		lojaDao.update(loja);
-		session.flush();
+		final String message = "updating LOJA with instance: "+loja;
+		log.debug(message);
+		Transaction transaction = null;
+		Session session = null;
+		try {
+			transaction = getSession().beginTransaction();
+			session = getSession();
+			LojaDao lojaDao = new LojaDao(LOJA.class, session);
+			loja.setDataultimamodificacao(new Date());
+			lojaDao.update(loja);
+			session.flush();
+			transaction.commit();
+		} catch (Exception e) {
+			final String errMsg = "error! " + message;
+			log.error(errMsg, e);
+			throw new CpsHandlerException(errMsg, e);
+		}
+	}
+	
+	public void excluirRede(REDE rede) throws CpsHandlerException{
+		final String message = "deleting Rede with instance: "+rede;
+		log.debug(message);
+		Transaction transaction = null;
+		Session session = null;
+		try {
+			transaction = getSession().beginTransaction();
+			session = getSession();
+			RedeDao redeDao = new RedeDao(REDE.class, session);
+			redeDao.excluir(rede);
+			session.flush();
+			transaction.commit();
+		} catch (Exception e) {
+			final String errMsg = "error! " + message;
+			log.error(errMsg, e);
+			throw new CpsHandlerException(errMsg, e);
+		}
+	}
+	
+	public void excluirLoja(final LOJA loja) throws CpsHandlerException{
+		final String message = "deleting Rede with instance: "+loja;
+		log.debug(message);
+		Transaction transaction = null;
+		Session session = null;
+		try {
+			transaction = getSession().beginTransaction();
+			session = getSession();
+			LojaDao lojaDao = new LojaDao(LOJA.class, session);
+			lojaDao.excluir(loja);
+			session.flush();
+			transaction.commit();
+		} catch (Exception e) {
+			final String errMsg = "error! " + message;
+			log.error(errMsg, e);
+			throw new CpsHandlerException(errMsg, e);
+		}
 	}
 }
