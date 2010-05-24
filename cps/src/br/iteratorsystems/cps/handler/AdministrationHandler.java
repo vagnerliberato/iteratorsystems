@@ -1,6 +1,7 @@
 package br.iteratorsystems.cps.handler;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -11,6 +12,8 @@ import org.hibernate.Session;
 import br.iteratorsystems.cps.dao.Dao;
 import br.iteratorsystems.cps.dao.LojaDao;
 import br.iteratorsystems.cps.dao.RedeDao;
+import br.iteratorsystems.cps.entities.CONTATOLOJA;
+import br.iteratorsystems.cps.entities.CONTATOLOJAID;
 import br.iteratorsystems.cps.entities.LOGIN;
 import br.iteratorsystems.cps.entities.LOJA;
 import br.iteratorsystems.cps.entities.LOJAID;
@@ -50,20 +53,34 @@ public class AdministrationHandler extends Handler {
 		}
 	}
 	
-	public void saveNewLoja(LOJA loja,REDE rede) throws CpsHandlerException{
-		final String message = "saving new LOJA with instance: "+loja+", and REDE with instance: "+rede;
+	//TODO!
+	public void saveNewLoja(LOJA loja,REDE rede,CONTATOLOJA contatoLoja) throws CpsHandlerException{
+		final String message = "saving new LOJA with instance: "+loja+",REDE with instance: "+rede+" and CONTATOLOJA with instance: "+contatoLoja;
 		log.debug(message);
+		HashSet<CONTATOLOJA> contatos = null;
 		Transaction transaction = null;
 		try{
 			transaction = getSession().beginTransaction();
+			contatos = new HashSet<CONTATOLOJA>(1);
 			daoLoja = new Dao<LOJA>();
 			
 			LOJAID id = new LOJAID();
 			id.setId(daoLoja.getLastIdFrom(loja));
 			id.setIdRede(rede.getId());
-			loja.setId(id);
 			
 			loja.setDataultimamodificacao(new Date());
+			loja.setTipo_venda("1");
+			loja.setId(id);
+			
+			CONTATOLOJAID contatoLojaId = new CONTATOLOJAID();
+			contatoLojaId.setIdRede(rede.getId());
+			contatoLojaId.setIdLoja(loja.getId().getId());
+			
+			contatoLoja.setId(contatoLojaId);
+			contatoLoja.setDataultimamodificacao(new Date());
+			contatos.add(contatoLoja);
+			loja.setContatoLojas(contatos);
+			
 			daoLoja.save(loja);
 			transaction.commit();
 			log.debug("success!");
@@ -194,6 +211,7 @@ public class AdministrationHandler extends Handler {
 			redeDao.update(rede);
 			session.flush();
 			transaction.commit();
+			log.debug("success!");
 		} catch (Exception e) {
 			final String errMsg = "error! " + message;
 			log.error(errMsg, e);
@@ -211,9 +229,11 @@ public class AdministrationHandler extends Handler {
 			session = getSession();
 			LojaDao lojaDao = new LojaDao(LOJA.class, session);
 			loja.setDataultimamodificacao(new Date());
+			loja.setTipo_venda("1");
 			lojaDao.update(loja);
 			session.flush();
 			transaction.commit();
+			log.debug("success!");
 		} catch (Exception e) {
 			final String errMsg = "error! " + message;
 			log.error(errMsg, e);
@@ -233,6 +253,7 @@ public class AdministrationHandler extends Handler {
 			redeDao.excluir(rede);
 			session.flush();
 			transaction.commit();
+			log.debug("success!");
 		} catch (Exception e) {
 			final String errMsg = "error! " + message;
 			log.error(errMsg, e);
@@ -252,6 +273,7 @@ public class AdministrationHandler extends Handler {
 			lojaDao.excluir(loja);
 			session.flush();
 			transaction.commit();
+			log.debug("success!");
 		} catch (Exception e) {
 			final String errMsg = "error! " + message;
 			log.error(errMsg, e);

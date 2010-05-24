@@ -1,12 +1,9 @@
 package br.iteratorsystems.cps.beans;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import javax.faces.model.SelectItem;
 
-import org.hibernate.annotations.CollectionOfElements;
 import org.richfaces.component.html.HtmlDataTable;
 
 import br.iteratorsystems.cps.common.CommonOperations;
@@ -25,13 +22,14 @@ public class AdministrationBean {
 
 	private LOGIN loginEntity = new LOGIN();
 	private REDE redeEntity;
-	private LOJA lojaEntity = new LOJA();
-	private CONTATOLOJA contatoLojaEntity = new CONTATOLOJA();
+	private LOJA lojaEntity;
+	private CONTATOLOJA contatoLojaEntity;
 	private AdministrationHandler administrationHandler;
 
 	//booleanos para controle da tela
 	private boolean cadastrarLoja;
 	private boolean mostrarLoja;
+	private boolean mostrarLojaUpd;
 	private boolean atualizarLoja;
 	private boolean atualizarRede;
 	private boolean mostrarCadastroRede = true;
@@ -48,18 +46,20 @@ public class AdministrationBean {
 	private List<LOGIN> allLogins;
 	private List<REDE> listRedes;
 	private List<LOJA> listLojas;
+	
 	private HtmlDataTable richDataTable;
 	private HtmlDataTable redesDataTable;
 	private HtmlDataTable lojasDataTable;
 	
 	private SelectItem[] redes;
+	private SelectItem[] tipoVendas = {
+			new SelectItem(0,"Varejo")};
 	private SelectItem[] items = {
 			new SelectItem(0,"Selecione"),
 			new SelectItem(1,"Cadastrar Nova Loja/Rede"),
 			new SelectItem(2,"Gerenciar Lojas Cadastradas"),
 			new SelectItem(3,"Gerenciar Redes Cadastradas"),
 	};
-	private SelectItem[] tipoVendas = {new SelectItem(0,"Varejo")};
 
 	public AdministrationBean() {}
 	
@@ -79,7 +79,8 @@ public class AdministrationBean {
 	
 	public void atualizaTela(){
 		this.setAtualizarLoja(false);
-		this.setMostrarLoja(true);
+		this.setMostrarLoja(false);
+		this.setMostrarLojaUpd(true);
 		try{
 			this.setLojaEntity(this.getListLojas().get(this.getLojasDataTable().getRowIndex()));
 			for (CONTATOLOJA cj : this.getLojaEntity().getContatoLojas()) {
@@ -161,6 +162,7 @@ public class AdministrationBean {
 			this.setAtualizarLoja(false);
 			this.setAtualizarRede(false);
 			this.setMostrarLoja(false);
+			this.setMostrarLojaUpd(false);
 			this.setLojaEntity(null);
 			this.setRedeEntity(null);
 			break;
@@ -170,6 +172,7 @@ public class AdministrationBean {
 			this.setAtualizarLoja(false);
 			this.setAtualizarRede(false);
 			this.setMostrarLoja(false);
+			this.setMostrarLojaUpd(false);
 			this.setLojaEntity(null);
 			this.setRedeEntity(null);
 			break;
@@ -188,6 +191,7 @@ public class AdministrationBean {
 			this.setCadastrarLoja(false);
 			this.setAtualizarLoja(false);
 			this.setMostrarLoja(false);
+			this.setMostrarLojaUpd(false);
 			this.setLojaEntity(null);
 			this.setRedeEntity(null);
 		}
@@ -234,6 +238,8 @@ public class AdministrationBean {
 			for(SelectItem item : redes){
 				if(item.getValue().equals(index)){
 					this.setRedeEntity(administrationHandler.getRede(item.getLabel()));
+					this.setLojaEntity(new LOJA());
+					this.setContatoLojaEntity(new CONTATOLOJA());
 					break;
 				}
 			}
@@ -248,8 +254,7 @@ public class AdministrationBean {
 		}
 		administrationHandler = new AdministrationHandler();
 		try{
-			this.getLojaEntity().setTipo_venda("1");
-			administrationHandler.saveNewLoja(this.getLojaEntity(),this.getRedeEntity());
+			administrationHandler.saveNewLoja(this.getLojaEntity(),this.getRedeEntity(),this.getContatoLojaEntity());
 			this.limpaCampos();
 		}catch (CpsHandlerException e) {
 			throw new CpsGeneralExceptions(e);
@@ -279,13 +284,16 @@ public class AdministrationBean {
 		try {
 			administrationHandler.updateLoja(this.getLojaEntity());
 			this.limpaCampos();
+			this.setMostrarLojaUpd(false);
 		} catch (CpsHandlerException e) {
 			throw new CpsGeneralExceptions(e);
 		}
 	}
 	public void excluirRede() throws CpsGeneralExceptions{
 		administrationHandler = new AdministrationHandler();
+		this.setRedeEntity((REDE) this.getLojasDataTable().getRowData());
 		try {
+			this.listRedes.remove(this.getRedeEntity());
 			administrationHandler.excluirRede(this.getRedeEntity());
 		} catch (CpsHandlerException e) {
 			throw new CpsGeneralExceptions(e);
@@ -294,7 +302,9 @@ public class AdministrationBean {
 
 	public void excluirLoja() throws CpsGeneralExceptions{
 		administrationHandler = new AdministrationHandler();
+		this.setLojaEntity((LOJA) this.getLojasDataTable().getRowData());
 		try {
+			this.listLojas.remove(this.getLojaEntity());
 			administrationHandler.excluirLoja(this.getLojaEntity());
 		} catch (CpsHandlerException e) {
 			throw new CpsGeneralExceptions(e);
@@ -523,5 +533,13 @@ public class AdministrationBean {
 
 	public HtmlDataTable getLojasDataTable() {
 		return lojasDataTable;
+	}
+
+	public void setMostrarLojaUpd(boolean mostrarLojaUpd) {
+		this.mostrarLojaUpd = mostrarLojaUpd;
+	}
+
+	public boolean isMostrarLojaUpd() {
+		return mostrarLojaUpd;
 	}
 }

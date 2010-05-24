@@ -25,7 +25,6 @@ import br.iteratorsystems.cps.interfaces.EntityAble;
     ,schema="tabelas"
 )
 public class CONTATOLOJA  implements java.io.Serializable, EntityAble {
-
      
 	 private static final long serialVersionUID = 1576489847280666906L;
 	 private CONTATOLOJAID id;
@@ -122,7 +121,7 @@ public class CONTATOLOJA  implements java.io.Serializable, EntityAble {
     }
     
     public void setTelFax(String telFax) {
-        this.telFax = telFax;
+        this.telFax = telFax.replace("-","");
     }
     
     @Column(name="ddd_cel_com", length=3)
@@ -140,7 +139,7 @@ public class CONTATOLOJA  implements java.io.Serializable, EntityAble {
     }
     
     public void setTelCelCom(String telCelCom) {
-        this.telCelCom = telCelCom;
+        this.telCelCom = telCelCom.replace("-","");
     }
     
     @Column(name="email", nullable=false, length=30)

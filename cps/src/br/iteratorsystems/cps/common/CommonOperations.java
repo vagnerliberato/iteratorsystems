@@ -55,7 +55,7 @@ public class CommonOperations {
 		List<LOJA> loja = admHandler.getAllCnpj();
 	
 		for(LOJA l: loja){
-			if(l.getCnpj().equals(cnpj) && l.getId() != obj.getId()) {
+			if(l.getCnpj().equals(cnpj) && (obj!= null ? l.getId() != obj.getId() : true)) {
 				return true;
 			}
 		}
