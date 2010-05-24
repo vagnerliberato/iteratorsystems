@@ -267,9 +267,9 @@
 							<rich:spacer width="5"/>
 							<h:message for="cnpj" styleClass="camposObr"/>
 							<a4j:outputPanel id="panelErrCnpj" rendered="true">
-							<h:graphicImage url="/view/images/information.png" rendered="#{not administrationBean.cnpj_valido}"/>
-							<rich:spacer width="3" />
-							<h:outputText value="#{administrationBean.mensagem_cnpj}" rendered="#{not administrationBean.cnpj_valido}" styleClass="camposObr"/>
+								<h:graphicImage url="/view/images/information.png" rendered="#{not administrationBean.cnpj_valido}"/>
+								<rich:spacer width="3" />
+								<h:outputText value="#{administrationBean.mensagem_cnpj}" rendered="#{not administrationBean.cnpj_valido}" styleClass="camposObr"/>
 							</a4j:outputPanel>
 						</h:column>
 						<h:column>
@@ -427,7 +427,7 @@
 							<h:outputText value="#{msg.personalcontact_ddd_info}" styleClass="letrasInfo"/>
 						</h:column>
 						<h:column>
-							<h:inputText value="#{administrationBean.contatoLojaEntity.telFax}" id="telCelCom" maxlength="9" size="10" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
+							<h:inputText value="#{administrationBean.contatoLojaEntity.telCelCom}" id="telCelCom" maxlength="9" size="10" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
 								<rich:jQuery selector="#telCelCom" query="mask('9999-9999')" timing="onload" />
 							</h:inputText>
 							<rich:spacer width="5"/>
@@ -564,14 +564,15 @@
 									<f:facet name="header">
 										<h:outputText value="#{msg.adm_uv_rede_upd_table_excluir}" styleClass="letrasDefault"/>
 									</f:facet>
-									<a4j:commandLink value="#{msg.adm_uv_loja_upd_button_delete}" action="#{administrationBean.excluirLoja}" reRender="panelResultLoja"/>
+									<a4j:commandLink value="#{msg.adm_uv_loja_upd_button_delete}" action="#{administrationBean.excluirLoja}" reRender="formLojas,panelResultLoja,panelAlterarLoja"/>
 								</rich:column>
 							</rich:dataTable>
 							<rich:datascroller for="panelAlterarLoja"/>
 						</h:panelGroup>
 					</center>
 					</h:panelGroup>
-					<h:panelGroup id="panelUpdtLoja" rendered="#{administrationBean.mostrarLoja}">
+					
+					<h:panelGroup id="panelUpdtLoja" rendered="#{administrationBean.mostrarLojaUpd}">
 						<h:graphicImage url="/view/images/editstore.png"/>
 						<rich:spacer width="5"/>
 						<h:outputText value="#{msg.adm_param_uv_loja_info_dados_basicos}" styleClass="letrasTitulo"/>
@@ -638,7 +639,7 @@
 					</h:panelGrid>
 					</h:panelGroup>
 					
-					<h:panelGroup id="panelUpdateLoja" rendered="#{administrationBean.mostrarLoja}">
+					<h:panelGroup id="panelUpdateLoja" rendered="#{administrationBean.mostrarLojaUpd}">
 					<h:graphicImage url="/view/images/contact.png"/>
 					<rich:spacer width="5"/>
 					<h:outputText value="#{msg.adm_param_uv_loja_info_contato}" styleClass="letrasTitulo"/>
