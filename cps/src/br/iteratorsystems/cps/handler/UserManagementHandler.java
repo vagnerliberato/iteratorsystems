@@ -6,6 +6,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Transaction;
 
+import br.iteratorsystems.cps.config.HibernateConfig;
 import br.iteratorsystems.cps.dao.Dao;
 import br.iteratorsystems.cps.entities.ENDERECO;
 import br.iteratorsystems.cps.entities.ENDERECOID;
@@ -16,7 +17,7 @@ import br.iteratorsystems.cps.exceptions.CpsHandlerException;
 import br.iteratorsystems.cps.interfaces.EntityAble;
 import br.iteratorsystems.cps.interfaces.IDao;
 
-public class UserManagementHandler extends Handler{
+public class UserManagementHandler {
 
 	private static final Log log = LogFactory.getLog(UserManagementHandler.class);
 	private static final char TIPO_USUARIO_DEFAULT = 'P';
@@ -30,7 +31,7 @@ public class UserManagementHandler extends Handler{
 		log.debug(message);
 		Transaction transaction = null;
 		try{
-			transaction = getSession().beginTransaction();
+			transaction = HibernateConfig.getSession().beginTransaction();
 			
 			idaoUsuario = new Dao<USUARIO>();
 			usuario.setDataultimamodificacao(new Date());
@@ -43,6 +44,7 @@ public class UserManagementHandler extends Handler{
 			
 			idaoEndereco = new Dao<ENDERECO>();
 			endereco.setDataultimamodificacao(new Date());
+			
 			//pegando o último id da tabela endereco
 			ENDERECOID enderecoId = new ENDERECOID(this.getLastId(endereco),id);
 			endereco.setId(enderecoId);
@@ -126,7 +128,7 @@ public class UserManagementHandler extends Handler{
 		log.debug(message);
 		Transaction transaction = null;
 		try{
-			transaction = getSession().beginTransaction();
+			transaction = HibernateConfig.getSession().beginTransaction();
 			idaoUsuario = new Dao<USUARIO>();
 			usuario.setDataultimamodificacao(new Date());
 			idaoUsuario.update(usuario);

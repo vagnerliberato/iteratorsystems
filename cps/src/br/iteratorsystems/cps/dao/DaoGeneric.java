@@ -9,6 +9,8 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
+import br.iteratorsystems.cps.exceptions.CpsDaoException;
+
 
 public class DaoGeneric<T, ID extends Serializable> implements InterfaceDao<T, ID> {
 
@@ -21,21 +23,21 @@ public class DaoGeneric<T, ID extends Serializable> implements InterfaceDao<T, I
 		this.session = session;
 	}
 	
-	public void excluir(T entity) {
+	public void excluir(T entity) throws CpsDaoException{
 		getSession().delete(entity);
 	}
 
-	public void excluirLista(final Collection<T> lista) {
+	public void excluirLista(final Collection<T> lista) throws CpsDaoException{
 		for (final T entity : lista) {
 			excluir(entity);
 		}
 	}
 
-	public Class<T> getPersistentClass() {
+	public Class<T> getPersistentClass() throws CpsDaoException{
 		return persistenClass;
 	}
 	@SuppressWarnings("unchecked")
-	public List<T> listarPorIds(final Collection<ID> ids) {
+	public List<T> listarPorIds(final Collection<ID> ids) throws CpsDaoException{
 		final Criteria criteria = getSession().createCriteria(getPersistentClass());
 		
 		criteria.add(Restrictions.in(idColumn, ids));
@@ -43,13 +45,13 @@ public class DaoGeneric<T, ID extends Serializable> implements InterfaceDao<T, I
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<T> listarTodos() {
+	public List<T> listarTodos() throws CpsDaoException{
 		Criteria criteria = getSession().createCriteria(getPersistentClass());
 		return criteria.list();
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<T> listarTodosOrdenados(Order... order) {
+	public List<T> listarTodosOrdenados(Order... order) throws CpsDaoException {
 		Criteria criteria = getSession().createCriteria(getPersistentClass());
 		
 		for (Order ordem : order) {
@@ -60,30 +62,30 @@ public class DaoGeneric<T, ID extends Serializable> implements InterfaceDao<T, I
 	}
 
 	@SuppressWarnings("unchecked")
-	public T obter(ID id) {
+	public T obter(ID id) throws CpsDaoException{
 		return (T) getSession().get(getPersistentClass(), id);
 	}
 
-	public void salvar(T entity) {
+	public void salvar(T entity) throws CpsDaoException{
 		getSession().saveOrUpdate(entity);
 	}
 
-	public void salvarLista(Collection<T> lista) {
+	public void salvarLista(Collection<T> lista) throws CpsDaoException{
 		for (T entity : lista) {
 			salvar(entity);
 		}
 	}
 
-	public T salvarOrUpdate(T entity) {
+	public T salvarOrUpdate(T entity) throws CpsDaoException{
 		getSession().saveOrUpdate(entity);
 		return entity;
 	}
 
-	public void update(T entity) {
+	public void update(T entity) throws CpsDaoException{
 		getSession().merge(entity);
 	}
 	
-	public Session getSession(){
+	public Session getSession() throws CpsDaoException{
 		return session;
 	}
 

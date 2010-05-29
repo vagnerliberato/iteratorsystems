@@ -6,27 +6,29 @@ import java.util.List;
 
 import org.hibernate.criterion.Order;
 
+import br.iteratorsystems.cps.exceptions.CpsDaoException;
+
 public interface InterfaceDao<T, ID extends Serializable> {
 
-	public abstract Class<T> getPersistentClass();
+	public abstract Class<T> getPersistentClass() throws CpsDaoException;
 	
-	public abstract T obter(ID id);
+	public abstract T obter(ID id) throws CpsDaoException;
 	
-	public abstract List<T> listarTodos();
+	public abstract List<T> listarTodos() throws CpsDaoException;
 	
-	public abstract List<T> listarTodosOrdenados(Order... order);
+	public abstract List<T> listarTodosOrdenados(Order... order) throws CpsDaoException;
 	
-	public abstract void salvar(T entity);
+	public abstract void salvar(T entity) throws CpsDaoException;
 	
-	public abstract T salvarOrUpdate(T entity);
+	public abstract T salvarOrUpdate(T entity) throws CpsDaoException;
 	
-	public abstract void salvarLista(Collection<T> lista);
+	public abstract void salvarLista(Collection<T> lista) throws CpsDaoException;
 	
-	public abstract void excluir(T entity);
+	public abstract void excluir(T entity) throws CpsDaoException;
 	
-	public abstract void excluirLista(Collection<T> lista);
+	public abstract void excluirLista(Collection<T> lista) throws CpsDaoException;
 	
-	public abstract List<T> listarPorIds(Collection<ID> ids);
+	public abstract List<T> listarPorIds(Collection<ID> ids) throws CpsDaoException;
 	
-	public abstract void update(T entity);
+	public abstract void update(T entity) throws CpsDaoException;
 }

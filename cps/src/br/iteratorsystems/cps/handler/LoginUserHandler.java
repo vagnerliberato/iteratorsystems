@@ -10,7 +10,7 @@ import br.iteratorsystems.cps.entities.USUARIO;
 import br.iteratorsystems.cps.exceptions.CpsDaoException;
 import br.iteratorsystems.cps.exceptions.CpsHandlerException;
 
-public class LoginUserHandler extends Handler {
+public class LoginUserHandler {
 
 	private static final Log log = LogFactory.getLog(LoginUserHandler.class);
 	private DaoLogin idaoLogin;

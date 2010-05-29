@@ -9,6 +9,7 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.Transaction;
 import org.hibernate.Session;
 
+import br.iteratorsystems.cps.config.HibernateConfig;
 import br.iteratorsystems.cps.dao.Dao;
 import br.iteratorsystems.cps.dao.LojaDao;
 import br.iteratorsystems.cps.dao.RedeDao;
@@ -23,7 +24,7 @@ import br.iteratorsystems.cps.exceptions.CpsDaoException;
 import br.iteratorsystems.cps.exceptions.CpsHandlerException;
 import br.iteratorsystems.cps.interfaces.IDao;
 
-public class AdministrationHandler extends Handler {
+public class AdministrationHandler {
 	
 	private static final Log log = LogFactory.getLog(LoginUserHandler.class);
 	private IDao<LOGIN> daoLogin = null;
@@ -35,7 +36,7 @@ public class AdministrationHandler extends Handler {
 		log.debug(message);
 		Transaction transaction = null;
 		try{
-			transaction = getSession().beginTransaction();
+			transaction = HibernateConfig.getSession().beginTransaction();
 			
 			daoRede = new Dao<REDE>();
 			instance.setDataultimamodificacao(new Date());
@@ -54,13 +55,13 @@ public class AdministrationHandler extends Handler {
 	}
 	
 	//TODO!
-	public void saveNewLoja(LOJA loja,REDE rede,CONTATOLOJA contatoLoja) throws CpsHandlerException{
-		final String message = "saving new LOJA with instance: "+loja+",REDE with instance: "+rede+" and CONTATOLOJA with instance: "+contatoLoja;
+	public void saveNewLoja(LOJA loja,REDE rede) throws CpsHandlerException{
+		final String message = "saving new LOJA with instance: "+loja+",REDE with instance: "+rede;
 		log.debug(message);
 		HashSet<CONTATOLOJA> contatos = null;
 		Transaction transaction = null;
 		try{
-			transaction = getSession().beginTransaction();
+			transaction = HibernateConfig.getSession().beginTransaction();
 			contatos = new HashSet<CONTATOLOJA>(1);
 			daoLoja = new Dao<LOJA>();
 			
@@ -76,9 +77,6 @@ public class AdministrationHandler extends Handler {
 			contatoLojaId.setIdRede(rede.getId());
 			contatoLojaId.setIdLoja(loja.getId().getId());
 			
-			contatoLoja.setId(contatoLojaId);
-			contatoLoja.setDataultimamodificacao(new Date());
-			contatos.add(contatoLoja);
 			loja.setContatoLojas(contatos);
 			
 			daoLoja.save(loja);
@@ -187,7 +185,7 @@ public class AdministrationHandler extends Handler {
 		log.debug(message);
 		Transaction transaction = null;
 		try{
-			transaction = getSession().beginTransaction();
+			transaction = HibernateConfig.getSession().beginTransaction();
 			IDao<USUARIO> daoUser = new Dao<USUARIO>();
 			daoUser.delete(login.getUsuario());
 			transaction.commit();
@@ -204,15 +202,15 @@ public class AdministrationHandler extends Handler {
 		Transaction transaction = null;
 		Session session = null;
 		try {
-			transaction = getSession().beginTransaction();
-			session = getSession();
+			transaction = HibernateConfig.getSession().beginTransaction();
+			session = HibernateConfig.getSession();
 			RedeDao redeDao = new RedeDao(REDE.class, session);
 			rede.setDataultimamodificacao(new Date());
 			redeDao.update(rede);
 			session.flush();
 			transaction.commit();
 			log.debug("success!");
-		} catch (Exception e) {
+		} catch (CpsDaoException e) {
 			final String errMsg = "error! " + message;
 			log.error(errMsg, e);
 			throw new CpsHandlerException(errMsg, e);
@@ -225,8 +223,8 @@ public class AdministrationHandler extends Handler {
 		Transaction transaction = null;
 		Session session = null;
 		try {
-			transaction = getSession().beginTransaction();
-			session = getSession();
+			transaction = HibernateConfig.getSession().beginTransaction();
+			session = HibernateConfig.getSession();
 			LojaDao lojaDao = new LojaDao(LOJA.class, session);
 			loja.setDataultimamodificacao(new Date());
 			loja.setTipo_venda("1");
@@ -234,7 +232,7 @@ public class AdministrationHandler extends Handler {
 			session.flush();
 			transaction.commit();
 			log.debug("success!");
-		} catch (Exception e) {
+		} catch (CpsDaoException e) {
 			final String errMsg = "error! " + message;
 			log.error(errMsg, e);
 			throw new CpsHandlerException(errMsg, e);
@@ -247,14 +245,14 @@ public class AdministrationHandler extends Handler {
 		Transaction transaction = null;
 		Session session = null;
 		try {
-			transaction = getSession().beginTransaction();
-			session = getSession();
+			transaction = HibernateConfig.getSession().beginTransaction();
+			session = HibernateConfig.getSession();
 			RedeDao redeDao = new RedeDao(REDE.class, session);
 			redeDao.excluir(rede);
 			session.flush();
 			transaction.commit();
 			log.debug("success!");
-		} catch (Exception e) {
+		} catch (CpsDaoException e) {
 			final String errMsg = "error! " + message;
 			log.error(errMsg, e);
 			throw new CpsHandlerException(errMsg, e);
@@ -267,14 +265,14 @@ public class AdministrationHandler extends Handler {
 		Transaction transaction = null;
 		Session session = null;
 		try {
-			transaction = getSession().beginTransaction();
-			session = getSession();
+			transaction = HibernateConfig.getSession().beginTransaction();
+			session = HibernateConfig.getSession();
 			LojaDao lojaDao = new LojaDao(LOJA.class, session);
 			lojaDao.excluir(loja);
 			session.flush();
 			transaction.commit();
 			log.debug("success!");
-		} catch (Exception e) {
+		} catch (CpsDaoException e) {
 			final String errMsg = "error! " + message;
 			log.error(errMsg, e);
 			throw new CpsHandlerException(errMsg, e);
