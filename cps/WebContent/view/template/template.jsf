@@ -6,7 +6,7 @@
 
 	<html>
 	<head>
-	<title>CPS - Beta Version</title>
+	<title>CPS - Beta</title>
 	<link rel="shortcut icon" href="#{facesContext.externalContext.requestContextPath}/view/images/favicon.ico" type="image/x-icon" />
 
 	<script type="text/javascript">

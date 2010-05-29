@@ -377,7 +377,7 @@
 							<h:outputText value="#{msg.personalcontact_ddd_tel}" styleClass="letras"/>
 						</h:column>
 						<h:column>
-							<h:inputText value="#{administrationBean.contatoLojaEntity.dddCom}" required="true" id="dddCom" requiredMessage="#{administrationBean.mensagemCampoObrigatorio}" maxlength="3" size="4" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
+							<h:inputText value="#{administrationBean.lojaEntity.dddCom}" required="true" id="dddCom" requiredMessage="#{administrationBean.mensagemCampoObrigatorio}" maxlength="3" size="4" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
 								<rich:jQuery selector="#dddCom" query="mask('99')" timing="onload" />
 							</h:inputText>*
 							<rich:spacer width="5"/>
@@ -385,7 +385,7 @@
 							<rich:spacer width="5"/>
 						</h:column>
 						<h:column>
-							<h:inputText required="true" value="#{administrationBean.contatoLojaEntity.telCom}" id="telCom" maxlength="9" requiredMessage="#{administrationBean.mensagemCampoObrigatorio}" size="10" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
+							<h:inputText required="true" value="#{administrationBean.lojaEntity.telCom}" id="telCom" maxlength="9" requiredMessage="#{administrationBean.mensagemCampoObrigatorio}" size="10" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
 								<rich:jQuery selector="#telCom" query="mask('9999-9999')" timing="onload" />
 							</h:inputText>*
 							<rich:spacer width="5"/>
@@ -400,14 +400,14 @@
 							<h:outputText value="#{msg.personalcontact_ddd_tel}" styleClass="letras"/>
 						</h:column>
 						<h:column>
-							<h:inputText value="#{administrationBean.contatoLojaEntity.dddFax}" id="dddFax" maxlength="3" size="4" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
+							<h:inputText value="#{administrationBean.lojaEntity.dddFax}" id="dddFax" maxlength="3" size="4" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
 								<rich:jQuery selector="#dddFax" query="mask('99')" timing="onload" />
 							</h:inputText>
 							<rich:spacer width="5"/>
 							<h:outputText value="#{msg.personalcontact_ddd_info}" styleClass="letrasInfo"/>
 						</h:column>
 						<h:column>
-							<h:inputText value="#{administrationBean.contatoLojaEntity.telFax}" id="telFax" maxlength="9" size="10" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
+							<h:inputText value="#{administrationBean.lojaEntity.telFax}" id="telFax" maxlength="9" size="10" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
 								<rich:jQuery selector="#telFax" query="mask('9999-9999')" timing="onload" />
 							</h:inputText>
 							<rich:spacer width="5"/>
@@ -420,14 +420,14 @@
 							<h:outputText value="#{msg.personalcontact_ddd_tel}" styleClass="letras"/>
 						</h:column>
 						<h:column>
-							<h:inputText value="#{administrationBean.contatoLojaEntity.dddCelCom}" id="dddCelCom" maxlength="3" size="4" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
+							<h:inputText value="#{administrationBean.lojaEntity.dddCelCom}" id="dddCelCom" maxlength="3" size="4" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
 								<rich:jQuery selector="#dddCelCom" query="mask('99')" timing="onload" />
 							</h:inputText>
 							<rich:spacer width="5"/>
 							<h:outputText value="#{msg.personalcontact_ddd_info}" styleClass="letrasInfo"/>
 						</h:column>
 						<h:column>
-							<h:inputText value="#{administrationBean.contatoLojaEntity.telCelCom}" id="telCelCom" maxlength="9" size="10" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
+							<h:inputText value="#{administrationBean.lojaEntity.telCelCom}" id="telCelCom" maxlength="9" size="10" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
 								<rich:jQuery selector="#telCelCom" query="mask('9999-9999')" timing="onload" />
 							</h:inputText>
 							<rich:spacer width="5"/>
@@ -439,7 +439,7 @@
 								<h:outputText value="#{msg.personalcontact_mail}" styleClass="letras"/>
 							</h:column>
 							<h:column>
-								<h:inputText id="inputEmail" requiredMessage="#{administrationBean.mensagemCampoObrigatorio}" required="true" value="#{administrationBean.contatoLojaEntity.email}" maxlength="30" size="31" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>*
+								<h:inputText id="inputEmail" requiredMessage="#{administrationBean.mensagemCampoObrigatorio}" required="true" value="#{administrationBean.lojaEntity.email}" maxlength="30" size="31" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>*
 								<rich:spacer width="5"/>
 								<h:message for="inputEmail" styleClass="camposObr"/>								
 							</h:column>
@@ -447,7 +447,7 @@
 								<h:outputText value="#{msg.adm_param_uv_loja_homepage}" styleClass="letras"/>
 							</h:column>
 							<h:column>
-								<h:inputText value="#{administrationBean.contatoLojaEntity.homepage}" maxlength="100" size="60" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+								<h:inputText value="#{administrationBean.lojaEntity.homepage}" maxlength="100" size="60" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
 							</h:column>
 						</h:panelGrid>
 					<rich:separator lineType="solid"/>
@@ -715,7 +715,7 @@
 							<h:outputText value="#{msg.personalcontact_ddd_tel}" styleClass="letras"/>
 						</h:column>
 						<h:column>
-							<h:inputText value="#{administrationBean.contatoLojaEntity.dddCom}" required="true" id="dddUpdtCom" requiredMessage="#{administrationBean.mensagemCampoObrigatorio}" maxlength="3" size="4" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
+							<h:inputText value="#{administrationBean.lojaEntity.dddCom}" required="true" id="dddUpdtCom" requiredMessage="#{administrationBean.mensagemCampoObrigatorio}" maxlength="3" size="4" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
 								<rich:jQuery selector="#dddUpdtCom" query="mask('99')" timing="onload" />
 							</h:inputText>*
 							<rich:spacer width="5"/>
@@ -723,7 +723,7 @@
 							<rich:spacer width="5"/>
 						</h:column>
 						<h:column>
-							<h:inputText required="true" value="#{administrationBean.contatoLojaEntity.telCom}" id="telUpdtCom" maxlength="9" requiredMessage="#{administrationBean.mensagemCampoObrigatorio}" size="10" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
+							<h:inputText required="true" value="#{administrationBean.lojaEntity.telCom}" id="telUpdtCom" maxlength="9" requiredMessage="#{administrationBean.mensagemCampoObrigatorio}" size="10" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
 								<rich:jQuery selector="#telUpdtCom" query="mask('9999-9999')" timing="onload" />
 							</h:inputText>*
 							<rich:spacer width="5"/>
@@ -738,14 +738,14 @@
 							<h:outputText value="#{msg.personalcontact_ddd_tel}" styleClass="letras"/>
 						</h:column>
 						<h:column>
-							<h:inputText value="#{administrationBean.contatoLojaEntity.dddFax}" id="dddUpdtFax" maxlength="3" size="4" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
+							<h:inputText value="#{administrationBean.lojaEntity.dddFax}" id="dddUpdtFax" maxlength="3" size="4" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
 								<rich:jQuery selector="#dddUpdtFax" query="mask('99')" timing="onload" />
 							</h:inputText>
 							<rich:spacer width="5"/>
 							<h:outputText value="#{msg.personalcontact_ddd_info}" styleClass="letrasInfo"/>
 						</h:column>
 						<h:column>
-							<h:inputText value="#{administrationBean.contatoLojaEntity.telFax}" id="telUpdtFax" maxlength="9" size="10" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
+							<h:inputText value="#{administrationBean.lojaEntity.telFax}" id="telUpdtFax" maxlength="9" size="10" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
 								<rich:jQuery selector="#telUpdtFax" query="mask('9999-9999')" timing="onload" />
 							</h:inputText>
 							<rich:spacer width="5"/>
@@ -758,14 +758,14 @@
 							<h:outputText value="#{msg.personalcontact_ddd_tel}" styleClass="letras"/>
 						</h:column>
 						<h:column>
-							<h:inputText value="#{administrationBean.contatoLojaEntity.dddCelCom}" id="dddUpdtCelCom" maxlength="3" size="4" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
+							<h:inputText value="#{administrationBean.lojaEntity.dddCelCom}" id="dddUpdtCelCom" maxlength="3" size="4" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
 								<rich:jQuery selector="#dddUpdtCelCom" query="mask('99')" timing="onload" />
 							</h:inputText>
 							<rich:spacer width="5"/>
 							<h:outputText value="#{msg.personalcontact_ddd_info}" styleClass="letrasInfo"/>
 						</h:column>
 						<h:column>
-							<h:inputText value="#{administrationBean.contatoLojaEntity.telFax}" id="telUpdtCelCom" maxlength="9" size="10" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
+							<h:inputText value="#{administrationBean.lojaEntity.telFax}" id="telUpdtCelCom" maxlength="9" size="10" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
 								<rich:jQuery selector="#telUpdtCelCom" query="mask('9999-9999')" timing="onload" />
 							</h:inputText>
 							<rich:spacer width="5"/>
@@ -777,7 +777,7 @@
 								<h:outputText value="#{msg.personalcontact_mail}" styleClass="letras"/>
 							</h:column>
 							<h:column>
-								<h:inputText id="inputUpdtEmail" requiredMessage="#{administrationBean.mensagemCampoObrigatorio}" required="true" value="#{administrationBean.contatoLojaEntity.email}" maxlength="30" size="31" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>*
+								<h:inputText id="inputUpdtEmail" requiredMessage="#{administrationBean.mensagemCampoObrigatorio}" required="true" value="#{administrationBean.lojaEntity.email}" maxlength="30" size="31" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>*
 								<rich:spacer width="5"/>
 								<h:message for="inputUpdtEmail" styleClass="camposObr"/>								
 							</h:column>
@@ -785,7 +785,7 @@
 								<h:outputText value="#{msg.adm_param_uv_loja_homepage}" styleClass="letras"/>
 							</h:column>
 							<h:column>
-								<h:inputText value="#{administrationBean.contatoLojaEntity.homepage}" maxlength="100" size="60" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+								<h:inputText value="#{administrationBean.lojaEntity.homepage}" maxlength="100" size="60" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
 							</h:column>
 						</h:panelGrid>
 					<rich:separator lineType="solid"/>
