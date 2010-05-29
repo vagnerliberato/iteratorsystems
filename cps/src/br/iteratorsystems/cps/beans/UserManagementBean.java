@@ -2,7 +2,6 @@ package br.iteratorsystems.cps.beans;
 
 import javax.el.ELResolver;
 import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpSession;
 
 import br.iteratorsystems.cps.common.CommonOperations;
 import br.iteratorsystems.cps.common.FacesUtil;

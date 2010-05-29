@@ -10,7 +10,6 @@ import br.iteratorsystems.cps.common.CommonOperations;
 import br.iteratorsystems.cps.common.FacesUtil;
 import br.iteratorsystems.cps.common.FindAddress;
 import br.iteratorsystems.cps.common.Resources;
-import br.iteratorsystems.cps.entities.CONTATOLOJA;
 import br.iteratorsystems.cps.entities.LOGIN;
 import br.iteratorsystems.cps.entities.LOJA;
 import br.iteratorsystems.cps.entities.REDE;
@@ -23,7 +22,6 @@ public class AdministrationBean {
 	private LOGIN loginEntity = new LOGIN();
 	private REDE redeEntity;
 	private LOJA lojaEntity;
-	private CONTATOLOJA contatoLojaEntity;
 	private AdministrationHandler administrationHandler;
 
 	//booleanos para controle da tela
@@ -83,9 +81,9 @@ public class AdministrationBean {
 		this.setMostrarLojaUpd(true);
 		try{
 			this.setLojaEntity(this.getListLojas().get(this.getLojasDataTable().getRowIndex()));
-			for (CONTATOLOJA cj : this.getLojaEntity().getContatoLojas()) {
-				this.setContatoLojaEntity(cj);
-			}
+//			for (CONTATOLOJA cj : this.getLojaEntity().getContatoLojas()) {
+//				this.setContatoLojaEntity(cj);
+//			}
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -239,7 +237,6 @@ public class AdministrationBean {
 				if(item.getValue().equals(index)){
 					this.setRedeEntity(administrationHandler.getRede(item.getLabel()));
 					this.setLojaEntity(new LOJA());
-					this.setContatoLojaEntity(new CONTATOLOJA());
 					break;
 				}
 			}
@@ -254,7 +251,7 @@ public class AdministrationBean {
 		}
 		administrationHandler = new AdministrationHandler();
 		try{
-			administrationHandler.saveNewLoja(this.getLojaEntity(),this.getRedeEntity(),this.getContatoLojaEntity());
+			administrationHandler.saveNewLoja(this.getLojaEntity(),this.getRedeEntity());
 			this.limpaCampos();
 		}catch (CpsHandlerException e) {
 			throw new CpsGeneralExceptions(e);
@@ -314,7 +311,6 @@ public class AdministrationBean {
 	private void limpaCampos() {
 		this.setRedeEntity(null);
 		this.setLojaEntity(null);
-		this.setContatoLojaEntity(null);
 	}
 
 	public void setLoginEntity(LOGIN loginEntity) {
@@ -423,14 +419,6 @@ public class AdministrationBean {
 
 	public LOJA getLojaEntity() {
 		return lojaEntity;
-	}
-
-	public void setContatoLojaEntity(CONTATOLOJA contatoLojaEntity) {
-		this.contatoLojaEntity = contatoLojaEntity;
-	}
-
-	public CONTATOLOJA getContatoLojaEntity() {
-		return contatoLojaEntity;
 	}
 
 	public void setMensagemCampoObrigatorio(String mensagemCampoObrigatorio) {
