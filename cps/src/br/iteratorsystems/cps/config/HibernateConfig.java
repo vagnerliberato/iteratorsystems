@@ -45,8 +45,6 @@ public abstract class HibernateConfig {
 		configuration.addAnnotatedClass(br.iteratorsystems.cps.entities.BAIRRO.class);
 		configuration.addAnnotatedClass(br.iteratorsystems.cps.entities.BAIRROID.class);
 		configuration.addAnnotatedClass(br.iteratorsystems.cps.entities.CEP.class);
-		configuration.addAnnotatedClass(br.iteratorsystems.cps.entities.CONTATOLOJA.class);
-		configuration.addAnnotatedClass(br.iteratorsystems.cps.entities.CONTATOLOJAID.class);
 		configuration.addAnnotatedClass(br.iteratorsystems.cps.entities.ENDERECO.class);
 		configuration.addAnnotatedClass(br.iteratorsystems.cps.entities.LISTAPRODUTO.class);
 		configuration.addAnnotatedClass(br.iteratorsystems.cps.entities.LISTAPRODUTOITEM.class);
