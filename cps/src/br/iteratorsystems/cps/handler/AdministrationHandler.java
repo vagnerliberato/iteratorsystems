@@ -1,20 +1,17 @@
 package br.iteratorsystems.cps.handler;
 
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hibernate.Transaction;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import br.iteratorsystems.cps.config.HibernateConfig;
 import br.iteratorsystems.cps.dao.Dao;
 import br.iteratorsystems.cps.dao.LojaDao;
 import br.iteratorsystems.cps.dao.RedeDao;
-import br.iteratorsystems.cps.entities.CONTATOLOJA;
-import br.iteratorsystems.cps.entities.CONTATOLOJAID;
 import br.iteratorsystems.cps.entities.LOGIN;
 import br.iteratorsystems.cps.entities.LOJA;
 import br.iteratorsystems.cps.entities.LOJAID;
@@ -58,11 +55,9 @@ public class AdministrationHandler {
 	public void saveNewLoja(LOJA loja,REDE rede) throws CpsHandlerException{
 		final String message = "saving new LOJA with instance: "+loja+",REDE with instance: "+rede;
 		log.debug(message);
-		HashSet<CONTATOLOJA> contatos = null;
 		Transaction transaction = null;
 		try{
 			transaction = HibernateConfig.getSession().beginTransaction();
-			contatos = new HashSet<CONTATOLOJA>(1);
 			daoLoja = new Dao<LOJA>();
 			
 			LOJAID id = new LOJAID();
@@ -70,14 +65,11 @@ public class AdministrationHandler {
 			id.setIdRede(rede.getId());
 			
 			loja.setDataultimamodificacao(new Date());
-			loja.setTipo_venda("1");
+			
+			loja.setTipodevenda('1');
 			loja.setId(id);
 			
-			CONTATOLOJAID contatoLojaId = new CONTATOLOJAID();
-			contatoLojaId.setIdRede(rede.getId());
-			contatoLojaId.setIdLoja(loja.getId().getId());
-			
-			loja.setContatoLojas(contatos);
+			//loja.setNomedoresponsavelpelaloja("Vagner");
 			
 			daoLoja.save(loja);
 			transaction.commit();
@@ -227,7 +219,7 @@ public class AdministrationHandler {
 			session = HibernateConfig.getSession();
 			LojaDao lojaDao = new LojaDao(LOJA.class, session);
 			loja.setDataultimamodificacao(new Date());
-			loja.setTipo_venda("1");
+			loja.setTipodevenda('1');
 			lojaDao.update(loja);
 			session.flush();
 			transaction.commit();
