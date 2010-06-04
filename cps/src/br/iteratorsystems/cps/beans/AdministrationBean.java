@@ -81,9 +81,6 @@ public class AdministrationBean {
 		this.setMostrarLojaUpd(true);
 		try{
 			this.setLojaEntity(this.getListLojas().get(this.getLojasDataTable().getRowIndex()));
-//			for (CONTATOLOJA cj : this.getLojaEntity().getContatoLojas()) {
-//				this.setContatoLojaEntity(cj);
-//			}
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -186,6 +183,7 @@ public class AdministrationBean {
 			break;
 		case 3: //Gerenciar Redes Cadastradas
 			this.setAtualizarRede(true);
+			this.setListRedes(null);
 			this.setCadastrarLoja(false);
 			this.setAtualizarLoja(false);
 			this.setMostrarLoja(false);
@@ -288,7 +286,7 @@ public class AdministrationBean {
 	}
 	public void excluirRede() throws CpsGeneralExceptions{
 		administrationHandler = new AdministrationHandler();
-		this.setRedeEntity((REDE) this.getLojasDataTable().getRowData());
+		this.setRedeEntity((REDE) this.getRedesDataTable().getRowData());
 		try {
 			this.listRedes.remove(this.getRedeEntity());
 			administrationHandler.excluirRede(this.getRedeEntity());

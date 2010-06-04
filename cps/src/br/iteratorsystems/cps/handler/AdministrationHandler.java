@@ -51,7 +51,6 @@ public class AdministrationHandler {
 		}
 	}
 	
-	//TODO!
 	public void saveNewLoja(LOJA loja,REDE rede) throws CpsHandlerException{
 		final String message = "saving new LOJA with instance: "+loja+",REDE with instance: "+rede;
 		log.debug(message);
@@ -69,7 +68,10 @@ public class AdministrationHandler {
 			loja.setTipodevenda('1');
 			loja.setId(id);
 			
-			//loja.setNomedoresponsavelpelaloja("Vagner");
+			loja.setCnpj(loja.getCnpj().replace(".","").replace("/", "").replace("-",""));
+			loja.setTelCelCom(loja.getTelCelCom().replace("-",""));
+			loja.setTelFax(loja.getTelFax().replace("-",""));
+			
 			
 			daoLoja.save(loja);
 			transaction.commit();

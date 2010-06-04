@@ -1,12 +1,9 @@
 package br.iteratorsystems.cps.dao;
 
 import java.util.List;
-import java.util.Set;
 
-import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
 
 import br.iteratorsystems.cps.entities.PRODUTOGERAL;
 import br.iteratorsystems.cps.exceptions.CpsDaoException;
@@ -17,6 +14,7 @@ public class ProdutoGeralDao extends DaoGeneric<PRODUTOGERAL, Integer> {
 		super(persistentClass, session);
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<PRODUTOGERAL> buscaProduto(String partName) throws CpsDaoException {
 		List<PRODUTOGERAL> produtos = null;
 		StringBuilder querySQL = new StringBuilder();
@@ -26,14 +24,14 @@ public class ProdutoGeralDao extends DaoGeneric<PRODUTOGERAL, Integer> {
 			String[] pedacos = partName.split("\\s");
 
 			for (int index = 0; index < pedacos.length; index++) {
-				querySQL.append(" or entity.descricao like upper(:nome"+index+")");
+				querySQL.append(" and entity.descricao like upper(:nome"+ index + ")");
 			}
-			
+
 			Query query = this.getSession().createQuery(querySQL.toString());
-			
-			for(int index = 0; index<pedacos.length;index ++) {
-				query.setParameter("nome","%"+pedacos[index]+"%");
-				query.setParameter("nome"+index,"%"+pedacos[index]+"%");
+
+			for (int index = 0; index < pedacos.length; index++) {
+				query.setParameter("nome", "%" + pedacos[index] + "%");
+				query.setParameter("nome" + index, "%" + pedacos[index] + "%");
 			}
 
 			produtos = query.list();

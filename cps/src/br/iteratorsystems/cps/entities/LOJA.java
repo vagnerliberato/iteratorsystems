@@ -152,7 +152,7 @@ public class LOJA implements java.io.Serializable, EntityAble {
 	}
 
 	public void setCnpj(String cnpj) {
-		this.cnpj = cnpj;
+		this.cnpj = cnpj;//.replace(".","").replace("/","").replace("-","");
 	}
 
 	@Column(name = "inscricaoestadual", length = 20)
@@ -260,7 +260,7 @@ public class LOJA implements java.io.Serializable, EntityAble {
 	}
 
 	public void setCep(String cep) {
-		this.cep = cep;
+		this.cep = cep;//.replace("-","");
 	}
 
 	@Temporal(TemporalType.DATE)
@@ -297,7 +297,7 @@ public class LOJA implements java.io.Serializable, EntityAble {
 	}
 
 	public void setTelCelCom(String telCelCom) {
-		this.telCelCom = telCelCom;
+		this.telCelCom = telCelCom;//.replace("-","");
 	}
 
 	@Column(name = "ddd_fax", length = 3)
@@ -315,7 +315,7 @@ public class LOJA implements java.io.Serializable, EntityAble {
 	}
 
 	public void setTelFax(String telFax) {
-		this.telFax = telFax;
+		this.telFax = telFax;//.replace("-","");
 	}
 
 	@Column(name = "email", length = 30)
