@@ -8,10 +8,12 @@ import java.util.Iterator;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import javax.swing.JOptionPane;
 
 public class CepService {
 
+	@SuppressWarnings("unchecked")
 	public static void main(String[] args) {
 
 
