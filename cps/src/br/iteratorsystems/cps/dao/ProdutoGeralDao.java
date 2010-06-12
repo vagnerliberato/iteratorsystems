@@ -1,7 +1,6 @@
 package br.iteratorsystems.cps.dao;
 
 import java.util.List;
-
 import org.hibernate.Query;
 import org.hibernate.Session;
 
@@ -9,6 +8,12 @@ import br.iteratorsystems.cps.entities.PRODUTOGERAL;
 import br.iteratorsystems.cps.exceptions.CpsDaoException;
 
 public class ProdutoGeralDao extends DaoGeneric<PRODUTOGERAL, Integer> {
+
+	private static final int BUSCA_POR_DESCRICAO = 1;
+	private static final int VALOR_EXATO = 10;
+	private static final int BUSCA_INICIO = 20;
+	private static final int BUSCA_QUALQUER_POSICAO = 30;
+	private static final int BUSCA_FIM = 40;
 
 	public ProdutoGeralDao(Class<PRODUTOGERAL> persistentClass, Session session) {
 		super(persistentClass, session);
@@ -40,5 +45,36 @@ public class ProdutoGeralDao extends DaoGeneric<PRODUTOGERAL, Integer> {
 		}
 		return produtos;
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<PRODUTOGERAL> obterProduto(final String descricao, final Integer tipoDeBusca, final Integer posicaoDaBusca) throws CpsDaoException{
+		StringBuilder hql = new StringBuilder();
+		hql.append("select p from PRODUTOGERAL as p where						");
+		
+		if(tipoDeBusca == BUSCA_POR_DESCRICAO){
+			hql.append(" p.descricao like upper(:descricao)					");
+		}else{
+			hql.append(" p.codigoBarras like (:descricao)					");
+		}
 
+		hql.append(" order by p.descricao										");
+		
+		Query query = this.getSession().createQuery(hql.toString());
+		switch (posicaoDaBusca) {
+			case VALOR_EXATO:
+				query.setParameter("descricao", descricao);
+				break;
+			case BUSCA_INICIO:
+				query.setParameter("descricao", descricao + "%");
+				break;
+			case BUSCA_QUALQUER_POSICAO:
+				query.setParameter("descricao", "%" + descricao + "%");
+				break;
+			case BUSCA_FIM:
+				query.setParameter("descricao", "%" + descricao);
+				break;
+		}
+		
+		return query.list();
+	}	
 }
