@@ -15,7 +15,9 @@
 					<h:outputText value="#{msg.default_information_search}" styleClass="letrasDefault"/>
 				</td>
 				<td>
-					<h:inputText id="barraPesquisa" value="#{defaultBean.produtoDigitado}" maxlength="50" styleClass="barraPesquisa" style="font-size:15px; font-family:Verdana; color:black; font-weight:bold"/>
+					<h:inputText id="barraPesquisa" value="#{defaultBean.produtoDigitado}" maxlength="50" 
+						styleClass="barraPesquisa" style="font-size:15px; font-family:Verdana; color:black; font-weight:bold"/>
+
 					<!-- <input type="text"  value="" id="barraPesq" size="50" maxlength="50" style="font-size:20px; font-family:Verdana; color:black; font-weight:bol" name="email" placeholder="Digite o produto ou marca" />--> 
 				</td>
 				<td>
@@ -23,52 +25,91 @@
 				</td>
 			</table>
 			<rich:spacer height="30px"/>
+	
+			<!--<h:panelGroup rendered="#{not empty defaultBean.produtosPesquisados}" style="margin-left: 80px;">
+				<h:outputText value="#{msg.default_producttable_select}" styleClass="letras"/> 
+				<rich:spacer width="5"/>
+				
+				<a4j:commandLink value="#{msg.default_link_no_one}" styleClass="letrasDefault"/>
+				<h:outputText value="/"/>
+				<a4j:commandLink value="#{msg.default_link_all}" styleClass="letrasDefault"/>
+			</h:panelGroup>-->
+			
 			<center>
 			<h:panelGrid id="resultDataTable" rendered="true" columns="1">
 				<h:column>
-					<rich:extendedDataTable id="tableProduct" width="1000" value="#{defaultBean.produtosPesquisados}" 
-						height="270" rows="5" var="produto" rendered="#{not empty defaultBean.produtosPesquisados}">
+					
+					 <rich:extendedDataTable id="tableProduct" width="980" value="#{defaultBean.produtosPesquisados}" 
+						height="270" rows="5" var="produto" rendered="#{not empty defaultBean.produtosPesquisados}"
+						enableContextMenu="false" styleClass="letras">
 						
-						<!--<rich:column sortable="false" width="200">
-							<f:facet name="header">
-								<h:outputText value="#{msg.default_producttable_image}"/>
-							</f:facet>
-								<h:graphicImage value="images/ImageNotFound.png" title="Imagem não disponível"/>
-						</rich:column>-->
-						<rich:column width="700">
+							<!--<rich:column width="65">
 								<f:facet name="header">
-									<h:outputText value="#{msg.default_producttable_description}"/>
+									<h:outputText value="#{msg.default_producttable_select}"/>
 								</f:facet>
-							<center>
-								<h:outputText value="#{produto.descricao}"/>
-							</center>
-						</rich:column>
-						<!--<rich:column width="130">
-							<f:facet name="header">
-								<h:outputText value="#{msg.default_producttable_pack}"/>
-							</f:facet>
-							<h:outputText value="#{produto.embalagem}"/>
-						</rich:column>-->
-						<rich:column width="300">
+								<center>
+									<h:selectBooleanCheckbox/>
+								</center>
+							</rich:column>-->
+							<rich:column sortable="false" width="100">
+								<f:facet name="header">
+									<h:outputText value="#{msg.default_producttable_image}"/>
+								</f:facet>
+								<center>
+									<h:graphicImage value="/view/images/ImageNotFound.png" title="Imagem não disponível"/>
+								</center>
+							</rich:column>
+							
+							<rich:column width="650">
+									<f:facet name="header">
+										<h:outputText value="#{msg.default_producttable_description}"/>
+									</f:facet>
+								<center>
+									<h:outputText value="#{produto.descricao}" styleClass="letrasDefault"/>
+								</center>
+							</rich:column>
+							<!--<rich:column width="130">
+								<f:facet name="header">
+									<h:outputText value="#{msg.default_producttable_pack}"/>
+								</f:facet>
+								<h:outputText value="#{produto.embalagem}"/>
+							</rich:column>-->
+						 <rich:column width="80">
+						 	<f:facet name="header">
+						 		<h:outputText value="Quantidade"/>
+						 	</f:facet>
+								<h:inputText size="6" value="1" maxlength="4">
+									<f:validateLongRange minimum="1" maximum="9999"/>
+								</h:inputText>
+									<!--<rich:toolTip followMouse="true" direction="top-right">
+										<h:outputText value="#{msg.default_producttable_qtd_tip}"/>
+									</rich:toolTip>-->
+						 </rich:column>
+						 <rich:column width="150">
 							<f:facet name="header">
 								<h:outputText value="#{msg.default_producttable_add}"/>
 							</f:facet>
 							<h:panelGroup>
 								<center>
-									<a4j:commandButton image="/view/images/addCar.png" title="#{msg.default_producttable_add}"/>
-									<h:inputText size="6" maxlength="4" rendered="false"/>
+									<a4j:commandButton image="/view/images/addCar.png" title="#{msg.default_producttable_add}" ajaxSingle="true"/>
 								</center>
 							</h:panelGroup>
-						</rich:column>
-						
-						<f:facet name="footer">
-							<rich:datascroller for="tableProduct"/>
-						</f:facet>
+						</rich:column> 
+							
+							<f:facet name="footer">
+								<rich:datascroller for="tableProduct" renderIfSinglePage="false"/>
+							</f:facet>
 					</rich:extendedDataTable>
+					
+				<!--<rich:spacer height="20"/>
+				<h:panelGroup id="panelButtons">
+					<a4j:commandButton value="Adicionar ao Carrinho" image="/view/images/addCar.png" rendered="#{not empty defaultBean.produtosPesquisados}" />
+				</h:panelGroup>-->
+				
 				</h:column>
 			</h:panelGrid>
 			<rich:spacer height="30"/>
-			<h:panelGrid id="painelInformacoes" columns="2" rendered="true">
+			<h:panelGrid id="painelInformacoes" columns="2" rendered="false">
 				<h:column>
 					<h:outputText value="#{msg.default_car_information}" styleClass="letrasInfo"/>
 				</h:column>
