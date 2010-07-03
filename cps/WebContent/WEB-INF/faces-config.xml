@@ -109,4 +109,9 @@
 			<to-view-id>/view/pages/myLists.jsf</to-view-id>
 		</navigation-case>
 	</navigation-rule>
+	
+<converter>  
+   <converter-id>br.iteratorsystems.cps.beans.TesteConverter</converter-id>  
+   <converter-class>br.iteratorsystems.cps.beans.TesteConverter</converter-class>  
+</converter> 
 </faces-config>
