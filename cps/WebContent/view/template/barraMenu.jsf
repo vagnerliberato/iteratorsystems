@@ -7,61 +7,74 @@
 	xmlns:a4j="http://richfaces.org/a4j">
 
 	<f:view contentType="text/html" locale="#{localeController.currentLocale}">
-		<link href="#{facesContext.externalContext.requestContextPath}/view/style/geral.css" rel="stylesheet" type="text/css" />
-		<script language="JavaScript" src="#{facesContext.externalContext.request.contextPath}/view/js/jquerymaskedinput-121.js" type="text/javascript"></script>
-		<script language="JavaScript" src="#{facesContext.externalContext.request.contextPath}/view/js/jquery.watermarkinput.js" type="text/javascript"></script>
-	<h:form>
-	<table align="left">
-	<td width="150px">
-	<div class="Logo"></div>
-	</td>
-	<td align="right" width="700">
-	<!-- menu topo -->
-	<rich:toolBar itemSeparator="line" width="90%">
-			<h:commandLink action="#{navigationBean.toDefaultPage}" styleClass="letrasDefault">
-				<h:outputText value="#{msg.top_menu_search}" />
-			</h:commandLink>
-			<h:commandLink action="#{navigationBean.toMyCar}" styleClass="letrasDefault">
-				<h:outputText value="#{msg.top_menu_car}" />
-			</h:commandLink>
-			<h:commandLink action="#{loginUserBean.toUserManagerPage}" styleClass="letrasDefault">
-				<h:outputText value="#{msg.top_menu_access}"/>
-			</h:commandLink>
-			<h:commandLink action="#{navigationBean.toMyLists}" styleClass="letrasDefault">
-				<h:outputText value="#{msg.top_menu_mylists}"/>
-			</h:commandLink>
-			
-			 <h:panelGroup id="languageGroup">
-				<h:commandLink action="#{localeController.portugueseLocale}" title="#{msg.information_pt_br}">
-			 		<h:graphicImage url="/view/images/flagBRASIL.png" />
-				</h:commandLink>
-				<rich:spacer width="3"/>
-				<h:commandLink action="#{localeController.englishLocale}" title="#{msg.information_en_us}">
-			 		<h:graphicImage url="/view/images/flagUSA.png" />
-				</h:commandLink>
-			</h:panelGroup>
-				<h:panelGroup id="myCarGroup">
-					<h:graphicImage url="/view/images/emptyCar.png" title="#{msg.top_menu_emptyCar_info}" rendered="false" width="70%"/>
-					<h:graphicImage url="/view/images/itemCar.png" rendered="true" width="70%"/>
-					<rich:toolTip direction="top-right" followMouse="true" rendered="true">
-						<h:outputFormat value="#{msg['top_menu_itemCar_info']}">
-							<f:param value="69"/>
-						</h:outputFormat>
-					</rich:toolTip>
-				</h:panelGroup>
-				<h:panelGroup id="loginGroup">
-					<h:outputText value="#{msg.information_welcome}" styleClass="letrasTopo" rendered="#{loginUserBean.logado}"/>
-					<h:outputText value="#{loginUserBean.login.nomeLogin}" styleClass="letrasTopo" rendered="#{loginUserBean.logado}"/>
-					<rich:spacer width="5"/>
-					<h:graphicImage url="/view/images/loginTopo.png" rendered="#{not loginUserBean.logado}"/>
-					<h:commandLink value="#{msg.information_login}" action="#{loginUserBean.toUserManagerPage}" styleClass="letrasTopo"  rendered="#{not loginUserBean.logado}"/>
-					<h:graphicImage url="/view/images/logoutTopo.png" rendered="#{loginUserBean.logado}"/>
-					<rich:spacer width="5"/>
-					<h:commandLink action="#{loginUserBean.logout}" value="#{msg.information_logout}" styleClass="letrasTopo" rendered="#{loginUserBean.logado}"/>
-				</h:panelGroup>
-	</rich:toolBar>
-	</td>
-	</table>
-	</h:form>	
+		<h:form>
+			<table align="left">
+				<td width="150px">
+				<div class="Logo"></div>
+				</td>
+				<td align="right" width="700"><!-- menu topo --> <rich:toolBar
+					itemSeparator="line" width="90%">
+					<h:commandLink action="#{navigationBean.toDefaultPage}"
+						styleClass="letrasDefault">
+						<h:outputText value="#{msg.top_menu_search}" />
+					</h:commandLink>
+					<h:commandLink action="#{navigationBean.toMyCar}"
+						styleClass="letrasDefault">
+						<h:outputText value="#{msg.top_menu_car}" />
+					</h:commandLink>
+					<h:commandLink action="#{loginUserBean.toUserManagerPage}"
+						styleClass="letrasDefault">
+						<h:outputText value="#{msg.top_menu_access}" />
+					</h:commandLink>
+					<h:commandLink action="#{navigationBean.toMyLists}"
+						styleClass="letrasDefault">
+						<h:outputText value="#{msg.top_menu_mylists}" />
+					</h:commandLink>
+
+					<h:panelGroup id="languageGroup">
+						<h:commandLink action="#{localeController.portugueseLocale}"
+							title="#{msg.information_pt_br}">
+							<h:graphicImage url="/view/images/flagBRASIL.png" />
+						</h:commandLink>
+						<rich:spacer width="3" />
+						<h:commandLink action="#{localeController.englishLocale}"
+							title="#{msg.information_en_us}">
+							<h:graphicImage url="/view/images/flagUSA.png" />
+						</h:commandLink>
+					</h:panelGroup>
+					<h:panelGroup id="myCarGroup">
+						<h:graphicImage url="/view/images/emptyCar.png"
+							title="#{msg.top_menu_emptyCar_info}" rendered="false"
+							width="70%" />
+						<h:graphicImage url="/view/images/itemCar.png" rendered="true"
+							width="70%" />
+						<rich:toolTip id="quantidadeItemsCarrinhoTip" direction="top-right" followMouse="true"
+							rendered="true">
+							<h:outputFormat value="#{msg['top_menu_itemCar_info']}">
+								<f:param value="#{defaultBean.tamanhoCarrinho}" />
+							</h:outputFormat>
+						</rich:toolTip>
+					</h:panelGroup>
+					<h:panelGroup id="loginGroup">
+						<h:outputText value="#{msg.information_welcome}"
+							styleClass="letrasTopo" rendered="#{loginUserBean.logado}" />
+						<h:outputText value="#{loginUserBean.login.nomeLogin}"
+							styleClass="letrasTopo" rendered="#{loginUserBean.logado}" />
+						<rich:spacer width="5" />
+						<h:graphicImage url="/view/images/loginTopo.png"
+							rendered="#{not loginUserBean.logado}" />
+						<h:commandLink value="#{msg.information_login}"
+							action="#{loginUserBean.toUserManagerPage}"
+							styleClass="letrasTopo" rendered="#{not loginUserBean.logado}" />
+						<h:graphicImage url="/view/images/logoutTopo.png"
+							rendered="#{loginUserBean.logado}" />
+						<rich:spacer width="5" />
+						<h:commandLink action="#{loginUserBean.logout}"
+							value="#{msg.information_logout}" styleClass="letrasTopo"
+							rendered="#{loginUserBean.logado}" />
+					</h:panelGroup>
+				</rich:toolBar></td>
+			</table>
+		</h:form>
 	</f:view>
 </jsp:root>
