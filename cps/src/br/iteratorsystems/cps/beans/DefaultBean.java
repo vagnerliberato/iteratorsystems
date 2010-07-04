@@ -3,86 +3,170 @@ package br.iteratorsystems.cps.beans;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.richfaces.component.html.HtmlDataTable;
+import org.richfaces.component.html.HtmlExtendedDataTable;
 
-import br.iteratorsystems.cps.common.Carrinho;
 import br.iteratorsystems.cps.entities.PRODUTOGERAL;
 import br.iteratorsystems.cps.exceptions.CpsGeneralExceptions;
 import br.iteratorsystems.cps.exceptions.CpsHandlerException;
 import br.iteratorsystems.cps.handler.BuscaProdutoHandler;
+import br.iteratorsystems.cps.to.ProdutoTO;
 
+/**
+ * Classe Responsável por gerenciar a página default do sistema.
+ * @author André
+ *
+ */
 public class DefaultBean {
 	
 	private BuscaProdutoHandler buscaProdutoHandler;
-	
 	private String produtoDigitado;
-	
-	private List<PRODUTOGERAL> produtosPesquisados;
-	private List<Carrinho> produtosCarrinho = new ArrayList<Carrinho>();
-	
-	private HtmlDataTable listaProdutosDataTable;
-	
+	private String nomeModalQuantidade;
+	private List<ProdutoTO> listaProdutoTO;
+	private List<ProdutoTO> produtosCarrinho = new ArrayList<ProdutoTO>();
+	private HtmlExtendedDataTable listaProdutosDataTable;
 	private boolean showQuantidade;
 
-	public void buscaProduto() throws CpsGeneralExceptions{
+	/**
+	 * Busca os produtos com base no que foi digitado pelo usuário.
+	 * @throws CpsGeneralExceptions Alguma exceção, verificada ou não nas
+	 * camadas abaixo do Bean.
+	 */
+	public void buscarProduto() throws CpsGeneralExceptions{
 		buscaProdutoHandler = new BuscaProdutoHandler();
+		List<PRODUTOGERAL> listaTemp = null;
+		listaProdutoTO = new ArrayList<ProdutoTO>(1);
+		
 		try{
-			produtosPesquisados = 
+			listaTemp = 
 				buscaProdutoHandler.buscaProduto(this.getProdutoDigitado());
 			
-			//produtosPesquisados.clear();
-			//JOptionPane.showMessageDialog(null,"A instruçâo á memória EF#$8874 falhou. A memória nâo pode ser 'read'","Windows",JOptionPane.ERROR_MESSAGE);
+			for(PRODUTOGERAL produtoGeral : listaTemp) {
+				listaProdutoTO.add(new ProdutoTO(produtoGeral, 1));
+			}
+			
+			listaProdutoTO.removeAll(produtosCarrinho);
+			
 		}catch (CpsHandlerException e) {
 			throw new CpsGeneralExceptions(e);
 		}
 	}
 	
-	public void adicionaCarrinho() {
-		PRODUTOGERAL produtoGeral  = (PRODUTOGERAL) this.listaProdutosDataTable.getRowData();
-		produtosCarrinho.add(new Carrinho(produtoGeral.getCodigoBarras(),1));
+	/**
+	 * Adiciona o produto escolhido pelo usuário no carrinho.
+	 */
+	public void adicionarCarrinho() {
+		ProdutoTO produtoSelecionado  = (ProdutoTO) this.listaProdutosDataTable.getRowData();
+		int quantidadeSelecionada = produtoSelecionado.getQuantidadeSelecionada();
+		
+		if(quantidadeSelecionada < 1) {
+			nomeModalQuantidade = "modalInfoQuantidade.show();";
+		}else {
+			nomeModalQuantidade = "";
+			if(!produtosCarrinho.contains(produtoSelecionado)) {
+				produtosCarrinho.add(produtoSelecionado);
+				listaProdutoTO.remove(produtoSelecionado);
+			}
+		}
 	}
 	
+	/**
+	 * Retorna a quantidade de items do carrinho do usuário.
+	 * @return quantidade de itens 
+	 */
+	public int getTamanhoCarrinho() {
+		return this.getProdutosCarrinho().size();
+	}
+ 	
+	/**
+	 * Se o usuário quiser finalizar a escolha dos produtos, redireciona para
+	 * a tela de filtros.
+	 * @return String de navegação do JSF.
+	 */
 	public String toFilters(){
 		return "filtersOk";
 	}
 
-	public void setProdutoDigitado(String produtoDigitado) {
-		this.produtoDigitado = produtoDigitado;
-	}
-
+	/**
+	 * @return the produtoDigitado
+	 */
 	public String getProdutoDigitado() {
 		return produtoDigitado;
 	}
 
-	public void setProdutosPesquisados(List<PRODUTOGERAL> produtosPesquisados) {
-		this.produtosPesquisados = produtosPesquisados;
+	/**
+	 * @param produtoDigitado the produtoDigitado to set
+	 */
+	public void setProdutoDigitado(String produtoDigitado) {
+		this.produtoDigitado = produtoDigitado;
 	}
 
-	public List<PRODUTOGERAL> getProdutosPesquisados() {
-		return produtosPesquisados;
+	/**
+	 * @return the listaProdutoTO
+	 */
+	public List<ProdutoTO> getListaProdutoTO() {
+		return listaProdutoTO;
 	}
 
-	public void setShowQuantidade(boolean showQuantidade) {
-		this.showQuantidade = showQuantidade;
+	/**
+	 * @param listaProdutoTO the listaProdutoTO to set
+	 */
+	public void setListaProdutoTO(List<ProdutoTO> listaProdutoTO) {
+		this.listaProdutoTO = listaProdutoTO;
 	}
 
+	/**
+	 * @return the produtosCarrinho
+	 */
+	public List<ProdutoTO> getProdutosCarrinho() {
+		return produtosCarrinho;
+	}
+
+	/**
+	 * @param produtosCarrinho the produtosCarrinho to set
+	 */
+	public void setProdutosCarrinho(List<ProdutoTO> produtosCarrinho) {
+		this.produtosCarrinho = produtosCarrinho;
+	}
+
+	/**
+	 * @return the showQuantidade
+	 */
 	public boolean isShowQuantidade() {
 		return showQuantidade;
 	}
 
-	public void setListaProdutosDataTable(HtmlDataTable listaProdutosDataTable) {
-		this.listaProdutosDataTable = listaProdutosDataTable;
+	/**
+	 * @param showQuantidade the showQuantidade to set
+	 */
+	public void setShowQuantidade(boolean showQuantidade) {
+		this.showQuantidade = showQuantidade;
 	}
 
-	public HtmlDataTable getListaProdutosDataTable() {
+	/**
+	 * @return the listaProdutosDataTable
+	 */
+	public HtmlExtendedDataTable getListaProdutosDataTable() {
 		return listaProdutosDataTable;
 	}
 
-	public void setProdutosCarrinho(List<Carrinho> produtosCarrinho) {
-		this.produtosCarrinho = produtosCarrinho;
+	/**
+	 * @param listaProdutosDataTable the listaProdutosDataTable to set
+	 */
+	public void setListaProdutosDataTable(HtmlExtendedDataTable listaProdutosDataTable) {
+		this.listaProdutosDataTable = listaProdutosDataTable;
 	}
 
-	public List<Carrinho> getProdutosCarrinho() {
-		return produtosCarrinho;
+	/**
+	 * @param nomeModalQuantidade the nomeModalQuantidade to set
+	 */
+	public void setNomeModalQuantidade(String nomeModalQuantidade) {
+		this.nomeModalQuantidade = nomeModalQuantidade;
+	}
+
+	/**
+	 * @return the nomeModalQuantidade
+	 */
+	public String getNomeModalQuantidade() {
+		return nomeModalQuantidade;
 	}
 }
