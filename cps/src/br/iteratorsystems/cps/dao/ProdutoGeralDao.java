@@ -7,7 +7,7 @@ import org.hibernate.Session;
 import br.iteratorsystems.cps.entities.PRODUTOGERAL;
 import br.iteratorsystems.cps.exceptions.CpsDaoException;
 
-public class ProdutoGeralDao extends DaoGeneric<PRODUTOGERAL, Integer> {
+public class ProdutoGeralDao extends DaoGeneric<PRODUTOGERAL, String> {
 
 	private static final int BUSCA_POR_DESCRICAO = 1;
 	private static final int VALOR_EXATO = 10;
