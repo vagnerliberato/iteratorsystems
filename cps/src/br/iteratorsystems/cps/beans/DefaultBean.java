@@ -3,8 +3,11 @@ package br.iteratorsystems.cps.beans;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.faces.context.FacesContext;
+
 import org.richfaces.component.html.HtmlExtendedDataTable;
 
+import br.iteratorsystems.cps.entities.PARAMETRIZACAO_CPS;
 import br.iteratorsystems.cps.entities.PRODUTOGERAL;
 import br.iteratorsystems.cps.exceptions.CpsGeneralExceptions;
 import br.iteratorsystems.cps.exceptions.CpsHandlerException;
@@ -23,9 +26,35 @@ public class DefaultBean {
 	private String nomeModalQuantidade;
 	private List<ProdutoTO> listaProdutoTO;
 	private List<ProdutoTO> produtosCarrinho = new ArrayList<ProdutoTO>();
+	private ProdutoTO produtoCarrinhoSelecionado;
 	private HtmlExtendedDataTable listaProdutosDataTable;
 	private boolean showQuantidade;
-
+	//TODO implementar o lock da lista.
+	private Integer numeroMaximoItensCarrinho;
+	
+	/**
+	 * Construtor padrão.
+	 */
+	public DefaultBean() {
+		
+		PARAMETRIZACAO_CPS parametrizacao = 
+			(PARAMETRIZACAO_CPS) 
+				FacesContext.getCurrentInstance().
+				getExternalContext().getApplicationMap().
+				get("parametrizacao");
+		
+		parametrizarBusca(parametrizacao);
+	}
+	
+	/**
+	 * Com base na parametrização do sistema, configura os itens necessários.
+	 * @param parametrizacao - Classe de parametrização.
+	 */
+	private void parametrizarBusca(PARAMETRIZACAO_CPS parametrizacao) {
+		this.setNumeroMaximoItensCarrinho(
+					Integer.parseInt(parametrizacao.getNumMaxItensLista().trim()));
+	}
+	
 	/**
 	 * Busca os produtos com base no que foi digitado pelo usuário.
 	 * @throws CpsGeneralExceptions Alguma exceção, verificada ou não nas
@@ -67,6 +96,13 @@ public class DefaultBean {
 				listaProdutoTO.remove(produtoSelecionado);
 			}
 		}
+	}
+	
+	/**
+	 * Exclui um produto do carrinho.
+	 */
+	public void excluirProdutoCarrinho() {
+		produtosCarrinho.remove(produtoCarrinhoSelecionado);
 	}
 	
 	/**
@@ -169,4 +205,33 @@ public class DefaultBean {
 	public String getNomeModalQuantidade() {
 		return nomeModalQuantidade;
 	}
+
+	/**
+	 * @param produtoCarrinhoSelecionado the produtoCarrinhoSelecionado to set
+	 */
+	public void setProdutoCarrinhoSelecionado(ProdutoTO produtoCarrinhoSelecionado) {
+		this.produtoCarrinhoSelecionado = produtoCarrinhoSelecionado;
+	}
+
+	/**
+	 * @return the produtoCarrinhoSelecionado
+	 */
+	public ProdutoTO getProdutoCarrinhoSelecionado() {
+		return produtoCarrinhoSelecionado;
+	}
+
+	/**
+	 * @param numeroMaximoItensCarrinho the numeroMaximoItensCarrinho to set
+	 */
+	public void setNumeroMaximoItensCarrinho(Integer numeroMaximoItensCarrinho) {
+		this.numeroMaximoItensCarrinho = numeroMaximoItensCarrinho;
+	}
+
+	/**
+	 * @return the numeroMaximoItensCarrinho
+	 */
+	public Integer getNumeroMaximoItensCarrinho() {
+		return numeroMaximoItensCarrinho;
+	}
+
 }
