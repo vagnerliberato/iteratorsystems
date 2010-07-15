@@ -10,6 +10,7 @@ import br.iteratorsystems.cps.common.Resources;
 import br.iteratorsystems.cps.entities.CEP;
 import br.iteratorsystems.cps.entities.ENDERECO;
 import br.iteratorsystems.cps.entities.LOGIN;
+import br.iteratorsystems.cps.entities.PARAMETRIZACAO_CPS;
 import br.iteratorsystems.cps.entities.USUARIO;
 import br.iteratorsystems.cps.exceptions.CpsGeneralExceptions;
 import br.iteratorsystems.cps.exceptions.CpsHandlerException;
@@ -23,6 +24,7 @@ public class UserManagementBean {
 	private CEP cepEntity = new CEP();
 	private ENDERECO enderecoEntity = new ENDERECO();
 	private LOGIN loginEntity = new LOGIN();
+	private PARAMETRIZACAO_CPS parametrizacao;
 	
 	private String estadoSigla;
 	private String put_senha_antiga;
@@ -52,10 +54,25 @@ public class UserManagementBean {
 			"CPF já cadastrado em nossa base de dados",
 			"A senha antiga está incorreta!"};
 	
+	/**
+	 * Bean default.
+	 */
 	public UserManagementBean() {
+		this.parametrizacao = 
+						obtemParametrizacao();
 		passaOuRepassa();
 	}
 
+	/**
+	 * Obtém a parametrização do sistema.
+	 * @return  Classe de parametrização.
+	 */
+	private PARAMETRIZACAO_CPS obtemParametrizacao() {
+		PARAMETRIZACAO_CPS parametrizacao = (PARAMETRIZACAO_CPS) 
+					context.getExternalContext().getApplicationMap().get("parametrizacao");
+		return parametrizacao;
+	}
+	
 	//nome criativo não? kkkk
 	public void passaOuRepassa(){
 		LoginUserBean newLoginUserInstance = null;
@@ -432,5 +449,19 @@ public class UserManagementBean {
 
 	public String getConfirma_nova_senha() {
 		return confirma_nova_senha;
+	}
+
+	/**
+	 * @param parametrizacao the parametrizacao to set
+	 */
+	public void setParametrizacao(PARAMETRIZACAO_CPS parametrizacao) {
+		this.parametrizacao = parametrizacao;
+	}
+
+	/**
+	 * @return the parametrizacao
+	 */
+	public PARAMETRIZACAO_CPS getParametrizacao() {
+		return parametrizacao;
 	}
 }
