@@ -47,51 +47,32 @@ public class ProdutoTO {
 		this.quantidadeSelecionada = quantidadeSelecionada;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
+	/**
+	 * hash code
 	 */
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result
-				+ ((produtoGeral == null) ? 0 : produtoGeral.hashCode());
-		result = prime
-				* result
-				+ ((quantidadeSelecionada == null) ? 0 : quantidadeSelecionada
-						.hashCode());
-		return result;
+		int hash = 7;
+		return Integer.parseInt(produtoGeral.getCodigoBarras()) *  hash 
+			   + quantidadeSelecionada * hash;
 	}
-
-	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
+	
+	/**
+	 * Equals
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
+		boolean equals = true;
 		if (!(obj instanceof ProdutoTO)) {
-			return false;
+			equals = false;
+		} else if (obj == null) {
+			equals = false;
 		}
-		ProdutoTO other = (ProdutoTO) obj;
-		if (produtoGeral == null) {
-			if (other.produtoGeral != null) {
-				return false;
-			}
-		} else if (!produtoGeral.equals(other.produtoGeral)) {
-			return false;
+		ProdutoTO another = (ProdutoTO) obj;
+		if (another.getProdutoGeral().getCodigoBarras().compareTo(
+				this.getProdutoGeral().getCodigoBarras()) != 0) {
+			equals = false;
 		}
-		if (quantidadeSelecionada == null) {
-			if (other.quantidadeSelecionada != null) {
-				return false;
-			}
-		} else if (!quantidadeSelecionada.equals(other.quantidadeSelecionada)) {
-			return false;
-		}
-		return true;
+		return equals;
 	}
 }
