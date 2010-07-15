@@ -59,6 +59,7 @@ public abstract class HibernateConfig {
 		configuration.addAnnotatedClass(br.iteratorsystems.cps.entities.PRODUTOID.class);
 		configuration.addAnnotatedClass(br.iteratorsystems.cps.entities.REDE.class);
 		configuration.addAnnotatedClass(br.iteratorsystems.cps.entities.USUARIO.class);
+		configuration.addAnnotatedClass(br.iteratorsystems.cps.entities.PARAMETRIZACAO_CPS.class);
 	}
 
 	public static void closeSession() {
