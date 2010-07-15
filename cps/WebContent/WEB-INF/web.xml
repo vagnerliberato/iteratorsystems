@@ -9,6 +9,11 @@
 	<welcome-file-list>
 		<welcome-file>faces/view/default.jsf</welcome-file>
 	</welcome-file-list>
+	
+	<!-- Carrega as Configurações iniciais do sistema. -->
+	<listener>
+		<listener-class>br.iteratorsystems.cps.config.ConfiguracaoCPS</listener-class>
+	</listener>
 
 	<!-- Faces Config -->
 	<servlet>
