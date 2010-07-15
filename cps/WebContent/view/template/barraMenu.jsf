@@ -43,17 +43,18 @@
 						</h:commandLink>
 					</h:panelGroup>
 					<h:panelGroup id="myCarGroup">
-						<h:graphicImage url="/view/images/emptyCar.png"
-							title="#{msg.top_menu_emptyCar_info}" rendered="false"
-							width="70%" />
-						<h:graphicImage url="/view/images/itemCar.png" rendered="true"
-							width="70%" />
-						<rich:toolTip id="quantidadeItemsCarrinhoTip" direction="top-right" followMouse="true"
-							rendered="true">
-							<h:outputFormat value="#{msg['top_menu_itemCar_info']}">
-								<f:param value="#{defaultBean.tamanhoCarrinho}" />
-							</h:outputFormat>
-						</rich:toolTip>
+							<h:graphicImage id="carrinhoVazioImg" url="/view/images/emptyCar.png"
+								title="#{msg.top_menu_emptyCar_info}" rendered="#{empty defaultBean.produtosCarrinho}"
+								width="70%" />
+							<h:graphicImage id="carrinhoCheioImg" url="/view/images/itemCar.png" rendered="#{not empty defaultBean.produtosCarrinho}"
+								width="70%" />
+							<rich:toolTip id="quantidadeItemsCarrinhoTip" direction="top-right" followMouse="true"
+								rendered="true">
+								<h:outputFormat value="#{msg['top_menu_itemCar_info']}" rendered="#{not empty defaultBean.produtosCarrinho}">
+									<f:param value="#{defaultBean.tamanhoCarrinho}" />
+								</h:outputFormat>
+								<h:outputFormat value="#{msg['top_menu_emptyCar_info']}" rendered="#{empty defaultBean.produtosCarrinho}"/>
+							</rich:toolTip>
 					</h:panelGroup>
 					<h:panelGroup id="loginGroup">
 						<h:outputText value="#{msg.information_welcome}"

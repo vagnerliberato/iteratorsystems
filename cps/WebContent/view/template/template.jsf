@@ -29,7 +29,7 @@
 	
 	</head>
 	<body>
-	<table width="80%" align="center">
+	<table width="90%" align="center" bgcolor="white">
 		<tr>
 			<td>
 				<ui:insert name="top-menu">
