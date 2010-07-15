@@ -29,10 +29,9 @@
 				<center>
 				<h:panelGrid id="resultDataTable" rendered="true" columns="1">
 					<h:column>
-						
 						 <rich:extendedDataTable id="tableProduct" width="980" value="#{defaultBean.listaProdutoTO}" 
 							height="270" rows="5" var="produto" rendered="#{not empty defaultBean.listaProdutoTO}"
-							binding="#{defaultBean.listaProdutosDataTable}"
+							binding="#{defaultBean.listaProdutosDataTable}" selectionMode="none"
 							enableContextMenu="false" styleClass="letras">
 							
 								<rich:column sortable="false" width="100">
@@ -74,7 +73,8 @@
 								<h:panelGroup>
 									<center>
 										<a4j:commandButton image="/view/images/addCar.png" oncomplete="#{defaultBean.nomeModalQuantidade}" title="#{msg.default_producttable_add}"
-														   action="#{defaultBean.adicionarCarrinho}" reRender="tableProduct,painelAjax,tableResumo,quantidadeItemsCarrinhoTip"/>
+														   action="#{defaultBean.adicionarCarrinho}"
+														   reRender="tableProduct,painelAjax,tableResumo,myCarGroup,carrinhoVazioImg,carrinhoCheioImg,quantidadeItemsCarrinhoTip"/>
 									</center>
 								</h:panelGroup>
 							</rich:column> 
@@ -86,15 +86,14 @@
 					</h:column>
 				</h:panelGrid>
 				
-				
 					<a4j:outputPanel id="painelAjax" ajaxRendered="true">
 					
 						<h:panelGroup id="resumoCarrinhoPanel" rendered="#{not empty defaultBean.produtosCarrinho}">
 						
 							<h:panelGroup>
-								<rich:spacer height="30"/>
+								<rich:spacer height="20"/>
 								<rich:separator lineType="solid"/>
-								<rich:spacer height="10"/>
+								<rich:spacer height="15"/>
 								<h:outputText value="#{msg.default_car_information}" styleClass="letrasInfo"/>
 								<rich:spacer height="10"/>
 							</h:panelGroup>
@@ -106,7 +105,9 @@
 									<f:facet name="header">
 										<h:outputText value="#{msg.default_summarytable_product}"/>
 									</f:facet>
-									<a4j:commandButton image="/view/images/deleteRow.png"/>
+									<a4j:commandButton image="/view/images/deleteRow.png" onclick="modalExclusao.show();">
+										<f:setPropertyActionListener value="#{carrinho}" target="#{defaultBean.produtoCarrinhoSelecionado}"/>
+									</a4j:commandButton>
 								</rich:column>
 								
 								<rich:column width="70%"> 
@@ -129,7 +130,7 @@
 							</rich:dataTable>
 								
 							<h:panelGroup>
-								<rich:spacer height="5"/>
+								<rich:spacer height="10"/>
 								<h:commandButton value="#{msg.default_button_compare}" styleClass="botaoDefault" action="#{defaultBean.toFilters}"/>
 							</h:panelGroup>
 						
@@ -140,8 +141,7 @@
 		
 			<!-- Dialogs/Modais -->
 			<p:dialog header="#{msg.default_modal_information}" fixedCenter="true" widgetVar="modalInfoQuantidade" 
-					  effectDuration="0.1" effect="fade" draggable="false"
-					  height="70" width="180">  
+					  effectDuration="0.1" effect="fade" draggable="false" height="70" width="180">  
 				<center>
 					<h:form>
 			    		<h:outputText value="#{msg.default_modal_message}" styleClass="letras"/>  
@@ -150,8 +150,24 @@
 			    						 value="#{msg.default_modal_button}" onclick="modalInfoQuantidade.hide();"/>
 		    		</h:form>
 	    		</center>
+			</p:dialog> 
+			
+			<p:dialog header="#{msg.default_modal_information}" fixedCenter="true" widgetVar="modalExclusao" 
+					  effectDuration="0.1" effect="fade" draggable="false" height="70" width="320">  
+				<center>
+					<h:form>
+			    		<h:outputText value="#{msg.default_modal_delete_message}" styleClass="letras"/>  
+			    		<br />
+			    		<p:commandButton ajax="false" styleClass="botaoDefault"
+			    						 action="#{defaultBean.excluirProdutoCarrinho}" oncomplete="modalExclusaoe.hide();"
+			    						 value="#{msg.default_modal_delete_yes}"/>
+			    		<rich:spacer width="5"/>
+			    		<p:commandButton ajax="true" styleClass="botaoDefault"
+			    						 value="#{msg.default_modal_delete_no}" onclick="modalExclusaoe.hide();"/>
+		    		</h:form>
+	    		</center>
 			</p:dialog>
-		
+
 		</ui:define>
 	</ui:composition>
 </jsp:root>
