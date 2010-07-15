@@ -64,7 +64,7 @@
 		<managed-bean-class>br.iteratorsystems.cps.beans.AdministrationBean</managed-bean-class>
 		<managed-bean-scope>session</managed-bean-scope>
 	</managed-bean>
-
+	
 	<!-- Filtro controlador de acesso -->
 	<lifecycle>
 		<phase-listener>br.iteratorsystems.cps.controller.AutorizationController</phase-listener>
@@ -109,9 +109,4 @@
 			<to-view-id>/view/pages/myLists.jsf</to-view-id>
 		</navigation-case>
 	</navigation-rule>
-	
-<converter>  
-   <converter-id>br.iteratorsystems.cps.beans.TesteConverter</converter-id>  
-   <converter-class>br.iteratorsystems.cps.beans.TesteConverter</converter-class>  
-</converter> 
 </faces-config>
