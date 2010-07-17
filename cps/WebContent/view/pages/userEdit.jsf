@@ -40,7 +40,7 @@
 			<h:outputText value="#{msg.personaldata_born} " styleClass="letras"/>	
 		</h:column>
 		<h:column>
-			<rich:calendar id="inputData" required="true" value="#{userManagementBean.usuarioEntity.dataNascimento}" inputSize="13" styleClass="barraDefault" datePattern="dd/MM/yyyy" inputStyle="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>*
+			<rich:calendar id="inputData" required="true" value="#{userManagementBean.usuarioEntity.dataNascimento}" inputSize="13" showFooter="false" styleClass="barraDefault" datePattern="dd/MM/yyyy" inputStyle="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>*
 			<rich:spacer width="3"/>
 		</h:column>
 		<h:column>
