@@ -98,6 +98,35 @@ public class DefaultBean {
 		}
 	}
 	
+	public List<String> recuperarAutoComplete(Object obj) {
+		List<String> listaDadosTemp = new ArrayList<String>();
+		List<String> listaNomeProdutoTemp = new ArrayList<String>();
+		List<PRODUTOGERAL> listaProdutoTemp = null;
+		buscaProdutoHandler = new BuscaProdutoHandler();
+		String partName = (String) obj;
+		
+     	try {
+     		
+     		listaProdutoTemp =
+     					buscaProdutoHandler.buscaProduto(partName);
+     		
+     		for(PRODUTOGERAL produtoTemp : listaProdutoTemp) {
+     			listaNomeProdutoTemp.add(produtoTemp.getDescricao());
+     		}
+     		
+     		for(String string : listaNomeProdutoTemp) {
+     			if(string.toUpperCase().contains(partName.toUpperCase())) {
+     				listaDadosTemp.add(string);
+     			}
+     		}
+     		
+		} catch (CpsHandlerException e) {
+			e.printStackTrace();
+		}
+		
+		return listaDadosTemp;
+	}
+	
 	/**
 	 * Exclui um produto do carrinho.
 	 */
