@@ -19,6 +19,13 @@
 									 styleClass="barraPesquisa" style="font-size:15px; font-family:Verdana; color:black; font-weight:bold">
 							<p:watermark for="barraPesquisa" value="#{msg.default_information_search}"/>
 						</h:inputText>
+						
+						<rich:suggestionbox var="complete" for="barraPesquisa" suggestionAction="#{defaultBean.recuperarAutoComplete}"
+											usingSuggestObjects="true" width="400" height="200" >
+							<h:column>
+								<h:outputText value="#{complete}"/>
+							</h:column>	
+						</rich:suggestionbox>
 					</td>
 					<td> 
 					<h:commandButton action="#{defaultBean.buscarProduto}" image="/view/images/Lupa.png" title="#{msg.default_button_search}" />
