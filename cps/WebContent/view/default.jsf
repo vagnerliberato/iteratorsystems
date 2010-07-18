@@ -10,13 +10,13 @@
 	<ui:composition template="template/template.jsf">
 		<ui:define name="content">
 			<h:form id="defaultForm" prependId="false">
-			<rich:spacer height="30px"/>
-				<table align="center">
-					<td>
+			<rich:spacer height="5px"/>
+				<table align="center" border="0" width="900px">
+				<td width="150px" align="center">
 					</td>
-					<td>
-						<h:inputText id="barraPesquisa" value="#{defaultBean.produtoDigitado}" maxlength="50" 
-									 styleClass="barraPesquisa" style="font-size:15px; font-family:Verdana; color:black; font-weight:bold">
+					<td  width="500px" align="center">
+						<h:inputText id="barraPesquisa" value="#{defaultBean.produtoDigitado}" maxlength="50"  
+									 styleClass="barraPesquisa" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
 							<p:watermark for="barraPesquisa" value="#{msg.default_information_search}"/>
 						</h:inputText>
 						
@@ -31,17 +31,17 @@
 					<h:commandButton action="#{defaultBean.buscarProduto}" image="/view/images/Lupa.png" title="#{msg.default_button_search}" />
 					</td>
 				</table>
-			<rich:spacer height="30px"/>
+			<rich:spacer height="5px"/>
 		
 				<center>
 				<h:panelGrid id="resultDataTable" rendered="true" columns="1">
 					<h:column>
-						 <rich:extendedDataTable id="tableProduct" width="980" value="#{defaultBean.listaProdutoTO}" 
-							height="270" rows="5" var="produto" rendered="#{not empty defaultBean.listaProdutoTO}"
+						 <rich:extendedDataTable id="tableProduct" width="851px" value="#{defaultBean.listaProdutoTO}" 
+							height="290" rows="5" var="produto" rendered="#{not empty defaultBean.listaProdutoTO}"
 							binding="#{defaultBean.listaProdutosDataTable}" selectionMode="none"
-							enableContextMenu="false" styleClass="letras">
+							enableContextMenu="false" styleClass="letras" align="center">
 							
-								<rich:column sortable="false" width="100">
+								<rich:column sortable="false" width="90">
 									<f:facet name="header">
 										<h:outputText value="#{msg.default_producttable_image}"/>
 									</f:facet>
@@ -50,7 +50,7 @@
 									</center>
 								</rich:column>
 								
-								<rich:column width="650">
+								<rich:column width="550">
 										<f:facet name="header">
 											<h:outputText value="#{msg.default_producttable_description}"/>
 										</f:facet>
@@ -73,7 +73,7 @@
 											<h:outputText value="#{msg.default_producttable_qtd_tip}"/>
 										</rich:toolTip>-->
 							 </rich:column>
-							 <rich:column width="150">
+							 <rich:column width="130">
 								<f:facet name="header">
 									<h:outputText value="#{msg.default_producttable_add}"/>
 								</f:facet>

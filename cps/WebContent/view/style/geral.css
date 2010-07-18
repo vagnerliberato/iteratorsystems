@@ -1,28 +1,69 @@
 @CHARSET "ISO-8859-1";
 
+html, body{
+	height: 100%;	
+}	
+
+body {
+	margin: 0px;
+	padding: 0px;	
+	font-size: 12px;
+	font-family: Georgia, "Times New Roman", Times, serif;
+	text-align: center;
+	color: blue;
+	background: #666;
+}
+
 .letrasTopo {
 	font-weight: normal;
 	font-size: 8pt;
 	font-style: italic;
 	font-family: Verdana;
 	white-space: nowrap;
+	padding: 10px;
 }
 
 .letrasDefault {
 	font-weight:lighter;
-	font-size: 11pt;
+	font-size: 8pt;
 	font-family: Verdana;
 	white-space: nowrap;
+	padding: 30px;
+	color: #09F;
 }
 
+.frame {	
+	min-width: 800px;
+	min-height: 700px; 
+	width: 750px;
+	height: 700px;		
+}
+
+.frame_menu{
+	border: 1px solid #ECECEC;	
+	}
+	
 .letras {
 	font-weight: normal;
-	font-size: 13pt;
+	font-size: 9pt;
 	font-style: bold;
 	font-family: Verdana;
 	white-space: nowrap;
 	color: blue;
+	padding: 2px;
 }
+
+#menu_top{
+	align: center;
+	width: 700px;
+	height: 10px;		
+	}
+
+#loginGroup{
+	align: center;
+	width: 700px;
+	height: 50px;
+	}	
 
 .letrasTitulo {
 	font-weight: normal;
@@ -35,26 +76,33 @@
 
 .letrasInformacao {
 	font-weight: bold;
-	font-size: 13pt;
+	font-size: 10pt;
 	font-style: italic;
 	font-family: Verdana;
 	white-space: nowrap;
-	color: green;
+	color: green;	 
 }
 
 .letrasAba {
 	font-weight: normal;
-	font-size: 14pt;
+	font-size: 10pt;
 	font-style: oblique;
+	font-style: bold;
 	font-family: sans-serif;
 	white-space: normal;
 	color: black;
+	padding: 10px;
 }
+
+#logincadastrado{
+	width: 20px;
+}
+
 
 .letrasAbaB {
 	font-weight: bold;
-	font-size: 12pt;
-	font-family: serif;
+	font-size: 10pt;
+	font-family: sans-serif;
 	white-space: normal;
 	color: darkblue;
 }
@@ -69,16 +117,17 @@
 
 .letrasInfo {
 	font-weight: normal;
-	font-size: 12pt;
+	font-size: 10pt;
 	font-style: bold;
 	font-family: sans-serif;
 	white-space: nowrap;
-	color: green;
+	color: red;
+	padding: 10px;
 }
 
 .barraPesquisa {
-	height: 30px;
-	width: 400px;
+	height: 25px;
+	width: 550px;
 }
 
 .barraDefault {
@@ -100,13 +149,18 @@
 }
 
 .Logo {
-	background-position: left;
-	background-image: url("../images/logo.png");
+	background-position: center;
 	margin-top: 1px;
 	width: 250%;
 	background-repeat: no-repeat;
-	height: 77px;
+	height: 7px;
 }
+
+#logomarca{
+	height: 0px;
+	width: 150px;	
+	}
+
 .camposObr {
 	font-weight: bold;
 	font-size: 9pt;

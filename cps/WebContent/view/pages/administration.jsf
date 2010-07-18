@@ -6,7 +6,7 @@
 	xmlns:rich="http://richfaces.org/rich"
 	xmlns:a4j="http://richfaces.org/a4j">
 
-	<rich:tabPanel width="100%" switchType="server" selectedTab="tab1">
+	<rich:tabPanel width="900px" switchType="server" selectedTab="tab1">
 		<rich:tab name="tab1">
 			<f:facet name="label">
 			<h:panelGroup>
@@ -177,7 +177,7 @@
 							<h:outputText value="#{msg.adm_param_uv_choose}" styleClass="letras"/>	
 						</h:column>
 						<h:column>
-							<h:selectOneMenu value="#{administrationBean.itemSelecionado}" styleClass="letrasDefault">
+							<h:selectOneMenu value="#{administrationBean.itemSelecionado}">
 								<f:selectItems value="#{administrationBean.items}"/>
 								<a4j:support event="onchange" action="#{administrationBean.selectOperation}" ajaxSingle="true" reRender="formLojas"/>
 							</h:selectOneMenu>
@@ -217,7 +217,7 @@
 							<h:outputText value="#{msg.adm_param_uv_rede_select}" styleClass="letras"/>
 						</h:column>
 						<h:column>
-							<h:selectOneMenu id="selectLojas" value="#{administrationBean.redeSelecionada}" styleClass="letrasDefault">
+							<h:selectOneMenu id="selectLojas" value="#{administrationBean.redeSelecionada}">
 								<f:selectItems value="#{administrationBean.allRedes}"/>
 								<a4j:support action="#{administrationBean.openLoja}" ajaxSingle="true" event="onchange" reRender="formLojas,panelLoja,panelRede" />
 								<a4j:support action="#{administrationBean.convertToObj}" ajaxSingle="true" event="onblur"/>
@@ -294,7 +294,7 @@
 							<h:outputText value="#{msg.adm_param_uv_loja_tipodevenda}" styleClass="letras"/>
 						</h:column>
 						<h:column>
-							<h:selectOneMenu id="selectTipoVenda" disabled="true" value="#{administrationBean.tipoVendaSelecionada}" styleClass="letrasDefault">
+							<h:selectOneMenu id="selectTipoVenda" disabled="true" value="#{administrationBean.tipoVendaSelecionada}">
 								<f:selectItems value="#{administrationBean.tipoVendas}"/>
 							</h:selectOneMenu>
 						</h:column>

@@ -8,35 +8,40 @@
 
 	<ui:composition template="../template/template.jsf">
 		<ui:define name="content">
-			<rich:spacer height="100" />
-			<h:panelGrid columns="3" width="50%">
+			<rich:spacer height="50px" width="900px"/>			
+			<center>
+			<h:messages id="errorMsgCad" rendered="true" style="color:blue;font-size:9pt;font-style: bold;"/>
+				<h:panelGrid border="0" style="height: 100px; width: 100px;" columns="3" styleClass="">
 			<h:column></h:column>
 			<h:column>
-			<h:messages id="errorMsgCad" rendered="true" errorStyle="color:red;font-size:10pt;font-style: bold;" />
 			</h:column>
+			
 			<h:column></h:column>
 			<h:form id="userAccessForm">
-			<h:column>
-					<rich:panel style="width: 350px;">
+			<h:column styleClass="user_principal">
+					<rich:panel style="width: 280px;">
+						
+						<!-- Cabeçalho do Login. Alterações no CSS Geral.css. Chame pelo ID -->
 						<f:facet name="header">
 							<h:panelGroup>
-							<h:graphicImage url="/view/images/login.png"/>
-							<rich:spacer width="5"/>
+							<h:graphicImage url="/view/images/login.png" id="logincadastrado"/>
+							<rich:spacer width="10"/>
 							<h:outputText value="#{msg.useraccess_has_login}" styleClass="letrasAba"/>
 							</h:panelGroup>
-						</f:facet>
+						</f:facet>						
+						
 						<h:panelGrid>
 							<h:column>
 								<h:outputText value="#{msg.useraccess_mailorusername}" styleClass="letras"/>
 							</h:column>
 							<h:column>
-								<h:inputText id="inputUsername" value="#{loginUserBean.nomeLogin}" maxlength="50" size="40" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+								<h:inputText id="inputUsername" value="#{loginUserBean.nomeLogin}" maxlength="50" size="35" styleClass="barraDefault" style="font-size:10px; font-family:Verdana; color:black; font-weight:bold"/>
 							</h:column>
 							<h:column>
 								<h:outputText value="#{msg.useraccess_password}" styleClass="letras"/>
 							</h:column>
 							<h:column>
-								<h:inputSecret id="inputPassword" value="#{loginUserBean.senha}" maxlength="8" size="12" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>		
+								<h:inputSecret id="inputPassword" value="#{loginUserBean.senha}" maxlength="8" size="12" styleClass="barraDefault" style="font-size:10px; font-family:Verdana; color:black; font-weight:bold"/>		
 							</h:column>
 							<h:column>
 								<h:commandButton action="#{loginUserBean.validaLogin}" value="#{msg.useraccess_btn_login}" styleClass="letras"/>								
@@ -44,15 +49,14 @@
 						</h:panelGrid>
 					</rich:panel>
 			</h:column>
-			</h:form>
-			<h:column>
-				<rich:spacer width="100px"/>
-				<h:outputText value="#{msg.useraccess_or}" styleClass="letras"/>
-				<rich:spacer width="100px"/>
+			</h:form>			
+			<h:column id="centro">
+				<rich:spacer width="50px"/>
+				<rich:spacer width="50px"/>			
 			</h:column>
 			<h:form id="userCadForm">
 			<h:column>
-				  <rich:panel style="width: 350px;">
+				  <rich:panel style="width: 300px;">
 						<f:facet name="header">
 						<h:panelGroup>
 							<h:graphicImage url="/view/images/createLogin.png"/>
@@ -65,13 +69,13 @@
 								<h:outputText value="#{msg.useraccess_email}" styleClass="letras"/>
 							</h:column>
 							<h:column>
-								<h:inputText id="newEmail" value="#{loginUserBean.email}" maxlength="50" size="40" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+								<h:inputText id="newEmail" value="#{loginUserBean.email}" maxlength="50" size="35" styleClass="barraDefault" style="font-size:10px; font-family:Verdana; color:black; font-weight:bold"/>
 							</h:column>
 							<h:column>
 								<h:outputText value="#{msg.useraccess_cep}" styleClass="letras"/>
 							</h:column>
 							<h:column>
-								<h:inputText id="newCep" value="#{loginUserBean.cep}" maxlength="9" size="10" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
+								<h:inputText id="newCep" value="#{loginUserBean.cep}" maxlength="9" size="10" styleClass="barraDefault" style="font-size:10px; font-family:Verdana; color:black; font-weight:bold">
 									<rich:jQuery selector="#newCep" query="mask('99999-999')" timing="onload" />  								
 								</h:inputText>
 								<h:outputText value="#{msg.personalcontatc_CEP_info}" styleClass="letrasInfo"/>
@@ -84,6 +88,7 @@
 			</h:column>
 			</h:form>
 		</h:panelGrid>
+		</center>		
 		</ui:define>
 	</ui:composition>
 </jsp:root>

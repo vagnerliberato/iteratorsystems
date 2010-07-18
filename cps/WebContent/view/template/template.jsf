@@ -8,7 +8,7 @@
 	<html>
 	<head>
 	<title>CPS - Beta</title>
-	
+		
 	<link rel="shortcut icon"
 		href="#{facesContext.externalContext.requestContextPath}/view/images/favicon.ico"
 		type="image/x-icon" />
@@ -29,11 +29,15 @@
 	
 	</head>
 	<body>
-	<table width="90%" align="center" bgcolor="white">
+	
+	<table align="center" bgcolor="white" border="0" class="frame">
+	<tr valign="top">
+	<td>	
+		<table bgcolor="white" align="center">
 		<tr>
 			<td>
 				<ui:insert name="top-menu">
-					<ui:include src="barraMenu.jsf" />
+					<ui:include src="barraMenu.jsf"/>
 				</ui:insert>		
 			</td>
 		</tr>
@@ -44,7 +48,10 @@
 				</f:view>		
 			</td>
 		</tr>
-	</table>
+		</table>
+		</td>
+	</tr>
+	</table>	
 	</body>
 	</html>
 </jsp:root>

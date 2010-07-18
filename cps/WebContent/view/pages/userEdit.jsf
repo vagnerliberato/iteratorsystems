@@ -13,7 +13,7 @@
 		<rich:spacer height="10"/>
 		<h:graphicImage url="/view/images/editPeople.png"/>
 		<h:outputText value="#{msg.usermanager_personal_data}" styleClass="letrasTitulo"/>
-		<rich:separator lineType="solid" height="1" width="1000"/>
+		<rich:separator lineType="solid" height="1" width="870px"/>
 		<rich:spacer height="10"/>
 		<h:panelGrid columns="3">
 		<h:column>
@@ -92,7 +92,7 @@
 		<h:graphicImage url="/view/images/contact.png"/>
 		<rich:spacer height="5"/>
 		<h:outputText value="#{msg.usermanager_contact}" styleClass="letrasTitulo" />
-		<rich:separator lineType="solid" height="1" width="1000"/>
+		<rich:separator lineType="solid" height="1" width="870px"/>
 		<rich:spacer height="10"/>
 		<h:panelGrid columns="3">
 			<h:column>
@@ -177,7 +177,7 @@
 			<h:column></h:column>
 			</h:panelGrid>
 			<rich:spacer height="10"/>
-			<rich:separator lineType="dashed" height="1" width="1000"/>
+			<rich:separator lineType="dashed" height="1" width="870px"/>
 			<rich:spacer height="10"/>
 			<h:panelGrid columns="2">
 			<h:column>
@@ -223,11 +223,11 @@
 		<h:graphicImage url="/view/images/preferences.png"/>
 		<rich:spacer height="5"/>
 		<h:outputText value="#{msg.usermanager_preferences}" styleClass="letrasTitulo" />
-		<rich:separator lineType="solid" height="1" width="1000"/>
+		<rich:separator lineType="solid" height="1" width="870px"/>
 		<rich:spacer height="10"/>
 		<h:panelGrid columns="2">
 			<h:column>
-				<h:outputText value="#{msg.preferences_username}" styleClass="letras"/>
+				<h:outputText value="#{msg.preferences_username}" styleClass="letras" />
 			</h:column>
 			<h:column>
 				<h:inputText required="true" size="31" maxlength="30" value="#{userManagementBean.loginEntity.nomeLogin}" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
@@ -269,7 +269,7 @@
 		<h:graphicImage url="/view/images/preferences.png"/>
 		<rich:spacer height="5"/>
 		<h:outputText value="#{msg.usermanager_preferences}" styleClass="letrasTitulo" />
-		<rich:separator lineType="solid" height="1" width="1000"/>
+		<rich:separator lineType="solid" height="1" width="870px"/>
 		<rich:spacer height="10"/>
 		<h:panelGrid columns="2">
 			<h:column>
@@ -280,7 +280,7 @@
 			</h:column>
 		</h:panelGrid>
 		<rich:spacer height="3"/>
-		<rich:separator lineType="dotted" height="1" width="1000"/>
+		<rich:separator lineType="dotted" height="1" width="870px"/>
 		<rich:spacer height="5"/>
 		<h:panelGrid columns="2">
 			<h:column>
@@ -322,7 +322,7 @@
 </h:panelGroup>
 
 	<rich:spacer height="8"/>
-	<rich:separator lineType="dotted" height="1" width="1000"/>
+	<rich:separator lineType="dotted" height="1" width="870px"/>
 	
 	<center>
 	<h:commandButton action="#{userManagementBean.salva}" rendered="#{userManagementBean.firstAccess}" image="/view/images/save.png" title="#{msg.personaldata_save}" value="#{msg.personaldata_save}"/>

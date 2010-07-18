@@ -9,7 +9,7 @@
 <h:form id="formMyLists">
 <h:panelGrid columns="2">
 	<h:column>
-		<a4j:commandLink value="#{msg.mylists_create}" styleClass="letras" rendered="true"/>
+		<a4j:commandLink value="#{msg.mylists_create}" styleClass="letras" rendered="true" style="align:center;"/>
 		<h:outputText value="#{msg.mylists_mylists}" styleClass="letras" rendered="false"/>
 	</h:column>
 	<h:column>
@@ -40,34 +40,34 @@
 	</h:column>
 </h:panelGrid>
 		<center>
-			<h:panelGrid id="resultDataTable" rendered="true" columns="1">
+			<h:panelGrid id="resultDataTable" rendered="true" columns="1" width="900px">
 				<h:column>
-					<rich:extendedDataTable width="1000" height="300" rows="5" var="produto">
-						<rich:column sortable="false" width="140">
+					<rich:extendedDataTable width="900px" height="300" rows="5" var="produto">
+						<rich:column sortable="false" width="100">
 							<f:facet name="header">
 								<h:outputText value="#{msg.default_producttable_image}"/>
 							</f:facet>
 							<h:graphicImage value="Img nao disponivel"/>
 						</rich:column>
-						<rich:column width="400">
+						<rich:column width="500">
 								<f:facet name="header">
 									<h:outputText value="#{msg.default_producttable_description}"/>
 								</f:facet>
 							<h:outputText value="Bombom"/>
 						</rich:column>
-						<rich:column width="130">
+						<rich:column width="80">
 							<f:facet name="header">
 								<h:outputText value="#{msg.default_producttable_measure}" />
 							</f:facet>
 							<h:outputText value="KG"/>
 						</rich:column>
-						<rich:column width="130">
+						<rich:column width="80">
 							<f:facet name="header">
 								<h:outputText value="#{msg.default_producttable_pack}"/>
 							</f:facet>
 							<h:outputText value="2 KG"/>
 						</rich:column>
-						<rich:column width="200">
+						<rich:column width="140">
 							<f:facet name="header">
 								<h:outputText value="#{msg.mylist_producttable_add}"/>
 							</f:facet>
