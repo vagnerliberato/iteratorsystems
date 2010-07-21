@@ -58,8 +58,7 @@ public class UserManagementBean {
 	 * Bean default.
 	 */
 	public UserManagementBean() {
-		this.parametrizacao = 
-						obtemParametrizacao();
+		this.parametrizacao = obtemParametrizacao();
 		passaOuRepassa();
 	}
 
@@ -68,8 +67,7 @@ public class UserManagementBean {
 	 * @return  Classe de parametrização.
 	 */
 	private PARAMETRIZACAO_CPS obtemParametrizacao() {
-		PARAMETRIZACAO_CPS parametrizacao = (PARAMETRIZACAO_CPS) 
-					context.getExternalContext().getApplicationMap().get("parametrizacao");
+		PARAMETRIZACAO_CPS parametrizacao = (PARAMETRIZACAO_CPS) context.getExternalContext().getApplicationMap().get("parametrizacao");
 		return parametrizacao;
 	}
 	

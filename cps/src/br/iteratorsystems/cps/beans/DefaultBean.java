@@ -37,12 +37,7 @@ public class DefaultBean {
 	 */
 	public DefaultBean() {
 		
-		PARAMETRIZACAO_CPS parametrizacao = 
-			(PARAMETRIZACAO_CPS) 
-				FacesContext.getCurrentInstance().
-				getExternalContext().getApplicationMap().
-				get("parametrizacao");
-		
+		PARAMETRIZACAO_CPS parametrizacao =	(PARAMETRIZACAO_CPS) FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().get("parametrizacao");
 		parametrizarBusca(parametrizacao);
 	}
 	
@@ -51,8 +46,11 @@ public class DefaultBean {
 	 * @param parametrizacao - Classe de parametrização.
 	 */
 	private void parametrizarBusca(PARAMETRIZACAO_CPS parametrizacao) {
-		this.setNumeroMaximoItensCarrinho(
-					Integer.parseInt(parametrizacao.getNumMaxItensLista().trim()));
+		int maximoItensCarrinho = 100;
+		if(parametrizacao != null){
+		  maximoItensCarrinho = Integer.parseInt(parametrizacao.getNumMaxItensLista().trim());
+		}
+		this.setNumeroMaximoItensCarrinho(maximoItensCarrinho);
 	}
 	
 	/**
