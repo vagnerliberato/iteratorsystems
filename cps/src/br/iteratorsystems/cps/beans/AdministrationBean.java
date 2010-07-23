@@ -4,12 +4,16 @@ import java.util.List;
 
 import javax.faces.model.SelectItem;
 
+import org.hibernate.Session;
 import org.richfaces.component.html.HtmlDataTable;
 
 import br.iteratorsystems.cps.common.CommonOperations;
 import br.iteratorsystems.cps.common.FacesUtil;
 import br.iteratorsystems.cps.common.FindAddress;
 import br.iteratorsystems.cps.common.Resources;
+import br.iteratorsystems.cps.config.HibernateConfig;
+import br.iteratorsystems.cps.dao.LojaDao;
+import br.iteratorsystems.cps.dao.RedeDao;
 import br.iteratorsystems.cps.entities.LOGIN;
 import br.iteratorsystems.cps.entities.LOJA;
 import br.iteratorsystems.cps.entities.REDE;
@@ -59,12 +63,20 @@ public class AdministrationBean {
 			new SelectItem(3,"Gerenciar Redes Cadastradas"),
 	};
 
+	Session session = HibernateConfig.getSession();
+	RedeDao redeDao = new RedeDao(REDE.class, session);
+	LojaDao lojaDao = new LojaDao(LOJA.class, session);
+	
 	public AdministrationBean() {}
 	
 	public void cadastrarRede() throws CpsGeneralExceptions{
-		if(this.getNomeRede() == null || this.getNomeRede().equals("")) return;
+		if(this.getNomeRede() == null || this.getNomeRede().equals("")){ 
+			return;
+		}
+		
 		administrationHandler  = new AdministrationHandler();
 		redeEntity = new REDE();
+		
 		try{
 			redeEntity.setNome(this.getNomeRede());
 			administrationHandler.saveNewRede(redeEntity);
@@ -90,24 +102,14 @@ public class AdministrationBean {
 		if(this.getNomeRede() == null || "".equals(this.getNomeRede())){
 			return;
 		}
-		administrationHandler = new AdministrationHandler();
-		try{
-			listRedes = administrationHandler.getAllRedes(this.getNomeRede());
-		}catch (CpsHandlerException e) {
-			throw new CpsGeneralExceptions(e);
-		}
+		listRedes = redeDao.obterPorNome(this.getNomeRede());
 	}
 	
 	public void getLojasByName() throws CpsGeneralExceptions{
 		if(this.getNomeLoja() == null || "".equals(this.getNomeLoja())){
 			return;
 		}
-		administrationHandler = new AdministrationHandler();
-		try{
-			listLojas = administrationHandler.getAllLojas(this.getNomeLoja());
-		}catch (CpsHandlerException e) {
-			throw new CpsGeneralExceptions(e);
-		}
+		listLojas = lojaDao.obterLojaPorNomeFantasia(this.getNomeLoja());
 	}
 	
 	public void cnpjOk(){
@@ -134,19 +136,14 @@ public class AdministrationBean {
 
 	public SelectItem[] getAllRedes() throws CpsGeneralExceptions{
 		int index = 0;
-		try{
-			administrationHandler = new AdministrationHandler();
-			List<REDE> list = administrationHandler.getAllRedes();
-			redes = new SelectItem[list.size()+1];
-			redes[index] = new SelectItem(0,"Selecione...");;
-			for(REDE rede: list){
-				index ++;
-				redes[index] = new SelectItem(rede.getId(),rede.getNome());
-			}
-			return redes;
-		}catch (CpsHandlerException e) {
-			throw new CpsGeneralExceptions(e);
+		List<REDE> todasRedes = redeDao.listarTodos();
+		redes = new SelectItem[todasRedes.size()+1];
+		redes[index] = new SelectItem(0,"Selecione...");;
+		for(REDE rede: todasRedes){
+			index ++;
+			redes[index] = new SelectItem(rede.getId(),rede.getNome());
 		}
+		return redes;
 	}
 
 	public void selectOperation() {
@@ -262,48 +259,30 @@ public class AdministrationBean {
 			FacesUtil.errorMessage("", Resources.getErrorProperties().getString("rede_invalid_name"),"nome de rede vazio");
 			return;
 		}
-		try{
-			administrationHandler = new AdministrationHandler();
-			administrationHandler.updateRede(this.getRedeEntity());
-			this.setNomeRede("");
-		}catch (CpsHandlerException e) {
-			throw new CpsGeneralExceptions(e);
-		}
+		redeDao.update(this.getRedeEntity());
+		this.setNomeRede("");
 	}
 	
 	public void atualizaLoja() throws CpsGeneralExceptions{
 		if(!this.isCnpj_valido()){
 			return;
 		}
-		administrationHandler = new AdministrationHandler();
-		try {
-			administrationHandler.updateLoja(this.getLojaEntity());
-			this.limpaCampos();
-			this.setMostrarLojaUpd(false);
-		} catch (CpsHandlerException e) {
-			throw new CpsGeneralExceptions(e);
-		}
+		lojaDao.update(this.getLojaEntity());
+		this.limpaCampos();
+		this.setMostrarLojaUpd(false);
 	}
 	public void excluirRede() throws CpsGeneralExceptions{
-		administrationHandler = new AdministrationHandler();
 		this.setRedeEntity((REDE) this.getRedesDataTable().getRowData());
-		try {
-			this.listRedes.remove(this.getRedeEntity());
-			administrationHandler.excluirRede(this.getRedeEntity());
-		} catch (CpsHandlerException e) {
-			throw new CpsGeneralExceptions(e);
-		}
+		this.listRedes.remove(this.getRedeEntity());
+		
+		redeDao.excluir(this.getRedeEntity());
 	}
 
 	public void excluirLoja() throws CpsGeneralExceptions{
-		administrationHandler = new AdministrationHandler();
 		this.setLojaEntity((LOJA) this.getLojasDataTable().getRowData());
-		try {
-			this.listLojas.remove(this.getLojaEntity());
-			administrationHandler.excluirLoja(this.getLojaEntity());
-		} catch (CpsHandlerException e) {
-			throw new CpsGeneralExceptions(e);
-		}
+		this.listLojas.remove(this.getLojaEntity());
+		
+		lojaDao.excluir(this.getLojaEntity());
 	}
 	
 	private void limpaCampos() {
