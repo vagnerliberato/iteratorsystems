@@ -26,8 +26,9 @@ public class PRODUTOGERAL implements java.io.Serializable, EntityAble {
 	private String unidadeMedida;
 	private String embalagem;
 	private Character status;
-	private Set<LISTAPRODUTOITEM> listaProdutoItems = new HashSet<LISTAPRODUTOITEM>(
-			0);
+	private Character imagem;
+	private Set<LISTAPRODUTOITEM> listaProdutoItems = 
+							new HashSet<LISTAPRODUTOITEM>(0);
 
 	public PRODUTOGERAL() {
 	}
@@ -102,12 +103,16 @@ public class PRODUTOGERAL implements java.io.Serializable, EntityAble {
 	public void setListaProdutoItems(Set<LISTAPRODUTOITEM> listaProdutoItems) {
 		this.listaProdutoItems = listaProdutoItems;
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#hashCode()
-	 */
+	
+	@Column(name="possui_imagem", length = 1)
+	public Character getImagem() {
+		return imagem;
+	}
+	
+	public void setImagem(Character imagem) {
+		this.imagem = imagem;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -119,16 +124,12 @@ public class PRODUTOGERAL implements java.io.Serializable, EntityAble {
 		result = prime * result
 				+ ((embalagem == null) ? 0 : embalagem.hashCode());
 		result = prime * result + ((status == null) ? 0 : status.hashCode());
+		result = prime * result + ((imagem == null) ? 0 : imagem.hashCode());
 		result = prime * result
 				+ ((unidadeMedida == null) ? 0 : unidadeMedida.hashCode());
 		return result;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -169,6 +170,13 @@ public class PRODUTOGERAL implements java.io.Serializable, EntityAble {
 		} else if (!status.equals(other.status)) {
 			return false;
 		}
+		if (imagem == null) {
+			if (other.imagem != null) {
+				return false;
+			}
+		} else if (!status.equals(other.status)) {
+			return false;
+		}
 		if (unidadeMedida == null) {
 			if (other.unidadeMedida != null) {
 				return false;
@@ -179,15 +187,10 @@ public class PRODUTOGERAL implements java.io.Serializable, EntityAble {
 		return true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
 	@Override
 	public String toString() {
 		return "PRODUTOGERAL [codigoBarras=" + codigoBarras + ", descricao="
 				+ descricao + ", embalagem=" + embalagem + ", status=" + status
-				+ ", unidadeMedida=" + unidadeMedida + "]";
+				+"iamgem="+imagem+ ", unidadeMedida=" + unidadeMedida + "]";
 	}
 }
