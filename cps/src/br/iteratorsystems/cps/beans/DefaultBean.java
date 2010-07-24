@@ -1,11 +1,12 @@
 package br.iteratorsystems.cps.beans;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.context.FacesContext;
 
-import org.richfaces.component.html.HtmlExtendedDataTable;
+import org.richfaces.component.html.HtmlDataTable;
 
 import br.iteratorsystems.cps.entities.PARAMETRIZACAO_CPS;
 import br.iteratorsystems.cps.entities.PRODUTOGERAL;
@@ -21,24 +22,38 @@ import br.iteratorsystems.cps.to.ProdutoTO;
  */
 public class DefaultBean {
 	
+	private static final String VARIAVEL_FOTO = "image?file=";
+	private static final String VARIAVEL_CAMINHO_FOTO = "&amp;dir=";
+	private static final String TIPO_IMAGEM = ".jpg";
+	
 	private BuscaProdutoHandler buscaProdutoHandler;
 	private String produtoDigitado;
 	private String nomeModalQuantidade;
+	private String diretorioImagem;
+	private Integer numeroMaximoItensCarrinho;
 	private List<ProdutoTO> listaProdutoTO;
 	private List<ProdutoTO> produtosCarrinho = new ArrayList<ProdutoTO>();
 	private ProdutoTO produtoCarrinhoSelecionado;
-	private HtmlExtendedDataTable listaProdutosDataTable;
+	private HtmlDataTable listaProdutosDataTable;
 	private boolean showQuantidade;
-	//TODO implementar o lock da lista.
-	private Integer numeroMaximoItensCarrinho;
+	private boolean nenhumRegistroEncontrado;
 	
 	/**
 	 * Construtor padrão.
 	 */
 	public DefaultBean() {
-		
-		PARAMETRIZACAO_CPS parametrizacao =	(PARAMETRIZACAO_CPS) FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().get("parametrizacao");
-		parametrizarBusca(parametrizacao);
+		parametrizarBusca(obterParametrizacao());
+	}
+	
+	/**
+	 * Obtém a parametrização do sistema
+	 * @return Classe de parametrização do sistema.
+	 */
+	private PARAMETRIZACAO_CPS obterParametrizacao() {
+		PARAMETRIZACAO_CPS parametrizacao = (PARAMETRIZACAO_CPS) FacesContext
+				.getCurrentInstance().getExternalContext().getApplicationMap()
+				.get("parametrizacao");
+		return parametrizacao;
 	}
 	
 	/**
@@ -46,11 +61,9 @@ public class DefaultBean {
 	 * @param parametrizacao - Classe de parametrização.
 	 */
 	private void parametrizarBusca(PARAMETRIZACAO_CPS parametrizacao) {
-		int maximoItensCarrinho = 100;
-		if(parametrizacao != null){
-		  maximoItensCarrinho = Integer.parseInt(parametrizacao.getNumMaxItensLista().trim());
-		}
-		this.setNumeroMaximoItensCarrinho(maximoItensCarrinho);
+		this.setNumeroMaximoItensCarrinho(
+					Integer.parseInt(parametrizacao.getNumMaxItensLista().trim()));
+		this.setDiretorioImagem(parametrizacao.getDiretorioImagensProCps());
 	}
 	
 	/**
@@ -62,20 +75,50 @@ public class DefaultBean {
 		buscaProdutoHandler = new BuscaProdutoHandler();
 		List<PRODUTOGERAL> listaTemp = null;
 		listaProdutoTO = new ArrayList<ProdutoTO>(1);
-		
+		//image?file=imagem.jpg&amp;dir=c:cps_imagens_produtos
 		try{
 			listaTemp = 
 				buscaProdutoHandler.buscaProduto(this.getProdutoDigitado());
 			
+			if(listaTemp.isEmpty()) {
+				this.setNenhumRegistroEncontrado(true);
+			}else{
+				this.setNenhumRegistroEncontrado(false);
+			}
+			
 			for(PRODUTOGERAL produtoGeral : listaTemp) {
-				listaProdutoTO.add(new ProdutoTO(produtoGeral, 1));
+				ProdutoTO produtoTO = new ProdutoTO();
+				produtoTO.setProdutoGeral(produtoGeral);
+				produtoTO.setQuantidadeSelecionada(1);
+				
+				if(produtoGeral.getImagem().toString().equalsIgnoreCase("S")) {
+					produtoTO.setImagem(
+							criarCaminhoFoto(
+									produtoGeral.getCodigoBarras().trim()));
+					produtoTO.setPossuiImagem(true);
+				}
+				listaProdutoTO.add(produtoTO);
 			}
 			
 			listaProdutoTO.removeAll(produtosCarrinho);
-			
 		}catch (CpsHandlerException e) {
 			throw new CpsGeneralExceptions(e);
 		}
+	}
+	
+	/**
+	 * Cria a String com o caminho da imagem na pasta.
+	 * @param codigoProduto - Código do produto para ser usado na busca.
+	 * @return Caminho concatenado com o nome do arquivo.
+	 */
+	private String criarCaminhoFoto(final String codigoProduto) {
+		StringBuilder builder = new StringBuilder();
+		builder.append(VARIAVEL_FOTO);
+		builder.append(codigoProduto);
+		builder.append(TIPO_IMAGEM);
+		builder.append(VARIAVEL_CAMINHO_FOTO);
+		builder.append(getDiretorioImagem().replace(File.separator,""));
+		return builder.toString();
 	}
 	
 	/**
@@ -84,18 +127,26 @@ public class DefaultBean {
 	public void adicionarCarrinho() {
 		ProdutoTO produtoSelecionado  = (ProdutoTO) this.listaProdutosDataTable.getRowData();
 		int quantidadeSelecionada = produtoSelecionado.getQuantidadeSelecionada();
-		
+		nomeModalQuantidade = "";
 		if(quantidadeSelecionada < 1) {
-			nomeModalQuantidade = "modalInfoQuantidade.show();";
+			nomeModalQuantidade = "Richfaces.showModalPanel('modalInfoQuantidade');";
 		}else {
-			nomeModalQuantidade = "";
-			if(!produtosCarrinho.contains(produtoSelecionado)) {
-				produtosCarrinho.add(produtoSelecionado);
-				listaProdutoTO.remove(produtoSelecionado);
+			if(produtosCarrinho.size() +1 > getNumeroMaximoItensCarrinho()) {
+				nomeModalQuantidade = "Richfaces.showModalPanel('modalQuantidadeCarrinho');";
+			}else {
+				if(!produtosCarrinho.contains(produtoSelecionado)) {
+					produtosCarrinho.add(produtoSelecionado);
+					listaProdutoTO.remove(produtoSelecionado);
+				}
 			}
 		}
 	}
 	
+	/**
+	 * Obtem a lista de sugestões com base no que foi digitado pelo usuário.
+	 * @param obj - palavra digitada pelo usuário.
+	 * @return Lista de sugestões.
+	 */
 	public List<String> recuperarAutoComplete(Object obj) {
 		List<String> listaDadosTemp = new ArrayList<String>();
 		List<String> listaNomeProdutoTemp = new ArrayList<String>();
@@ -208,14 +259,14 @@ public class DefaultBean {
 	/**
 	 * @return the listaProdutosDataTable
 	 */
-	public HtmlExtendedDataTable getListaProdutosDataTable() {
+	public HtmlDataTable getListaProdutosDataTable() {
 		return listaProdutosDataTable;
 	}
 
 	/**
 	 * @param listaProdutosDataTable the listaProdutosDataTable to set
 	 */
-	public void setListaProdutosDataTable(HtmlExtendedDataTable listaProdutosDataTable) {
+	public void setListaProdutosDataTable(HtmlDataTable listaProdutosDataTable) {
 		this.listaProdutosDataTable = listaProdutosDataTable;
 	}
 
@@ -259,6 +310,34 @@ public class DefaultBean {
 	 */
 	public Integer getNumeroMaximoItensCarrinho() {
 		return numeroMaximoItensCarrinho;
+	}
+
+	/**
+	 * @param nenhumRegistroEncontrado the nenhumRegistroEncontrado to set
+	 */
+	public void setNenhumRegistroEncontrado(boolean nenhumRegistroEncontrado) {
+		this.nenhumRegistroEncontrado = nenhumRegistroEncontrado;
+	}
+
+	/**
+	 * @return the nenhumRegistroEncontrado
+	 */
+	public boolean isNenhumRegistroEncontrado() {
+		return nenhumRegistroEncontrado;
+	}
+
+	/**
+	 * @param diretorioImagem the diretorioImagem to set
+	 */
+	public void setDiretorioImagem(String diretorioImagem) {
+		this.diretorioImagem = diretorioImagem;
+	}
+
+	/**
+	 * @return the diretorioImagem
+	 */
+	public String getDiretorioImagem() {
+		return diretorioImagem;
 	}
 
 }
