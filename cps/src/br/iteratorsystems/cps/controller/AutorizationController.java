@@ -14,7 +14,7 @@ public class AutorizationController implements PhaseListener{
 	private static final long serialVersionUID = -6821434785199313719L;
 	private static final String LOGINBEANEL = "loginUserBean";
 	private static final String NAVLOGIN = "toLoginPage";
-	
+	private static final String DIRETORIO_IMAGENS = "/view/images/";
 	private static final String[] pagesOk = {"/view/default.jsf","/view/pages/myCar.jsf",
 											   "/view/pages/addFilters.jsf","/view/pages/userAccess.jsf"};
 	
@@ -22,8 +22,11 @@ public class AutorizationController implements PhaseListener{
 		FacesContext context = event.getFacesContext();
 		
 		for(String s : pagesOk){
-			if (context.getViewRoot().getViewId().equals(s))
+			if (context.getViewRoot().getViewId().equals(s)
+					|| context.getViewRoot().getViewId().contains(DIRETORIO_IMAGENS)) {
+				
 				return;
+			}
 		}
 		
 		ELResolver el = context.getApplication().getELResolver();
