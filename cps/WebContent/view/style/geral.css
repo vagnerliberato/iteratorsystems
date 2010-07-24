@@ -169,3 +169,11 @@ body {
 	white-space: nowrap;
 	color: red;
 }
+.nenhumResultado {
+	font-size: 13pt;
+	font-family: Verdana;
+	white-space: nowrap;
+	color: red;
+	font-weight: normal;
+	letter-spacing: normal;
+}
