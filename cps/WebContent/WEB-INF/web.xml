@@ -86,4 +86,15 @@
 		<param-name>primefaces.skin</param-name>
 		<param-value>none</param-value>
 	</context-param>
+	
+	<!-- Redirecionamento de imagens -->
+	<servlet>
+		<servlet-name>Image Servlet</servlet-name>
+		<servlet-class>br.iteratorsystems.cps.servlet.ImageServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+		<servlet-mapping>
+			<servlet-name>Image Servlet</servlet-name>
+			<url-pattern>/faces/view/image/*</url-pattern>
+	</servlet-mapping>
 </web-app>
