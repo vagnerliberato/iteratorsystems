@@ -51,7 +51,6 @@ public class LISTAPRODUTO  implements java.io.Serializable {
     }
    
      @Id 
-    
     @Column(name="id_lista", unique=true, nullable=false)
     public Integer getIdLista() {
         return this.idLista;
