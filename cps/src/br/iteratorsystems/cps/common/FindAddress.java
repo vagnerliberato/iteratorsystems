@@ -12,7 +12,7 @@ import br.iteratorsystems.cps.enums.EEstados;
 import br.iteratorsystems.cps.exceptions.FindAddressException;
 
 /**
- * Classe que faz a comunicação com o webService de CEP. No momento está feita para interagir com 
+ * Classe que faz a comunicação com o webService de Tabelas_Cep. No momento está feita para interagir com 
  * 2 tipos de webServices diferentes, um do site www.buscarcep.com.br e o outro do site cep.republicavirtual.com.br
  * Por enquanto ficará assim com os dois. Assim que as chamadas de cep á nossa base de dados estiver funcionando,
  * o www.buscarcep.com.br será retirado.
@@ -73,7 +73,7 @@ public class FindAddress {
 		String[] resultado = semHtml.split("  ");
 		
 		if(resultado.length!=8){
-			throw new FindAddressException("CEP não encontrado");
+			throw new FindAddressException("Tabelas_Cep não encontrado");
 		}
 		
 		this.setEstadoSigla(resultado[3]);
