@@ -5,7 +5,7 @@ import java.util.List;
 import org.hibernate.Session;
 
 import br.iteratorsystems.cps.config.HibernateConfig;
-import br.iteratorsystems.cps.entities.LOCALIDADE;
+import br.iteratorsystems.cps.entities.Tabelas_Localidade;
 
 public class TestHibernateCrudContatoLocalidade extends HibernateConfig {
 
@@ -17,9 +17,9 @@ public class TestHibernateCrudContatoLocalidade extends HibernateConfig {
 	private void get() {
 
 		Session session = getSession();
-		List<LOCALIDADE> localidades = session.createCriteria(LOCALIDADE.class).list();
+		List<Tabelas_Localidade> localidades = session.createCriteria(Tabelas_Localidade.class).list();
 		
-		for (LOCALIDADE localidade : localidades) {
+		for (Tabelas_Localidade localidade : localidades) {
 			System.out.println(localidade.getLocalidade());
 		}
 	}

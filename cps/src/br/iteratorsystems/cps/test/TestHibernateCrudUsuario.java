@@ -4,9 +4,9 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
 import br.iteratorsystems.cps.config.HibernateConfig;
-import br.iteratorsystems.cps.entities.ENDERECO;
-import br.iteratorsystems.cps.entities.LOGIN;
-import br.iteratorsystems.cps.entities.USUARIO;
+import br.iteratorsystems.cps.entities.Tabelas_Endereco;
+import br.iteratorsystems.cps.entities.Tabelas_Login;
+import br.iteratorsystems.cps.entities.Tabelas_Usuario;
 import br.iteratorsystems.cps.exceptions.CpsHandlerException;
 import br.iteratorsystems.cps.handler.LoginUserHandler;
 
@@ -15,12 +15,12 @@ public class TestHibernateCrudUsuario extends HibernateConfig{
 	
 	public void get() throws CpsHandlerException{
 		Session session = getSession();
-		USUARIO result =  new LoginUserHandler().getUserRelated(new Integer(3));//(USUARIO) session.createCriteria(USUARIO.class).add(Restrictions.eq("idUsuario",new Integer(3))).uniqueResult();
+		Tabelas_Usuario result =  new LoginUserHandler().getUserRelated(new Integer(3));//(Tabelas_Usuario) session.createCriteria(Tabelas_Usuario.class).add(Restrictions.eq("idUsuario",new Integer(3))).uniqueResult();
 		System.out.println(result);
-		for(ENDERECO e : result.getEnderecos()){
+		for(Tabelas_Endereco e : result.getEnderecos()){
 			System.out.println(e);
 		}
-		for(LOGIN l : result.getLogins()){
+		for(Tabelas_Login l : result.getLogins()){
 			System.out.println(l);
 		}
 	}

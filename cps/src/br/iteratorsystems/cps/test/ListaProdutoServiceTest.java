@@ -17,11 +17,11 @@ import org.junit.Test;
 import org.mockito.Mock;
 
 import br.iteratorsystems.cps.dao.ListaProdutoDao;
-import br.iteratorsystems.cps.entities.ENDERECO;
-import br.iteratorsystems.cps.entities.LISTAPRODUTO;
-import br.iteratorsystems.cps.entities.LISTAPRODUTOITEM;
-import br.iteratorsystems.cps.entities.PRODUTOGERAL;
-import br.iteratorsystems.cps.entities.USUARIO;
+import br.iteratorsystems.cps.entities.Tabelas_Endereco;
+import br.iteratorsystems.cps.entities.Tabelas_ListaProduto;
+import br.iteratorsystems.cps.entities.Tabelas_ListaProdutoItem;
+import br.iteratorsystems.cps.entities.Tabelas_ProdutoGeral;
+import br.iteratorsystems.cps.entities.Tabelas_Usuario;
 import br.iteratorsystems.cps.exceptions.CpsDaoException;
 import br.iteratorsystems.cps.service.ListaProdutoService;
 
@@ -40,21 +40,21 @@ public class ListaProdutoServiceTest {
 	
 	@Test
 	public void devePopularListaProdutoItemEhSalvarListaDeProduto() throws Exception, CpsDaoException{
-		Set<LISTAPRODUTOITEM> listaProdutoItens = new HashSet<LISTAPRODUTOITEM>();
-		Set<LISTAPRODUTO> listaProdutos = new HashSet<LISTAPRODUTO>();
+		Set<Tabelas_ListaProdutoItem> listaProdutoItens = new HashSet<Tabelas_ListaProdutoItem>();
+		Set<Tabelas_ListaProduto> listaProdutos = new HashSet<Tabelas_ListaProduto>();
 		
-		USUARIO usuario = popularUsuario(listaProdutos);
-		LISTAPRODUTO listaProduto = popularListaProduto(usuario, listaProdutoItens);
-		PRODUTOGERAL produtoGeral1 = popularProdutoGeral(listaProdutoItens, "121231", "Vagner mané", "12", "KG");
-		PRODUTOGERAL produtoGeral2 = popularProdutoGeral(listaProdutoItens, "777777", "Ronald sonso", "24", "LT");
+		Tabelas_Usuario usuario = popularUsuario(listaProdutos);
+		Tabelas_ListaProduto listaProduto = popularListaProduto(usuario, listaProdutoItens);
+		Tabelas_ProdutoGeral produtoGeral1 = popularProdutoGeral(listaProdutoItens, "121231", "Vagner mané", "12", "KG");
+		Tabelas_ProdutoGeral produtoGeral2 = popularProdutoGeral(listaProdutoItens, "777777", "Ronald sonso", "24", "LT");
 		
-		List<PRODUTOGERAL> produtosGerais = new ArrayList<PRODUTOGERAL>();
+		List<Tabelas_ProdutoGeral> produtosGerais = new ArrayList<Tabelas_ProdutoGeral>();
 		produtosGerais.add(produtoGeral1);
 		produtosGerais.add(produtoGeral2);
 		
 		HashMap<String, Integer> quantidadePorProduto = popularQuantidadesPorProduto(produtosGerais);
 		
-		LISTAPRODUTO listaDeProdutos = listaProdutoService.salvarListaDeProdutos(1, listaProduto, produtosGerais, quantidadePorProduto);
+		Tabelas_ListaProduto listaDeProdutos = listaProdutoService.salvarListaDeProdutos(1, listaProduto, produtosGerais, quantidadePorProduto);
 		
 		assertEquals("listaTeste", listaDeProdutos.getNomeLista());
 		assertEquals(1, listaDeProdutos.getIdLista(), 0.0001);
@@ -68,25 +68,25 @@ public class ListaProdutoServiceTest {
 	}
 
 	private Integer obterQuantidadeTotalDosProdutosHaSeremSalvos(
-			LISTAPRODUTO listaDeProdutos) {
+			Tabelas_ListaProduto listaDeProdutos) {
 		Integer quantidadeTotalDeProdutosHaSerSalvo = 0;
-		for (LISTAPRODUTOITEM listaProdutoItem : listaDeProdutos.getListaProdutoItems()) {
+		for (Tabelas_ListaProdutoItem listaProdutoItem : listaDeProdutos.getListaProdutoItems()) {
 			quantidadeTotalDeProdutosHaSerSalvo += listaProdutoItem.getQuantidade();
 		}
 		return quantidadeTotalDeProdutosHaSerSalvo;
 	}
 
 	private HashMap<String, Integer> popularQuantidadesPorProduto(
-			List<PRODUTOGERAL> produtosGerais) {
+			List<Tabelas_ProdutoGeral> produtosGerais) {
 		HashMap<String, Integer> quantidadePorProduto = new HashMap<String, Integer>();
-		for (PRODUTOGERAL produtogeral : produtosGerais) {
+		for (Tabelas_ProdutoGeral produtogeral : produtosGerais) {
 			quantidadePorProduto.put(produtogeral.getCodigoBarras(), Integer.parseInt(produtogeral.getEmbalagem()));
 		}
 		return quantidadePorProduto;
 	}
 	
-	private LISTAPRODUTO popularListaProduto(final USUARIO usuario, final Set<LISTAPRODUTOITEM> listaProdutoItems){
-		LISTAPRODUTO listaProduto = new LISTAPRODUTO();
+	private Tabelas_ListaProduto popularListaProduto(final Tabelas_Usuario usuario, final Set<Tabelas_ListaProdutoItem> listaProdutoItems){
+		Tabelas_ListaProduto listaProduto = new Tabelas_ListaProduto();
 		listaProduto.setNomeLista("listaTeste");
 		listaProduto.setIdLista(1);
 		listaProduto.setDataCriacao(new Date());
@@ -96,15 +96,15 @@ public class ListaProdutoServiceTest {
 		return listaProduto;
 	}
 
-	private USUARIO popularUsuario(final Set<LISTAPRODUTO> listaProdutos) {
-		USUARIO usuario = new USUARIO();
+	private Tabelas_Usuario popularUsuario(final Set<Tabelas_ListaProduto> listaProdutos) {
+		Tabelas_Usuario usuario = new Tabelas_Usuario();
 		usuario.setCpfUsuario("11111111111");
 		usuario.setDataNascimento(new Date());
 		usuario.setDataultimamodificacao(new Date());
 		usuario.setDddCel("11");
 		usuario.setDddRes("35");
 		usuario.setEmail("cpsiteratorsystems@iteratrsystems.com.br");
-		usuario.setEnderecos(new HashSet<ENDERECO>());
+		usuario.setEnderecos(new HashSet<Tabelas_Endereco>());
 		usuario.setIdUsuario(10);
 		usuario.setListaProdutos(listaProdutos);
 		usuario.setLogins(null);
@@ -117,8 +117,8 @@ public class ListaProdutoServiceTest {
 		return usuario;
 	}
 
-	private PRODUTOGERAL popularProdutoGeral(final Set<LISTAPRODUTOITEM> listaProdutoItems, String codigoBarras, String descricao, String embalagem, String unidadeMedida) {
-		PRODUTOGERAL produtogeral = new PRODUTOGERAL();
+	private Tabelas_ProdutoGeral popularProdutoGeral(final Set<Tabelas_ListaProdutoItem> listaProdutoItems, String codigoBarras, String descricao, String embalagem, String unidadeMedida) {
+		Tabelas_ProdutoGeral produtogeral = new Tabelas_ProdutoGeral();
 		produtogeral.setCodigoBarras(codigoBarras);
 		produtogeral.setDescricao(descricao);
 		produtogeral.setEmbalagem(embalagem );
