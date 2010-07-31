@@ -4,9 +4,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import br.iteratorsystems.cps.dao.DaoLogin;
-import br.iteratorsystems.cps.entities.ENDERECO;
-import br.iteratorsystems.cps.entities.LOGIN;
-import br.iteratorsystems.cps.entities.USUARIO;
+import br.iteratorsystems.cps.entities.Tabelas_Endereco;
+import br.iteratorsystems.cps.entities.Tabelas_Login;
+import br.iteratorsystems.cps.entities.Tabelas_Usuario;
 import br.iteratorsystems.cps.exceptions.CpsDaoException;
 import br.iteratorsystems.cps.exceptions.CpsHandlerException;
 
@@ -15,10 +15,10 @@ public class LoginUserHandler {
 	private static final Log log = LogFactory.getLog(LoginUserHandler.class);
 	private DaoLogin idaoLogin;
 
-	public LOGIN doLogin(final String username, final String password) throws CpsHandlerException {
-		final String message = "getting LOGIN with username: " + username+ ", password: " + password;
+	public Tabelas_Login doLogin(final String username, final String password) throws CpsHandlerException {
+		final String message = "getting Tabelas_Login with username: " + username+ ", password: " + password;
 		log.debug(message);
-		LOGIN login = null;
+		Tabelas_Login login = null;
 		try {
 			idaoLogin = new DaoLogin();
 			login = idaoLogin.get(username, password);
@@ -30,10 +30,25 @@ public class LoginUserHandler {
 		}
 	}
 
-	public USUARIO getUserRelated(final Integer idLogin) throws CpsHandlerException {
-		final String message = "getting USUARIO with idLogin: " + idLogin;
+	public Tabelas_Login getLogin(final Integer id) throws CpsHandlerException{
+		final String message = "getting Tabelas_Login with id: "+id;
 		log.debug(message);
-		USUARIO usuario = null;
+		Tabelas_Login login = null;
+		try {
+			idaoLogin = new DaoLogin();
+			login = idaoLogin.get(id);
+			return login;
+		} catch (CpsDaoException e) {
+			final String errMsg = "error! " + message;
+			log.error(errMsg, e);
+			throw new CpsHandlerException(errMsg, e);
+		}
+	}
+	
+	public Tabelas_Usuario getUserRelated(final Integer idLogin) throws CpsHandlerException {
+		final String message = "getting Tabelas_Usuario with idLogin: " + idLogin;
+		log.debug(message);
+		Tabelas_Usuario usuario = null;
 		try {
 			idaoLogin = new DaoLogin();
 			usuario = idaoLogin.getUsuarioRelated(idLogin);
@@ -45,10 +60,10 @@ public class LoginUserHandler {
 		}
 	}
 
-	public ENDERECO getEnderecoRelated(final Integer idUsuario)	throws CpsHandlerException {
-		final String message = "getting ENDERECO with idUsuario: " + idUsuario;
+	public Tabelas_Endereco getEnderecoRelated(final Integer idUsuario)	throws CpsHandlerException {
+		final String message = "getting Tabelas_Endereco with idUsuario: " + idUsuario;
 		log.debug(message);
-		ENDERECO endereco = null;
+		Tabelas_Endereco endereco = null;
 		try {
 			idaoLogin = new DaoLogin();
 			endereco = idaoLogin.getEnderecoRelated(idUsuario);
