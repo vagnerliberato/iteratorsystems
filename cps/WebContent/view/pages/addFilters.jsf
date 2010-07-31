@@ -24,7 +24,7 @@
 							<h:panelGrid columns="3">
 								<h:column>
 									<h:inputText id="addNewCep" value="#{filtersBean.cep}" maxlength="9" size="11" rendered="true" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold" title="#{msg.personalcontatc_CEP_info}">
-										<rich:jQuery selector="#addNewCep" query="mask('99999-999')" timing="onload" />
+										<rich:jQuery selector="#addNewCep" query="mask('99999-999')" timing="immediate" />
 									</h:inputText>
 									<rich:spacer width="2"/>
 									<h:outputText value="#{msg.personalcontatc_CEP_info}" rendered="true" styleClass="letrasInfo"/>
@@ -110,7 +110,7 @@
 							<h:outputText value="#{msg.addfilters_header_information}" styleClass="letrasAba"/>
 						</h:panelGroup>
 					</f:facet>
-					<h:panelGrid columns="5">
+					<h:panelGrid columns="4">
 						<h:column>
 							<rich:panel>
 								<f:facet name="header">
@@ -119,7 +119,7 @@
 									<h:outputText value="#{msg.addfilters_filtersbox_price}" styleClass="letrasAbaB"/>
 									</h:panelGroup>
 								</f:facet>
-								<h:selectBooleanCheckbox/>
+								<h:selectBooleanCheckbox value="#{filtersBean.buscarPeloMenorPreco}"/>
 								<rich:spacer width="3"/>
 								<h:outputText value="#{msg.addfilters_select}" styleClass="letrasInfo"/>
 								<rich:toolTip followMouse="true" layout="block" mode="ajax" direction="top-right">
@@ -147,7 +147,7 @@
 									<h:outputText value="#{msg.addfilters_filtersbox_distance}" styleClass="letrasAbaB"/>
 									</h:panelGroup>
 								</f:facet>
-								<h:selectBooleanCheckbox/>
+								<h:selectBooleanCheckbox value="#{filtersBean.buscarPelaMenorDistancia}"/>
 								<rich:spacer width="3"/>
 								<h:outputText value="#{msg.addfilters_select}" styleClass="letrasInfo"/>
 								<rich:toolTip followMouse="true" layout="block" mode="ajax" direction="top-right">
@@ -159,30 +159,6 @@
 									<br />
 									<strong>
 										<h:outputText value="#{msg.addfilters_tip_distance_4}"/>
-									</strong>
-								</rich:toolTip>
-							</rich:panel>
-						</h:column>
-						<h:column>
-							<rich:panel>
-								<f:facet name="header">
-									<h:panelGroup>
-									<h:graphicImage url="/view/images/delivery.png"/>
-									<h:outputText value="#{msg.addfilters_filtersbox_delivery}" styleClass="letrasAbaB"/>
-									</h:panelGroup>
-								</f:facet>
-								<h:selectBooleanCheckbox/>
-								<rich:spacer width="3"/>
-								<h:outputText value="#{msg.addfilters_select}" styleClass="letrasInfo"/>
-								<rich:toolTip followMouse="true" layout="block" mode="ajax" direction="top-right">
-									<h:outputText value="#{msg.addfilters_tip_delivery_1}"/>
-									<br />
-									<h:outputText value="#{msg.addfilters_tip_delivery_2}"/>
-									<br />
-									<h:outputText value="#{msg.addfilters_tip_delivery_3}"/>
-									<br />
-									<strong>
-									<h:outputText value="#{msg.addfilters_tip_delivery_4}"/>
 									</strong>
 								</rich:toolTip>
 							</rich:panel>

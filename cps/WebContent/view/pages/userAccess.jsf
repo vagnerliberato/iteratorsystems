@@ -18,7 +18,7 @@
 			
 			<h:column></h:column>
 			<h:form id="userAccessForm">
-			<h:column styleClass="user_principal">
+			<h:column>
 					<rich:panel style="width: 280px;">
 						
 						<!-- Cabeçalho do Login. Alterações no CSS Geral.css. Chame pelo ID -->
