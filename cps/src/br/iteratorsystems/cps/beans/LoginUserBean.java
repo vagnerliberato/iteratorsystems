@@ -26,6 +26,12 @@ public class LoginUserBean {
 	private String cep;
 	private boolean logado = false;
 	private boolean firstAccess = false;
+	
+	/**
+	 * Método que valida o login do usuario
+	 * @return
+	 * @throws CpsGeneralExceptions
+	 */
 
 	public String validaLogin() throws CpsGeneralExceptions {
 
@@ -43,6 +49,12 @@ public class LoginUserBean {
 			return "";
 		}
 	}
+	
+	/**
+	 * 
+	 * @return
+	 * @throws CpsGeneralExceptions
+	 */
 	
 	public String novo() throws CpsGeneralExceptions {
 		String regex = "[A-Za-z0-9\\._-]+@[A-Za-z]+\\.[A-Za-z\\.a-zA-Z]+";
@@ -64,6 +76,11 @@ public class LoginUserBean {
 		}
 	}
 	
+	/**
+	 * 
+	 * @return toCadUser
+	 */
+	
 	public String toUserManagerPage() {
 		if (!this.isLogado()) {
 			return NavigationBean.toUserAccess();
@@ -79,11 +96,21 @@ public class LoginUserBean {
 		}
 		return "toCadUser";
 	}
+	
+	/**
+	 * 
+	 * @throws CpsGeneralExceptions
+	 */
 
 	public void getUserData() throws CpsGeneralExceptions {
 		loginHandler = new LoginUserHandler();
 		setUsuario(loginHandler.getUserRelated(login.getIdLogin()));
 	}
+	
+	/**
+	 * 
+	 * @return toLoginPage
+	 */
 	
 	public String logout() {
 		FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -106,18 +133,38 @@ public class LoginUserBean {
 	public void setSenha(String senha) {
 		this.senha = senha;
 	}
+	
+	/**
+	 * 
+	 * @param nomeLogin
+	 */
 
 	public void setNomeLogin(String nomeLogin) {
 		this.nomeLogin = nomeLogin;
 	}
+	
+	/**
+	 * 
+	 * @return nomeLogin
+	 */
 
 	public String getNomeLogin() {
 		return nomeLogin;
 	}
+	
+	/**
+	 * 
+	 * @param logado
+	 */
 
 	public void setLogado(boolean logado) {
 		this.logado = logado;
 	}
+	
+	/**
+	 * 
+	 * @return logado
+	 */
 
 	public boolean isLogado() {
 		return logado;
@@ -137,42 +184,92 @@ public class LoginUserBean {
 	public void setLogin(Tabelas_Login login) {
 		this.login = login;
 	}
+	
+	/**
+	 * 
+	 * @param usuario
+	 */
 
 	public void setUsuario(Tabelas_Usuario usuario) {
 		this.usuario = usuario;
 	}
+	
+	/**
+	 * 
+	 * @return usuario
+	 */
 
 	public Tabelas_Usuario getUsuario() {
 		return usuario;
 	}
+	
+	/**
+	 * 
+	 * @param endereco
+	 */
 
 	public void setEndereco(Tabelas_Endereco endereco) {
 		this.endereco = endereco;
 	}
+	
+	/**
+	 * 
+	 * @return endereco
+	 */
 
 	public Tabelas_Endereco getEndereco() {
 		return endereco;
 	}
+	
+	/**
+	 * 
+	 * @param email
+	 */
 
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	
+	/**
+	 * 
+	 * @return email
+	 */
 
 	public String getEmail() {
 		return email;
 	}
+	
+	/**
+	 * 
+	 * @param cep
+	 */
 
 	public void setCep(String cep) {
 		this.cep = cep;
 	}
+	
+	/**
+	 * 
+	 * @return cep
+	 */
 
 	public String getCep() {
 		return cep;
 	}
+	
+	/**
+	 * 
+	 * @param firstAccess
+	 */
 
 	public void setFirstAccess(boolean firstAccess) {
 		this.firstAccess = firstAccess;
 	}
+	
+	/**
+	 * 
+	 * @return firstAccess
+	 */
 
 	public boolean isFirstAccess() {
 		return firstAccess;
