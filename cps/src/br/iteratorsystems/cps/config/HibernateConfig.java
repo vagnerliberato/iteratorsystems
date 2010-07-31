@@ -42,24 +42,24 @@ public abstract class HibernateConfig {
 	}
 
 	private static void addMappedEntities(AnnotationConfiguration configuration) {
-		configuration.addAnnotatedClass(br.iteratorsystems.cps.entities.BAIRRO.class);
-		configuration.addAnnotatedClass(br.iteratorsystems.cps.entities.BAIRROID.class);
-		configuration.addAnnotatedClass(br.iteratorsystems.cps.entities.CEP.class);
-		configuration.addAnnotatedClass(br.iteratorsystems.cps.entities.ENDERECO.class);
-		configuration.addAnnotatedClass(br.iteratorsystems.cps.entities.LISTAPRODUTO.class);
-		configuration.addAnnotatedClass(br.iteratorsystems.cps.entities.LISTAPRODUTOITEM.class);
-		configuration.addAnnotatedClass(br.iteratorsystems.cps.entities.LOCALIDADE.class);
-		configuration.addAnnotatedClass(br.iteratorsystems.cps.entities.LOGIN.class);
-		configuration.addAnnotatedClass(br.iteratorsystems.cps.entities.LOJA.class);
-		configuration.addAnnotatedClass(br.iteratorsystems.cps.entities.LOJAID.class);
-		configuration.addAnnotatedClass(br.iteratorsystems.cps.entities.PRECO.class);
-		configuration.addAnnotatedClass(br.iteratorsystems.cps.entities.PRECOID.class);
-		configuration.addAnnotatedClass(br.iteratorsystems.cps.entities.PRODUTO.class);
-		configuration.addAnnotatedClass(br.iteratorsystems.cps.entities.PRODUTOGERAL.class);
-		configuration.addAnnotatedClass(br.iteratorsystems.cps.entities.PRODUTOID.class);
-		configuration.addAnnotatedClass(br.iteratorsystems.cps.entities.REDE.class);
-		configuration.addAnnotatedClass(br.iteratorsystems.cps.entities.USUARIO.class);
-		configuration.addAnnotatedClass(br.iteratorsystems.cps.entities.PARAMETRIZACAO_CPS.class);
+		configuration.addAnnotatedClass(br.iteratorsystems.cps.entities.Tabelas_Bairro.class);
+		configuration.addAnnotatedClass(br.iteratorsystems.cps.entities.Tabelas_BairroId.class);
+		configuration.addAnnotatedClass(br.iteratorsystems.cps.entities.Tabelas_Cep.class);
+		configuration.addAnnotatedClass(br.iteratorsystems.cps.entities.Tabelas_Endereco.class);
+		configuration.addAnnotatedClass(br.iteratorsystems.cps.entities.Tabelas_ListaProduto.class);
+		configuration.addAnnotatedClass(br.iteratorsystems.cps.entities.Tabelas_ListaProdutoItem.class);
+		configuration.addAnnotatedClass(br.iteratorsystems.cps.entities.Tabelas_Localidade.class);
+		configuration.addAnnotatedClass(br.iteratorsystems.cps.entities.Tabelas_Login.class);
+		configuration.addAnnotatedClass(br.iteratorsystems.cps.entities.Tabelas_Loja.class);
+		configuration.addAnnotatedClass(br.iteratorsystems.cps.entities.Tabelas_LojaId.class);
+		configuration.addAnnotatedClass(br.iteratorsystems.cps.entities.Tabelas_Preco.class);
+		configuration.addAnnotatedClass(br.iteratorsystems.cps.entities.Tabelas_PrecoId.class);
+		configuration.addAnnotatedClass(br.iteratorsystems.cps.entities.Tabelas_Produto.class);
+		configuration.addAnnotatedClass(br.iteratorsystems.cps.entities.Tabelas_ProdutoGeral.class);
+		configuration.addAnnotatedClass(br.iteratorsystems.cps.entities.Tabelas_ProdutoId.class);
+		configuration.addAnnotatedClass(br.iteratorsystems.cps.entities.Tabelas_Rede.class);
+		configuration.addAnnotatedClass(br.iteratorsystems.cps.entities.Tabelas_Usuario.class);
+		configuration.addAnnotatedClass(br.iteratorsystems.cps.entities.Tabelas_Parametrizacao.class);
 	}
 
 	public static void closeSession() {
