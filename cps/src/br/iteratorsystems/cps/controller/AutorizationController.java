@@ -9,15 +9,25 @@ import javax.faces.event.PhaseListener;
 
 import br.iteratorsystems.cps.beans.LoginUserBean;
 
+/**
+ * Classe de controle de acesso das páginas.
+ * @author André
+ *
+ */
 public class AutorizationController implements PhaseListener{
 
 	private static final long serialVersionUID = -6821434785199313719L;
+	
 	private static final String LOGINBEANEL = "loginUserBean";
 	private static final String NAVLOGIN = "toLoginPage";
 	private static final String DIRETORIO_IMAGENS = "/view/images/";
 	private static final String[] pagesOk = {"/view/default.jsf","/view/pages/myCar.jsf",
 											   "/view/pages/addFilters.jsf","/view/pages/userAccess.jsf"};
 	
+	/**
+	 *After phase.
+	 * @param event - Evento Jsf.
+	 */
 	public void afterPhase(PhaseEvent event) {
 		FacesContext context = event.getFacesContext();
 		
@@ -39,9 +49,17 @@ public class AutorizationController implements PhaseListener{
 		}
 	}
 
-	public void beforePhase(PhaseEvent arg0) {
+	/**
+	 *Before phase.
+	 * @param phase - Evento Jsf.
+	 */
+	public void beforePhase(PhaseEvent phase) {
 	}
-
+	
+	/**
+	 * Retorna um Phase Id
+	 * @return PhaseId Phase id.
+	 */
 	public PhaseId getPhaseId() {
 		return PhaseId.RESTORE_VIEW;
 	}
