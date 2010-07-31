@@ -29,7 +29,7 @@ import br.iteratorsystems.cps.interfaces.EntityAble;
 		@UniqueConstraint(columnNames = "cpf_usuario"),
 		@UniqueConstraint(columnNames = "email") })
 @SequenceGenerator(name = "generatorUsuario", sequenceName = "usuario_id_usuario_seq")
-public class USUARIO implements java.io.Serializable, EntityAble {
+public class Tabelas_Usuario implements java.io.Serializable, EntityAble {
 
 	private static final long serialVersionUID = 8535312626838524292L;
 	private Integer idUsuario;
@@ -45,14 +45,14 @@ public class USUARIO implements java.io.Serializable, EntityAble {
 	private String telRes;
 	private String email;
 	private Date dataultimamodificacao;
-	private Set<LISTAPRODUTO> listaProdutos = new HashSet<LISTAPRODUTO>(0);
-	private Set<LOGIN> logins = new HashSet<LOGIN>(0);
-	private Set<ENDERECO> enderecos = new HashSet<ENDERECO>(0);
+	private Set<Tabelas_ListaProduto> listaProdutos = new HashSet<Tabelas_ListaProduto>(0);
+	private Set<Tabelas_Login> logins = new HashSet<Tabelas_Login>(0);
+	private Set<Tabelas_Endereco> enderecos = new HashSet<Tabelas_Endereco>(0);
 
-	public USUARIO() {
+	public Tabelas_Usuario() {
 	}
 
-	public USUARIO(Integer idUsuario, String nomeUsuario, String sobrenomeUsuario,
+	public Tabelas_Usuario(Integer idUsuario, String nomeUsuario, String sobrenomeUsuario,
 			Date dataNascimento, String cpfUsuario, String rgUsuario,
 			String email, Date dataultimamodificacao) {
 		this.idUsuario = idUsuario;
@@ -65,12 +65,12 @@ public class USUARIO implements java.io.Serializable, EntityAble {
 		this.dataultimamodificacao = dataultimamodificacao;
 	}
 
-	public USUARIO(Integer idUsuario, String nomeUsuario, String sobrenomeUsuario,
+	public Tabelas_Usuario(Integer idUsuario, String nomeUsuario, String sobrenomeUsuario,
 			Date dataNascimento, String cpfUsuario, String rgUsuario,
 			String orgaoEspedidorUsu, String dddCel, String telCel,
 			String dddRes, String telRes, String email,
-			Date dataultimamodificacao, Set<LISTAPRODUTO> listaProdutos,
-			Set<LOGIN> logins, Set<ENDERECO> enderecos) {
+			Date dataultimamodificacao, Set<Tabelas_ListaProduto> listaProdutos,
+			Set<Tabelas_Login> logins, Set<Tabelas_Endereco> enderecos) {
 		this.idUsuario = idUsuario;
 		this.nomeUsuario = nomeUsuario;
 		this.sobrenomeUsuario = sobrenomeUsuario;
@@ -211,31 +211,31 @@ public class USUARIO implements java.io.Serializable, EntityAble {
 	}
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "usuario")
-	public Set<LISTAPRODUTO> getListaProdutos() {
+	public Set<Tabelas_ListaProduto> getListaProdutos() {
 		return this.listaProdutos;
 	}
 
-	public void setListaProdutos(Set<LISTAPRODUTO> listaProdutos) {
+	public void setListaProdutos(Set<Tabelas_ListaProduto> listaProdutos) {
 		this.listaProdutos = listaProdutos;
 	}
 
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "usuario")
 	@Cascade(value=org.hibernate.annotations.CascadeType.DELETE)
-	public Set<LOGIN> getLogins() {
+	public Set<Tabelas_Login> getLogins() {
 		return this.logins;
 	}
 
-	public void setLogins(Set<LOGIN> logins) {
+	public void setLogins(Set<Tabelas_Login> logins) {
 		this.logins = logins;
 	}
 
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "usuario")
 	@Cascade(value=org.hibernate.annotations.CascadeType.DELETE)
-	public Set<ENDERECO> getEnderecos() {
+	public Set<Tabelas_Endereco> getEnderecos() {
 		return this.enderecos;
 	}
 
-	public void setEnderecos(Set<ENDERECO> enderecos) {
+	public void setEnderecos(Set<Tabelas_Endereco> enderecos) {
 		this.enderecos = enderecos;
 	}
 
@@ -277,9 +277,9 @@ public class USUARIO implements java.io.Serializable, EntityAble {
 			return true;
 		if (obj == null)
 			return false;
-		if (!(obj instanceof USUARIO))
+		if (!(obj instanceof Tabelas_Usuario))
 			return false;
-		USUARIO other = (USUARIO) obj;
+		Tabelas_Usuario other = (Tabelas_Usuario) obj;
 		if (cpfUsuario == null) {
 			if (other.cpfUsuario != null)
 				return false;
@@ -347,7 +347,7 @@ public class USUARIO implements java.io.Serializable, EntityAble {
 
 	@Override
 	public String toString() {
-		return "USUARIO [cpfUsuario=" + cpfUsuario + ", dataNascimento="
+		return "Tabelas_Usuario [cpfUsuario=" + cpfUsuario + ", dataNascimento="
 				+ dataNascimento + ", dataultimamodificacao="
 				+ dataultimamodificacao + ", dddCel=" + dddCel + ", dddRes="
 				+ dddRes + ", email=" + email + ", idUsuario=" + idUsuario
