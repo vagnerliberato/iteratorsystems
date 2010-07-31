@@ -46,7 +46,9 @@
 												<h:outputText value="#{msg.default_producttable_image}"/>
 											</f:facet>
 											<center>
-												<p:lightBox id="imageLightBox" width="25%" height="35%" iframe="true" rendered="#{produto.possuiImagem}">
+												<p:lightBox id="imageLightBox" iframe="true"
+															width="300px" height="250px"
+															rendered="#{produto.possuiImagem}">
 												    <h:outputLink value="#{produto.imagem}">  
 		       											<h:graphicImage value="/view/images/camera.png"/>  
 		   											</h:outputLink> 
