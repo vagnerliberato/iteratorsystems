@@ -6,18 +6,18 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
-import br.iteratorsystems.cps.entities.REDE;
+import br.iteratorsystems.cps.entities.Tabelas_Rede;
 import br.iteratorsystems.cps.exceptions.CpsDaoException;
 
-public class RedeDao extends DaoGeneric<REDE, Integer> {
+public class RedeDao extends DaoGeneric<Tabelas_Rede, Integer> {
 
-	public RedeDao(Class<REDE> persistentClass, Session session) {
+	public RedeDao(Class<Tabelas_Rede> persistentClass, Session session) {
 		super(persistentClass, session);
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<REDE> obterPorNome(String nomeRede) throws HibernateException, CpsDaoException {
-		return getSession().createCriteria(REDE.class).add(Restrictions.eq("nome", nomeRede)).list();
+	public List<Tabelas_Rede> obterPorNome(String nomeRede) throws HibernateException, CpsDaoException {
+		return getSession().createCriteria(Tabelas_Rede.class).add(Restrictions.eq("nome", nomeRede)).list();
 	}
 
 }

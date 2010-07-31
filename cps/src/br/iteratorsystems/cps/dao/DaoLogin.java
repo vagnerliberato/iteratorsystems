@@ -4,41 +4,47 @@ import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 
 import br.iteratorsystems.cps.config.HibernateConfig;
-import br.iteratorsystems.cps.entities.ENDERECO;
-import br.iteratorsystems.cps.entities.LOGIN;
-import br.iteratorsystems.cps.entities.USUARIO;
+import br.iteratorsystems.cps.entities.Tabelas_Endereco;
+import br.iteratorsystems.cps.entities.Tabelas_Login;
+import br.iteratorsystems.cps.entities.Tabelas_Usuario;
 import br.iteratorsystems.cps.exceptions.CpsDaoException;
 import br.iteratorsystems.cps.interfaces.EntityAble;
 
 public class DaoLogin extends Dao<EntityAble> {
 	
 	//TODO melhorar este metodo similar ao da classe pai!
-	public LOGIN get(final String username,final String password) throws CpsDaoException{
-		Criteria criteria = HibernateConfig.getSession().createCriteria(LOGIN.class);
+	public Tabelas_Login get(final String username,final String password) throws CpsDaoException{
+		Criteria criteria = HibernateConfig.getSession().createCriteria(Tabelas_Login.class);
 		criteria.add(Restrictions.eq("nomeLogin", username));
 		criteria.add(Restrictions.eq("senha",password));
-		return (LOGIN) criteria.uniqueResult();
+		return (Tabelas_Login) criteria.uniqueResult();
+	}
+	
+	public Tabelas_Login get(final Integer id) throws CpsDaoException{
+		Criteria criteria = HibernateConfig.getSession().createCriteria(Tabelas_Login.class);
+		criteria.add(Restrictions.eq("idLogin", id));
+		return (Tabelas_Login) criteria.uniqueResult();
 	}
 	
 	//TODO melhorar este metodo similar ao da classe pai!
-	public USUARIO getUsuarioRelated(final Integer idLogin) throws CpsDaoException{
-		Criteria criteria = HibernateConfig.getSession().createCriteria(USUARIO.class);
+	public Tabelas_Usuario getUsuarioRelated(final Integer idLogin) throws CpsDaoException{
+		Criteria criteria = HibernateConfig.getSession().createCriteria(Tabelas_Usuario.class);
 		criteria.add(Restrictions.eq("idUsuario",idLogin));
-		return (USUARIO) criteria.uniqueResult();
+		return (Tabelas_Usuario) criteria.uniqueResult();
 	}
 	
 	//TODO melhorar este metodo similar ao da classe pai!
-	public ENDERECO getEnderecoRelated(final Integer idUsuario) throws CpsDaoException {
-		Criteria criteria = HibernateConfig.getSession().createCriteria(ENDERECO.class);
-		criteria.add(Restrictions.eq("idUsuario",idUsuario));
-		return (ENDERECO) criteria.uniqueResult();
+	public Tabelas_Endereco getEnderecoRelated(final Integer idUsuario) throws CpsDaoException {
+		Criteria criteria = HibernateConfig.getSession().createCriteria(Tabelas_Endereco.class);
+		criteria.add(Restrictions.eq("usuario.idUsuario",idUsuario));
+		return (Tabelas_Endereco) criteria.uniqueResult();
 	}
 
 	public boolean checkPassword(String pass) throws CpsDaoException{
-		LOGIN result = null;
-		Criteria criteria = HibernateConfig.getSession().createCriteria(LOGIN.class);
+		Tabelas_Login result = null;
+		Criteria criteria = HibernateConfig.getSession().createCriteria(Tabelas_Login.class);
 		criteria.add(Restrictions.eq("senha",pass));
-		result = (LOGIN) criteria.uniqueResult();
+		result = (Tabelas_Login) criteria.uniqueResult();
 		return result == null ? false : true;
 	}
 }

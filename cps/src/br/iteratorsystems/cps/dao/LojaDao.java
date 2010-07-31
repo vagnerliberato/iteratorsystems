@@ -6,19 +6,19 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
-import br.iteratorsystems.cps.entities.LOJA;
-import br.iteratorsystems.cps.entities.LOJAID;
+import br.iteratorsystems.cps.entities.Tabelas_Loja;
+import br.iteratorsystems.cps.entities.Tabelas_LojaId;
 import br.iteratorsystems.cps.exceptions.CpsDaoException;
 
-public class LojaDao extends DaoGeneric<LOJA, LOJAID> {
+public class LojaDao extends DaoGeneric<Tabelas_Loja, Tabelas_LojaId> {
 
-	public LojaDao(Class<LOJA> persistentClass, Session session) {
+	public LojaDao(Class<Tabelas_Loja> persistentClass, Session session) {
 		super(persistentClass, session);
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<LOJA> obterLojaPorNomeFantasia(String nomefantasia) throws HibernateException, CpsDaoException {
-		return getSession().createCriteria(LOJA.class).add(Restrictions.eq("nomefantasia", nomefantasia)).list();
+	public List<Tabelas_Loja> obterLojaPorNomeFantasia(String nomefantasia) throws HibernateException, CpsDaoException {
+		return getSession().createCriteria(Tabelas_Loja.class).add(Restrictions.eq("nomefantasia", nomefantasia)).list();
 	}
 
 }

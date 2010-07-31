@@ -3,12 +3,12 @@ package br.iteratorsystems.cps.dao;
 import org.hibernate.Session;
 
 
-import br.iteratorsystems.cps.entities.PRODUTO;
-import br.iteratorsystems.cps.entities.PRODUTOID;
+import br.iteratorsystems.cps.entities.Tabelas_Produto;
+import br.iteratorsystems.cps.entities.Tabelas_ProdutoId;
 
-public class ProdutoDao extends DaoGeneric<PRODUTO, PRODUTOID> {
+public class ProdutoDao extends DaoGeneric<Tabelas_Produto, Tabelas_ProdutoId> {
 
-	public ProdutoDao(Class<PRODUTO> persistentClass, Session session) {
+	public ProdutoDao(Class<Tabelas_Produto> persistentClass, Session session) {
 		super(persistentClass, session);
 	}
 }
