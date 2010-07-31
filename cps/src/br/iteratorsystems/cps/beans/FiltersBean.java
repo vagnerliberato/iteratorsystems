@@ -1,7 +1,13 @@
 package br.iteratorsystems.cps.beans;
 
 import br.iteratorsystems.cps.common.FindAddress;
+import br.iteratorsystems.cps.entities.Tabelas_Usuario;
 
+/**
+ * Classe bean da página de filtros de comparação
+ * @author André
+ *
+ */
 public class FiltersBean {
 	
 	private String cep;
@@ -9,8 +15,14 @@ public class FiltersBean {
 	private String bairro;
 	private String cidade;
 	private String estado;
+	private Boolean buscarPeloMenorPreco;
+	private Boolean buscarPelaMenorDistancia;
 	private FindAddress findAddress;
+	private Tabelas_Usuario usuario; 
 	
+	/**
+	 * Busca um cep
+	 */
 	public void find(){
 		findAddress = new FindAddress();
 		findAddress.find(this.getCep());
@@ -20,6 +32,14 @@ public class FiltersBean {
 		this.setCidade(findAddress.getCidade());
 		this.setEstado(findAddress.getEstado());
 		findAddress = null;
+	}
+	
+	/**
+	 * Chama o motor de comparação de produtos
+	 */
+	public void compararProdutos() {
+		//TODO comparar
+		System.out.println("comparando");
 	}
 	
 	/**
@@ -81,5 +101,47 @@ public class FiltersBean {
 	 */
 	public void setEstado(String estado) {
 		this.estado = estado;
+	}
+
+	/**
+	 * @return the buscarPeloMenorPreco
+	 */
+	public Boolean getBuscarPeloMenorPreco() {
+		return buscarPeloMenorPreco;
+	}
+
+	/**
+	 * @param buscarPeloMenorPreco the buscarPeloMenorPreco to set
+	 */
+	public void setBuscarPeloMenorPreco(Boolean buscarPeloMenorPreco) {
+		this.buscarPeloMenorPreco = buscarPeloMenorPreco;
+	}
+
+	/**
+	 * @return the buscarPelaMenorDistancia
+	 */
+	public Boolean getBuscarPelaMenorDistancia() {
+		return buscarPelaMenorDistancia;
+	}
+
+	/**
+	 * @param buscarPelaMenorDistancia the buscarPelaMenorDistancia to set
+	 */
+	public void setBuscarPelaMenorDistancia(Boolean buscarPelaMenorDistancia) {
+		this.buscarPelaMenorDistancia = buscarPelaMenorDistancia;
+	}
+
+	/**
+	 * @param usuario the usuario to set
+	 */
+	public void setUsuario(Tabelas_Usuario usuario) {
+		this.usuario = usuario;
+	}
+
+	/**
+	 * @return the usuario
+	 */
+	public Tabelas_Usuario getUsuario() {
+		return usuario;
 	}
 }

@@ -14,18 +14,18 @@ import br.iteratorsystems.cps.common.Resources;
 import br.iteratorsystems.cps.config.HibernateConfig;
 import br.iteratorsystems.cps.dao.LojaDao;
 import br.iteratorsystems.cps.dao.RedeDao;
-import br.iteratorsystems.cps.entities.LOGIN;
-import br.iteratorsystems.cps.entities.LOJA;
-import br.iteratorsystems.cps.entities.REDE;
+import br.iteratorsystems.cps.entities.Tabelas_Login;
+import br.iteratorsystems.cps.entities.Tabelas_Loja;
+import br.iteratorsystems.cps.entities.Tabelas_Rede;
 import br.iteratorsystems.cps.exceptions.CpsGeneralExceptions;
 import br.iteratorsystems.cps.exceptions.CpsHandlerException;
 import br.iteratorsystems.cps.handler.AdministrationHandler;
 
 public class AdministrationBean {
 
-	private LOGIN loginEntity = new LOGIN();
-	private REDE redeEntity;
-	private LOJA lojaEntity;
+	private Tabelas_Login loginEntity = new Tabelas_Login();
+	private Tabelas_Rede redeEntity;
+	private Tabelas_Loja lojaEntity;
 	private AdministrationHandler administrationHandler;
 
 	//booleanos para controle da tela
@@ -45,9 +45,9 @@ public class AdministrationBean {
 	private String mensagemCampoObrigatorio = "Campo de preenchimento obrigatório!";
 	private String mensagem_cnpj = "CNPJ já cadastrado na base de dados!";
 	
-	private List<LOGIN> allLogins;
-	private List<REDE> listRedes;
-	private List<LOJA> listLojas;
+	private List<Tabelas_Login> allLogins;
+	private List<Tabelas_Rede> listRedes;
+	private List<Tabelas_Loja> listLojas;
 	
 	private HtmlDataTable richDataTable;
 	private HtmlDataTable redesDataTable;
@@ -64,8 +64,8 @@ public class AdministrationBean {
 	};
 
 	Session session = HibernateConfig.getSession();
-	RedeDao redeDao = new RedeDao(REDE.class, session);
-	LojaDao lojaDao = new LojaDao(LOJA.class, session);
+	RedeDao redeDao = new RedeDao(Tabelas_Rede.class, session);
+	LojaDao lojaDao = new LojaDao(Tabelas_Loja.class, session);
 	
 	public AdministrationBean() {}
 	
@@ -75,7 +75,7 @@ public class AdministrationBean {
 		}
 		
 		administrationHandler  = new AdministrationHandler();
-		redeEntity = new REDE();
+		redeEntity = new Tabelas_Rede();
 		
 		try{
 			redeEntity.setNome(this.getNomeRede());
@@ -136,10 +136,10 @@ public class AdministrationBean {
 
 	public SelectItem[] getAllRedes() throws CpsGeneralExceptions{
 		int index = 0;
-		List<REDE> todasRedes = redeDao.listarTodos();
+		List<Tabelas_Rede> todasRedes = redeDao.listarTodos();
 		redes = new SelectItem[todasRedes.size()+1];
 		redes[index] = new SelectItem(0,"Selecione...");;
-		for(REDE rede: todasRedes){
+		for(Tabelas_Rede rede: todasRedes){
 			index ++;
 			redes[index] = new SelectItem(rede.getId(),rede.getNome());
 		}
@@ -201,7 +201,7 @@ public class AdministrationBean {
 	
 	public void deleteLogin() throws CpsGeneralExceptions {
 		try{
-			LOGIN newLogin = (LOGIN) this.getRichDataTable().getRowData();
+			Tabelas_Login newLogin = (Tabelas_Login) this.getRichDataTable().getRowData();
 			administrationHandler = new AdministrationHandler();
 			this.allLogins.remove(newLogin);
 			administrationHandler.deleteLogin(newLogin);
@@ -231,7 +231,7 @@ public class AdministrationBean {
 			for(SelectItem item : redes){
 				if(item.getValue().equals(index)){
 					this.setRedeEntity(administrationHandler.getRede(item.getLabel()));
-					this.setLojaEntity(new LOJA());
+					this.setLojaEntity(new Tabelas_Loja());
 					break;
 				}
 			}
@@ -254,7 +254,7 @@ public class AdministrationBean {
 	}
 	
 	public void atualizaRede() throws CpsGeneralExceptions{
-		this.setRedeEntity((REDE)this.getRedesDataTable().getRowData());
+		this.setRedeEntity((Tabelas_Rede)this.getRedesDataTable().getRowData());
 		if(this.getRedeEntity().getNome() == null || this.getRedeEntity().getNome().equals("")) {
 			FacesUtil.errorMessage("", Resources.getErrorProperties().getString("rede_invalid_name"),"nome de rede vazio");
 			return;
@@ -272,14 +272,14 @@ public class AdministrationBean {
 		this.setMostrarLojaUpd(false);
 	}
 	public void excluirRede() throws CpsGeneralExceptions{
-		this.setRedeEntity((REDE) this.getRedesDataTable().getRowData());
+		this.setRedeEntity((Tabelas_Rede) this.getRedesDataTable().getRowData());
 		this.listRedes.remove(this.getRedeEntity());
 		
 		redeDao.excluir(this.getRedeEntity());
 	}
 
 	public void excluirLoja() throws CpsGeneralExceptions{
-		this.setLojaEntity((LOJA) this.getLojasDataTable().getRowData());
+		this.setLojaEntity((Tabelas_Loja) this.getLojasDataTable().getRowData());
 		this.listLojas.remove(this.getLojaEntity());
 		
 		lojaDao.excluir(this.getLojaEntity());
@@ -290,19 +290,19 @@ public class AdministrationBean {
 		this.setLojaEntity(null);
 	}
 
-	public void setLoginEntity(LOGIN loginEntity) {
+	public void setLoginEntity(Tabelas_Login loginEntity) {
 		this.loginEntity = loginEntity;
 	}
 
-	public LOGIN getLoginEntity() {
+	public Tabelas_Login getLoginEntity() {
 		return loginEntity;
 	}
 
-	public void setAllLogins(List<LOGIN> allLogins) {
+	public void setAllLogins(List<Tabelas_Login> allLogins) {
 		this.allLogins = allLogins;
 	}
 
-	public List<LOGIN> getAllLogins() {
+	public List<Tabelas_Login> getAllLogins() {
 		return allLogins;
 	}
 
@@ -390,11 +390,11 @@ public class AdministrationBean {
 		return tipoVendas;
 	}
 
-	public void setLojaEntity(LOJA lojaEntity) {
+	public void setLojaEntity(Tabelas_Loja lojaEntity) {
 		this.lojaEntity = lojaEntity;
 	}
 
-	public LOJA getLojaEntity() {
+	public Tabelas_Loja getLojaEntity() {
 		return lojaEntity;
 	}
 
@@ -433,22 +433,22 @@ public class AdministrationBean {
 	/**
 	 * @return the redeEntity
 	 */
-	public REDE getRedeEntity() {
+	public Tabelas_Rede getRedeEntity() {
 		return redeEntity;
 	}
 
 	/**
 	 * @param redeEntity the redeEntity to set
 	 */
-	public void setRedeEntity(REDE redeEntity) {
+	public void setRedeEntity(Tabelas_Rede redeEntity) {
 		this.redeEntity = redeEntity;
 	}
 
-	public void setListRedes(List<REDE> listRedes) {
+	public void setListRedes(List<Tabelas_Rede> listRedes) {
 		this.listRedes = listRedes;
 	}
 
-	public List<REDE> getListRedes() {
+	public List<Tabelas_Rede> getListRedes() {
 		return listRedes;
 	}
 
@@ -484,11 +484,11 @@ public class AdministrationBean {
 		return nomeLoja;
 	}
 
-	public void setListLojas(List<LOJA> listLojas) {
+	public void setListLojas(List<Tabelas_Loja> listLojas) {
 		this.listLojas = listLojas;
 	}
 
-	public List<LOJA> getListLojas() {
+	public List<Tabelas_Loja> getListLojas() {
 		return listLojas;
 	}
 

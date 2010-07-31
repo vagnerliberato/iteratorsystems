@@ -1,5 +1,8 @@
 package br.iteratorsystems.cps.beans;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.el.ELResolver;
 import javax.faces.context.FacesContext;
 
@@ -7,11 +10,11 @@ import br.iteratorsystems.cps.common.CommonOperations;
 import br.iteratorsystems.cps.common.FacesUtil;
 import br.iteratorsystems.cps.common.FindAddress;
 import br.iteratorsystems.cps.common.Resources;
-import br.iteratorsystems.cps.entities.CEP;
-import br.iteratorsystems.cps.entities.ENDERECO;
-import br.iteratorsystems.cps.entities.LOGIN;
-import br.iteratorsystems.cps.entities.PARAMETRIZACAO_CPS;
-import br.iteratorsystems.cps.entities.USUARIO;
+import br.iteratorsystems.cps.entities.Tabelas_Cep;
+import br.iteratorsystems.cps.entities.Tabelas_Endereco;
+import br.iteratorsystems.cps.entities.Tabelas_Login;
+import br.iteratorsystems.cps.entities.Tabelas_Parametrizacao;
+import br.iteratorsystems.cps.entities.Tabelas_Usuario;
 import br.iteratorsystems.cps.exceptions.CpsGeneralExceptions;
 import br.iteratorsystems.cps.exceptions.CpsHandlerException;
 import br.iteratorsystems.cps.handler.LoginUserHandler;
@@ -20,11 +23,11 @@ import br.iteratorsystems.cps.handler.UserManagementHandler;
 public class UserManagementBean {
 
 	private UserManagementHandler userHandler = null;
-	private USUARIO usuarioEntity = new USUARIO();
-	private CEP cepEntity = new CEP();
-	private ENDERECO enderecoEntity = new ENDERECO();
-	private LOGIN loginEntity = new LOGIN();
-	private PARAMETRIZACAO_CPS parametrizacao;
+	private Tabelas_Usuario usuarioEntity = new Tabelas_Usuario();
+	private Tabelas_Cep cepEntity = new Tabelas_Cep();
+	private Tabelas_Endereco enderecoEntity = new Tabelas_Endereco();
+	private Tabelas_Login loginEntity = new Tabelas_Login();
+	private Tabelas_Parametrizacao parametrizacao;
 	
 	private String estadoSigla;
 	private String put_senha_antiga;
@@ -66,8 +69,8 @@ public class UserManagementBean {
 	 * Obtém a parametrização do sistema.
 	 * @return  Classe de parametrização.
 	 */
-	private PARAMETRIZACAO_CPS obtemParametrizacao() {
-		PARAMETRIZACAO_CPS parametrizacao = (PARAMETRIZACAO_CPS) context.getExternalContext().getApplicationMap().get("parametrizacao");
+	private Tabelas_Parametrizacao obtemParametrizacao() {
+		Tabelas_Parametrizacao parametrizacao = (Tabelas_Parametrizacao) context.getExternalContext().getApplicationMap().get("parametrizacao");
 		return parametrizacao;
 	}
 	
@@ -246,24 +249,53 @@ public class UserManagementBean {
 		this.usuarioEntity = newLoginUserInstance.getUsuario();
 		if(this.usuarioEntity == null) return;
 		//solução paliativa
-		for(ENDERECO endereco : this.getUsuarioEntity().getEnderecos()){
+		for(Tabelas_Endereco endereco : this.getUsuarioEntity().getEnderecos()){
 			this.enderecoEntity = endereco;
 		}
-		for(LOGIN login : this.getUsuarioEntity().getLogins()){
+		for(Tabelas_Login login : this.getUsuarioEntity().getLogins()){
 			this.loginEntity = login;
 		}
 		this.setAdministrador(this.getLoginEntity().getTipoUsuario() == 'A' ? true : false);
 	}
 	
-	public void atualizaCampos(USUARIO paramUser){
+	public void atualizaCampos(Tabelas_Usuario paramUser){
 		this.usuarioEntity = paramUser;
-		//solução paliativa
-		for(ENDERECO endereco : this.getUsuarioEntity().getEnderecos()){
-			this.enderecoEntity = endereco;
+		LoginUserHandler loginHandler = new LoginUserHandler();
+		
+		if(usuarioEntity.getEnderecos() == null || 
+				usuarioEntity.getEnderecos().isEmpty()) {
+			Set<Tabelas_Endereco> endereco = new HashSet<Tabelas_Endereco>();
+			try {
+				endereco.add(loginHandler.getEnderecoRelated(usuarioEntity.getIdUsuario()));
+				usuarioEntity.setEnderecos(endereco);
+				
+				for(Tabelas_Endereco enderecoEntity : usuarioEntity.getEnderecos()) {
+					this.enderecoEntity = enderecoEntity;
+				}
+				
+			} catch (CpsHandlerException e) {
+				e.printStackTrace();
+			}
 		}
-		for(LOGIN login : this.getUsuarioEntity().getLogins()){
-			this.loginEntity = login;
+		
+		if(usuarioEntity.getLogins() == null || 
+				usuarioEntity.getLogins().isEmpty() ||
+				this.getLoginEntity() == null) {
+			
+			Set<Tabelas_Login> login = new HashSet<Tabelas_Login>();
+			try {
+				login.add(loginHandler.getLogin(usuarioEntity.getIdUsuario()));
+				usuarioEntity.setLogins(login);
+				
+				for(Tabelas_Login loginEntity : usuarioEntity.getLogins()) {
+					this.setLoginEntity(loginEntity);
+				}
+				
+			} catch (CpsHandlerException e) {
+				e.printStackTrace();
+			}
 		}
+		
 		this.setFirstAccess(false);
 		this.setAdministrador(this.getLoginEntity().getTipoUsuario() == 'A' ? true : false);
 	}
@@ -380,56 +412,56 @@ public class UserManagementBean {
 	/**
 	 * @return the usuarioEntity
 	 */
-	public USUARIO getUsuarioEntity() {
+	public Tabelas_Usuario getUsuarioEntity() {
 		return usuarioEntity;
 	}
 
 	/**
 	 * @param usuarioEntity the usuarioEntity to set
 	 */
-	public void setUsuarioEntity(USUARIO usuarioEntity) {
+	public void setUsuarioEntity(Tabelas_Usuario usuarioEntity) {
 		this.usuarioEntity = usuarioEntity;
 	}
 
 	/**
 	 * @return the cepEntity
 	 */
-	public CEP getCepEntity() {
+	public Tabelas_Cep getCepEntity() {
 		return cepEntity;
 	}
 
 	/**
 	 * @param cepEntity the cepEntity to set
 	 */
-	public void setCepEntity(CEP cepEntity) {
+	public void setCepEntity(Tabelas_Cep cepEntity) {
 		this.cepEntity = cepEntity;
 	}
 
 	/**
 	 * @return the enderecoEntity
 	 */
-	public ENDERECO getEnderecoEntity() {
+	public Tabelas_Endereco getEnderecoEntity() {
 		return enderecoEntity;
 	}
 
 	/**
 	 * @param enderecoEntity the enderecoEntity to set
 	 */
-	public void setEnderecoEntity(ENDERECO enderecoEntity) {
+	public void setEnderecoEntity(Tabelas_Endereco enderecoEntity) {
 		this.enderecoEntity = enderecoEntity;
 	}
 
 	/**
 	 * @return the loginEntity
 	 */
-	public LOGIN getLoginEntity() {
+	public Tabelas_Login getLoginEntity() {
 		return loginEntity;
 	}
 
 	/**
 	 * @param loginEntity the loginEntity to set
 	 */
-	public void setLoginEntity(LOGIN loginEntity) {
+	public void setLoginEntity(Tabelas_Login loginEntity) {
 		this.loginEntity = loginEntity;
 	}
 
@@ -452,14 +484,14 @@ public class UserManagementBean {
 	/**
 	 * @param parametrizacao the parametrizacao to set
 	 */
-	public void setParametrizacao(PARAMETRIZACAO_CPS parametrizacao) {
+	public void setParametrizacao(Tabelas_Parametrizacao parametrizacao) {
 		this.parametrizacao = parametrizacao;
 	}
 
 	/**
 	 * @return the parametrizacao
 	 */
-	public PARAMETRIZACAO_CPS getParametrizacao() {
+	public Tabelas_Parametrizacao getParametrizacao() {
 		return parametrizacao;
 	}
 }

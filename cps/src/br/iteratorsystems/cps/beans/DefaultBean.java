@@ -8,8 +8,8 @@ import javax.faces.context.FacesContext;
 
 import org.richfaces.component.html.HtmlDataTable;
 
-import br.iteratorsystems.cps.entities.PARAMETRIZACAO_CPS;
-import br.iteratorsystems.cps.entities.PRODUTOGERAL;
+import br.iteratorsystems.cps.entities.Tabelas_Parametrizacao;
+import br.iteratorsystems.cps.entities.Tabelas_ProdutoGeral;
 import br.iteratorsystems.cps.exceptions.CpsGeneralExceptions;
 import br.iteratorsystems.cps.exceptions.CpsHandlerException;
 import br.iteratorsystems.cps.handler.BuscaProdutoHandler;
@@ -49,8 +49,8 @@ public class DefaultBean {
 	 * Obtém a parametrização do sistema
 	 * @return Classe de parametrização do sistema.
 	 */
-	private PARAMETRIZACAO_CPS obterParametrizacao() {
-		PARAMETRIZACAO_CPS parametrizacao = (PARAMETRIZACAO_CPS) FacesContext
+	private Tabelas_Parametrizacao obterParametrizacao() {
+		Tabelas_Parametrizacao parametrizacao = (Tabelas_Parametrizacao) FacesContext
 				.getCurrentInstance().getExternalContext().getApplicationMap()
 				.get("parametrizacao");
 		return parametrizacao;
@@ -60,7 +60,7 @@ public class DefaultBean {
 	 * Com base na parametrização do sistema, configura os itens necessários.
 	 * @param parametrizacao - Classe de parametrização.
 	 */
-	private void parametrizarBusca(PARAMETRIZACAO_CPS parametrizacao) {
+	private void parametrizarBusca(Tabelas_Parametrizacao parametrizacao) {
 		this.setNumeroMaximoItensCarrinho(
 					Integer.parseInt(parametrizacao.getNumMaxItensLista().trim()));
 		this.setDiretorioImagem(parametrizacao.getDiretorioImagensProCps());
@@ -73,7 +73,7 @@ public class DefaultBean {
 	 */
 	public void buscarProduto() throws CpsGeneralExceptions{
 		buscaProdutoHandler = new BuscaProdutoHandler();
-		List<PRODUTOGERAL> listaTemp = null;
+		List<Tabelas_ProdutoGeral> listaTemp = null;
 		listaProdutoTO = new ArrayList<ProdutoTO>(1);
 		//image?file=imagem.jpg&amp;dir=c:cps_imagens_produtos
 		try{
@@ -86,7 +86,7 @@ public class DefaultBean {
 				this.setNenhumRegistroEncontrado(false);
 			}
 			
-			for(PRODUTOGERAL produtoGeral : listaTemp) {
+			for(Tabelas_ProdutoGeral produtoGeral : listaTemp) {
 				ProdutoTO produtoTO = new ProdutoTO();
 				produtoTO.setProdutoGeral(produtoGeral);
 				produtoTO.setQuantidadeSelecionada(1);
@@ -150,7 +150,7 @@ public class DefaultBean {
 	public List<String> recuperarAutoComplete(Object obj) {
 		List<String> listaDadosTemp = new ArrayList<String>();
 		List<String> listaNomeProdutoTemp = new ArrayList<String>();
-		List<PRODUTOGERAL> listaProdutoTemp = null;
+		List<Tabelas_ProdutoGeral> listaProdutoTemp = null;
 		buscaProdutoHandler = new BuscaProdutoHandler();
 		String partName = (String) obj;
 		
@@ -159,7 +159,7 @@ public class DefaultBean {
      		listaProdutoTemp =
      					buscaProdutoHandler.buscaProduto(partName);
      		
-     		for(PRODUTOGERAL produtoTemp : listaProdutoTemp) {
+     		for(Tabelas_ProdutoGeral produtoTemp : listaProdutoTemp) {
      			listaNomeProdutoTemp.add(produtoTemp.getDescricao());
      		}
      		

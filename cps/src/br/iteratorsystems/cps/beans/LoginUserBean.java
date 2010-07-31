@@ -7,17 +7,17 @@ import javax.servlet.http.HttpSession;
 import br.iteratorsystems.cps.common.CommonOperations;
 import br.iteratorsystems.cps.common.FacesUtil;
 import br.iteratorsystems.cps.common.Resources;
-import br.iteratorsystems.cps.entities.ENDERECO;
-import br.iteratorsystems.cps.entities.LOGIN;
-import br.iteratorsystems.cps.entities.USUARIO;
+import br.iteratorsystems.cps.entities.Tabelas_Endereco;
+import br.iteratorsystems.cps.entities.Tabelas_Login;
+import br.iteratorsystems.cps.entities.Tabelas_Usuario;
 import br.iteratorsystems.cps.exceptions.CpsGeneralExceptions;
 import br.iteratorsystems.cps.handler.LoginUserHandler;
 
 public class LoginUserBean {
 
-	private LOGIN login;
-	private USUARIO usuario;
-	private ENDERECO endereco;
+	private Tabelas_Login login;
+	private Tabelas_Usuario usuario;
+	private Tabelas_Endereco endereco;
 	private LoginUserHandler loginHandler;
 	
 	private String nomeLogin;
@@ -126,7 +126,7 @@ public class LoginUserBean {
 	/**
 	 * @return the login
 	 */
-	public LOGIN getLogin() {
+	public Tabelas_Login getLogin() {
 		return login;
 	}
 
@@ -134,23 +134,23 @@ public class LoginUserBean {
 	 * @param login
 	 *            the login to set
 	 */
-	public void setLogin(LOGIN login) {
+	public void setLogin(Tabelas_Login login) {
 		this.login = login;
 	}
 
-	public void setUsuario(USUARIO usuario) {
+	public void setUsuario(Tabelas_Usuario usuario) {
 		this.usuario = usuario;
 	}
 
-	public USUARIO getUsuario() {
+	public Tabelas_Usuario getUsuario() {
 		return usuario;
 	}
 
-	public void setEndereco(ENDERECO endereco) {
+	public void setEndereco(Tabelas_Endereco endereco) {
 		this.endereco = endereco;
 	}
 
-	public ENDERECO getEndereco() {
+	public Tabelas_Endereco getEndereco() {
 		return endereco;
 	}
 
