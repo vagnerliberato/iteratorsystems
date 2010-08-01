@@ -1,7 +1,12 @@
 package br.iteratorsystems.cps.beans;
 
+import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
+
 import br.iteratorsystems.cps.common.FindAddress;
-import br.iteratorsystems.cps.entities.Tabelas_Usuario;
+import br.iteratorsystems.cps.entities.Tabelas_Endereco;
+import br.iteratorsystems.cps.entities.Tabelas_Login;
+import br.iteratorsystems.cps.helper.FormatadorEstadorHelper;
 
 /**
  * Classe bean da página de filtros de comparação
@@ -11,22 +16,51 @@ import br.iteratorsystems.cps.entities.Tabelas_Usuario;
 public class FiltersBean {
 	
 	private String cep;
+	private String cepAlternativo;
 	private String logradouro;
 	private String bairro;
 	private String cidade;
 	private String estado;
+	private String campoHidden;
 	private Boolean buscarPeloMenorPreco;
 	private Boolean buscarPelaMenorDistancia;
 	private FindAddress findAddress;
-	private Tabelas_Usuario usuario; 
+	private Tabelas_Login login; 
+	
+	/**
+	 * verifica se o usuário esta logado na aplicação,
+	 * para abrir a página com suas características.
+	 */
+	private void verificarUsuarioLogado() {
+		FacesContext context = FacesContext.getCurrentInstance();
+		ServletContext servletContext = (ServletContext) context.getExternalContext().getContext();
+		login = (Tabelas_Login) servletContext.getAttribute("usuarioLogado");
+		
+		if(login!=null) {
+			if(login.getUsuario()!=null) {
+				for(Tabelas_Endereco endereco : login.getUsuario().getEnderecos()) {
+					this.setBairro(endereco.getBairro());
+					this.setCep(endereco.getCep());
+					this.setCidade(endereco.getCidade());
+					this.setEstado(FormatadorEstadorHelper.recuperaEstado(endereco.getEstado()));
+					this.setLogradouro(endereco.getLogradouro());
+				}
+			}
+		}
+	}
 	
 	/**
 	 * Busca um cep
 	 */
 	public void find(){
 		findAddress = new FindAddress();
-		findAddress.find(this.getCep());
 		
+		if(cepAlternativo != null && !"".equals(cepAlternativo)) {
+			findAddress.find(this.getCepAlternativo());
+		}else {
+			findAddress.find(this.getCep());
+		}
+
 		this.setLogradouro(findAddress.getLogradouro());
 		this.setBairro(findAddress.getBairro());
 		this.setCidade(findAddress.getCidade());
@@ -132,16 +166,45 @@ public class FiltersBean {
 	}
 
 	/**
-	 * @param usuario the usuario to set
+	 * @param login the login to set
 	 */
-	public void setUsuario(Tabelas_Usuario usuario) {
-		this.usuario = usuario;
+	public void setLogin(Tabelas_Login usuario) {
+		this.login = usuario;
 	}
 
 	/**
-	 * @return the usuario
+	 * @return the login
 	 */
-	public Tabelas_Usuario getUsuario() {
-		return usuario;
+	public Tabelas_Login getLogin() {
+		return login;
+	}
+
+	/**
+	 * @param campoHidden the campoHidden to set
+	 */
+	public void setCampoHidden(String campoHidden) {
+		this.campoHidden = campoHidden;
+	}
+
+	/**
+	 * @return the campoHidden
+	 */
+	public String getCampoHidden() {
+		verificarUsuarioLogado();
+		return campoHidden;
+	}
+
+	/**
+	 * @param cepAlternativo the cepAlternativo to set
+	 */
+	public void setCepAlternativo(String cepAlternativo) {
+		this.cepAlternativo = cepAlternativo;
+	}
+
+	/**
+	 * @return the cepAlternativo
+	 */
+	public String getCepAlternativo() {
+		return cepAlternativo;
 	}
 }

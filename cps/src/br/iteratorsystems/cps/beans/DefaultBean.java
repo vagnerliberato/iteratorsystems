@@ -75,7 +75,7 @@ public class DefaultBean {
 		buscaProdutoHandler = new BuscaProdutoHandler();
 		List<Tabelas_ProdutoGeral> listaTemp = null;
 		listaProdutoTO = new ArrayList<ProdutoTO>(1);
-		//image?file=imagem.jpg&amp;dir=c:cps_imagens_produtos
+
 		try{
 			listaTemp = 
 				buscaProdutoHandler.buscaProduto(this.getProdutoDigitado());

@@ -2,6 +2,7 @@ package br.iteratorsystems.cps.beans;
 
 import javax.el.ELResolver;
 import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
 import br.iteratorsystems.cps.common.CommonOperations;
@@ -42,6 +43,11 @@ public class LoginUserBean {
 		this.setLogin(loginHandler.doLogin(this.getNomeLogin(), this.getSenha()));
 		
 		if (this.getLogin() != null) {
+			
+			FacesContext context = FacesContext.getCurrentInstance();
+			ServletContext servletContext = (ServletContext) context.getExternalContext().getContext();
+			servletContext.setAttribute("usuarioLogado", this.getLogin());
+			
 			this.setLogado(true);
 			return "toDefaultPage";
 		} else {
