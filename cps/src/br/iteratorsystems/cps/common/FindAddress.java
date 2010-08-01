@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
 
 import br.iteratorsystems.cps.enums.EEstados;
 import br.iteratorsystems.cps.exceptions.FindAddressException;
+import br.iteratorsystems.cps.helper.FormatadorEstadorHelper;
 
 /**
  * Classe que faz a comunicação com o webService de Tabelas_Cep. No momento está feita para interagir com 
@@ -32,6 +33,11 @@ public class FindAddress {
 	//private static final String CHAVE = "1Maco/svVvWvqJ1sNk5prmVd9kbaK7";
 	private static final String baseUrl = "http://cep.republicavirtual.com.br/web_cep.php";
 
+	/**
+	 * Busca os dados de um cep no web service, com base no cep digitado pelo usuário.
+	 * @param cep - Digitado pelo usuário
+	 * @throws FindAddressException - Endereço não encontrado ou web service indisponível.
+	 */
 	private void findByWebService(String cep) throws FindAddressException{
 		HttpURLConnection connection = null;
 		StringBuilder incomingData = null;
@@ -73,36 +79,44 @@ public class FindAddress {
 		String[] resultado = semHtml.split("  ");
 		
 		if(resultado.length!=8){
-			throw new FindAddressException("Tabelas_Cep não encontrado");
+			throw new FindAddressException("Cep não encontrado no Web Service");
 		}
 		
 		this.setEstadoSigla(resultado[3]);
-		this.setEstado(this.recuperaEstado(this.getEstadoSigla()));
+		this.setEstado(FormatadorEstadorHelper.recuperaEstado(this.getEstadoSigla()));
 		this.setCidade(resultado[4]);
 		this.setBairro(resultado[5]);
 		this.setLogradouro(resultado[6] + " " + resultado[7]);
 		this.setPais("BRASIL");
 	}
 
+	/**
+	 * Encontra o Cep, ou no web service, ou na base local.
+	 * A prioridade é o web service por ser mais rápido, mas se o mesmo não estiver disponível ou ainda
+	 * o cep não for encontrado, faz a busca na base local.
+	 * @param cep - Cep
+	 */
 	public void find(String cep) {
 		try{
 			this.findByWebService(cep);
 			return;
 		}catch (FindAddressException e) {
-			FacesUtil.errorMessage("",Resources.getErrorProperties().getString("cep_unknown"),"cep nao encontrado");
 			e.printStackTrace();
+			this.findByDataBase(cep);
 		}
-		
-		this.findByDataBase(cep);
 	}
 
 	//implementar pois o webservice pode estar fora do ar!
 	private void findByDataBase(String cep) {
-		System.out.println("find by database");
 		//TODO
+		
 	}
 
-	// método utilizado para burlar o proxy na USJT! hahaha
+	/**
+	 * Se houver proxy na rede, este método recebe o usuário e senha, e
+	 * os adiciona á conecção para usas a rede normalmente.
+	 * @param connection - Conecção.
+	 */
 	private void createProxy(HttpURLConnection connection) {
 		// Configure proxy ...
 		System.setProperty("http.proxySet", "true");
@@ -112,39 +126,10 @@ public class FindAddress {
 		String proxyUser = "200711190";
 		String proxyPassword = "7104";
 
-		// seta o usuário e senha
+		// adiciona o usuário e senha
 		connection.setRequestProperty("Proxy-Authorization", "Basic "
 				+ new sun.misc.BASE64Encoder()
 						.encode((proxyUser + ":" + proxyPassword).getBytes()));
-	}
-
-	private String recuperaEstado(String... estado) {
-		String result = null;
-		try {
-			EEstados e = EEstados.valueOf(estado[0].toString().toUpperCase());
-			result = e.getNome();
-		} catch (IllegalArgumentException e) {
-			result = "erro: " + e;
-		}
-		result = this.formataEstado(result);
-		return result;
-	}
-
-	private String formataEstado(String antigo) {
-		String[] formatado = antigo.split("_");
-		String result = null;
-
-		if (formatado.length == 1)
-			return formatado[0];
-
-		result = formatado.length == 2 ? formatado[0] + " " + formatado[1]
-				: result;
-		result = formatado.length == 3 ? formatado[0] + " " + formatado[1]
-				+ " " + formatado[2] : result;
-		result = formatado.length == 4 ? formatado[0] + " " + formatado[1]
-				+ " " + formatado[2] + " " + formatado[3] : result;
-
-		return result;
 	}
 
 	/**
