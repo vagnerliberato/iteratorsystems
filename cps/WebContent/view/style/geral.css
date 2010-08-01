@@ -177,3 +177,15 @@ body {
 	font-weight: normal;
 	letter-spacing: normal;
 }
+.textoDireita {
+    text-align : right;
+}
+.textoEsquerda {
+    text-align : left;
+}
+.textoCentralizado {
+    text-align : center;
+}
+.textoJustificado {
+    text-align : justify;
+}
