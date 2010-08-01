@@ -8,31 +8,32 @@
 
 <ui:composition template="../template/template.jsf">
 		<ui:define name="content">
-			<h:form id="addFiltersForm">
-			<rich:spacer height="30"/>
-			<h:panelGroup id="selectCepPanel">
+		<h:form id="addFiltersForm">
+			<h:inputHidden value="#{filtersBean.campoHidden}"/>
+			<rich:spacer height="20"/>
+			<h:panelGroup id="selectCepPanel" >
 				<center><h:outputText value="#{msg.addfilters_topinformation}" style="font-weight: normal;font-size: 13pt;font-style: bold;font-family: Verdana;white-space: nowrap;color: darkblue;"/></center>
 				<rich:spacer height="15"/>
 				<h:panelGrid columns="2">
 					<h:column>
-						<h:outputText value="#{msg.addfilters_mycep}" rendered="false" styleClass="letras"/>
-						<h:outputText value="#{msg.addfilters_inputcep}" rendered="true" styleClass="letras"/>
+						<h:outputText value="#{msg.addfilters_mycep}" rendered="#{not empty filtersBean.login}" styleClass="letras"/>
+						<h:outputText value="#{msg.addfilters_inputcep}" rendered="#{empty filtersBean.login}" styleClass="letras"/>
 					</h:column>
 					<h:column>
 						<h:panelGroup>
-							<h:inputText value="#{filtersBean.cep}" maxlength="9" size="11" disabled="true" rendered="false" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+							<h:inputText value="#{filtersBean.cep}" maxlength="9" size="11" disabled="true" rendered="#{not empty filtersBean.login}" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
 							<h:panelGrid columns="3">
 								<h:column>
-									<h:inputText id="addNewCep" value="#{filtersBean.cep}" maxlength="9" size="11" rendered="true" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold" title="#{msg.personalcontatc_CEP_info}">
+									<h:inputText id="addNewCep" value="#{filtersBean.cep}" maxlength="9" size="11" rendered="#{empty filtersBean.login}" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold" title="#{msg.personalcontatc_CEP_info}">
 										<rich:jQuery selector="#addNewCep" query="mask('99999-999')" timing="immediate" />
 									</h:inputText>
 									<rich:spacer width="2"/>
-									<h:outputText value="#{msg.personalcontatc_CEP_info}" rendered="true" styleClass="letrasInfo"/>
+									<h:outputText value="#{msg.personalcontatc_CEP_info}" rendered="#{empty filtersBean.login}" styleClass="letrasInfo"/>
 								</h:column>
 								<h:column>
-									<a4j:commandButton action="#{filtersBean.find}" image="/view/images/Lupa.png" rendered="true" title="#{msg.addfilters_findCep}" style="width:80%;" reRender="addFiltersForm,resultCepPanel"/>
+									<a4j:commandButton action="#{filtersBean.find}" image="/view/images/Lupa.png" rendered="#{empty filtersBean.login}" title="#{msg.addfilters_findCep}" style="width:80%;" reRender="addFiltersForm,resultCepPanel"/>
 								</h:column>
-								<h:column>
+								<h:column rendered="#{empty filtersBean.login}">
 									<rich:spacer width="4"/>
 									<h:outputLink target="_blank" value="http://www.buscacep.correios.com.br/">
 										<h:outputText value="#{msg.personalcontact_CEP_unknown}"/>
@@ -43,17 +44,17 @@
 					</h:column>
 					<h:column></h:column>
 					<h:column>
-						<h:outputText value="#{msg.useraccess_or}" rendered="false" styleClass="letras"/>
+						<h:outputText value="#{msg.useraccess_or}" rendered="#{not empty filtersBean.login}" styleClass="letras"/>
 					</h:column>
 					<h:column>
-						<h:outputText value="#{msg.addfilters_anothercep}" rendered="false" styleClass="letras"/>
+						<h:outputText value="#{msg.addfilters_anothercep}" rendered="#{not empty filtersBean.login}" styleClass="letras"/>
 					</h:column>
-					<h:column>
+					<h:column rendered="#{not empty filtersBean.login}">
 						<h:panelGroup>
-						<h:inputText maxlength="9" size="11" rendered="false" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+						<h:inputText maxlength="9" value="#{filtersBean.cepAlternativo}" size="11" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
 						<rich:spacer width="2"/>
-						<h:outputText value="#{msg.personalcontatc_CEP_info}" rendered="false" styleClass="letrasInfo"/>
-						<a4j:commandButton image="/view/images/Lupa.png" rendered="false" title="#{msg.addfilters_findCep}" style="width:10%;"/>
+						<h:outputText value="#{msg.personalcontatc_CEP_info}" styleClass="letrasInfo"/>
+						<a4j:commandButton action="#{filtersBean.find}" image="/view/images/Lupa.png" title="#{msg.addfilters_findCep}" style="width:8%;" reRender="addFiltersForm,resultCepPanel"/>
 						</h:panelGroup>
 					</h:column>
 				</h:panelGrid>
@@ -165,7 +166,10 @@
 						</h:column>
 						<h:column>
 							<rich:spacer width="40"/>
-							<h:commandButton value="#{msg.addfilter_button_compare}" style="width:70px;height:50px;"/>
+							<a4j:commandButton value="#{msg.addfilter_button_compare}" 
+								action="#{filtersBean.compararProdutos}" style="width:70px;height:50px;"
+								oncomplete="submit();"/>
+								
 							<rich:progressBar />
 						</h:column>
 					</h:panelGrid>	
