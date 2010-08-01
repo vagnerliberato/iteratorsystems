@@ -1,45 +1,62 @@
 package br.iteratorsystems.cps.enums;
 
+/**
+ * Enum de Estados do Brasil
+ * @author André
+ *
+ */
 public enum EEstados {
 	
-	AC("ACRE"),
-	AL("ALAGOAS"),
-	AP("AMAPA"),
-	AM("AMAZONAS"),
-	BA("BAHIA"),
-	CE("CEARÁ"),
-	DF("DISTRITO_FEDERAL"),
-	GO("GOIÁS"),
-	ES("ESPÍRITO_SANTO"),
-	MA("MARANHÃO"),
-	MT("MATO_GROSSO"),
-	MS("MATO_GROSSO_DO_SUL"),
-	MG("MINAS_GERAIS"),
-	PA("PARÁ"),
-	PB("PARAÍBA"),
-	PR("PARANÁ"),
-	PE("PERNAMBUCO"),
-	PI("PIAUÍ"),
-	RJ("RIO_DE_JANEIRO"),
-	RN("RIO_GRANDE_DO_NORTE"),
-	RS("RIO_GRANDE_DO_SUL"),
-	RO("RONDÔNIA"),
-	RR("RORÂIMA"),
-	SP("SÃO_PAULO"),
-	SC("SANTA_CATARINA"),
-	SE("SERGIPE"),
-	TO("TOCANTINS");
+	AC("Acre"),
+	AL("Alagoas"),
+	AP("Amapá"),
+	AM("Amazonas"),
+	BA("Bahia"),
+	CE("Ceará"),
+	DF("Distrito Federal"),
+	GO("Goiás"),
+	ES("Espírito Santo"),
+	MA("Maranhão"),
+	MT("Mato Grosso"),
+	MS("Mato Grosso do Sul"),
+	MG("Minas Gerais"),
+	PA("Pará"),
+	PB("Paraíba"),
+	PR("Paraná"),
+	PE("Pernambuco"),
+	PI("Piauí"),
+	RJ("Rio de Janeiro"),
+	RN("Rio Grande do Norte"),
+	RS("Rio Grande do Sul"),
+	RO("Rondônia"),
+	RR("Rôraima"),
+	SP("São Paulo"),
+	SC("Santa Catarina"),
+	SE("Sergipe"),
+	TO("Tocantins");
 	
+	/**
+	 * Construtor default
+	 * @param s
+	 */
 	EEstados(String s){
 		this.setNome(s);
 	}
 
 	private String nome_completo;
 	
+	/**
+	 * Modifica o nome do estado
+	 * @param nome - Novo nome
+	 */
 	public void setNome(String nome) {
 		this.nome_completo = nome;
 	}
-
+	
+	/**
+	 * Recupera o nome do estado
+	 * @return Nome do estado.
+	 */
 	public String getNome() {
 		return nome_completo;
 	}
