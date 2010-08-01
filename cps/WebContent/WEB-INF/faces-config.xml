@@ -52,7 +52,7 @@
 	<managed-bean>
 		<managed-bean-name>loginUserBean</managed-bean-name>
 		<managed-bean-class>br.iteratorsystems.cps.beans.LoginUserBean</managed-bean-class>
-		<managed-bean-scope>session</managed-bean-scope>
+		<managed-bean-scope>application</managed-bean-scope>
 	</managed-bean>
 	<managed-bean>
 		<managed-bean-name>navigationBean</managed-bean-name>
