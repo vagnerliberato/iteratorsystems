@@ -14,6 +14,7 @@ import br.iteratorsystems.cps.entities.Tabelas_ListaProduto;
 import br.iteratorsystems.cps.entities.Tabelas_ListaProdutoItem;
 import br.iteratorsystems.cps.entities.Tabelas_ProdutoGeral;
 import br.iteratorsystems.cps.exceptions.CpsDaoException;
+import br.iteratorsystems.cps.helper.ListaProdutoTOHelper;
 
 public class ListaProdutoService {
 
@@ -52,4 +53,14 @@ public class ListaProdutoService {
 	public void setListaProdutoDao(ListaProdutoDao listaProdutoDao2) {
 		this.listaProdutoDao = listaProdutoDao2;
 	}
+	
+	public void excluirListaDeProdutos(final Set<Tabelas_ListaProdutoItem> converteListaProdutoTO) throws CpsDaoException {
+		listaProdutoDao.excluir(ListaProdutoTOHelper.popularUmaListaDeProduto(converteListaProdutoTO));
+	}
+
+	public void incluirListaDeProdutos(final Set<Tabelas_ListaProdutoItem> converteListaProdutoTO) throws CpsDaoException {
+		listaProdutoDao.salvar(ListaProdutoTOHelper.popularUmaListaDeProduto(converteListaProdutoTO));
+	}
+	
+	
 }
