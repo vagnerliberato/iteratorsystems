@@ -4,14 +4,10 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import br.iteratorsystems.cps.entities.ENDERECO;
 import br.iteratorsystems.cps.entities.Tabelas_Endereco;
 import br.iteratorsystems.cps.entities.Tabelas_ListaProduto;
 import br.iteratorsystems.cps.entities.Tabelas_ListaProdutoItem;
-import br.iteratorsystems.cps.entities.Tabelas_ListaProduto;
-import br.iteratorsystems.cps.entities.Tabelas_ListaProdutoItem;
 import br.iteratorsystems.cps.entities.Tabelas_Usuario;
-import br.iteratorsystems.cps.entities.USUARIO;
 import br.iteratorsystems.cps.to.ProdutoTO;
 
 /**
@@ -80,10 +76,10 @@ public final class ListaProdutoTOHelper {
 			listaprodutoitem.getProdutogeral().setListaProdutoItems(listaDeProdutoItens);
 		}
 		
-		for (Tabelas_ListaProdutoItem item : listaDeProdutoItens) {
-			System.out.println(item.getProdutogeral().toString());
-			System.out.println(item.getListaProduto().getListaProdutoItems().iterator().next().getProdutogeral().toString());
-		}
+		//for (Tabelas_ListaProdutoItem item : listaDeProdutoItens) {
+			//System.out.println(item.getProdutogeral().toString());
+			//System.out.println(item.getListaProduto().getListaProdutoItems().iterator().next().getProdutogeral().toString());
+		//}
 		
 		return listaProduto;
 	}
