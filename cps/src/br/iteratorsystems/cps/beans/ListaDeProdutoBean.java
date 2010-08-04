@@ -8,8 +8,8 @@ import javax.faces.context.FacesContext;
 
 import org.richfaces.component.html.HtmlDataTable;
 
-import br.iteratorsystems.cps.entities.PARAMETRIZACAO_CPS;
-import br.iteratorsystems.cps.entities.PRODUTOGERAL;
+import br.iteratorsystems.cps.entities.Tabelas_Parametrizacao;
+import br.iteratorsystems.cps.entities.Tabelas_ProdutoGeral;
 import br.iteratorsystems.cps.exceptions.CpsGeneralExceptions;
 import br.iteratorsystems.cps.helper.ListaProdutoTOHelper;
 import br.iteratorsystems.cps.service.ListaProdutoService;
@@ -23,7 +23,7 @@ import br.iteratorsystems.cps.to.ProdutoTO;
 public class ListaDeProdutoBean {
 
 	private String descricaoProduto;
-	private List<PRODUTOGERAL> listaBusca;
+	private List<Tabelas_ProdutoGeral> listaBusca;
 	private Set<ProdutoTO> listaComprasUsuario;
 	private ListaProdutoService listaProdutoService;
 	private HtmlDataTable listaProdutosDataTable;
@@ -35,17 +35,16 @@ public class ListaDeProdutoBean {
 	 */
 	public ListaDeProdutoBean(){
 		listaProdutoService = new ListaProdutoService();
-		//numeroMaximoItensCarrinho = 
-			//Integer.parseInt(obterParametrizacao().getNumMaxItensLista());
+		numeroMaximoItensCarrinho = Integer.parseInt(obterParametrizacao().getNumMaxItensLista());
 	}
 	
 	/**
 	 * Obtém a parametrização do sistema
 	 * @return Classe de parametrização do sistema.
 	 */
-	private PARAMETRIZACAO_CPS obterParametrizacao() {
+	private Tabelas_Parametrizacao obterParametrizacao() {
 		ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
-		PARAMETRIZACAO_CPS parametrizacao = (PARAMETRIZACAO_CPS)context.getApplicationMap().get("parametrizacao");
+		Tabelas_Parametrizacao parametrizacao = (Tabelas_Parametrizacao)context.getApplicationMap().get("parametrizacao");
 		return parametrizacao;
 	}
 	
@@ -110,13 +109,13 @@ public class ListaDeProdutoBean {
 	/**
 	 * @return the listaBusca
 	 */
-	public List<PRODUTOGERAL> getListaBusca() {
+	public List<Tabelas_ProdutoGeral> getListaBusca() {
 		return listaBusca;
 	}
 	/**
 	 * @param listaBusca the listaBusca to set
 	 */
-	public void setListaBusca(List<PRODUTOGERAL> listaBusca) {
+	public void setListaBusca(List<Tabelas_ProdutoGeral> listaBusca) {
 		this.listaBusca = listaBusca;
 	}
 	/**
