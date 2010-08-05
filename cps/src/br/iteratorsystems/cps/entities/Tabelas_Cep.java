@@ -259,17 +259,12 @@ public class Tabelas_Cep implements java.io.Serializable, EntityAble {
 //		return true;
 //	}
 //
-//	/*
-//	 * (non-Javadoc)
-//	 * 
-//	 * @see java.lang.Object#toString()
-//	 */
-//	@Override
-//	public String toString() {
-//		return "Tabelas_Cep [bairro1=" + bairro1 + ", bairro2=" + bairro2 + ", cep="
-//				+ cep + ", complemento=" + complemento + ", idTipologradouro="
-//				+ idTipologradouro + ", localidade=" + localidade
-//				+ ", logradouro=" + logradouro + ", uf=" + uf + "]";
-//	}
-
+	
+	@Override
+	public String toString() {
+		return "Tabelas_Cep [bairro1=" + bairro1 + ", bairro2=" + bairro2 + ", cep="
+				+ cep + ", complemento=" + complemento + ", idTipologradouro="
+				+ idTipologradouro + ", localidade=" + localidade
+				+ ", logradouro=" + logradouro + ", uf=" + uf + "]";
+	}
 }
