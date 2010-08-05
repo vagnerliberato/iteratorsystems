@@ -8,9 +8,12 @@ import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import br.iteratorsystems.cps.enums.EEstados;
+import br.iteratorsystems.cps.entities.Tabelas_Cep;
+import br.iteratorsystems.cps.exceptions.CpsHandlerException;
 import br.iteratorsystems.cps.exceptions.FindAddressException;
+import br.iteratorsystems.cps.handler.BuscarCepBaseServiceImpl;
 import br.iteratorsystems.cps.helper.FormatadorEstadorHelper;
+import br.iteratorsystems.cps.helper.FormatadorPadraoStringHelper;
 
 /**
  * Classe que faz a comunicação com o webService de Tabelas_Cep. No momento está feita para interagir com 
@@ -32,6 +35,7 @@ public class FindAddress {
 	//private static final String baseUrl2 = "http://www.buscarcep.com.br/index.php";
 	//private static final String CHAVE = "1Maco/svVvWvqJ1sNk5prmVd9kbaK7";
 	private static final String baseUrl = "http://cep.republicavirtual.com.br/web_cep.php";
+	private static final String PAIS = "BRASIL";
 
 	/**
 	 * Busca os dados de um cep no web service, com base no cep digitado pelo usuário.
@@ -80,14 +84,14 @@ public class FindAddress {
 		
 		if(resultado.length!=8){
 			throw new FindAddressException("Cep não encontrado no Web Service");
+		}else {
+			this.setEstadoSigla(resultado[3]);
+			this.setEstado(FormatadorEstadorHelper.recuperaEstado(this.getEstadoSigla()));
+			this.setCidade(resultado[4]);
+			this.setBairro(resultado[5]);
+			this.setLogradouro(resultado[6] + " " + resultado[7]);
+			this.setPais(PAIS);
 		}
-		
-		this.setEstadoSigla(resultado[3]);
-		this.setEstado(FormatadorEstadorHelper.recuperaEstado(this.getEstadoSigla()));
-		this.setCidade(resultado[4]);
-		this.setBairro(resultado[5]);
-		this.setLogradouro(resultado[6] + " " + resultado[7]);
-		this.setPais("BRASIL");
 	}
 
 	/**
@@ -105,16 +109,34 @@ public class FindAddress {
 			this.findByDataBase(cep);
 		}
 	}
-
-	//implementar pois o webservice pode estar fora do ar!
+	
+	/**
+	 * Busca os dados de cep na base de dados se o serviço web estiver indisponível,
+	 * ou o cep não for encontrado no mesmo.
+	 * @param cep - Cep a procurar.
+	 */
 	private void findByDataBase(String cep) {
-		//TODO
-		
+		BuscarCepBaseServiceImpl cepService = new BuscarCepBaseServiceImpl();
+		Tabelas_Cep tabelasCep = null;
+		try {
+			tabelasCep = cepService.buscarCep(cep);
+			
+			if(tabelasCep != null) {
+				this.setBairro(FormatadorPadraoStringHelper.formataStringEntrada(tabelasCep.getBairro1()));
+				this.setCidade(FormatadorPadraoStringHelper.formataStringEntrada(tabelasCep.getLocalidade().getLocalidade()));
+				this.setLogradouro(FormatadorPadraoStringHelper.formataStringEntrada(tabelasCep.getLogradouro()));
+				this.setEstadoSigla(tabelasCep.getUf());
+				this.setEstado(FormatadorEstadorHelper.recuperaEstado(tabelasCep.getUf()));
+				this.setPais(PAIS);
+			}
+		} catch (CpsHandlerException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
 	 * Se houver proxy na rede, este método recebe o usuário e senha, e
-	 * os adiciona á conecção para usas a rede normalmente.
+	 * os adiciona á conecção para usar a rede normalmente.
 	 * @param connection - Conecção.
 	 */
 	private void createProxy(HttpURLConnection connection) {
