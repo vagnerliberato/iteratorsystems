@@ -114,17 +114,32 @@ public class LoginUserBean {
 	}
 	
 	/**
-	 * 
+	 * Faz o logout da aplicação.
 	 * @return toLoginPage
 	 */
-	
 	public String logout() {
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 		HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(false);
 		session.invalidate();
-		return "toLoginPage";
+		restaurarDados();
+		return "toDefaultPage";
 	}
 
+	/**
+	 * Restaura os dados padrões do bean.
+	 */
+	private void restaurarDados() {
+		this.setCep(null);
+		this.setEmail(null);
+		this.setEndereco(null);
+		this.setFirstAccess(false);
+		this.setLogado(false);
+		this.setLogin(null);
+		this.setNomeLogin(null);
+		this.setSenha(null);
+		this.setUsuario(null);
+	}
+	
 	/**
 	 * @return the senha
 	 */
