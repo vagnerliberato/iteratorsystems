@@ -30,7 +30,7 @@
 						<h:outputText value="#{msg.usermanager_list}" styleClass="letrasAba" />
 					</h:panelGroup>
 				</f:facet>
-				<ui:include src="myLists.jsf"/>
+				<ui:include src="lists/myLists.jsf"/>
 				</rich:tab>
 				<rich:tab name="tab3" rendered="#{userManagementBean.administrador}">
 				<f:facet name="label">

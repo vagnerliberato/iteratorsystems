@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j">
+
+<h:panelGrid columns="2" width="100%">
+	<h:column>
+		<h:outputText value="#{msg.mylists_newname}" styleClass="letras" rendered="true"/>
+	</h:column>
+	<h:column>
+		<h:inputText maxlength="30" size="32" styleClass="barraDefault" readonly="false" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+		<a4j:commandButton value="#{msg.mylists_create}" rendered="true"/>
+	</h:column>
+	<h:column>
+		<h:graphicImage url="/view/images/information.png" rendered="true"/>
+		<h:outputText value="#{msg.mylists_information}" styleClass="letras" rendered="true"/>
+	</h:column>
+	<h:column/>
+	<h:column>
+		<h:outputText value="#{msg.mylists_findproduct}" styleClass="letras" rendered="true"/>
+	</h:column>
+	<h:column>
+		<h:panelGroup>
+			<h:inputText rendered="true" maxlength="50" size="50" styleClass="barraDefault" 
+						 style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+			<a4j:commandButton rendered="true" image="/view/images/Lupa.png" title="#{msg.default_button_search}" 
+						 style="height: 80%;"/>
+		</h:panelGroup>
+	</h:column>
+</h:panelGrid>
+<center>
+	<h:panelGrid id="resultDataTable" rendered="true" columns="1" width="100%">
+		<h:column>
+			 <rich:dataTable id="tableProduct" width="750" value="#{defaultBean.listaProdutoTO}" 
+					rows="5" var="produto" rendered="#{not empty defaultBean.listaProdutoTO}"
+					binding="#{defaultBean.listaProdutosDataTable}" styleClass="letras">
+					
+					<rich:column width="650">
+							<f:facet name="header">
+								<h:outputText value="#{msg.default_producttable_description}"/>
+							</f:facet>
+						<center>
+							<h:outputText value="#{produto.produtoGeral.descricao}" styleClass="letrasDefault"/>
+						</center>
+					</rich:column>
+
+					 <rich:column width="80">
+					 	<f:facet name="header">
+					 		<h:outputText value="Quantidade"/>
+					 	</f:facet>
+					 	<center>
+							<h:inputText size="6" value="#{produto.quantidadeSelecionada}" maxlength="4"/>
+								<rich:toolTip followMouse="true" direction="top-right">
+									<h:outputText value="#{msg.default_producttable_qtd_tip}"/>
+								</rich:toolTip>
+						</center>
+					 </rich:column>
+					 
+					 <rich:column width="150">
+						<f:facet name="header">
+							<h:outputText value="#{msg.default_producttable_add}"/>
+						</f:facet>
+						<h:panelGroup>
+							<center>
+								<a4j:commandButton image="/view/images/addCar.png" oncomplete="#{defaultBean.nomeModalQuantidade}" title="#{msg.default_producttable_add}"
+												   action="#{defaultBean.adicionarCarrinho}"
+												   reRender="tableProduct,painelAjax,tableResumo,myCarGroup,carrinhoVazioImg,carrinhoCheioImg,quantidadeItemsCarrinhoTip"/>
+							</center>
+						</h:panelGroup>
+					</rich:column> 
+						
+					<f:facet name="footer">
+							<rich:datascroller for="tableProduct" renderIfSinglePage="false"/>
+					</f:facet>
+				</rich:dataTable>
+		</h:column>
+	</h:panelGrid>
+</center>
+				
+<h:panelGrid columns="2">
+	<h:column>
+		<h:outputText value="#{msg.mylists_items}" styleClass="letras" rendered="true"/>
+	</h:column>
+	<h:column>
+		<h:panelGroup id="panelListProdutos" rendered="true">
+			<rich:dataTable id="tableResumo" columns="3" rows="3" width="60%" var="carrinho"
+							value="#{defaultBean.produtosCarrinho}" rendered="#{not empty defaultBean.produtosCarrinho}">
+				
+				<rich:column width="10%">
+					<f:facet name="header">
+						<h:outputText value="#{msg.default_summarytable_product}"/>
+					</f:facet>
+					<center>
+						<a4j:commandButton image="/view/images/deleteRow.png" onclick="#{rich:component('modalExclusao')}.show();">
+							<f:setPropertyActionListener value="#{carrinho}" target="#{defaultBean.produtoCarrinhoSelecionado}"/>
+						</a4j:commandButton>
+					</center>
+				</rich:column>
+				
+				<rich:column width="70%"> 
+					<f:facet name="header">
+						<h:outputText value="#{msg.default_summarytable_product}"/>
+					</f:facet>
+					<h:outputText value="#{carrinho.produtoGeral.descricao}"/>
+				</rich:column>
+				
+				<rich:column width="20%">
+					<f:facet name="header">
+						<h:outputText value="#{msg.default_summarytable_amount}"/>
+					</f:facet>
+					<h:outputText value="#{carrinho.quantidadeSelecionada}"/>
+				</rich:column>
+				
+				<f:facet name="footer">
+					<rich:datascroller for="tableResumo" renderIfSinglePage="false"/>
+				</f:facet>
+			</rich:dataTable>
+		</h:panelGroup>
+	</h:column>
+</h:panelGrid>
+</jsp:root>

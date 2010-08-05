@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j">
+
+<ui:composition template="../../template/template.jsf">
+	<ui:define name="content">
+		<h:form id="formMyLists">
+			<ui:include src="newList.jsf"/>
+		</h:form>
+		
+<!-- Modais -->
+<rich:modalPanel id="modalInfoQuantidade" height="100" width="200" resizeable="false">
+	<f:facet name="header">
+		<h:outputText value="#{msg.default_modal_information}"/>
+	</f:facet>
+	<f:facet name="controls">
+           <h:panelGroup>
+               <h:graphicImage value="/view/images/close.png" id="hidelink1" />
+               <rich:componentControl for="modalInfoQuantidade" attachTo="hidelink1"
+                   operation="hide" event="onclick" />
+           </h:panelGroup>
+      </f:facet>
+	<center>
+		<h:form>
+    		<h:outputText value="#{msg.default_modal_message}" styleClass="letras"/>  
+    		<br />
+    		<br />
+    		<a4j:commandButton  value="#{msg.default_modal_button}" onclick="#{rich:component('modalInfoQuantidade')}.hide();"
+    							styleClass="botaoDefault"/>
+   		</h:form>
+	</center>
+</rich:modalPanel>
+	
+<rich:modalPanel id="modalExclusao" height="100" width="310" resizeable="false">
+	<f:facet name="header">
+		<h:outputText value="#{msg.default_modal_information}"/>
+	</f:facet>
+       <f:facet name="controls">
+           <h:panelGroup>
+               <h:graphicImage value="/view/images/close.png" id="hidelink2" />
+               <rich:componentControl for="modalExclusao" attachTo="hidelink2"
+                   operation="hide" event="onclick" />
+           </h:panelGroup>
+       </f:facet>
+	<center>
+		<h:form>
+	   		<h:outputText value="#{msg.default_modal_delete_message}" styleClass="letras"/>  
+	   		<br />
+	   		<br />
+	   		<h:commandButton styleClass="botaoDefault" action="#{defaultBean.excluirProdutoCarrinho}"
+	   						 value="#{msg.default_modal_delete_yes}"/>
+	   		<rich:spacer width="5"/>
+	   		<a4j:commandButton styleClass="botaoDefault"
+	   						   value="#{msg.default_modal_delete_no}" onclick="#{rich:component('modalExclusao')}.hide();" />
+		</h:form>
+	 </center>
+</rich:modalPanel>
+	
+<rich:modalPanel id="modalQuantidadeCarrinho" height="110" width="500" resizeable="false">
+		<f:facet name="header">
+			<h:outputText value="#{msg.default_modal_information}"/>
+		</f:facet>
+		<f:facet name="controls">
+           <h:panelGroup>
+               <h:graphicImage value="/view/images/close.png" id="hidelink3" />
+               <rich:componentControl for="modalQuantidadeCarrinho" attachTo="hidelink3"
+                   operation="hide" event="onclick" />
+           </h:panelGroup>
+       </f:facet>
+	<center>
+		<h:form>
+    		<h:outputText value="#{msg.default_modal_max_size_message}" styleClass="letras"/>
+    		<rich:spacer width="3"/>
+    		<h:outputText value="#{defaultBean.numeroMaximoItensCarrinho}" styleClass="letras"/>  
+    		<br />
+    		<br />
+    		<a4j:commandButton value="#{msg.default_modal_button}" onclick="#{rich:component('modalQuantidadeCarrinho')}.hide();"
+    						   styleClass="botaoDefault"/>
+   		</h:form>
+	</center>
+</rich:modalPanel>
+
+</ui:define>
+</ui:composition>
+</jsp:root>
