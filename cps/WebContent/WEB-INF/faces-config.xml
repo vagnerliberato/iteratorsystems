@@ -106,7 +106,7 @@
 	<navigation-rule>
 		<navigation-case>
 			<from-outcome>toMyLists</from-outcome>
-			<to-view-id>/view/pages/myLists.jsf</to-view-id>
+			<to-view-id>/view/pages/lists/myLists.jsf</to-view-id>
 		</navigation-case>
 	</navigation-rule>
 </faces-config>
