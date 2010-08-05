@@ -1,5 +1,7 @@
 package br.iteratorsystems.cps.config;
 
+import java.sql.Connection;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
@@ -68,6 +70,11 @@ public abstract class HibernateConfig {
 		if (session != null) {
 			session.close();
 		}
+	}
+	
+	@SuppressWarnings("deprecation")
+	public static Connection getConnection() {
+		return getSession().connection();
 	}
 	
 	public static SessionFactory getSessionFactory(){
