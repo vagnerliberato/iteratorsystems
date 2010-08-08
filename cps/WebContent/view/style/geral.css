@@ -12,6 +12,7 @@ body {
 	text-align: center;
 	color: blue;
 	background: #666;
+	overflow-x: hidden; 
 }
 
 .letrasTopo {
