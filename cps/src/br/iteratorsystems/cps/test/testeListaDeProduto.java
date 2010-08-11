@@ -18,7 +18,7 @@ public class testeListaDeProduto {
 		listaProdutoTO.add(produtoTO); 
 		ListaDeProdutoBean bean = new ListaDeProdutoBean();
 		
-		bean.setListaComprasUsuario(listaProdutoTO);
+		//bean.setListaComprasUsuario(listaProdutoTO);
 		bean.incluirListaDeProdutos();
 	}
 	

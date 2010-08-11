@@ -1,5 +1,6 @@
 package br.iteratorsystems.cps.helper;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -41,7 +42,7 @@ public final class ListaProdutoTOHelper {
 	 * @param listaComprasUsuario - ListaProdutoTo do usuario
 	 * @return Uma lista de ListaProdutoItem
 	 */
-	public static Set<Tabelas_ListaProdutoItem> converteListaProdutoTO(Set<ProdutoTO> listaComprasUsuario) {
+	public static Set<Tabelas_ListaProdutoItem> converteListaProdutoTO(Collection<ProdutoTO> listaComprasUsuario) {
 		Set<Tabelas_ListaProdutoItem> listaProdutoItem = new HashSet<Tabelas_ListaProdutoItem>();
 		for(ProdutoTO produtoTO : listaComprasUsuario) {
 			listaProdutoItem.add(converteProdutoTO(produtoTO));

@@ -61,6 +61,4 @@ public class ListaProdutoService {
 	public void incluirListaDeProdutos(final Set<Tabelas_ListaProdutoItem> converteListaProdutoTO) throws CpsDaoException {
 		listaProdutoDao.salvar(ListaProdutoTOHelper.popularUmaListaDeProduto(converteListaProdutoTO));
 	}
-	
-	
 }

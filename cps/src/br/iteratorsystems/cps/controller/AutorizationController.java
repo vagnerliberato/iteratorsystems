@@ -18,11 +18,12 @@ public class AutorizationController implements PhaseListener{
 
 	private static final long serialVersionUID = -6821434785199313719L;
 	
-	private static final String LOGINBEANEL = "loginUserBean";
-	private static final String NAVLOGIN = "toLoginPage";
+	private static final String LOGIN_BEAN_EL = "loginUserBean";
+	private static final String NAV_LOGIN = "toLoginPage";
 	private static final String DIRETORIO_IMAGENS = "/view/images/";
-	private static final String[] pagesOk = {"/view/default.jsf","/view/pages/myCar.jsf",
-											   "/view/pages/addFilters.jsf","/view/pages/userAccess.jsf"};
+	private static final String[] NO_FILTERS_PAGES = {"/view/default.jsf","/view/pages/myCar.jsf",
+											   "/view/pages/addFilters.jsf","/view/pages/userAccess.jsf",
+											   "/view/pages/lists/myLists.jsf"};
 	
 	/**
 	 *After phase.
@@ -31,7 +32,7 @@ public class AutorizationController implements PhaseListener{
 	public void afterPhase(PhaseEvent event) {
 		FacesContext context = event.getFacesContext();
 		
-		for(String s : pagesOk){
+		for(String s : NO_FILTERS_PAGES){
 			if (context.getViewRoot().getViewId().equals(s)
 					|| context.getViewRoot().getViewId().contains(DIRETORIO_IMAGENS)) {
 				
@@ -40,11 +41,11 @@ public class AutorizationController implements PhaseListener{
 		}
 		
 		ELResolver el = context.getApplication().getELResolver();
-		LoginUserBean loginBean = (LoginUserBean) el.getValue(context.getELContext(),null,LOGINBEANEL); 
+		LoginUserBean loginBean = (LoginUserBean) el.getValue(context.getELContext(),null,LOGIN_BEAN_EL); 
 
 		if(loginBean == null || !loginBean.isLogado() && !loginBean.isFirstAccess()){
 			NavigationHandler navigation = context.getApplication().getNavigationHandler();
-			navigation.handleNavigation(context,null,NAVLOGIN);
+			navigation.handleNavigation(context,null,NAV_LOGIN);
 			context.renderResponse();
 		}
 	}

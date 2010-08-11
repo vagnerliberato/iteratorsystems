@@ -1,7 +1,7 @@
 package br.iteratorsystems.cps.beans;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -11,8 +11,11 @@ import org.richfaces.component.html.HtmlDataTable;
 import br.iteratorsystems.cps.entities.Tabelas_Parametrizacao;
 import br.iteratorsystems.cps.entities.Tabelas_ProdutoGeral;
 import br.iteratorsystems.cps.exceptions.CpsGeneralExceptions;
+import br.iteratorsystems.cps.exceptions.CpsHandlerException;
+import br.iteratorsystems.cps.handler.BuscaProdutoHandler;
 import br.iteratorsystems.cps.helper.ListaProdutoTOHelper;
 import br.iteratorsystems.cps.service.ListaProdutoService;
+import br.iteratorsystems.cps.to.ListaProdutoTO;
 import br.iteratorsystems.cps.to.ProdutoTO;
 
 /**
@@ -23,19 +26,65 @@ import br.iteratorsystems.cps.to.ProdutoTO;
 public class ListaDeProdutoBean {
 
 	private String descricaoProduto;
-	private List<Tabelas_ProdutoGeral> listaBusca;
-	private Set<ProdutoTO> listaComprasUsuario;
+	private String produtoDigitado;
+	private String nomeLista;
+	private List<ProdutoTO> listaBusca;
+	private ListaProdutoTO listaComprasUsuario;
 	private ListaProdutoService listaProdutoService;
+	private BuscaProdutoHandler buscaProdutoHandler;
 	private HtmlDataTable listaProdutosDataTable;
 	private String nomeModalQuantidade;
 	private Integer numeroMaximoItensCarrinho;
+	private boolean nenhumRegistroEncontrado;
 	
 	/**
 	 * Construtor padrão	
 	 */
 	public ListaDeProdutoBean(){
 		listaProdutoService = new ListaProdutoService();
-		numeroMaximoItensCarrinho = Integer.parseInt(obterParametrizacao().getNumMaxItensLista());
+		numeroMaximoItensCarrinho = Integer.parseInt(obterParametrizacao().getNumMaxItensLista().trim());
+	}
+	
+	/**
+	 * Cria uma lista de compras para o usuário.
+	 */
+	public void criarLista() {
+		listaComprasUsuario = new ListaProdutoTO();
+		listaComprasUsuario.setNomeLista(this.getNomeLista());
+		listaComprasUsuario.setListaProdutos(new ArrayList<ProdutoTO>());
+	}
+	
+	/**
+	 * Busca os produtos com base no que foi digitado pelo usuário.
+	 * @throws CpsGeneralExceptions Alguma exceção, verificada ou não nas
+	 * camadas abaixo do Bean.
+	 */
+	public void buscarProduto() throws CpsGeneralExceptions{
+		buscaProdutoHandler = new BuscaProdutoHandler();
+		List<Tabelas_ProdutoGeral> listaTemp = null;
+		listaBusca = new ArrayList<ProdutoTO>(1);
+
+		try{
+			listaTemp = 
+				buscaProdutoHandler.buscaProduto(this.getProdutoDigitado());
+			
+			if(listaTemp == null || listaTemp.isEmpty()) {
+				this.setNenhumRegistroEncontrado(true);
+			}else{
+				this.setNenhumRegistroEncontrado(false);
+			}
+			
+			for(Tabelas_ProdutoGeral produtoGeral : listaTemp) {
+				ProdutoTO produtoTO = new ProdutoTO();
+				produtoTO.setProdutoGeral(produtoGeral);
+				produtoTO.setQuantidadeSelecionada(1);
+				listaBusca.add(produtoTO);
+			}
+			
+			listaBusca.removeAll(listaComprasUsuario.getListaProdutos());
+		}catch (CpsHandlerException e) {
+			throw new CpsGeneralExceptions(e);
+		}
 	}
 	
 	/**
@@ -53,7 +102,8 @@ public class ListaDeProdutoBean {
 	 * @throws CpsGeneralExceptions - Se ocorrer alguma exceção na camada abaixo do bean.
 	 */
 	public void excluirListaDeProdutos() throws CpsGeneralExceptions{
-		listaProdutoService.excluirListaDeProdutos(ListaProdutoTOHelper.converteListaProdutoTO(listaComprasUsuario));
+		listaProdutoService.excluirListaDeProdutos(
+				ListaProdutoTOHelper.converteListaProdutoTO(listaComprasUsuario.getListaProdutos()));
 	}
 	
 	/**
@@ -61,7 +111,8 @@ public class ListaDeProdutoBean {
 	 * @throws CpsGeneralExceptions - Se ocorrer alguma exceção na camada abaixo do bean.
 	 */
 	public void incluirListaDeProdutos()throws CpsGeneralExceptions{
-		listaProdutoService.incluirListaDeProdutos(ListaProdutoTOHelper.converteListaProdutoTO(listaComprasUsuario));
+		listaProdutoService.incluirListaDeProdutos(
+				ListaProdutoTOHelper.converteListaProdutoTO(listaComprasUsuario.getListaProdutos()));
 	}
 	
 	/**
@@ -75,11 +126,11 @@ public class ListaDeProdutoBean {
 		if(quantidadeSelecionada < 1) {
 			nomeModalQuantidade = "Richfaces.showModalPanel('modalInfoQuantidade');";
 		}else {
-			if(listaComprasUsuario.size() +1 > getNumeroMaximoItensCarrinho()) {
+			if(listaComprasUsuario.getListaProdutos().size() +1 > getNumeroMaximoItensCarrinho()) {
 				nomeModalQuantidade = "Richfaces.showModalPanel('modalQuantidadeCarrinho');";
 			}else {
-				if(!listaComprasUsuario.contains(produtoTO)) {
-					listaComprasUsuario.add(produtoTO);
+				if(!listaComprasUsuario.getListaProdutos().contains(produtoTO)) {
+					listaComprasUsuario.getListaProdutos().add(produtoTO);
 				}
 			}
 		}
@@ -90,9 +141,8 @@ public class ListaDeProdutoBean {
 	 */
 	public void excluirProdutoDaListaDeProduto(){
 		ProdutoTO produtoTO = (ProdutoTO) this.listaProdutosDataTable.getRowData();
-		listaComprasUsuario.remove(produtoTO);
+		listaComprasUsuario.getListaProdutos().remove(produtoTO);
 	}
-	
 	
 	/**
 	 * @return the descricaoProduto
@@ -109,25 +159,25 @@ public class ListaDeProdutoBean {
 	/**
 	 * @return the listaBusca
 	 */
-	public List<Tabelas_ProdutoGeral> getListaBusca() {
+	public List<ProdutoTO> getListaBusca() {
 		return listaBusca;
 	}
 	/**
 	 * @param listaBusca the listaBusca to set
 	 */
-	public void setListaBusca(List<Tabelas_ProdutoGeral> listaBusca) {
+	public void setListaBusca(List<ProdutoTO> listaBusca) {
 		this.listaBusca = listaBusca;
 	}
 	/**
 	 * @return the listaComprasUsuario
 	 */
-	public Set<ProdutoTO> getListaComprasUsuario() {
+	public ListaProdutoTO getListaComprasUsuario() {
 		return listaComprasUsuario;
 	}
 	/**
 	 * @param listaComprasUsuario the listaComprasUsuario to set
 	 */
-	public void setListaComprasUsuario(Set<ProdutoTO> listaComprasUsuario) {
+	public void setListaComprasUsuario(ListaProdutoTO listaComprasUsuario) {
 		this.listaComprasUsuario = listaComprasUsuario;
 	}
 
@@ -185,5 +235,47 @@ public class ListaDeProdutoBean {
 	 */
 	public Integer getNumeroMaximoItensCarrinho() {
 		return numeroMaximoItensCarrinho;
+	}
+
+	/**
+	 * @param nenhumRegistroEncontrado the nenhumRegistroEncontrado to set
+	 */
+	public void setNenhumRegistroEncontrado(boolean nenhumRegistroEncontrado) {
+		this.nenhumRegistroEncontrado = nenhumRegistroEncontrado;
+	}
+
+	/**
+	 * @return the nenhumRegistroEncontrado
+	 */
+	public boolean isNenhumRegistroEncontrado() {
+		return nenhumRegistroEncontrado;
+	}
+
+	/**
+	 * @param produtoDigitado the produtoDigitado to set
+	 */
+	public void setProdutoDigitado(String produtoDigitado) {
+		this.produtoDigitado = produtoDigitado;
+	}
+
+	/**
+	 * @return the produtoDigitado
+	 */
+	public String getProdutoDigitado() {
+		return produtoDigitado;
+	}
+
+	/**
+	 * @param nomeLista the nomeLista to set
+	 */
+	public void setNomeLista(String nomeLista) {
+		this.nomeLista = nomeLista;
+	}
+
+	/**
+	 * @return the nomeLista
+	 */
+	public String getNomeLista() {
+		return nomeLista;
 	}
 }

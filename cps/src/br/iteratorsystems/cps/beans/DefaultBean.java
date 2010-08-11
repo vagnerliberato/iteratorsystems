@@ -80,7 +80,7 @@ public class DefaultBean {
 			listaTemp = 
 				buscaProdutoHandler.buscaProduto(this.getProdutoDigitado());
 			
-			if(listaTemp.isEmpty()) {
+			if(listaTemp == null || listaTemp.isEmpty()) {
 				this.setNenhumRegistroEncontrado(true);
 			}else{
 				this.setNenhumRegistroEncontrado(false);
