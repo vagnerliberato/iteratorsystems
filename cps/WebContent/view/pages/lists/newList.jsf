@@ -6,37 +6,50 @@
 	xmlns:rich="http://richfaces.org/rich"
 	xmlns:a4j="http://richfaces.org/a4j">
 
-<h:panelGrid columns="2" width="100%">
+<h:panelGrid columns="2" width="900">
 	<h:column>
-		<h:outputText value="#{msg.mylists_newname}" styleClass="letras" rendered="true"/>
+		<h:outputText value="#{msg.mylists_newname}" styleClass="letras" rendered="#{empty listaDeProdutoBean.nomeLista}"/>
 	</h:column>
-	<h:column>
-		<h:inputText maxlength="30" size="32" styleClass="barraDefault" readonly="false" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
-		<a4j:commandButton value="#{msg.mylists_create}" rendered="true"/>
+	<h:column id="columNomeLista">
+		<h:inputText id="nomeLista" maxlength="30" size="32" value="#{listaDeProdutoBean.nomeLista}" styleClass="barraDefault"
+					 readonly="false" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"
+					 rendered="#{empty listaDeProdutoBean.nomeLista}"/>
+			
+		<a4j:outputPanel id="panelNomeLista" ajaxRendered="true" rendered="#{not empty listaDeProdutoBean.nomeLista}">
+			<h:outputText value="#{listaDeProdutoBean.nomeLista}" styleClass="letrasDefault"/>
+			<rich:toolTip followMouse="true" direction="top-right">
+				<h:outputText value="#{msg.mylists_list_name_inf}"/>
+			</rich:toolTip>
+			<a4j:commandButton image="/view/images/deleteRow.png"/>
+		</a4j:outputPanel>
+		
+		<h:commandButton value="#{msg.mylists_create}" rendered="#{empty listaDeProdutoBean.nomeLista}"
+						 action="#{listaDeProdutoBean.criarLista}"/>
 	</h:column>
-	<h:column>
-		<h:graphicImage url="/view/images/information.png" rendered="true"/>
-		<h:outputText value="#{msg.mylists_information}" styleClass="letras" rendered="true"/>
-	</h:column>
-	<h:column/>
+</h:panelGrid>
+
+<rich:separator lineType="solid"/>
+
+<h:panelGrid columns="2">
 	<h:column>
 		<h:outputText value="#{msg.mylists_findproduct}" styleClass="letras" rendered="true"/>
 	</h:column>
 	<h:column>
 		<h:panelGroup>
-			<h:inputText rendered="true" maxlength="50" size="50" styleClass="barraDefault" 
+			<h:inputText rendered="true" value="#{listaDeProdutoBean.produtoDigitado}" maxlength="50" size="50" styleClass="barraDefault" 
 						 style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
 			<a4j:commandButton rendered="true" image="/view/images/Lupa.png" title="#{msg.default_button_search}" 
-						 style="height: 80%;"/>
+						 style="height: 80%;" action="#{listaDeProdutoBean.buscarProduto}"/>
 		</h:panelGroup>
 	</h:column>
 </h:panelGrid>
+
 <center>
 	<h:panelGrid id="resultDataTable" rendered="true" columns="1" width="100%">
 		<h:column>
-			 <rich:dataTable id="tableProduct" width="750" value="#{defaultBean.listaProdutoTO}" 
-					rows="5" var="produto" rendered="#{not empty defaultBean.listaProdutoTO}"
-					binding="#{defaultBean.listaProdutosDataTable}" styleClass="letras">
+			 <rich:dataTable id="tableProduct" width="750" value="#{listaDeProdutoBean.listaBusca}" 
+					rows="5" var="produto" rendered="#{not empty listaDeProdutoBean.listaBusca}"
+					binding="#{listaDeProdutoBean.listaProdutosDataTable}" styleClass="letras">
 					
 					<rich:column width="650">
 							<f:facet name="header">
