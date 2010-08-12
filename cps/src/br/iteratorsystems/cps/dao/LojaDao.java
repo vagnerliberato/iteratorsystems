@@ -18,7 +18,7 @@ public class LojaDao extends DaoGeneric<Tabelas_Loja, Tabelas_LojaId> {
 
 	@SuppressWarnings("unchecked")
 	public List<Tabelas_Loja> obterLojaPorNomeFantasia(String nomefantasia) throws HibernateException, CpsDaoException {
-		return getSession().createCriteria(Tabelas_Loja.class).add(Restrictions.eq("nomefantasia", nomefantasia)).list();
+		return getSession().createCriteria(Tabelas_Loja.class).add(Restrictions.ilike("nomefantasia", nomefantasia)).list();
 	}
 
 }

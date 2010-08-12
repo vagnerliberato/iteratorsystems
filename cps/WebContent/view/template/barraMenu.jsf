@@ -50,11 +50,11 @@
 				<tr align="center">
 					<div class="Logo"></div>
 					<td id="logomarca" align="center"><h:graphicImage
-						url="/view/images/logo.png" height="100px" /></td>
+						url="/view/images/logo.png" height="60" /></td>
 
 					<!-- Grupo do Menu Principal. O CSS deste item deve ser localizado pelo ID -->
 					<td id="menu_top"><!-- menu topo --> <rich:toolBar
-						itemSeparator="line" width="150px" height="50px">
+						itemSeparator="line" width="150px" height="25px">
 						<h:commandLink action="#{navigationBean.toDefaultPage}"
 							styleClass="letrasDefault">
 							<h:outputText value="#{msg.top_menu_search}" />

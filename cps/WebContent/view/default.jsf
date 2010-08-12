@@ -38,7 +38,7 @@
 					<h:column>
 						<a4j:outputPanel ajaxRendered="true">
 							 <rich:dataTable id="tableProduct" width="750" value="#{defaultBean.listaProdutoTO}" 
-									rows="5" var="produto" rendered="#{not empty defaultBean.listaProdutoTO}"
+									rows="4" var="produto" rendered="#{not empty defaultBean.listaProdutoTO}"
 									binding="#{defaultBean.listaProdutosDataTable}" styleClass="letras">
 									
 										<rich:column sortable="false" width="100">
@@ -128,7 +128,7 @@
 								<rich:spacer height="10"/>
 							</h:panelGroup>
 							
-							<rich:dataTable id="tableResumo" columns="3" rows="3" width="60%" var="carrinho"
+							<rich:dataTable id="tableResumo" columns="3" rows="2" width="60%" var="carrinho"
 											value="#{defaultBean.produtosCarrinho}" rendered="#{not empty defaultBean.produtosCarrinho}">
 								
 								<rich:column width="10%">

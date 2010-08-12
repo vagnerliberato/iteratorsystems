@@ -11,7 +11,7 @@ body {
 	font-family: Georgia, "Times New Roman", Times, serif;
 	text-align: center;
 	color: blue;
-	background: #666;
+	background:#FFFFFF;
 	overflow-x: hidden; 
 }
 
@@ -35,13 +35,13 @@ body {
 
 .frame {	
 	min-width: 800px;
-	min-height: 700px; 
+	min-height: 500px; 
 	width: 750px;
-	height: 700px;		
+	height: 650px;		
 }
 
 .frame_menu{
-	border: 1px solid #ECECEC;	
+	border: 1px solid #ECECEC;
 	}
 	
 .letras {

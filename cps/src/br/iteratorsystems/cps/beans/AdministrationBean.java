@@ -28,7 +28,7 @@ public class AdministrationBean {
 	private Tabelas_Loja lojaEntity;
 	private AdministrationHandler administrationHandler;
 
-	//booleanos para controle da tela
+	// booleanos para controle da tela
 	private boolean cadastrarLoja;
 	private boolean mostrarLoja;
 	private boolean mostrarLojaUpd;
@@ -36,7 +36,7 @@ public class AdministrationBean {
 	private boolean atualizarRede;
 	private boolean mostrarCadastroRede = true;
 	private boolean cnpj_valido = true;
-	
+
 	private String itemSelecionado;
 	private String redeSelecionada;
 	private String tipoVendaSelecionada;
@@ -44,120 +44,134 @@ public class AdministrationBean {
 	private String nomeLoja;
 	private String mensagemCampoObrigatorio = "Campo de preenchimento obrigatório!";
 	private String mensagem_cnpj = "CNPJ já cadastrado na base de dados!";
-	
+
 	private List<Tabelas_Login> allLogins;
 	private List<Tabelas_Rede> listRedes;
 	private List<Tabelas_Loja> listLojas;
-	
+
 	private HtmlDataTable richDataTable;
 	private HtmlDataTable redesDataTable;
 	private HtmlDataTable lojasDataTable;
-	
+
 	private SelectItem[] redes;
-	private SelectItem[] tipoVendas = {
-			new SelectItem(0,"Varejo")};
-	private SelectItem[] items = {
-			new SelectItem(0,"Selecione"),
-			new SelectItem(1,"Cadastrar Nova Loja/Rede"),
-			new SelectItem(2,"Gerenciar Lojas Cadastradas"),
-			new SelectItem(3,"Gerenciar Redes Cadastradas"),
-	};
+	private SelectItem[] tipoVendas = { new SelectItem(0, "Varejo") };
+	private SelectItem[] items = { new SelectItem(0, "Selecione"),
+			new SelectItem(1, "Cadastrar Nova Loja/Rede"),
+			new SelectItem(2, "Gerenciar Lojas Cadastradas"),
+			new SelectItem(3, "Gerenciar Redes Cadastradas"), };
 
 	Session session = HibernateConfig.getSession();
 	RedeDao redeDao = new RedeDao(Tabelas_Rede.class, session);
 	LojaDao lojaDao = new LojaDao(Tabelas_Loja.class, session);
-	
+
 	/**
-	 *  Construtor
+	 * Construtor
 	 */
-	
-	public AdministrationBean() {}
-	
+
+	public AdministrationBean() {
+	}
+
 	/**
 	 * Cadastra Rede
+	 * 
 	 * @throws CpsGeneralExceptions
 	 */
-	
-	public void cadastrarRede() throws CpsGeneralExceptions{
-		if(this.getNomeRede() == null || this.getNomeRede().equals("")){ 
+
+	public void cadastrarRede() throws CpsGeneralExceptions {
+		if (this.getNomeRede() == null || this.getNomeRede().equals("")) {
 			return;
 		}
-		
-		administrationHandler  = new AdministrationHandler();
+
+		administrationHandler = new AdministrationHandler();
 		redeEntity = new Tabelas_Rede();
-		
-		try{
+
+		try {
 			redeEntity.setNome(this.getNomeRede());
 			administrationHandler.saveNewRede(redeEntity);
 			this.setNomeRede("");
 			this.getAllRedes();
-		}catch (CpsHandlerException e) {
+		} catch (CpsHandlerException e) {
 			throw new CpsGeneralExceptions(e);
 		}
 	}
-    
-	
+
 	/**
-	 *  Atualiza a Tela
+	 * Atualiza a Tela
 	 */
-	
-	public void atualizaTela(){
+
+	public void atualizaTela() {
 		this.setAtualizarLoja(false);
 		this.setMostrarLoja(false);
 		this.setMostrarLojaUpd(true);
-		try{
-			this.setLojaEntity(this.getListLojas().get(this.getLojasDataTable().getRowIndex()));
-		}catch (Exception e) {
+		try {
+			this.setLojaEntity(this.getListLojas().get(
+					this.getLojasDataTable().getRowIndex()));
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Pega Redes
+	 * 
 	 * @throws CpsGeneralExceptions
 	 */
-	
-	public void getRedesByName() throws CpsGeneralExceptions{
-		if(this.getNomeRede() == null || "".equals(this.getNomeRede())){
+
+	public void getRedesByName() throws CpsGeneralExceptions {
+		if (this.getNomeRede() == null || "".equals(this.getNomeRede())) {
 			return;
 		}
-		listRedes = redeDao.obterPorNome(this.getNomeRede());
+		// listRedes = redeDao.obterPorNome(this.getNomeRede());
+		administrationHandler = new AdministrationHandler();
+		try {
+			listRedes = administrationHandler.getAllRedes(this.getNomeRede());
+		} catch (CpsHandlerException e) {
+			throw new CpsGeneralExceptions(e);
+		}
 	}
-	
+
 	/**
 	 * Pega Lojas
+	 * 
 	 * @throws CpsGeneralExceptions
 	 */
-	
-	public void getLojasByName() throws CpsGeneralExceptions{
-		if(this.getNomeLoja() == null || "".equals(this.getNomeLoja())){
+
+	public void getLojasByName() throws CpsGeneralExceptions {
+		if (this.getNomeLoja() == null || "".equals(this.getNomeLoja())) {
 			return;
 		}
-		listLojas = lojaDao.obterLojaPorNomeFantasia(this.getNomeLoja());
+		// listLojas = lojaDao.obterLojaPorNomeFantasia(this.getNomeLoja());
+		administrationHandler = new AdministrationHandler();
+		try {
+			listLojas = administrationHandler.getAllLojas(this.getNomeLoja());
+		} catch (CpsHandlerException e) {
+			throw new CpsGeneralExceptions(e);
+		}
 	}
-	
+
 	/**
 	 * Valida CNPJ
 	 */
-	
-	public void cnpjOk(){
-		try{
-			if(CommonOperations.cnpjExists(this.getLojaEntity().getCnpj(),this.getLojaEntity())){
+
+	public void cnpjOk() {
+		try {
+			if (CommonOperations.cnpjExists(this.getLojaEntity().getCnpj(),
+					this.getLojaEntity())) {
 				this.setCnpj_valido(false);
 				return;
 			}
 			this.setCnpj_valido(true);
-		}catch (CpsGeneralExceptions e) {
+		} catch (CpsGeneralExceptions e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * 
 	 */
-	
-	public void openLoja(){
-		if(Integer.parseInt(this.getRedeSelecionada()) == 0){
+
+	public void openLoja() {
+		if (Integer.parseInt(this.getRedeSelecionada()) == 0) {
 			this.setMostrarLoja(false);
 			this.setMostrarCadastroRede(true);
 			return;
@@ -165,25 +179,39 @@ public class AdministrationBean {
 		this.setMostrarLoja(true);
 		this.setMostrarCadastroRede(false);
 	}
-	
+
 	/**
 	 * 
 	 * @return
 	 * @throws CpsGeneralExceptions
 	 */
 
-	public SelectItem[] getAllRedes() throws CpsGeneralExceptions{
+	public SelectItem[] getAllRedes() throws CpsGeneralExceptions {
 		int index = 0;
-		List<Tabelas_Rede> todasRedes = redeDao.listarTodos();
-		redes = new SelectItem[todasRedes.size()+1];
-		redes[index] = new SelectItem(0,"Selecione...");;
-		for(Tabelas_Rede rede: todasRedes){
-			index ++;
-			redes[index] = new SelectItem(rede.getId(),rede.getNome());
+		// List<Tabelas_Rede> todasRedes = redeDao.listarTodos();
+		// redes = new SelectItem[todasRedes.size()+1];
+		// redes[index] = new SelectItem(0,"Selecione...");;
+		// for(Tabelas_Rede rede: todasRedes){
+		// index ++;
+		// redes[index] = new SelectItem(rede.getId(),rede.getNome());
+		// }
+		// return redes;
+		try {
+			administrationHandler = new AdministrationHandler();
+			List<Tabelas_Rede> list = administrationHandler.getAllRedes();
+			redes = new SelectItem[list.size() + 1];
+			redes[index] = new SelectItem(0, "Selecione...");
+			;
+			for (Tabelas_Rede rede : list) {
+				index++;
+				redes[index] = new SelectItem(rede.getId(), rede.getNome());
+			}
+			return redes;
+		} catch (CpsHandlerException e) {
+			throw new CpsGeneralExceptions(e);
 		}
-		return redes;
 	}
-	
+
 	/**
 	 * Seleciona Operação
 	 */
@@ -200,7 +228,7 @@ public class AdministrationBean {
 			this.setLojaEntity(null);
 			this.setRedeEntity(null);
 			break;
-		case 1: //Cadastrar Nova Loja
+		case 1: // Cadastrar Nova Loja
 			this.setNomeRede("");
 			this.setCadastrarLoja(true);
 			this.setAtualizarLoja(false);
@@ -210,7 +238,7 @@ public class AdministrationBean {
 			this.setLojaEntity(null);
 			this.setRedeEntity(null);
 			break;
-		case 2: //Gerenciar Lojas Cadastradas
+		case 2: // Gerenciar Lojas Cadastradas
 			this.setNomeLoja("");
 			this.setListLojas(null);
 			this.setAtualizarLoja(true);
@@ -220,7 +248,7 @@ public class AdministrationBean {
 			this.setLojaEntity(null);
 			this.setRedeEntity(null);
 			break;
-		case 3: //Gerenciar Redes Cadastradas
+		case 3: // Gerenciar Redes Cadastradas
 			this.setAtualizarRede(true);
 			this.setListRedes(null);
 			this.setCadastrarLoja(false);
@@ -231,156 +259,204 @@ public class AdministrationBean {
 			this.setRedeEntity(null);
 		}
 	}
-	
+
 	/**
 	 * Pega Usuarios
+	 * 
 	 * @throws CpsGeneralExceptions
 	 */
-	
-	public void findUsers() throws CpsGeneralExceptions{
-		try{
+
+	public void findUsers() throws CpsGeneralExceptions {
+		try {
 			administrationHandler = new AdministrationHandler();
-			allLogins = administrationHandler.getAllLogins(this.getLoginEntity().getNomeLogin());
-		}catch (CpsHandlerException e) {
+			allLogins = administrationHandler.getAllLogins(this
+					.getLoginEntity().getNomeLogin());
+		} catch (CpsHandlerException e) {
 			throw new CpsGeneralExceptions(e);
 		}
 	}
-	
+
 	/**
 	 * Exclui Login
+	 * 
 	 * @throws CpsGeneralExceptions
 	 */
-	
+
 	public void deleteLogin() throws CpsGeneralExceptions {
-		try{
-			Tabelas_Login newLogin = (Tabelas_Login) this.getRichDataTable().getRowData();
+		try {
+			Tabelas_Login newLogin = (Tabelas_Login) this.getRichDataTable()
+					.getRowData();
 			administrationHandler = new AdministrationHandler();
 			this.allLogins.remove(newLogin);
 			administrationHandler.deleteLogin(newLogin);
-		}catch (CpsHandlerException e) {
+		} catch (CpsHandlerException e) {
 			throw new CpsGeneralExceptions(e);
 		}
 	}
-	
+
 	/**
 	 * 
 	 */
-	
+
 	public void find() {
 		FindAddress findAddress = new FindAddress();
-		try{
+		try {
 			findAddress.find(this.getLojaEntity().getCep());
 			this.getLojaEntity().setEstado(findAddress.getEstadoSigla());
 			this.getLojaEntity().setCidade(findAddress.getCidade());
 			this.getLojaEntity().setBairro(findAddress.getBairro());
 			this.getLojaEntity().setLogradouro(findAddress.getLogradouro());
 			this.getLojaEntity().setPais(findAddress.getPais());
-		}catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @throws CpsGeneralExceptions
 	 */
-	
-	public void convertToObj() throws CpsGeneralExceptions{
+
+	public void convertToObj() throws CpsGeneralExceptions {
 		administrationHandler = new AdministrationHandler();
 		Integer index = new Integer(this.getRedeSelecionada());
-		try{
-			for(SelectItem item : redes){
-				if(item.getValue().equals(index)){
-					this.setRedeEntity(administrationHandler.getRede(item.getLabel()));
+		try {
+			for (SelectItem item : redes) {
+				if (item.getValue().equals(index)) {
+					this.setRedeEntity(administrationHandler.getRede(item
+							.getLabel()));
 					this.setLojaEntity(new Tabelas_Loja());
 					break;
 				}
 			}
-		}catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Cadastra Loja
+	 * 
 	 * @throws CpsGeneralExceptions
 	 */
 
-	public void cadastraLoja() throws CpsGeneralExceptions{
-		if(!this.isCnpj_valido()){
+	public void cadastraLoja() throws CpsGeneralExceptions {
+		if (!this.isCnpj_valido()) {
 			return;
 		}
 		administrationHandler = new AdministrationHandler();
-		try{
-			administrationHandler.saveNewLoja(this.getLojaEntity(),this.getRedeEntity());
+		try {
+			administrationHandler.saveNewLoja(this.getLojaEntity(), this
+					.getRedeEntity());
 			this.limpaCampos();
-		}catch (CpsHandlerException e) {
+		} catch (CpsHandlerException e) {
 			throw new CpsGeneralExceptions(e);
 		}
 	}
-	
+
 	/**
 	 * Atualiza Rede
-	 * @throws CpsGeneralExceptions
-	 */
-	
-	public void atualizaRede() throws CpsGeneralExceptions{
-		this.setRedeEntity((Tabelas_Rede)this.getRedesDataTable().getRowData());
-		if(this.getRedeEntity().getNome() == null || this.getRedeEntity().getNome().equals("")) {
-			FacesUtil.errorMessage("", Resources.getErrorProperties().getString("rede_invalid_name"),"nome de rede vazio");
-			return;
-		}
-		redeDao.update(this.getRedeEntity());
-		this.setNomeRede("");
-	}
-	
-	/**
-	 * Atualiza Loja
-	 * @throws CpsGeneralExceptions
-	 */
-	
-	public void atualizaLoja() throws CpsGeneralExceptions{
-		if(!this.isCnpj_valido()){
-			return;
-		}
-		lojaDao.update(this.getLojaEntity());
-		this.limpaCampos();
-		this.setMostrarLojaUpd(false);
-	}
-	
-	/**
-	 * Exclui Rede
-	 * @throws CpsGeneralExceptions
-	 */
-	
-	public void excluirRede() throws CpsGeneralExceptions{
-		this.setRedeEntity((Tabelas_Rede) this.getRedesDataTable().getRowData());
-		this.listRedes.remove(this.getRedeEntity());
-		
-		redeDao.excluir(this.getRedeEntity());
-	}
-	
-	/**
-	 * Exclui Loja
+	 * 
 	 * @throws CpsGeneralExceptions
 	 */
 
-	public void excluirLoja() throws CpsGeneralExceptions{
-		this.setLojaEntity((Tabelas_Loja) this.getLojasDataTable().getRowData());
-		this.listLojas.remove(this.getLojaEntity());
-		
-		lojaDao.excluir(this.getLojaEntity());
+	public void atualizaRede() throws CpsGeneralExceptions {
+		this
+				.setRedeEntity((Tabelas_Rede) this.getRedesDataTable()
+						.getRowData());
+		if (this.getRedeEntity().getNome() == null
+				|| this.getRedeEntity().getNome().equals("")) {
+			FacesUtil.errorMessage("", Resources.getErrorProperties()
+					.getString("rede_invalid_name"), "nome de rede vazio");
+			return;
+		}
+		// redeDao.update(this.getRedeEntity());
+		// this.setNomeRede("");
+		try {
+			administrationHandler = new AdministrationHandler();
+			administrationHandler.updateRede(this.getRedeEntity());
+			this.setNomeRede("");
+		} catch (CpsHandlerException e) {
+			throw new CpsGeneralExceptions(e);
+		}
 	}
-	
+
+	/**
+	 * Atualiza Loja
+	 * 
+	 * @throws CpsGeneralExceptions
+	 */
+
+	public void atualizaLoja() throws CpsGeneralExceptions {
+		if (!this.isCnpj_valido()) {
+			return;
+		}
+		// lojaDao.update(this.getLojaEntity());
+		// this.limpaCampos();
+		// this.setMostrarLojaUpd(false);
+		administrationHandler = new AdministrationHandler();
+		try {
+			administrationHandler.updateLoja(this.getLojaEntity());
+			this.limpaCampos();
+			this.setMostrarLojaUpd(false);
+
+		} catch (CpsHandlerException e) {
+			throw new CpsGeneralExceptions(e);
+		}
+	}
+
+	/**
+	 * Exclui Rede
+	 * 
+	 * @throws CpsGeneralExceptions
+	 */
+
+	public void excluirRede() throws CpsGeneralExceptions {
+		// this.setRedeEntity((Tabelas_Rede)
+		// this.getRedesDataTable().getRowData());
+		// this.listRedes.remove(this.getRedeEntity());
+		// redeDao.excluir(this.getRedeEntity());
+		administrationHandler = new AdministrationHandler();
+		this
+				.setRedeEntity((Tabelas_Rede) this.getRedesDataTable()
+						.getRowData());
+		try {
+			this.listRedes.remove(this.getRedeEntity());
+			administrationHandler.excluirRede(this.getRedeEntity());
+		} catch (CpsHandlerException e) {
+			throw new CpsGeneralExceptions(e);
+		}
+	}
+
+	/**
+	 * Exclui Loja
+	 * 
+	 * @throws CpsGeneralExceptions
+	 */
+
+	public void excluirLoja() throws CpsGeneralExceptions {
+//		this.setLojaEntity((Tabelas_Loja) this.getLojasDataTable().getRowData());
+//		this.listLojas.remove(this.getLojaEntity());
+//		lojaDao.excluir(this.getLojaEntity());
+		administrationHandler = new AdministrationHandler();
+		this.setLojaEntity((Tabelas_Loja) this.getLojasDataTable().getRowData());
+		try {
+			this.listLojas.remove(this.getLojaEntity());
+			administrationHandler.excluirLoja(this.getLojaEntity());
+		}catch (CpsHandlerException e) {		
+			throw new CpsGeneralExceptions(e);
+		}
+	}
+
 	/**
 	 * Limpa Campos
 	 */
-	
+
 	private void limpaCampos() {
 		this.setRedeEntity(null);
 		this.setLojaEntity(null);
 	}
-	
+
 	/**
 	 * 
 	 * @param loginEntity
@@ -389,7 +465,7 @@ public class AdministrationBean {
 	public void setLoginEntity(Tabelas_Login loginEntity) {
 		this.loginEntity = loginEntity;
 	}
-	
+
 	/**
 	 * 
 	 * @return loginEntity
@@ -398,7 +474,7 @@ public class AdministrationBean {
 	public Tabelas_Login getLoginEntity() {
 		return loginEntity;
 	}
-	
+
 	/**
 	 * 
 	 * @param allLogins
@@ -407,7 +483,7 @@ public class AdministrationBean {
 	public void setAllLogins(List<Tabelas_Login> allLogins) {
 		this.allLogins = allLogins;
 	}
-	
+
 	/**
 	 * 
 	 * @return allLogins
@@ -416,7 +492,7 @@ public class AdministrationBean {
 	public List<Tabelas_Login> getAllLogins() {
 		return allLogins;
 	}
-	
+
 	/**
 	 * 
 	 * @param richDataTable
@@ -425,7 +501,7 @@ public class AdministrationBean {
 	public void setRichDataTable(HtmlDataTable richDataTable) {
 		this.richDataTable = richDataTable;
 	}
-	
+
 	/**
 	 * 
 	 * @return richDataTable
@@ -443,7 +519,8 @@ public class AdministrationBean {
 	}
 
 	/**
-	 * @param cadastrar the cadastrarLoja to set
+	 * @param cadastrar
+	 *            the cadastrarLoja to set
 	 */
 	public void setCadastrarLoja(boolean cadastrar) {
 		this.cadastrarLoja = cadastrar;
@@ -457,12 +534,13 @@ public class AdministrationBean {
 	}
 
 	/**
-	 * @param items the items to set
+	 * @param items
+	 *            the items to set
 	 */
 	public void setItems(SelectItem[] items) {
 		this.items = items;
 	}
-	
+
 	/**
 	 * 
 	 * @param itemSelecionado
@@ -471,7 +549,7 @@ public class AdministrationBean {
 	public void setItemSelecionado(String itemSelecionado) {
 		this.itemSelecionado = itemSelecionado;
 	}
-	
+
 	/**
 	 * 
 	 * @return itemSelecionado
@@ -480,7 +558,7 @@ public class AdministrationBean {
 	public String getItemSelecionado() {
 		return itemSelecionado;
 	}
-	
+
 	/**
 	 * 
 	 * @param redeSelecionada
@@ -489,7 +567,7 @@ public class AdministrationBean {
 	public void setRedeSelecionada(String redeSelecionada) {
 		this.redeSelecionada = redeSelecionada;
 	}
-	
+
 	/**
 	 * 
 	 * @return redeSelecionada
@@ -498,7 +576,7 @@ public class AdministrationBean {
 	public String getRedeSelecionada() {
 		return redeSelecionada;
 	}
-	
+
 	/**
 	 * 
 	 * @param mostrarLoja
@@ -507,7 +585,7 @@ public class AdministrationBean {
 	public void setMostrarLoja(boolean mostrarLoja) {
 		this.mostrarLoja = mostrarLoja;
 	}
-	
+
 	/**
 	 * 
 	 * @return mostrarLoja
@@ -516,7 +594,7 @@ public class AdministrationBean {
 	public boolean isMostrarLoja() {
 		return mostrarLoja;
 	}
-	
+
 	/**
 	 * 
 	 * @param mostrarCadastroRede
@@ -525,7 +603,7 @@ public class AdministrationBean {
 	public void setMostrarCadastroRede(boolean mostrarCadastroRede) {
 		this.mostrarCadastroRede = mostrarCadastroRede;
 	}
-	
+
 	/**
 	 * 
 	 * @return mostrarCadastroRede
@@ -534,7 +612,7 @@ public class AdministrationBean {
 	public boolean isMostrarCadastroRede() {
 		return mostrarCadastroRede;
 	}
-	
+
 	/**
 	 * 
 	 * @param tipoVendaSelecionada
@@ -543,7 +621,7 @@ public class AdministrationBean {
 	public void setTipoVendaSelecionada(String tipoVendaSelecionada) {
 		this.tipoVendaSelecionada = tipoVendaSelecionada;
 	}
-	
+
 	/**
 	 * 
 	 * @return tipoVendaSelecionada
@@ -552,7 +630,7 @@ public class AdministrationBean {
 	public String getTipoVendaSelecionada() {
 		return tipoVendaSelecionada;
 	}
-	
+
 	/**
 	 * 
 	 * @param tipoVendas
@@ -561,7 +639,7 @@ public class AdministrationBean {
 	public void setTipoVendas(SelectItem[] tipoVendas) {
 		this.tipoVendas = tipoVendas;
 	}
-	
+
 	/**
 	 * 
 	 * @return tipoVendas
@@ -570,7 +648,7 @@ public class AdministrationBean {
 	public SelectItem[] getTipoVendas() {
 		return tipoVendas;
 	}
-	
+
 	/**
 	 * 
 	 * @param lojaEntity
@@ -579,7 +657,7 @@ public class AdministrationBean {
 	public void setLojaEntity(Tabelas_Loja lojaEntity) {
 		this.lojaEntity = lojaEntity;
 	}
-	
+
 	/**
 	 * 
 	 * @return lojaEntity
@@ -588,7 +666,7 @@ public class AdministrationBean {
 	public Tabelas_Loja getLojaEntity() {
 		return lojaEntity;
 	}
-	
+
 	/**
 	 * 
 	 * @param mensagemCampoObrigatorio
@@ -597,7 +675,7 @@ public class AdministrationBean {
 	public void setMensagemCampoObrigatorio(String mensagemCampoObrigatorio) {
 		this.mensagemCampoObrigatorio = mensagemCampoObrigatorio;
 	}
-	
+
 	/**
 	 * 
 	 * @return mensagemCampoObrigatorio
@@ -606,7 +684,7 @@ public class AdministrationBean {
 	public String getMensagemCampoObrigatorio() {
 		return mensagemCampoObrigatorio;
 	}
-	
+
 	/**
 	 * 
 	 * @param nomeRede
@@ -615,7 +693,7 @@ public class AdministrationBean {
 	public void setNomeRede(String nomeRede) {
 		this.nomeRede = nomeRede;
 	}
-	
+
 	/**
 	 * 
 	 * @return nomeRede
@@ -624,7 +702,7 @@ public class AdministrationBean {
 	public String getNomeRede() {
 		return nomeRede;
 	}
-	
+
 	/**
 	 * 
 	 * @param mensagem_cnpj
@@ -633,7 +711,7 @@ public class AdministrationBean {
 	public void setMensagem_cnpj(String mensagem_cnpj) {
 		this.mensagem_cnpj = mensagem_cnpj;
 	}
-	
+
 	/**
 	 * 
 	 * @return mensagem_cnpj
@@ -642,7 +720,7 @@ public class AdministrationBean {
 	public String getMensagem_cnpj() {
 		return mensagem_cnpj;
 	}
-	
+
 	/**
 	 * 
 	 * @param cnpj_valido
@@ -651,7 +729,7 @@ public class AdministrationBean {
 	public void setCnpj_valido(boolean cnpj_valido) {
 		this.cnpj_valido = cnpj_valido;
 	}
-	
+
 	/**
 	 * 
 	 * @return cnpj_valido
@@ -669,12 +747,13 @@ public class AdministrationBean {
 	}
 
 	/**
-	 * @param redeEntity the redeEntity to set
+	 * @param redeEntity
+	 *            the redeEntity to set
 	 */
 	public void setRedeEntity(Tabelas_Rede redeEntity) {
 		this.redeEntity = redeEntity;
 	}
-	
+
 	/**
 	 * 
 	 * @param listRedes
@@ -683,7 +762,7 @@ public class AdministrationBean {
 	public void setListRedes(List<Tabelas_Rede> listRedes) {
 		this.listRedes = listRedes;
 	}
-	
+
 	/**
 	 * 
 	 * @return listRedes
@@ -692,7 +771,7 @@ public class AdministrationBean {
 	public List<Tabelas_Rede> getListRedes() {
 		return listRedes;
 	}
-	
+
 	/**
 	 * 
 	 * @param redesDataTable
@@ -701,7 +780,7 @@ public class AdministrationBean {
 	public void setRedesDataTable(HtmlDataTable redesDataTable) {
 		this.redesDataTable = redesDataTable;
 	}
-	
+
 	/**
 	 * 
 	 * @return redesDataTable
@@ -710,7 +789,7 @@ public class AdministrationBean {
 	public HtmlDataTable getRedesDataTable() {
 		return redesDataTable;
 	}
-	
+
 	/**
 	 * 
 	 * @param atualizarLoja
@@ -719,7 +798,7 @@ public class AdministrationBean {
 	public void setAtualizarLoja(boolean atualizarLoja) {
 		this.atualizarLoja = atualizarLoja;
 	}
-	
+
 	/**
 	 * 
 	 * @return atualizarLoja
@@ -728,7 +807,7 @@ public class AdministrationBean {
 	public boolean isAtualizarLoja() {
 		return atualizarLoja;
 	}
-	
+
 	/**
 	 * 
 	 * @param atualizarRede
@@ -737,7 +816,7 @@ public class AdministrationBean {
 	public void setAtualizarRede(boolean atualizarRede) {
 		this.atualizarRede = atualizarRede;
 	}
-	
+
 	/**
 	 * 
 	 * @return atualizarRede
@@ -746,7 +825,7 @@ public class AdministrationBean {
 	public boolean isAtualizarRede() {
 		return atualizarRede;
 	}
-	
+
 	/**
 	 * 
 	 * @param nomeLoja
@@ -755,7 +834,7 @@ public class AdministrationBean {
 	public void setNomeLoja(String nomeLoja) {
 		this.nomeLoja = nomeLoja;
 	}
-	
+
 	/**
 	 * 
 	 * @return nomeLoja
@@ -764,7 +843,7 @@ public class AdministrationBean {
 	public String getNomeLoja() {
 		return nomeLoja;
 	}
-	
+
 	/**
 	 * 
 	 * @param listLojas
@@ -773,7 +852,7 @@ public class AdministrationBean {
 	public void setListLojas(List<Tabelas_Loja> listLojas) {
 		this.listLojas = listLojas;
 	}
-	
+
 	/**
 	 * 
 	 * @return listLojas
@@ -782,7 +861,7 @@ public class AdministrationBean {
 	public List<Tabelas_Loja> getListLojas() {
 		return listLojas;
 	}
-	
+
 	/**
 	 * 
 	 * @param lojasDataTable
@@ -791,7 +870,7 @@ public class AdministrationBean {
 	public void setLojasDataTable(HtmlDataTable lojasDataTable) {
 		this.lojasDataTable = lojasDataTable;
 	}
-	
+
 	/**
 	 * 
 	 * @return lojasDataTable
@@ -800,7 +879,7 @@ public class AdministrationBean {
 	public HtmlDataTable getLojasDataTable() {
 		return lojasDataTable;
 	}
-	
+
 	/**
 	 * 
 	 * @param mostrarLojaUpd
@@ -809,7 +888,7 @@ public class AdministrationBean {
 	public void setMostrarLojaUpd(boolean mostrarLojaUpd) {
 		this.mostrarLojaUpd = mostrarLojaUpd;
 	}
-	
+
 	/**
 	 * 
 	 * @return mostrarLojaUpd

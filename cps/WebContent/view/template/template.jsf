@@ -30,10 +30,10 @@
 	</head>
 	<body>
 	
-	<table align="center" bgcolor="white" border="0" class="frame">
+	<table align="center" bgcolor="#FFFFFF" border="0" class="frame">
 	<tr valign="top">
 	<td>	
-		<table bgcolor="white" align="center">
+		<table bgcolor="#FFFFFF" align="center">
 		<tr>
 			<td>
 				<ui:insert name="top-menu">
@@ -44,14 +44,15 @@
 		<tr>
 			<td>
 				<f:view>
-					<ui:insert name="content" />	
-				</f:view>		
+					<ui:insert name="content" />						
+				</f:view>						
 			</td>
 		</tr>
 		</table>
 		</td>
-	</tr>
-	</table>	
+	</tr>	
+	</table>
+	<a>© Iterator Systems 2010</a>	
 	</body>
 	</html>
 </jsp:root>
