@@ -72,11 +72,10 @@
 							styleClass="letrasDefault">
 							<h:outputText value="#{msg.top_menu_access}" />
 						</h:commandLink>
-						<h:commandLink action="#{navigationBean.toMyLists}"
+						<h:commandLink action="#{navigationBean.toAboutPage}"
 							styleClass="letrasDefault">
-							<h:outputText value="#{msg.top_menu_mylists}" />
+							<h:outputText value="#{msg.top_menu_about}" />
 						</h:commandLink>
-
 					</rich:toolBar></td>
 				</tr>
 			</table>
