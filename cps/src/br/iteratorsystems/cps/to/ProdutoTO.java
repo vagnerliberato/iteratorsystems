@@ -66,8 +66,9 @@ public class ProdutoTO implements Serializable{
 	@Override
 	public int hashCode() {
 		int hash = 7;
-		return Integer.parseInt(produtoGeral.getCodigoBarras()) *  hash 
-			   + quantidadeSelecionada * hash;
+		long longAux = Long.parseLong(produtoGeral.getCodigoBarras());
+		
+		return Integer.valueOf((int) longAux) *  hash + quantidadeSelecionada * hash;
 	}
 	
 	/**
