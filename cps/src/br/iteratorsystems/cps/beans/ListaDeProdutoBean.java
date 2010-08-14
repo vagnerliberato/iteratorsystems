@@ -29,10 +29,12 @@ public class ListaDeProdutoBean {
 	private String produtoDigitado;
 	private String nomeLista;
 	private List<ProdutoTO> listaBusca;
+	private List<ProdutoTO> listaPagina;
 	private ListaProdutoTO listaComprasUsuario;
 	private ListaProdutoService listaProdutoService;
 	private BuscaProdutoHandler buscaProdutoHandler;
 	private HtmlDataTable listaProdutosDataTable;
+	private ProdutoTO produtoListaSelecionado;
 	private String nomeModalQuantidade;
 	private Integer numeroMaximoItensCarrinho;
 	private boolean nenhumRegistroEncontrado;
@@ -43,6 +45,18 @@ public class ListaDeProdutoBean {
 	public ListaDeProdutoBean(){
 		listaProdutoService = new ListaProdutoService();
 		numeroMaximoItensCarrinho = Integer.parseInt(obterParametrizacao().getNumMaxItensLista().trim());
+		instanciarListaDeCompras();
+	}
+	
+	/**
+	 * Instancia a classe de lista de compras.
+	 */
+	private void instanciarListaDeCompras(){
+		listaComprasUsuario = new ListaProdutoTO();
+		listaPagina = new ArrayList<ProdutoTO>();
+		if(listaComprasUsuario.getListaProdutos() == null) {
+			listaComprasUsuario.setListaProdutos(new ArrayList<ProdutoTO>());
+		}
 	}
 	
 	/**
@@ -52,6 +66,19 @@ public class ListaDeProdutoBean {
 		listaComprasUsuario = new ListaProdutoTO();
 		listaComprasUsuario.setNomeLista(this.getNomeLista());
 		listaComprasUsuario.setListaProdutos(new ArrayList<ProdutoTO>());
+	}
+	
+	/**
+	 * Exclui uma lista de compras do usuário.
+	 */
+	public void excluirLista() {
+		if(listaComprasUsuario != null) {
+			if(listaComprasUsuario.getListaProdutos() != null) {
+				listaComprasUsuario.getListaProdutos().clear();
+			}
+			listaComprasUsuario.setNomeLista(null);
+			this.setNomeLista(null);
+		}
 	}
 	
 	/**
@@ -81,7 +108,7 @@ public class ListaDeProdutoBean {
 				listaBusca.add(produtoTO);
 			}
 			
-			listaBusca.removeAll(listaComprasUsuario.getListaProdutos());
+			listaBusca.removeAll(listaPagina);
 		}catch (CpsHandlerException e) {
 			throw new CpsGeneralExceptions(e);
 		}
@@ -102,8 +129,8 @@ public class ListaDeProdutoBean {
 	 * @throws CpsGeneralExceptions - Se ocorrer alguma exceção na camada abaixo do bean.
 	 */
 	public void excluirListaDeProdutos() throws CpsGeneralExceptions{
-		/*listaProdutoService.excluirListaDeProdutos(
-				ListaProdutoTOHelper.converteListaProdutoTO(listaComprasUsuario.getListaProdutos()));*/
+//		listaProdutoService.excluirListaDeProdutos(
+				//ListaProdutoTOHelper.converteListaProdutoTO(listaComprasUsuario.getListaProdutos()));
 	}
 	
 	/**
@@ -126,11 +153,12 @@ public class ListaDeProdutoBean {
 		if(quantidadeSelecionada < 1) {
 			nomeModalQuantidade = "Richfaces.showModalPanel('modalInfoQuantidade');";
 		}else {
-			if(listaComprasUsuario.getListaProdutos().size() +1 > getNumeroMaximoItensCarrinho()) {
+			if(listaPagina.size() +1 > getNumeroMaximoItensCarrinho()) {
 				nomeModalQuantidade = "Richfaces.showModalPanel('modalQuantidadeCarrinho');";
 			}else {
-				if(!listaComprasUsuario.getListaProdutos().contains(produtoTO)) {
-					listaComprasUsuario.getListaProdutos().add(produtoTO);
+				if(!listaPagina.contains(produtoTO)) {
+					listaPagina.add(produtoTO);
+					listaBusca.remove(produtoTO);
 				}
 			}
 		}
@@ -140,8 +168,7 @@ public class ListaDeProdutoBean {
 	 * Exclui um produto da lista de produto.
 	 */
 	public void excluirProdutoDaListaDeProduto(){
-		ProdutoTO produtoTO = (ProdutoTO) this.listaProdutosDataTable.getRowData();
-		listaComprasUsuario.getListaProdutos().remove(produtoTO);
+		listaPagina.remove(produtoListaSelecionado);
 	}
 	
 	/**
@@ -277,5 +304,33 @@ public class ListaDeProdutoBean {
 	 */
 	public String getNomeLista() {
 		return nomeLista;
+	}
+
+	/**
+	 * @param listaPagina the listaPagina to set
+	 */
+	public void setListaPagina(List<ProdutoTO> listaPagina) {
+		this.listaPagina = listaPagina;
+	}
+
+	/**
+	 * @return the listaPagina
+	 */
+	public List<ProdutoTO> getListaPagina() {
+		return listaPagina;
+	}
+
+	/**
+	 * @param produtoListaSelecionado the produtoListaSelecionado to set
+	 */
+	public void setProdutoListaSelecionado(ProdutoTO produtoListaSelecionado) {
+		this.produtoListaSelecionado = produtoListaSelecionado;
+	}
+
+	/**
+	 * @return the produtoListaSelecionado
+	 */
+	public ProdutoTO getProdutoListaSelecionado() {
+		return produtoListaSelecionado;
 	}
 }
