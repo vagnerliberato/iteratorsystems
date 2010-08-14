@@ -112,7 +112,7 @@
 			<h:column>
 				<h:inputText id="inputCep" required="true" value="#{userManagementBean.enderecoEntity.cep}" maxlength="9" size="10" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
 					<rich:jQuery selector="#inputCep" query="mask('99999-999')" timing="onload" />
-					<a4j:support event="onblur" ajaxSingle="true" action="#{userManagementBean.find}" reRender="inputRua,inputBairro,inputCidade,selectEstado"/>
+					<a4j:support event="onblur" ajaxSingle="true" oncomplete="#{userManagementBean.nomeModalCepIncorreto}" action="#{userManagementBean.find}" reRender="inputRua,inputBairro,inputCidade,selectEstado"/>
 				</h:inputText>*
 				<rich:spacer width="2"/>
 				<h:outputText value="#{msg.personalcontatc_CEP_info}" styleClass="letrasInfo"/>
@@ -321,14 +321,44 @@
 </h:panelGrid>
 </h:panelGroup>
 
-	<rich:spacer height="8"/>
-	<rich:separator lineType="dotted" height="1" width="870px"/>
+<rich:spacer height="8"/>
+<rich:separator lineType="dotted" height="1" width="870px"/>
 	
-	<center>
-	<h:commandButton action="#{userManagementBean.salva}" rendered="#{userManagementBean.firstAccess}" image="/view/images/save.png" title="#{msg.personaldata_save}" value="#{msg.personaldata_save}"/>
-	<h:commandButton action="#{userManagementBean.atualiza}" rendered="#{not userManagementBean.firstAccess}" image="/view/images/save.png" title="#{msg.personaldata_update}" value="#{msg.personaldata_update}"/>
+<center>
+	<h:commandButton action="#{userManagementBean.salva}" rendered="#{userManagementBean.firstAccess}" title="#{msg.personaldata_save}" value="#{msg.personaldata_save}">
+		<f:setPropertyActionListener value="false" target="#{loginUserBean.displayTelaCadastro}"/>
+	</h:commandButton>
+	<h:commandButton action="#{userManagementBean.atualiza}" rendered="#{not userManagementBean.firstAccess}" title="#{msg.personaldata_update}" value="#{msg.personaldata_update}">
+		<f:setPropertyActionListener value="false" target="#{loginUserBean.displayTelaCadastro}"/>
+	</h:commandButton>
 	<rich:spacer width="5"/>
-	<a4j:commandButton action="#{userManagementBean.limpa}" image="/view/images/cancel.png" title="#{msg.personaldata_cancel}" value="#{msg.personaldata_cancel}" reRender="userEditForm"/>
-	</center>
-	</h:form>
+	<a4j:commandButton ajaxSingle="true" onclick="#{rich:component('modalConfirmacaoCancelamento')}.show();" title="#{msg.personaldata_cancel}" value="#{msg.personaldata_cancel}"/>
+</center>
+</h:form>
+
+<rich:modalPanel id="modalConfirmacaoCancelamento" height="100" width="310" resizeable="false">
+<f:facet name="header">
+<h:outputText value="#{msg.personaldata_modal_information}"/>
+</f:facet>
+<f:facet name="controls">
+    <h:panelGroup>
+        <h:graphicImage value="/view/images/close.png" id="hidelink2" />
+        <rich:componentControl for="modalConfirmacaoCancelamento" attachTo="hidelink2"
+            operation="hide" event="onclick" />
+    </h:panelGroup>
+</f:facet>
+<center>
+	<h:form>
+ 		<h:outputText value="#{msg.personaldata_modal_cancel_message}" styleClass="letras"/>  
+ 		<br />
+ 		<br />
+ 		<h:commandButton styleClass="botaoDefault" action="#{userManagementBean.limpa}"
+ 						 value="#{msg.default_modal_delete_yes}"/>
+ 		<rich:spacer width="5"/>
+ 		<a4j:commandButton styleClass="botaoDefault"
+ 						   value="#{msg.default_modal_delete_no}" onclick="#{rich:component('modalConfirmacaoCancelamento')}.hide();" />
+		</h:form>
+</center>
+</rich:modalPanel>
+<ui:include src="common/modalCepIncorreto.jsf"/>
 </jsp:root>

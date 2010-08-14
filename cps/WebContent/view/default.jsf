@@ -92,7 +92,7 @@
 											<center>
 												<a4j:commandButton image="/view/images/addCar.png" oncomplete="#{defaultBean.nomeModalQuantidade}" title="#{msg.default_producttable_add}"
 																   action="#{defaultBean.adicionarCarrinho}"
-																   reRender="tableProduct,painelAjax,tableResumo,myCarGroup,carrinhoVazioImg,carrinhoCheioImg,quantidadeItemsCarrinhoTip"/>
+																   reRender="tableProduct,painelAjax,tableResumo,myCarGroup,carrinhoVazioImg,carrinhoCheioImg,quantidadeItemsCarrinhoTip,fixedInformationCar"/>
 											</center>
 										</h:panelGroup>
 									</rich:column> 
