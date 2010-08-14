@@ -6,8 +6,6 @@ public class NavigationBean {
 	 * 
 	 * @return toDefaultPage
 	 */
-	
-	
 	public String toDefaultPage(){
 		return "toDefaultPage";
 	}
@@ -16,7 +14,6 @@ public class NavigationBean {
 	 * 
 	 * @return toMyCar
 	 */
-
 	public String toMyCar(){
 		return "toMyCar";
 	}
@@ -25,17 +22,15 @@ public class NavigationBean {
 	 * 
 	 * @return toLoginPage
 	 */
-	
 	public static String toUserAccess(){
 		return "toLoginPage";
 	}
 	
 	/**
-	 * 
-	 * @return toMyLists
+	 * Direciona para a página de "sobre"
+	 * @return toAboutPage
 	 */
-	
-	public String toMyLists(){
-		return "toMyLists";
+	public String toAboutPage(){
+		return "toAboutPage";
 	}
 }
