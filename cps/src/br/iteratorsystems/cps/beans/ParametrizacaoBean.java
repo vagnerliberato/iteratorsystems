@@ -1,15 +1,45 @@
 package br.iteratorsystems.cps.beans;
 
+import org.richfaces.renderkit.ModalPanelRendererBase;
+import org.richfaces.renderkit.html.ModalPanelRenderer;
+
 import br.iteratorsystems.cps.entities.Tabelas_Parametrizacao;
 import br.iteratorsystems.cps.exceptions.CpsDaoException;
 import br.iteratorsystems.cps.service.ParametrizacaoService;
 
 public class ParametrizacaoBean {
 
+	private Integer idParametrizacao = 1;
 	private Integer quantidadeMaximaDeItens;
 	private Integer quantidadeMaximaDeLojas;
 	private String diretorioPadraoXML;
 	private String diretorioPadraoDeImagens;
+	private String mensagemDeErro = "";
+	private String nomeModalMostrar = "";
+	private Tabelas_Parametrizacao tabelaParametrizacao;
+
+	ParametrizacaoService parametrizacaoService = new ParametrizacaoService();
+	
+	public ParametrizacaoBean(){
+		try{
+			popularParametrizacaoBeanParaExibirNaPagina();
+		}catch(CpsDaoException e){
+			System.out.println(e.getMessage());
+		}
+	}
+	private void popularParametrizacaoBeanParaExibirNaPagina()throws CpsDaoException {
+		this.tabelaParametrizacao = parametrizacaoService.obterParametrizacao(idParametrizacao);
+		this.diretorioPadraoDeImagens = tabelaParametrizacao.getDiretorioImagensProCps();
+		this.diretorioPadraoXML = tabelaParametrizacao.getDiretorioProcessamentoXml();
+		this.quantidadeMaximaDeItens = Integer.parseInt(tabelaParametrizacao.getNumMaxItensLista().trim());
+		this.quantidadeMaximaDeLojas = Integer.parseInt(tabelaParametrizacao.getNumMaxLojasComparacao().trim());
+	}
+	/**
+	 * @return the idParametrizacao
+	 */
+	public Integer getIdParametrizacao() {
+		return idParametrizacao;
+	}
 	/**
 	 * @return the quantidadeMaximaDeItens
 	 */
@@ -60,47 +90,70 @@ public class ParametrizacaoBean {
 	}
 	
 	public void salvarInformacoesDeParametrizacao() throws CpsDaoException{
-		ParametrizacaoService parametrizacaoService = new ParametrizacaoService();
 		
 		if(isParametrizacaoValida()){
-			Tabelas_Parametrizacao parametrizacao = new Tabelas_Parametrizacao();
-			parametrizacao.setDiretorioImagensProCps(diretorioPadraoDeImagens);
-			parametrizacao.setDiretorioProcessamentoXml(diretorioPadraoXML);
-			parametrizacao.setNumMaxItensLista(String.valueOf(quantidadeMaximaDeItens));
-			parametrizacao.setNumMaxLojasComparacao(String.valueOf(quantidadeMaximaDeLojas));
+			tabelaParametrizacao.setIdParametrizacao(idParametrizacao);
+			tabelaParametrizacao.setDiretorioImagensProCps(diretorioPadraoDeImagens);
+			tabelaParametrizacao.setDiretorioProcessamentoXml(diretorioPadraoXML);
+			tabelaParametrizacao.setNumMaxItensLista(String.valueOf(quantidadeMaximaDeItens));
+			tabelaParametrizacao.setNumMaxLojasComparacao(String.valueOf(quantidadeMaximaDeLojas));
 			
-			parametrizacaoService.salvar(parametrizacao);
+			parametrizacaoService.salvar(tabelaParametrizacao);
+			this.nomeModalMostrar =  "";
+		}else{
+			this.nomeModalMostrar =  "Richfaces.showModalPanel('modalParametrizacaoErro')";
 		}
 	}
 	private boolean isParametrizacaoValida() {
 		boolean isParametrizacaoValida = true;
-		String mensagemDeErro = "";
+		mensagemDeErro = "";
 		
-		this.diretorioPadraoDeImagens = this.diretorioPadraoDeImagens.replace("\\", "\\\\");
+		//this.diretorioPadraoDeImagens = this.diretorioPadraoDeImagens.replace("\\", "\\\\");
 		boolean regexDiretorioPadraoDeImagensEhInvalido = !this.diretorioPadraoDeImagens.matches("[a-zA-Z]{1}[:]{1}[\\\\][0-9a-zA-Z.\\_]*");
-		if(regexDiretorioPadraoDeImagensEhInvalido && this.diretorioPadraoDeImagens == null){
+		if(regexDiretorioPadraoDeImagensEhInvalido || this.diretorioPadraoDeImagens == null){
 			isParametrizacaoValida = false;
-			mensagemDeErro += "Informe um endereço de diretorio valido para salvar as imagens (Ex: c:\\teste)";
+			mensagemDeErro += "Endereço de imagens invalido(Ex: c:\\teste).";
 		}
 		
+		//this.diretorioPadraoXML = this.diretorioPadraoXML.replace("\\", "\\\\");
 		boolean regexDiretorioPadraoXMLEhInvalido = !this.diretorioPadraoXML.matches("[a-zA-Z]{1}[:]{1}[\\\\][0-9a-zA-Z.\\_]*");
-		if(regexDiretorioPadraoXMLEhInvalido && this.diretorioPadraoXML == null){
+		if(regexDiretorioPadraoXMLEhInvalido || this.diretorioPadraoXML == null){
 			isParametrizacaoValida = false;
-			mensagemDeErro += "\nInforme um endereço de diretorio valido para o XML (Ex: c:\\teste)";
+			mensagemDeErro += "\nEndereço de XML invalido(Ex: c:\\teste).";
 		}
 		
 		boolean regexQuantidadeMaximaDeItensEhInvalida = !String.valueOf(this.quantidadeMaximaDeItens).matches("[0-9]{3}");
-		if(regexQuantidadeMaximaDeItensEhInvalida && this.quantidadeMaximaDeItens > 250){
+		if(regexQuantidadeMaximaDeItensEhInvalida || this.quantidadeMaximaDeItens > 250){
 			isParametrizacaoValida = false;
-			mensagemDeErro += "\nInforme uma quantidade maximo até 250 itens";
+			mensagemDeErro += "\nQuantidade de itens invalido (maximo 250)";
 		}
 		
 		boolean regexQuantidadeMaximaDeLojasEhInvalida = !String.valueOf(this.quantidadeMaximaDeLojas).matches("[0-5]{1}");
-		if(regexQuantidadeMaximaDeLojasEhInvalida && this.quantidadeMaximaDeLojas > 5){
+		if(regexQuantidadeMaximaDeLojasEhInvalida || this.quantidadeMaximaDeLojas > 5){
 			isParametrizacaoValida = false;
-			mensagemDeErro += "\nInforme uma quantidade maximo até 5 lojas";
+			mensagemDeErro += "\nQuantidade de lojas invalido (maximo 5)";
+		}
+		
+		if(!isParametrizacaoValida){
+			
 		}
 		
 		return isParametrizacaoValida;
+	}
+	
+	public String getMensagemDeErro() {
+		return mensagemDeErro;
+	}
+	
+	public void setMensagemDeErro(String mensagemDeErro) {
+		this.mensagemDeErro = mensagemDeErro;
+	}
+	
+	public String getNomeModalMostrar() {
+		return nomeModalMostrar;
+	}
+	
+	public void setNomeModalMostrar(String nomeModalMostrar) {
+		this.nomeModalMostrar = nomeModalMostrar;
 	}
 }

@@ -25,11 +25,10 @@
 		</h:panelGroup>
 		<h:panelGrid columns="3">
 			<h:column>
-				<h:outputText value="#{msg.adm_param_max_itens}" styleClass="letras"/>
+				<h:outputText value="#{msg.adm_param_max_itens}"  styleClass="letras"/>
 			</h:column>
 			<h:column>
-				<h:inputText size="5" maxlength="3" value="#{userManagementBean.parametrizacao.numMaxItensLista}" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
-					<f:validateLength minimum="100" maximum="300"/>
+				<h:inputText size="5" maxlength="3" value="#{parametrizacaoBean.quantidadeMaximaDeItens}" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
 				</h:inputText>
 			</h:column>
 			<h:column>
@@ -43,8 +42,7 @@
 				<h:outputText value="#{msg.adm_param_max_stores}" styleClass="letras"/>
 			</h:column>
 			<h:column>
-				<h:inputText size="5" maxlength="3" value="#{userManagementBean.parametrizacao.numMaxLojasComparacao}" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
-					<f:validateLength minimum="2" maximum="100"/>
+				<h:inputText size="5" maxlength="3" value="#{parametrizacaoBean.quantidadeMaximaDeLojas}" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
 				</h:inputText>
 			</h:column>
 			<h:column>
@@ -58,7 +56,7 @@
 				<h:outputText value="#{msg.adm_param_xml_dir}" styleClass="letras"/>
 			</h:column>
 			<h:column>
-				<h:inputText size="80" maxlength="100" value="#{userManagementBean.parametrizacao.diretorioProcessamentoXml}" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+				<h:inputText size="80" value="#{parametrizacaoBean.diretorioPadraoXML}" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
 			</h:column>
 			<h:column>
 			<a4j:commandButton image="/view/images/doubt.png">
@@ -71,7 +69,7 @@
 				<h:outputText value="#{msg.adm_param_image_dir}" styleClass="letras"/>
 			</h:column>
 			<h:column>
-				<h:inputText size="80" value="#{userManagementBean.parametrizacao.diretorioImagensProCps}" maxlength="100" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+				<h:inputText size="80" value="#{parametrizacaoBean.diretorioPadraoDeImagens}" maxlength="100" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
 			</h:column>
 			<h:column>
 			<a4j:commandButton image="/view/images/doubt.png">
@@ -85,7 +83,8 @@
 		<rich:separator lineType="solid" />
 		<rich:spacer height="5"/>
 		<center>
-			<a4j:commandButton value="#{msg.adm_param_button_add}" styleClass="letras"/>
+			<a4j:commandButton value="#{msg.adm_param_button_add}" oncomplete="#{parametrizacaoBean.nomeModalMostrar}" 
+							   action="#{parametrizacaoBean.salvarInformacoesDeParametrizacao}" styleClass="letras" reRender="modalParametrizacaoErro,msgErroParametrizacao:textErrorParametrizacao"/>
 		</center>
 		</h:form>
 		</rich:tab>
@@ -770,5 +769,27 @@
 					</h:panelGroup>
 				</h:form>
 			</rich:tab>
-	</rich:tabPanel>
+		</rich:tabPanel>
+
+			<rich:modalPanel id="modalParametrizacaoErro" height="110" width="500" resizeable="false">
+				<f:facet name="header">
+					<h:outputText value="#{msg.parametrizacao}"/>
+				</f:facet>
+				<f:facet name="controls">
+		            <h:panelGroup>
+		                <h:graphicImage value="/view/images/close.png" id="hideError" />
+		                <rich:componentControl for="modalParametrizacaoErro" attachTo="hideError" operation="hide" event="onclick" />
+		            </h:panelGroup>
+		        </f:facet>
+				<center>
+					<h:form id="msgErroParametrizacao">
+			    		<h:outputText value="#{parametrizacaoBean.mensagemDeErro}" id="textErrorParametrizacao" styleClass="letras"/>
+			    		<rich:spacer width="3"/>
+			    		<br />
+			    		<br />
+			    		<a4j:commandButton value="#{msg.button_close_modal_parametrizacao}" onclick="#{rich:component('modalParametrizacaoErro')}.hide();" styleClass="botaoDefault"/>
+		    		</h:form>
+				</center>
+			</rich:modalPanel>
+			
 </jsp:root>

@@ -102,8 +102,8 @@ public class ListaDeProdutoBean {
 	 * @throws CpsGeneralExceptions - Se ocorrer alguma exceção na camada abaixo do bean.
 	 */
 	public void excluirListaDeProdutos() throws CpsGeneralExceptions{
-		listaProdutoService.excluirListaDeProdutos(
-				ListaProdutoTOHelper.converteListaProdutoTO(listaComprasUsuario.getListaProdutos()));
+		/*listaProdutoService.excluirListaDeProdutos(
+				ListaProdutoTOHelper.converteListaProdutoTO(listaComprasUsuario.getListaProdutos()));*/
 	}
 	
 	/**
