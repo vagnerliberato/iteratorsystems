@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import br.iteratorsystems.cps.config.HibernateConfig;
 import br.iteratorsystems.cps.dao.ListaProdutoDao;
@@ -54,11 +55,18 @@ public class ListaProdutoService {
 		this.listaProdutoDao = listaProdutoDao2;
 	}
 	
-	public void excluirListaDeProdutos(final Set<Tabelas_ListaProdutoItem> converteListaProdutoTO) throws CpsDaoException {
-		listaProdutoDao.excluir(ListaProdutoTOHelper.popularUmaListaDeProduto(converteListaProdutoTO));
+	public void excluirListaDeProdutos(final Tabelas_ListaProduto listaProduto) throws CpsDaoException {
+		Session session = HibernateConfig.getSession();
+		listaProdutoDao.excluir(listaProduto);
+		session.flush();
 	}
 
 	public void incluirListaDeProdutos(final Set<Tabelas_ListaProdutoItem> converteListaProdutoTO) throws CpsDaoException {
+		Transaction transaction = HibernateConfig.getSession().getTransaction();
+		transaction.begin();
 		listaProdutoDao.salvar(ListaProdutoTOHelper.popularUmaListaDeProduto(converteListaProdutoTO));
+		transaction.commit();
 	}
+	
+	
 }
