@@ -101,12 +101,13 @@ public class FindAddress {
 	 * @param cep - Cep
 	 */
 	public void find(String cep) {
+		final String cepModificado = cep.replace("-","");
 		try{
-			this.findByWebService(cep);
+			this.findByWebService(cepModificado);
 			return;
 		}catch (FindAddressException e) {
 			e.printStackTrace();
-			this.findByDataBase(cep);
+			this.findByDataBase(cepModificado);
 		}
 	}
 	

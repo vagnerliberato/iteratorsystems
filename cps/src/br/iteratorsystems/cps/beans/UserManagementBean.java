@@ -48,6 +48,7 @@ public class UserManagementBean {
 
 	protected FacesContext context = FacesContext.getCurrentInstance();
 	protected ELResolver el = context.getApplication().getELResolver();
+	private String nomeModalCepIncorreto;
 	
 	//o faces ainda não possui um PERFEITO mecanismo de mensagens, então vai na mão!
 	public static final String[] MENSAGENS_JSF = 
@@ -142,6 +143,15 @@ public class UserManagementBean {
 			this.enderecoEntity.setEstado(findAddress.getEstado());
 			this.enderecoEntity.setPais(findAddress.getPais());
 			this.setEstadoSigla(findAddress.getEstadoSigla());
+			
+			if (findAddress.getLogradouro() == null
+					|| findAddress.getBairro() == null
+					|| findAddress.getCidade() == null) {
+				setNomeModalCepIncorreto("Richfaces.showModalPanel('modalCepIncorreto');");
+			}else{
+				setNomeModalCepIncorreto("submit();");
+			}
+			
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -182,11 +192,11 @@ public class UserManagementBean {
 		}
 	}
 	
-	// TODO Fazer limpar o formulario!
-	public void limpa() {
+	public String limpa() {
 		this.setLoginEntity(null);
 		this.setUsuarioEntity(null);
 		this.setEnderecoEntity(null);
+		return "toCadUser";
 	}
 	
 	public String salva() throws CpsGeneralExceptions {
@@ -198,6 +208,10 @@ public class UserManagementBean {
 		
 		if(this.cpfExists(this.getUsuarioEntity().getCpfUsuario().replace(".","").replace("-",""),this.getLoginEntity().getNomeLogin()))
 			return "";
+		
+		if(!this.validarEnderecoInformado()) {
+			return "";
+		}
 		
 		userHandler = new UserManagementHandler();
 		enderecoEntity.setEstado(this.getEstadoSigla());
@@ -211,6 +225,29 @@ public class UserManagementBean {
 		}catch (CpsHandlerException e) {
 			throw new CpsGeneralExceptions(e);
 		}
+	}
+
+	/**
+	 * Valida se um endereço informado é valido
+	 * @return Se é valido ou não.
+	 */
+	private boolean validarEnderecoInformado() {
+		boolean ok = true;
+		
+		if(getEnderecoEntity() == null) {
+			ok = false;
+		}else if (getEnderecoEntity().getCep() == null || "".equals(getEnderecoEntity().getCep())) {
+			ok = false;
+		}else if (getEnderecoEntity().getBairro() == null || "".equals(getEnderecoEntity().getBairro())) {
+			ok = false;
+		}else if (getEnderecoEntity().getCidade() == null || "".equals(getEnderecoEntity().getCidade())) {
+			ok = false;
+		}else if (getEnderecoEntity().getLogradouro() == null || "".equals(getEnderecoEntity().getLogradouro())) {
+			ok = false;
+		}else if (getEnderecoEntity().getEstado() == null || "".equals(getEnderecoEntity().getEstado())) {
+			ok = false;
+		}
+		return ok;
 	}
 
 	public void atualiza() throws CpsGeneralExceptions{
@@ -493,5 +530,19 @@ public class UserManagementBean {
 	 */
 	public Tabelas_Parametrizacao getParametrizacao() {
 		return parametrizacao;
+	}
+
+	/**
+	 * @param nomeModalCepIncorreto the nomeModalCepIncorreto to set
+	 */
+	public void setNomeModalCepIncorreto(String nomeModalCepIncorreto) {
+		this.nomeModalCepIncorreto = nomeModalCepIncorreto;
+	}
+
+	/**
+	 * @return the nomeModalCepIncorreto
+	 */
+	public String getNomeModalCepIncorreto() {
+		return nomeModalCepIncorreto;
 	}
 }

@@ -27,6 +27,7 @@ public class LoginUserBean {
 	private String cep;
 	private boolean logado = false;
 	private boolean firstAccess = false;
+	private boolean displayTelaCadastro;
 	
 	/**
 	 * Método que valida o login do usuario
@@ -294,5 +295,19 @@ public class LoginUserBean {
 
 	public boolean isFirstAccess() {
 		return firstAccess;
+	}
+
+	/**
+	 * @param displayTelaCadastro the displayTelaCadastro to set
+	 */
+	public void setDisplayTelaCadastro(boolean displayTelaCadastro) {
+		this.displayTelaCadastro = displayTelaCadastro;
+	}
+
+	/**
+	 * @return the displayTelaCadastro
+	 */
+	public boolean isDisplayTelaCadastro() {
+		return displayTelaCadastro;
 	}
 }
