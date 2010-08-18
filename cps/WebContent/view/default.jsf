@@ -142,14 +142,15 @@
 									</center>
 								</rich:column>
 								
-								<rich:column width="70%"> 
+								<rich:column width="70%" sortBy="#{carrinho.produtoGeral.descricao}" 
+											 filterBy="#{carrinho.produtoGeral.descricao}" filterEvent="onkeyup"> 
 									<f:facet name="header">
 										<h:outputText value="#{msg.default_summarytable_product}"/>
 									</f:facet>
 									<h:outputText value="#{carrinho.produtoGeral.descricao}"/>
 								</rich:column>
 								
-								<rich:column width="20%">
+								<rich:column width="20%" sortBy="#{carrinho.quantidadeSelecionada}">
 									<f:facet name="header">
 										<h:outputText value="#{msg.default_summarytable_amount}"/>
 									</f:facet>

@@ -12,9 +12,9 @@
 		<h:form id="helpForm">
 			<center>
 				<p:stack icon="/view/images/help/stack.png">  
-				    <p:menuitem value="Chrome" icon="/view/images/help/chrome.png" url="#"/>  
-				    <p:menuitem value="Java" icon="/view/images/help/java.png" url="#"/>  
-				    <p:menuitem value="PostgreSQL" icon="/view/images/help/postgresql.png" url="#"/>  
+				    <p:menuitem value="Chrome" icon="/view/images/help/chrome.png" target="_blank" url="http://www.google.com.br/chrome"/>  
+				    <p:menuitem value="Java" icon="/view/images/help/java.png" target="_blank" url="http://www.java.com/pt_BR/"/>  
+				    <p:menuitem value="PostgreSQL" icon="/view/images/help/postgresql.png" target="_blank" url="http://www.postgresql.org/"/>  
 				</p:stack>
 			</center>
 		</h:form>

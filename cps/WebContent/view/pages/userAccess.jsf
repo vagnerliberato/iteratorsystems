@@ -67,7 +67,7 @@
 									</h:column>
 									<h:column>
 										<h:inputText id="newCep" value="#{loginUserBean.cep}" maxlength="9" size="10" styleClass="barraDefault" style="font-size:10px; font-family:Verdana; color:black; font-weight:bold">
-											<rich:jQuery selector="#newCep" query="mask('99999-999')" timing="onload" />  								
+											<rich:jQuery name="cepQuery" selector="#newCep" query="mask('99999-999')" timing="immediate" />
 										</h:inputText>
 										<h:outputText value="#{msg.personalcontatc_CEP_info}" styleClass="letrasInfo"/>
 									</h:column>
