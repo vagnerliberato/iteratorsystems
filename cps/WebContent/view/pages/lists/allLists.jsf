@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j">
+
+<h:panelGroup>
+	<rich:separator lineType="solid"/>
+	<rich:spacer height="10"/>
+	<h:panelGrid columns="2" width="500">
+		<h:column>
+			<h:outputText value="#{msg.mylists_edit_information}"/>
+		</h:column>
+		<h:column>
+			<rich:dataTable columns="2" width="100%" id="tableListas" rows="4" columnsWidth="80%,20%" 
+							binding="#{listaDeProdutoBean.tabelasListaDataTable}"
+							value="#{listaDeProdutoBean.listaProdutoUsuario}" var="listas">
+				<rich:column sortBy="#{listas.nomeLista}" filterBy="#{listas.nomeLista}" filterEvent="onkeyup"> 
+					<f:facet name="header">
+						<h:outputText value="#{msg.mylists_table_header}"/>
+					</f:facet>
+					<h:outputText value="#{listas.nomeLista}"/>
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">
+						<h:outputText value="#{msg.mylists_table_header_edit}"/>
+					</f:facet>
+					<center>
+						<a4j:commandButton action="#{listaDeProdutoBean.obterListaDeProduto}" image="/view/images/edit_list.png" 
+										   reRender="gridTabelaResumo,tableResumo"/>
+					</center>
+				</rich:column>
+				<f:facet name="footer">
+					<rich:datascroller for="tableListas" renderIfSinglePage="false"/>
+				</f:facet>
+			</rich:dataTable>
+		</h:column>
+	</h:panelGrid>
+	<br /><br />
+	
+	<rich:separator lineType="solid"/>
+	<rich:spacer height="10"/>
+	
+	<center>
+		<h:panelGrid id="gridTabelaResumo">
+			<rich:dataTable id="tableResumo" value="#{listaDeProdutoBean.listaPagina}" columns="3"
+							rendered="#{not empty listaDeProdutoBean.listaPagina}" rows="2" width="100%" var="lista">
+				<rich:column width="10%">
+					<f:facet name="header">
+						<h:outputText value="#{msg.default_summarytable_delete}"/>
+					</f:facet>
+					<center>
+						<a4j:commandButton image="/view/images/deleteRow.png" onclick="#{rich:component('modalExcluirItemLista')}.show();">
+							<f:setPropertyActionListener value="#{lista}" target="#{listaDeProdutoBean.produtoListaSelecionado}"/>
+						</a4j:commandButton>
+					</center>
+				</rich:column>
+				
+				<rich:column width="80%"> 
+					<f:facet name="header">
+						<h:outputText value="#{msg.default_summarytable_product}"/>
+					</f:facet>
+					<h:outputText value="#{lista.produtoGeral.descricao}"/>
+				</rich:column>
+				
+				<rich:column width="10%">
+					<f:facet name="header">
+						<h:outputText value="#{msg.default_summarytable_amount}"/>
+					</f:facet>
+					<h:inputText value="#{lista.quantidadeSelecionada}"/>
+				</rich:column>
+				
+				<f:facet name="footer">
+					<rich:datascroller for="tableResumo" renderIfSinglePage="false"/>
+				</f:facet>
+			</rich:dataTable>
+		</h:panelGrid>
+		
+		<rich:spacer height="5"/>
+		<a4j:commandButton value="Atualizar Lista" rendered="#{not empty listaDeProdutoBean.listaPagina}"/>
+	</center>
+</h:panelGroup>
+</jsp:root>
