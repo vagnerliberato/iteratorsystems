@@ -2,7 +2,6 @@ package br.iteratorsystems.cps.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -10,17 +9,18 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import br.iteratorsystems.cps.config.HibernateConfig;
+import br.iteratorsystems.cps.dao.ItensListaProdutoDao;
 import br.iteratorsystems.cps.dao.ListaProdutoDao;
 import br.iteratorsystems.cps.entities.Tabelas_ListaProduto;
 import br.iteratorsystems.cps.entities.Tabelas_ListaProdutoItem;
 import br.iteratorsystems.cps.entities.Tabelas_ProdutoGeral;
 import br.iteratorsystems.cps.exceptions.CpsDaoException;
-import br.iteratorsystems.cps.helper.ListaProdutoTOHelper;
 
 public class ListaProdutoService {
 
 	private Session session = HibernateConfig.getSession();
 	private ListaProdutoDao listaProdutoDao = new ListaProdutoDao(Tabelas_ListaProduto.class, session);
+	private ItensListaProdutoDao itemListaDao = new ItensListaProdutoDao(Tabelas_ListaProdutoItem.class, session) ;
 	
 	public List<Tabelas_ListaProdutoItem> popularItemDaListaDeProduto(Integer idItensLista, Tabelas_ListaProduto listaProduto, List<Tabelas_ProdutoGeral> produtosGerais, HashMap<String, Integer> quantidadePorProduto){
 		
@@ -38,35 +38,39 @@ public class ListaProdutoService {
 		return listaProdutosItens;
 	}
 	
-	public Tabelas_ListaProduto salvarListaDeProdutos(Integer idItensLista, Tabelas_ListaProduto listaProduto, List<Tabelas_ProdutoGeral> produtosGerais, HashMap<String, Integer> quantidadePorProduto) throws CpsDaoException{
-		List<Tabelas_ListaProdutoItem> produtoItens = popularItemDaListaDeProduto(idItensLista, listaProduto, produtosGerais, quantidadePorProduto);
-		Set<Tabelas_ListaProdutoItem> listaProdutoItems = new HashSet<Tabelas_ListaProdutoItem>();
-		
-		for (Tabelas_ListaProdutoItem listaprodutoitem : produtoItens) {
-			listaProdutoItems.add(listaprodutoitem);
-			listaProduto.setListaProdutoItems(listaProdutoItems);
-		}
-
-		listaProdutoDao.salvar(listaProduto);
-		return listaProduto;
-	}
-
-	public void setListaProdutoDao(ListaProdutoDao listaProdutoDao2) {
-		this.listaProdutoDao = listaProdutoDao2;
-	}
-	
 	public void excluirListaDeProdutos(final Tabelas_ListaProduto listaProduto) throws CpsDaoException {
 		Session session = HibernateConfig.getSession();
 		listaProdutoDao.excluir(listaProduto);
 		session.flush();
 	}
 
-	public void incluirListaDeProdutos(final Set<Tabelas_ListaProdutoItem> converteListaProdutoTO) throws CpsDaoException {
+	public void incluirListaDeProdutos(final Tabelas_ListaProduto listaProduto) throws CpsDaoException {
 		Transaction transaction = HibernateConfig.getSession().getTransaction();
 		transaction.begin();
-		listaProdutoDao.salvar(ListaProdutoTOHelper.popularUmaListaDeProduto(converteListaProdutoTO));
+		listaProdutoDao.salvar(listaProduto);
 		transaction.commit();
 	}
 	
+	public void incluirItensListaDeProdutos(final Set<Tabelas_ListaProdutoItem> itemLista) throws CpsDaoException {
+		Transaction transaction = HibernateConfig.getSession().getTransaction();
+		Tabelas_ListaProduto listaProduto = obterLista();
+		transaction.begin();
+		for(Tabelas_ListaProdutoItem item : itemLista) {
+			item.setListaProduto(listaProduto);
+		}
+		itemListaDao.salvarLista(itemLista);
+		transaction.commit();
+	}
 	
+	private Tabelas_ListaProduto obterLista() {
+		Tabelas_ListaProduto lista = new Tabelas_ListaProduto();
+		try {
+			Integer id =
+					itemListaDao.getLastIdFromModel(new Tabelas_ListaProduto());
+			lista.setId(id);
+		} catch (CpsDaoException e) {
+			e.printStackTrace();
+		}
+		return lista;
+	}
 }

@@ -3,16 +3,20 @@ package br.iteratorsystems.cps.beans;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.el.ELResolver;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
 import org.richfaces.component.html.HtmlDataTable;
 
+import br.iteratorsystems.cps.entities.Tabelas_ListaProduto;
 import br.iteratorsystems.cps.entities.Tabelas_Parametrizacao;
 import br.iteratorsystems.cps.entities.Tabelas_ProdutoGeral;
+import br.iteratorsystems.cps.entities.Tabelas_Usuario;
 import br.iteratorsystems.cps.exceptions.CpsGeneralExceptions;
 import br.iteratorsystems.cps.exceptions.CpsHandlerException;
 import br.iteratorsystems.cps.handler.BuscaProdutoHandler;
+import br.iteratorsystems.cps.handler.LoginUserHandler;
 import br.iteratorsystems.cps.helper.ListaProdutoTOHelper;
 import br.iteratorsystems.cps.service.ListaProdutoService;
 import br.iteratorsystems.cps.to.ListaProdutoTO;
@@ -28,12 +32,17 @@ public class ListaDeProdutoBean {
 	private String descricaoProduto;
 	private String produtoDigitado;
 	private String nomeLista;
+	private String paginaAtual;
 	private List<ProdutoTO> listaBusca;
 	private List<ProdutoTO> listaPagina;
+	private List<Tabelas_ListaProduto> listaProdutoUsuario;
 	private ListaProdutoTO listaComprasUsuario;
 	private ListaProdutoService listaProdutoService;
 	private BuscaProdutoHandler buscaProdutoHandler;
+	private LoginUserHandler userHandler;
+	private HtmlDataTable tabelasListaDataTable;
 	private HtmlDataTable listaProdutosDataTable;
+	private Tabelas_Usuario usuario;
 	private ProdutoTO produtoListaSelecionado;
 	private String nomeModalQuantidade;
 	private Integer numeroMaximoItensCarrinho;
@@ -44,8 +53,28 @@ public class ListaDeProdutoBean {
 	 */
 	public ListaDeProdutoBean(){
 		listaProdutoService = new ListaProdutoService();
+		userHandler = new LoginUserHandler();
 		numeroMaximoItensCarrinho = Integer.parseInt(obterParametrizacao().getNumMaxItensLista().trim());
 		instanciarListaDeCompras();
+		verificarListaExistente();
+	}
+	
+	/**
+	 * Verifica se o usuário tem lista de compras e mostra uma página
+	 * personalizada. 
+	 */
+	private void verificarListaExistente() {
+		setUsuario(recuperarUsuario());
+		if(usuario == null ||
+				usuario.getListaProdutos() == null ||
+				usuario.getListaProdutos().isEmpty()) {
+			setPaginaAtual("newList.jsf");
+		}else{
+			setPaginaAtual("allLists.jsf");
+			listaProdutoUsuario = 
+				new ArrayList<Tabelas_ListaProduto>(
+						usuario.getListaProdutos());
+		}
 	}
 	
 	/**
@@ -69,6 +98,16 @@ public class ListaDeProdutoBean {
 	}
 	
 	/**
+	 * Obtem uma lista de produto para edição.
+	 */
+	public void obterListaDeProduto() {
+		Tabelas_ListaProduto listaTemp = (Tabelas_ListaProduto) tabelasListaDataTable.getRowData();
+		listaPagina = (List<ProdutoTO>) 
+				ListaProdutoTOHelper.converteItemLista(
+						listaTemp.getListaProdutoItems());
+	}
+	
+	/**
 	 * Exclui uma lista de compras do usuário.
 	 */
 	public void excluirLista() {
@@ -78,6 +117,12 @@ public class ListaDeProdutoBean {
 			}
 			listaComprasUsuario.setNomeLista(null);
 			this.setNomeLista(null);
+		}
+		
+		if(listaPagina != null) {
+			listaPagina.clear();
+		}if(listaBusca != null) {
+			listaBusca.clear();
 		}
 	}
 	
@@ -138,8 +183,40 @@ public class ListaDeProdutoBean {
 	 * @throws CpsGeneralExceptions - Se ocorrer alguma exceção na camada abaixo do bean.
 	 */
 	public void incluirListaDeProdutos()throws CpsGeneralExceptions{
+		listaComprasUsuario.setListaProdutos(listaPagina);
 		listaProdutoService.incluirListaDeProdutos(
-				ListaProdutoTOHelper.converteListaProdutoTO(listaComprasUsuario.getListaProdutos()));
+				ListaProdutoTOHelper.popularUmaListaDeProduto(this.getNomeLista(), getUsuario()));
+		listaProdutoService.incluirItensListaDeProdutos(
+					ListaProdutoTOHelper.converteListaProdutoTO(listaComprasUsuario.getListaProdutos()));
+		verificarListaExistente();
+	}
+	
+	/**
+	 * Recupera o usuário ativo na sessão.
+	 * @return - Entidade com os dados do usuário.
+	 */
+	private Tabelas_Usuario recuperarUsuario() {
+		Tabelas_Usuario usuario = null;
+		FacesContext context = FacesContext.getCurrentInstance();
+		ELResolver el = context.getApplication().getELResolver();
+		
+		LoginUserBean userBean = (LoginUserBean)
+					el.getValue(context.getELContext(),null,"loginUserBean");
+		
+		if(userBean != null) {
+			usuario = userBean.getUsuario();
+			if(usuario == null || (usuario != null && 
+					(usuario.getListaProdutos() == null || 
+							usuario.getListaProdutos().isEmpty()))) {
+				try {
+					usuario = userHandler.getUserRelated(
+									userBean.getLogin().getIdLogin());
+				} catch (CpsHandlerException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return usuario;
 	}
 	
 	/**
@@ -332,5 +409,75 @@ public class ListaDeProdutoBean {
 	 */
 	public ProdutoTO getProdutoListaSelecionado() {
 		return produtoListaSelecionado;
+	}
+
+	/**
+	 * @param paginaAtual the paginaAtual to set
+	 */
+	public void setPaginaAtual(String paginaAtual) {
+		this.paginaAtual = paginaAtual;
+	}
+
+	/**
+	 * @return the paginaAtual
+	 */
+	public String getPaginaAtual() {
+		return paginaAtual;
+	}
+
+	/**
+	 * @param usuario the usuario to set
+	 */
+	public void setUsuario(Tabelas_Usuario usuario) {
+		this.usuario = usuario;
+	}
+
+	/**
+	 * @return the usuario
+	 */
+	public Tabelas_Usuario getUsuario() {
+		return usuario;
+	}
+
+	/**
+	 * @param userHandler the userHandler to set
+	 */
+	public void setUserHandler(LoginUserHandler userHandler) {
+		this.userHandler = userHandler;
+	}
+
+	/**
+	 * @return the userHandler
+	 */
+	public LoginUserHandler getUserHandler() {
+		return userHandler;
+	}
+
+	/**
+	 * @param listaProdutoUsuario the listaProdutoUsuario to set
+	 */
+	public void setListaProdutoUsuario(List<Tabelas_ListaProduto> listaProdutoUsuario) {
+		this.listaProdutoUsuario = listaProdutoUsuario;
+	}
+
+	/**
+	 * @return the listaProdutoUsuario
+	 */
+	public List<Tabelas_ListaProduto> getListaProdutoUsuario() {
+		return listaProdutoUsuario;
+	}
+
+	/**
+	 * @param tabelasListaDataTable the tabelasListaDataTable to set
+	 */
+	public void setTabelasListaDataTable(HtmlDataTable tabelasListaDataTable) {
+		this.tabelasListaDataTable = tabelasListaDataTable;
+	}
+
+	/**
+	 * @return the tabelasListaDataTable
+	 */
+	public HtmlDataTable getTabelasListaDataTable() {
+		return tabelasListaDataTable;
 	}
 }

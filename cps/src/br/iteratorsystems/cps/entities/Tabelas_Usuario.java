@@ -32,6 +32,7 @@ import br.iteratorsystems.cps.interfaces.EntityAble;
 public class Tabelas_Usuario implements java.io.Serializable, EntityAble {
 
 	private static final long serialVersionUID = 8535312626838524292L;
+	
 	private Integer idUsuario;
 	private String nomeUsuario;
 	private String sobrenomeUsuario;
@@ -50,6 +51,7 @@ public class Tabelas_Usuario implements java.io.Serializable, EntityAble {
 	private Set<Tabelas_Endereco> enderecos = new HashSet<Tabelas_Endereco>(0);
 
 	public Tabelas_Usuario() {
+		super();
 	}
 
 	public Tabelas_Usuario(Integer idUsuario, String nomeUsuario, String sobrenomeUsuario,

@@ -1,4 +1,8 @@
 package br.iteratorsystems.cps.interfaces;
 
-//interface marcadora para todas as classes que são entidades!
+/**
+ * Interface marcadora para todas as classes que são entidades!
+ * @author André
+ *
+ */
 public interface EntityAble {}
