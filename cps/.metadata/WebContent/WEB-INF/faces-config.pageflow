@@ -13,6 +13,6 @@
   <links id="pf12723795523741" target="pf12715475555233" source="pf12723795523742" outcome="toLoginPage"/>
   <links id="pf12723795523730" target="pf12715475555230" source="pf12723795523742" outcome="toDefaultPage"/>
   <links id="pf12723931147420" target="pf12723931147421" source="pf12723795523742" outcome="toMyCar"/>
-  <links id="pf12723931378922" target="pf12723931378923" source="pf12723795523742" outcome="toMyLists"/>
   <links id="pf12724024915991" target="pf12724024916002" source="pf12724024915990" outcome="toCadUser"/>
+  <links id="pf12818094000060" target="pf12818094000071" source="pf12723795523742" outcome="toMyLists"/>
 </pageflow:Pageflow>
