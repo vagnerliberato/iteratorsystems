@@ -84,7 +84,8 @@
 		<rich:spacer height="5"/>
 		<center>
 			<a4j:commandButton value="#{msg.adm_param_button_add}" oncomplete="#{parametrizacaoBean.nomeModalMostrar}" 
-							   action="#{parametrizacaoBean.salvarInformacoesDeParametrizacao}" styleClass="letras" reRender="modalParametrizacaoErro,msgErroParametrizacao:textErrorParametrizacao"/>
+							   action="#{parametrizacaoBean.salvarInformacoesDeParametrizacao}" styleClass="letras"
+							   reRender="modalParametrizacaoErro,msgErroParametrizacao:textErrorParametrizacao"/>
 		</center>
 		</h:form>
 		</rich:tab>
@@ -783,7 +784,7 @@
 		        </f:facet>
 				<center>
 					<h:form id="msgErroParametrizacao">
-			    		<h:outputText value="#{parametrizacaoBean.mensagemDeErro}" id="textErrorParametrizacao" styleClass="letras"/>
+			    		<h:messages id="textErrorParametrizacao" errorClass="letras"/>
 			    		<rich:spacer width="3"/>
 			    		<br />
 			    		<br />
