@@ -3,6 +3,8 @@ package br.iteratorsystems.cps.beans;
 import org.richfaces.renderkit.ModalPanelRendererBase;
 import org.richfaces.renderkit.html.ModalPanelRenderer;
 
+import br.iteratorsystems.cps.common.FacesUtil;
+import br.iteratorsystems.cps.common.Resources;
 import br.iteratorsystems.cps.entities.Tabelas_Parametrizacao;
 import br.iteratorsystems.cps.exceptions.CpsDaoException;
 import br.iteratorsystems.cps.service.ParametrizacaoService;
@@ -99,7 +101,8 @@ public class ParametrizacaoBean {
 			tabelaParametrizacao.setNumMaxLojasComparacao(String.valueOf(quantidadeMaximaDeLojas));
 			
 			parametrizacaoService.salvar(tabelaParametrizacao);
-			this.nomeModalMostrar =  "";
+			mensagemDeErro = "Dados salvos com sucesso.";
+			this.nomeModalMostrar =  "Richfaces.showModalPanel('modalParametrizacaoErro')";
 		}else{
 			this.nomeModalMostrar =  "Richfaces.showModalPanel('modalParametrizacaoErro')";
 		}
@@ -113,6 +116,8 @@ public class ParametrizacaoBean {
 		if(regexDiretorioPadraoDeImagensEhInvalido || this.diretorioPadraoDeImagens == null){
 			isParametrizacaoValida = false;
 			mensagemDeErro += "Endereço de imagens invalido(Ex: c:\\teste).";
+			
+			FacesUtil.errorMessage("", Resources.getErrorProperties().getString("user_registered"),"usuario cadastrado");
 		}
 		
 		//this.diretorioPadraoXML = this.diretorioPadraoXML.replace("\\", "\\\\");
