@@ -182,7 +182,7 @@ public class DefaultBean {
 	public void excluirProdutoCarrinho() {
 		produtosCarrinho.remove(produtoCarrinhoSelecionado);
 	}
-	
+		
 	/**
 	 * Retorna a quantidade de items do carrinho do usuário.
 	 * @return quantidade de itens 
@@ -191,6 +191,10 @@ public class DefaultBean {
 		return this.getProdutosCarrinho().size();
 	}
  	
+	public void excluirallProdutoCarrinho(){
+		produtosCarrinho.clear();				
+	}
+	
 	/**
 	 * Se o usuário quiser finalizar a escolha dos produtos, redireciona para
 	 * a tela de filtros.

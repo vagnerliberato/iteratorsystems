@@ -166,6 +166,11 @@
 								<rich:spacer height="10"/>
 								<h:commandButton value="#{msg.default_button_compare}" styleClass="botaoDefault" action="#{defaultBean.toFilters}"/>
 							</h:panelGroup>
+							
+							<h:panelGroup>
+								<rich:spacer height="10"/>
+								<a4j:commandButton value="#{msg.default_button_esvaziar_car}" styleClass="botaoDefault" onclick="#{rich:component('modalEsvaziarCarrinho')}.show();"/>
+							</h:panelGroup>
 						
 						</h:panelGroup>
 					</a4j:outputPanel>
@@ -244,6 +249,32 @@
 		    		</h:form>
 				</center>
 			</rich:modalPanel>
+			
+			<rich:modalPanel id="modalEsvaziarCarrinho" height="120" width="310" resizeable="false">
+				<f:facet name="header">
+					<h:outputText value="#{msg.default_modal_information}"/>
+				</f:facet>
+		        <f:facet name="controls">
+		            <h:panelGroup>
+		                <h:graphicImage value="/view/images/close.png" id="hidelink4" />
+		                <rich:componentControl for="modalEsvaziarCarrinho" attachTo="hidelink4"
+		                    operation="hide" event="onclick" />
+		            </h:panelGroup>
+		        </f:facet>
+				<center>
+					<h:form>
+			    		<h:outputText value="#{msg.default_modal_delete_all_message}" styleClass="letras"/>  
+			    		<br />
+			    		<br />
+			    		<h:commandButton styleClass="botaoDefault" action="#{defaultBean.excluirallProdutoCarrinho}"
+			    						 value="#{msg.default_modal_delete_yes}"/>
+			    		<rich:spacer width="5"/>
+			    		<a4j:commandButton styleClass="botaoDefault"
+			    						   value="#{msg.default_modal_delete_no}" onclick="#{rich:component('modalEsvaziarCarrinho')}.hide();" />
+		    		</h:form>
+	    		</center>
+			</rich:modalPanel>
+			
 
 		</ui:define>
 	</ui:composition>
