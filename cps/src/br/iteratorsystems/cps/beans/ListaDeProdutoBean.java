@@ -204,15 +204,17 @@ public class ListaDeProdutoBean {
 					el.getValue(context.getELContext(),null,"loginUserBean");
 		
 		if(userBean != null) {
-			usuario = userBean.getUsuario();
-			if(usuario == null || (usuario != null && 
-					(usuario.getListaProdutos() == null || 
-							usuario.getListaProdutos().isEmpty()))) {
-				try {
-					usuario = userHandler.getUserRelated(
-									userBean.getLogin().getIdLogin());
-				} catch (CpsHandlerException e) {
-					e.printStackTrace();
+			if(userBean.getLogin() != null) {
+				usuario = userBean.getUsuario();
+				if(usuario == null || (usuario != null && 
+						(usuario.getListaProdutos() == null || 
+								usuario.getListaProdutos().isEmpty()))) {
+					try {
+						usuario = userHandler.getUserRelated(
+										userBean.getLogin().getIdLogin());
+					} catch (CpsHandlerException e) {
+						e.printStackTrace();
+					}
 				}
 			}
 		}
