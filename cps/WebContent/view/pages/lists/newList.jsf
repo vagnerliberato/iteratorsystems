@@ -66,8 +66,7 @@
 							</center>
 						</rich:column>
 	
-						 <rich:column width="80" sortBy="#{produto.quantidadeSelecionada}" 
-						 			  filterBy="#{produto.quantidadeSelecionada}" filterEvent="onkeyup">
+						 <rich:column width="80" sortBy="#{produto.quantidadeSelecionada}">
 						 	<f:facet name="header">
 						 		<h:outputText value="Quantidade"/>
 						 	</f:facet>
@@ -118,9 +117,13 @@
 	<h:panelGrid columns="1">
 		<h:column>
 			<a4j:outputPanel ajaxRendered="true">
-				<rich:simpleTogglePanel id="painelToogle" switchType="ajax" rendered="#{not empty listaDeProdutoBean.listaPagina}">
+				<rich:simpleTogglePanel id="painelToogle" switchType="ajax" width="400px;" rendered="#{not empty listaDeProdutoBean.listaPagina}">
 					<f:facet name="header">
-						<h:outputText id="labelListaUser" value="#{msg.mylists_items}" styleClass="letras" />
+						<h:panelGroup>
+							<h:graphicImage url="/view/images/lista.png"/>
+							<rich:spacer width="3"/>
+							<h:outputText id="labelListaUser" value="#{msg.mylists_items}" styleClass="letras" />
+						</h:panelGroup>
 					</f:facet>
 					<h:panelGroup id="panelListProdutos" rendered="true">
 						<rich:dataTable id="tableResumo" columns="3" rows="2" width="100%" var="lista" value="#{listaDeProdutoBean.listaPagina}">
@@ -159,8 +162,8 @@
 				</rich:simpleTogglePanel>
 				<rich:spacer height="10"/>
 				<center>
-					<a4j:commandButton value="#{msg.mylists_save}" onclick="#{rich:component('modalConfirmarSalvar')}.show();" 
-									 rendered="#{not empty listaDeProdutoBean.listaPagina}"/>
+					<a4j:commandButton id="botaoSalvarLista" value="#{msg.mylists_save}" onclick="#{rich:component('modalConfirmarSalvar')}.show();" 
+									 rendered="#{not empty listaDeProdutoBean.listaPagina}" disabled="#{empty listaDeProdutoBean.nomeLista}"/>
 				</center>
 			</a4j:outputPanel>
 		</h:column>

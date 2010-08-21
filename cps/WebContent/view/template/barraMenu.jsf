@@ -11,24 +11,24 @@
 		<h:form>
 			<table align="center" width="750px" border="0" cellspacing="10px" id="tablemenu" class="frame_menu">
 				<tr align="right">
-					<td colspan="2">
+					<td colspan="2" >
 					
 					<!-- Grupo do Itens no Carrinho. O CSS deste item está no pelo nome do ID -->
 					<h:panelGroup id="myCarGroup">
-						<h:panelGroup id="fixedInformationCar" rendered="#{not empty defaultBean.produtosCarrinho}">
-							<h:outputText value="#{msg['top_menu_fixed_itemCar_info']}" styleClass="letrasDefault"
+						<h:panelGroup id="fixedInformationCar" rendered="#{not empty defaultBean.produtosCarrinho}" style="width:10%;">
+							<h:outputText value="#{msg['top_menu_fixed_itemCar_info']}" 
 										  rendered="#{not empty defaultBean.produtosCarrinho}"/>
-							<h:outputText value="#{defaultBean.tamanhoCarrinho}" styleClass="letrasDefault"/>						
+							<rich:spacer width="10"/>
+							<h:outputText value="#{defaultBean.tamanhoCarrinho}"/>		
+							<rich:spacer width="15"/>				
 						</h:panelGroup>
 						<h:graphicImage id="carrinhoVazioImg" url="/view/images/emptyCar.png"
 						                rendered="#{empty defaultBean.produtosCarrinho}" width="30" />
 						<h:graphicImage id="carrinhoCheioImg" url="/view/images/itemCar.png" rendered="#{not empty defaultBean.produtosCarrinho}"
 							            width="30" />
 						<rich:toolTip id="quantidadeItemsCarrinhoTip"
-							          direction="top-right" followMouse="true" rendered="true">
-							<h:outputFormat value="#{msg['top_menu_itemCar_info']}">
-								<f:param value="#{defaultBean.tamanhoCarrinho}" />
-							</h:outputFormat>
+							          direction="top-right" followMouse="true" rendered="#{empty defaultBean.produtosCarrinho}">
+							<h:outputText value="#{msg.top_menu_emptyCar_info}"/>
 						</rich:toolTip>
 					</h:panelGroup>
 					 <!-- Grupo do Login. O CSS deste item está no pelo nome do ID -->

@@ -18,8 +18,6 @@
 								<f:facet name="header">
 									<h:panelGroup>
 									<h:graphicImage url="/view/images/login.png" id="logincadastrado"/>
-									<rich:spacer width="10"/>
-									<h:outputText value="#{msg.useraccess_has_login}" styleClass="letrasAba"/>
 									</h:panelGroup>
 								</f:facet>						
 								<h:messages id="errorMsgLog" rendered="true" style="color:red;font-size:9pt;font-style: bold;"/>
@@ -39,9 +37,11 @@
 									<h:column>
 										<h:commandButton action="#{loginUserBean.validaLogin}" value="#{msg.useraccess_btn_login}" styleClass="letras" style="width: 60px;"/>								
 										<rich:spacer width="3"/>
-										<a4j:commandLink value="#{msg.useraccess_new_cad}" styleClass="letrasDefault" reRender="userAccessForm,richPanelLog,richPanelCad">
-											<f:setPropertyActionListener value="true" target="#{loginUserBean.displayTelaCadastro}"/>
-										</a4j:commandLink>
+										<h:panelGroup>
+											<a4j:commandLink value="#{msg.useraccess_new_cad}" styleClass="letrasDefault" reRender="userAccessForm,richPanelLog,richPanelCad">
+												<f:setPropertyActionListener value="true" target="#{loginUserBean.displayTelaCadastro}"/>
+											</a4j:commandLink>
+										</h:panelGroup>
 									</h:column>
 								</h:panelGrid>
 							</rich:panel>
@@ -50,8 +50,6 @@
 								<f:facet name="header">
 								<h:panelGroup>
 									<h:graphicImage url="/view/images/createLogin.png"/>
-									<rich:spacer width="5"/>
-									<h:outputText value="#{msg.useraccess_create_login}" styleClass="letrasAba"/>
 								</h:panelGroup>
 								</f:facet>
 								<h:messages id="errorMsgCad" rendered="true" style="color:red;font-size:9pt;font-style: bold;"/>
@@ -74,9 +72,11 @@
 									<h:column>
 										<h:commandButton action="#{loginUserBean.novo}" value="#{msg.useraccess_cad}" styleClass="letras" />
 										<rich:spacer width="3"/>
-										<a4j:commandLink value="#{msg.useraccess_to_login}" styleClass="letrasDefault" reRender="userAccessForm,richPanelLog,richPanelCad">
-											<f:setPropertyActionListener value="false" target="#{loginUserBean.displayTelaCadastro}"/>
-										</a4j:commandLink>								
+										<h:panelGroup>
+											<a4j:commandLink value="#{msg.useraccess_to_login}" styleClass="letrasDefault" reRender="userAccessForm,richPanelLog,richPanelCad">
+												<f:setPropertyActionListener value="false" target="#{loginUserBean.displayTelaCadastro}"/>
+											</a4j:commandLink>
+										</h:panelGroup>								
 									</h:column>
 								</h:panelGrid>
 						   </rich:panel>
