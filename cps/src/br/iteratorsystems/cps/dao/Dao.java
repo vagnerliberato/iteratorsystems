@@ -13,10 +13,10 @@ import org.hibernate.criterion.Restrictions;
 import org.hibernate.exception.ConstraintViolationException;
 
 import br.iteratorsystems.cps.config.HibernateConfig;
-import br.iteratorsystems.cps.entities.Tabelas_Login;
-import br.iteratorsystems.cps.entities.Tabelas_Loja;
-import br.iteratorsystems.cps.entities.Tabelas_Rede;
-import br.iteratorsystems.cps.entities.Tabelas_Usuario;
+import br.iteratorsystems.cps.entities.Login;
+import br.iteratorsystems.cps.entities.Loja;
+import br.iteratorsystems.cps.entities.Rede;
+import br.iteratorsystems.cps.entities.Usuario;
 import br.iteratorsystems.cps.exceptions.CpsConstraintException;
 import br.iteratorsystems.cps.exceptions.CpsDaoException;
 import br.iteratorsystems.cps.interfaces.EntityAble;
@@ -65,10 +65,10 @@ public class Dao<T extends EntityAble> implements IDao<T> {
 		}
 	}
 
-	public Integer getIdUsuario(Tabelas_Usuario instance) throws CpsDaoException {
-		Criteria criteria = HibernateConfig.getSession().createCriteria(Tabelas_Usuario.class);
+	public Integer getIdUsuario(Usuario instance) throws CpsDaoException {
+		Criteria criteria = HibernateConfig.getSession().createCriteria(Usuario.class);
 		criteria.add(Restrictions.eq("cpfUsuario",instance.getCpfUsuario()));
-		Tabelas_Usuario user = (Tabelas_Usuario) criteria.uniqueResult();
+		Usuario user = (Usuario) criteria.uniqueResult();
 		Integer id = user.getIdUsuario();
 		return id;
 	}
@@ -107,22 +107,22 @@ public class Dao<T extends EntityAble> implements IDao<T> {
 		}
 	}
 	
-	public Tabelas_Rede getRede(String nome) throws CpsDaoException{
-		Criteria criteria = HibernateConfig.getSession().createCriteria(Tabelas_Rede.class);
+	public Rede getRede(String nome) throws CpsDaoException{
+		Criteria criteria = HibernateConfig.getSession().createCriteria(Rede.class);
 		criteria.add(Restrictions.eq("nome",nome));
-		return (Tabelas_Rede) criteria.uniqueResult();
+		return (Rede) criteria.uniqueResult();
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Tabelas_Rede> getRedesByName(String nome) throws CpsDaoException{
-		Criteria criteria = HibernateConfig.getSession().createCriteria(Tabelas_Rede.class);
+	public List<Rede> getRedesByName(String nome) throws CpsDaoException{
+		Criteria criteria = HibernateConfig.getSession().createCriteria(Rede.class);
 		criteria.add(Restrictions.ilike("nome","%"+nome+"%"));
 		criteria.addOrder(Order.asc("id"));
 		return criteria.list();
 	}
 	@SuppressWarnings("unchecked")
-	public List<Tabelas_Loja> getLojasByName(String nome) throws CpsDaoException{
-		Criteria criteria = HibernateConfig.getSession().createCriteria(Tabelas_Loja.class);
+	public List<Loja> getLojasByName(String nome) throws CpsDaoException{
+		Criteria criteria = HibernateConfig.getSession().createCriteria(Loja.class);
 		criteria.add(Restrictions.ilike("nomefantasia","%"+nome+"%"));
 		criteria.addOrder(Order.asc("id"));
 		return criteria.list();
@@ -141,8 +141,8 @@ public class Dao<T extends EntityAble> implements IDao<T> {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Tabelas_Login> getAllLogin(String username) throws CpsDaoException {
-		Criteria criteria = HibernateConfig.getSession().createCriteria(Tabelas_Login.class);
+	public List<Login> getAllLogin(String username) throws CpsDaoException {
+		Criteria criteria = HibernateConfig.getSession().createCriteria(Login.class);
 		criteria.add(Restrictions.ilike("nomeLogin","%"+username+"%"));
 		criteria.addOrder(Order.asc("idLogin"));
 		return criteria.list();

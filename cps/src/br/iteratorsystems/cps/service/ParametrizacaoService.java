@@ -6,7 +6,7 @@ import org.hibernate.Transaction;
 import br.iteratorsystems.cps.beans.ParametrizacaoBean;
 import br.iteratorsystems.cps.config.HibernateConfig;
 import br.iteratorsystems.cps.dao.ParametrizacaoDao;
-import br.iteratorsystems.cps.entities.Tabelas_Parametrizacao;
+import br.iteratorsystems.cps.entities.Parametrizacao;
 import br.iteratorsystems.cps.exceptions.CpsDaoException;
 
 public class ParametrizacaoService {
@@ -17,21 +17,21 @@ public class ParametrizacaoService {
 	
 	public ParametrizacaoService() {
 		session = HibernateConfig.getSession();
-		parametrizacaoDao = new ParametrizacaoDao(Tabelas_Parametrizacao.class, session);
+		parametrizacaoDao = new ParametrizacaoDao(Parametrizacao.class, session);
 		
 	}
 	
-	public Tabelas_Parametrizacao obterParametrizacao(final Integer parametrizacaoId) throws CpsDaoException{
+	public Parametrizacao obterParametrizacao(final Integer parametrizacaoId) throws CpsDaoException{
 		return parametrizacaoDao.obter(parametrizacaoId);
 	}
 	
-	public void salvar(final Tabelas_Parametrizacao tabelasParametrizacao) throws CpsDaoException{
+	public void salvar(final Parametrizacao tabelasParametrizacao) throws CpsDaoException{
 		transaction = session.beginTransaction();
 		parametrizacaoDao.salvar(tabelasParametrizacao);
 		transaction.commit();
 	}
 
-	public ParametrizacaoBean converteTabelaParametrizacaoEmParametrizacaoBean(final Tabelas_Parametrizacao parametrizacao) throws CpsDaoException {
+	public ParametrizacaoBean converteTabelaParametrizacaoEmParametrizacaoBean(final Parametrizacao parametrizacao) throws CpsDaoException {
 		ParametrizacaoBean parametrizacaoBean = new ParametrizacaoBean();
 		parametrizacaoBean.setDiretorioPadraoDeImagens(parametrizacao.getDiretorioImagensProCps());
 		parametrizacaoBean.setDiretorioPadraoXML(parametrizacao.getDiretorioProcessamentoXml());

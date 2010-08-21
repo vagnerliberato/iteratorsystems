@@ -2,7 +2,7 @@ package br.iteratorsystems.cps.to;
 
 import java.io.Serializable;
 
-import br.iteratorsystems.cps.entities.Tabelas_ProdutoGeral;
+import br.iteratorsystems.cps.entities.ProdutoGeral;
 
 /**
  * TO para os produtos da base de dados.
@@ -13,7 +13,7 @@ public class ProdutoTO implements Serializable{
 
 	private static final long serialVersionUID = 7446849227982421202L;
 	
-	private Tabelas_ProdutoGeral produtoGeral;
+	private ProdutoGeral produtoGeral;
 	private Boolean possuiImagem;
 	private Integer quantidadeSelecionada;
 	private String imagem;
@@ -23,7 +23,7 @@ public class ProdutoTO implements Serializable{
 	 * @param produtoGeral
 	 * @param quantidadeSelecionada
 	 */
-	public ProdutoTO(Tabelas_ProdutoGeral produtoGeral, Integer quantidadeSelecionada) {
+	public ProdutoTO(ProdutoGeral produtoGeral, Integer quantidadeSelecionada) {
 		this.produtoGeral = produtoGeral;
 		this.quantidadeSelecionada = quantidadeSelecionada;
 	}
@@ -38,13 +38,13 @@ public class ProdutoTO implements Serializable{
 	/**
 	 * @return the produtoGeral
 	 */
-	public Tabelas_ProdutoGeral getProdutoGeral() {
+	public ProdutoGeral getProdutoGeral() {
 		return produtoGeral;
 	}
 	/**
 	 * @param produtoGeral the produtoGeral to set
 	 */
-	public void setProdutoGeral(Tabelas_ProdutoGeral produtoGeral) {
+	public void setProdutoGeral(ProdutoGeral produtoGeral) {
 		this.produtoGeral = produtoGeral;
 	}
 	/**

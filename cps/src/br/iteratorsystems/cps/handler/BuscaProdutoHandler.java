@@ -8,7 +8,7 @@ import org.apache.commons.logging.LogFactory;
 
 import br.iteratorsystems.cps.config.HibernateConfig;
 import br.iteratorsystems.cps.dao.ProdutoGeralDao;
-import br.iteratorsystems.cps.entities.Tabelas_ProdutoGeral;
+import br.iteratorsystems.cps.entities.ProdutoGeral;
 import br.iteratorsystems.cps.exceptions.CpsDaoException;
 import br.iteratorsystems.cps.exceptions.CpsHandlerException;
 
@@ -16,13 +16,13 @@ public class BuscaProdutoHandler {
 	
 	private static final Log log = LogFactory.getLog(BuscaProdutoHandler.class);
 	
-	public List<Tabelas_ProdutoGeral> buscaProduto(String partName) throws CpsHandlerException {
+	public List<ProdutoGeral> buscaProduto(String partName) throws CpsHandlerException {
 		final String message = "finding product with part name: "+partName;
 		log.debug(message);
-		List<Tabelas_ProdutoGeral> produtos = null;
+		List<ProdutoGeral> produtos = null;
 		ProdutoGeralDao produtoDao = null;
 		try{
-			produtoDao = new ProdutoGeralDao(Tabelas_ProdutoGeral.class,HibernateConfig.getSession());
+			produtoDao = new ProdutoGeralDao(ProdutoGeral.class,HibernateConfig.getSession());
 			produtos = produtoDao.buscaProduto(partName);
 			log.debug("success!");
 			return produtos;
@@ -35,8 +35,8 @@ public class BuscaProdutoHandler {
 	
 	public static void main(String[] args) throws CpsHandlerException{
 		BuscaProdutoHandler h = new BuscaProdutoHandler();
-		List<Tabelas_ProdutoGeral> l = h.buscaProduto("nestle mucilon 400 sapato havainas");
-		for(Tabelas_ProdutoGeral p : l){
+		List<ProdutoGeral> l = h.buscaProduto("nestle mucilon 400 sapato havainas");
+		for(ProdutoGeral p : l){
 			System.out.println(p);
 		}
 		System.out.println("Resultados: "+l.size());

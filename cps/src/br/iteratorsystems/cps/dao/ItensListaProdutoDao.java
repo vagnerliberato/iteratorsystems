@@ -4,7 +4,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 
 import br.iteratorsystems.cps.config.HibernateConfig;
-import br.iteratorsystems.cps.entities.Tabelas_ListaProdutoItem;
+import br.iteratorsystems.cps.entities.ListaProdutoItem;
 import br.iteratorsystems.cps.exceptions.CpsDaoException;
 import br.iteratorsystems.cps.interfaces.EntityAble;
 
@@ -13,14 +13,14 @@ import br.iteratorsystems.cps.interfaces.EntityAble;
  * @author André
  *
  */
-public class ItensListaProdutoDao  extends DaoGeneric<Tabelas_ListaProdutoItem, Integer> {
+public class ItensListaProdutoDao  extends DaoGeneric<ListaProdutoItem, Integer> {
 	
 	/**
 	 * Construtor padrão.
 	 * @param persistentClass - persistentClass
 	 * @param session - session
 	 */
-	public ItensListaProdutoDao(Class<Tabelas_ListaProdutoItem> persistentClass, Session session) {
+	public ItensListaProdutoDao(Class<ListaProdutoItem> persistentClass, Session session) {
 		super(persistentClass, session);
 	}
 

@@ -1,7 +1,7 @@
 package br.iteratorsystems.cps.test;
 
 import br.iteratorsystems.cps.beans.ParametrizacaoBean;
-import br.iteratorsystems.cps.entities.Tabelas_Parametrizacao;
+import br.iteratorsystems.cps.entities.Parametrizacao;
 import br.iteratorsystems.cps.exceptions.CpsDaoException;
 import br.iteratorsystems.cps.service.ParametrizacaoService;
 

@@ -12,11 +12,11 @@ import br.iteratorsystems.cps.config.HibernateConfig;
 import br.iteratorsystems.cps.dao.Dao;
 import br.iteratorsystems.cps.dao.LojaDao;
 import br.iteratorsystems.cps.dao.RedeDao;
-import br.iteratorsystems.cps.entities.Tabelas_Login;
-import br.iteratorsystems.cps.entities.Tabelas_Loja;
-import br.iteratorsystems.cps.entities.Tabelas_LojaId;
-import br.iteratorsystems.cps.entities.Tabelas_Rede;
-import br.iteratorsystems.cps.entities.Tabelas_Usuario;
+import br.iteratorsystems.cps.entities.Login;
+import br.iteratorsystems.cps.entities.Loja;
+import br.iteratorsystems.cps.entities.LojaId;
+import br.iteratorsystems.cps.entities.Rede;
+import br.iteratorsystems.cps.entities.Usuario;
 import br.iteratorsystems.cps.exceptions.CpsDaoException;
 import br.iteratorsystems.cps.exceptions.CpsHandlerException;
 import br.iteratorsystems.cps.interfaces.IDao;
@@ -24,18 +24,18 @@ import br.iteratorsystems.cps.interfaces.IDao;
 public class AdministrationHandler {
 	
 	private static final Log log = LogFactory.getLog(LoginUserHandler.class);
-	private IDao<Tabelas_Login> daoLogin = null;
-	private IDao<Tabelas_Rede> daoRede = null;
-	private IDao<Tabelas_Loja> daoLoja = null;
+	private IDao<Login> daoLogin = null;
+	private IDao<Rede> daoRede = null;
+	private IDao<Loja> daoLoja = null;
 	
-	public void saveNewRede(Tabelas_Rede instance) throws CpsHandlerException{
-		final String message = "saving new instance for Tabelas_Rede with: "+instance;
+	public void saveNewRede(Rede instance) throws CpsHandlerException{
+		final String message = "saving new instance for Rede with: "+instance;
 		log.debug(message);
 		Transaction transaction = null;
 		try{
 			transaction = HibernateConfig.getSession().beginTransaction();
 			
-			daoRede = new Dao<Tabelas_Rede>();
+			daoRede = new Dao<Rede>();
 			instance.setDataultimamodificacao(new Date());
 			instance.setLojas(null);
 			instance.setId(daoRede.getLastIdFromModel(instance));
@@ -51,15 +51,15 @@ public class AdministrationHandler {
 		}
 	}
 	
-	public void saveNewLoja(Tabelas_Loja loja,Tabelas_Rede rede) throws CpsHandlerException{
-		final String message = "saving new Tabelas_Loja with instance: "+loja+",Tabelas_Rede with instance: "+rede;
+	public void saveNewLoja(Loja loja,Rede rede) throws CpsHandlerException{
+		final String message = "saving new Loja with instance: "+loja+",Rede with instance: "+rede;
 		log.debug(message);
 		Transaction transaction = null;
 		try{
 			transaction = HibernateConfig.getSession().beginTransaction();
-			daoLoja = new Dao<Tabelas_Loja>();
+			daoLoja = new Dao<Loja>();
 			
-			Tabelas_LojaId id = new Tabelas_LojaId();
+			LojaId id = new LojaId();
 			id.setId(daoLoja.getLastIdFrom(loja));
 			id.setIdRede(rede.getId());
 			
@@ -84,12 +84,12 @@ public class AdministrationHandler {
 		}
 	}
 	
-	public Tabelas_Rede getRede(String nome) throws CpsHandlerException{
-		final String message = "getting Tabelas_Rede with name: "+nome;
+	public Rede getRede(String nome) throws CpsHandlerException{
+		final String message = "getting Rede with name: "+nome;
 		log.debug(message);
-		Tabelas_Rede result = null;
+		Rede result = null;
 		try{
-			daoRede = new Dao<Tabelas_Rede>();
+			daoRede = new Dao<Rede>();
 			result = daoRede.getRede(nome);
 			return result;
 		}catch (CpsDaoException e) {
@@ -99,13 +99,13 @@ public class AdministrationHandler {
 		}
 	}
 	
-	public List<Tabelas_Loja> getAllCnpj() throws CpsHandlerException{
-		final String message = "getting all Tabelas_Rede";
+	public List<Loja> getAllCnpj() throws CpsHandlerException{
+		final String message = "getting all Rede";
 		log.debug(message);
-		List<Tabelas_Loja> lista = null;
+		List<Loja> lista = null;
 		try{
-			daoLoja = new Dao<Tabelas_Loja>();
-			lista = (List<Tabelas_Loja>) daoLoja.getAll(new Tabelas_Loja());
+			daoLoja = new Dao<Loja>();
+			lista = (List<Loja>) daoLoja.getAll(new Loja());
 			return lista;
 		}catch (CpsDaoException e) {
 			final String errMsg = "error! " + message;
@@ -114,13 +114,13 @@ public class AdministrationHandler {
 		}
 	}
 	
-	public List<Tabelas_Rede> getAllRedes() throws CpsHandlerException{
-		final String message = "getting all Tabelas_Rede";
+	public List<Rede> getAllRedes() throws CpsHandlerException{
+		final String message = "getting all Rede";
 		log.debug(message);
-		List<Tabelas_Rede> list = null;
+		List<Rede> list = null;
 		try{
-			daoRede = new Dao<Tabelas_Rede>();
-			list = (List<Tabelas_Rede>) daoRede.getAll(new Tabelas_Rede());
+			daoRede = new Dao<Rede>();
+			list = (List<Rede>) daoRede.getAll(new Rede());
 			return list;
 		}catch (CpsDaoException e) {
 			final String errMsg = "error! " + message;
@@ -129,13 +129,13 @@ public class AdministrationHandler {
 		}
 	}
 	
-	public List<Tabelas_Rede> getAllRedes(String partName) throws CpsHandlerException{
-		final String message = "getting all Tabelas_Rede with name like "+partName;
+	public List<Rede> getAllRedes(String partName) throws CpsHandlerException{
+		final String message = "getting all Rede with name like "+partName;
 		log.debug(message);
-		List<Tabelas_Rede> list = null;
+		List<Rede> list = null;
 		try{
-			daoRede = new Dao<Tabelas_Rede>();
-			list = (List<Tabelas_Rede>) daoRede.getRedesByName(partName);
+			daoRede = new Dao<Rede>();
+			list = (List<Rede>) daoRede.getRedesByName(partName);
 			return list;
 		}catch (CpsDaoException e) {
 			final String errMsg = "error! " + message;
@@ -144,12 +144,12 @@ public class AdministrationHandler {
 		}
 	}
 	
-	public List<Tabelas_Loja> getAllLojas(String partName) throws CpsHandlerException{
-		final String message = "getting all Tabelas_Loja with partName like= "+partName;
+	public List<Loja> getAllLojas(String partName) throws CpsHandlerException{
+		final String message = "getting all Loja with partName like= "+partName;
 		log.debug(message);
-		List<Tabelas_Loja> list = null;
+		List<Loja> list = null;
 		try{
-			daoLogin = new Dao<Tabelas_Login>();
+			daoLogin = new Dao<Login>();
 			list = daoLogin.getLojasByName(partName);
 			return list;
 		}catch (CpsDaoException e) {
@@ -159,12 +159,12 @@ public class AdministrationHandler {
 		}
 	}
 	
-	public List<Tabelas_Login> getAllLogins(final String username) throws CpsHandlerException{
-		final String message = "getting all Tabelas_Login with username like= "+username;
+	public List<Login> getAllLogins(final String username) throws CpsHandlerException{
+		final String message = "getting all Login with username like= "+username;
 		log.debug(message);
-		List<Tabelas_Login> list = null;
+		List<Login> list = null;
 		try{
-			daoLogin = new Dao<Tabelas_Login>();
+			daoLogin = new Dao<Login>();
 			list = daoLogin.getAllLogin(username);
 			return list;
 		}catch (CpsDaoException e) {
@@ -174,13 +174,13 @@ public class AdministrationHandler {
 		}
 	}
 	
-	public void deleteLogin(final Tabelas_Login login) throws CpsHandlerException{
-		final String message = "dropping Tabelas_Login with instance= "+login;
+	public void deleteLogin(final Login login) throws CpsHandlerException{
+		final String message = "dropping Login with instance= "+login;
 		log.debug(message);
 		Transaction transaction = null;
 		try{
 			transaction = HibernateConfig.getSession().beginTransaction();
-			IDao<Tabelas_Usuario> daoUser = new Dao<Tabelas_Usuario>();
+			IDao<Usuario> daoUser = new Dao<Usuario>();
 			daoUser.delete(login.getUsuario());
 			transaction.commit();
 		}catch (CpsDaoException e) {
@@ -190,15 +190,15 @@ public class AdministrationHandler {
 		}
 	}
 	
-	public void updateRede(final Tabelas_Rede rede) throws CpsHandlerException{
-		final String message = "updating Tabelas_Rede with instance: "+rede;
+	public void updateRede(final Rede rede) throws CpsHandlerException{
+		final String message = "updating Rede with instance: "+rede;
 		log.debug(message);
 		Transaction transaction = null;
 		Session session = null;
 		try {
 			transaction = HibernateConfig.getSession().beginTransaction();
 			session = HibernateConfig.getSession();
-			RedeDao redeDao = new RedeDao(Tabelas_Rede.class, session);
+			RedeDao redeDao = new RedeDao(Rede.class, session);
 			rede.setDataultimamodificacao(new Date());
 			redeDao.update(rede);
 			session.flush();
@@ -211,15 +211,15 @@ public class AdministrationHandler {
 		}
 	}
 	
-	public void updateLoja(final Tabelas_Loja loja) throws CpsHandlerException{
-		final String message = "updating Tabelas_Loja with instance: "+loja;
+	public void updateLoja(final Loja loja) throws CpsHandlerException{
+		final String message = "updating Loja with instance: "+loja;
 		log.debug(message);
 		Transaction transaction = null;
 		Session session = null;
 		try {
 			transaction = HibernateConfig.getSession().beginTransaction();
 			session = HibernateConfig.getSession();
-			LojaDao lojaDao = new LojaDao(Tabelas_Loja.class, session);
+			LojaDao lojaDao = new LojaDao(Loja.class, session);
 			loja.setDataultimamodificacao(new Date());
 			loja.setTipodevenda('1');
 			lojaDao.update(loja);
@@ -233,7 +233,7 @@ public class AdministrationHandler {
 		}
 	}
 	
-	public void excluirRede(Tabelas_Rede rede) throws CpsHandlerException{
+	public void excluirRede(Rede rede) throws CpsHandlerException{
 		final String message = "deleting Rede with instance: "+rede;
 		log.debug(message);
 		Transaction transaction = null;
@@ -241,7 +241,7 @@ public class AdministrationHandler {
 		try {
 			transaction = HibernateConfig.getSession().beginTransaction();
 			session = HibernateConfig.getSession();
-			RedeDao redeDao = new RedeDao(Tabelas_Rede.class, session);
+			RedeDao redeDao = new RedeDao(Rede.class, session);
 			redeDao.excluir(rede);
 			session.flush();
 			transaction.commit();
@@ -253,7 +253,7 @@ public class AdministrationHandler {
 		}
 	}
 	
-	public void excluirLoja(final Tabelas_Loja loja) throws CpsHandlerException{
+	public void excluirLoja(final Loja loja) throws CpsHandlerException{
 		final String message = "deleting Rede with instance: "+loja;
 		log.debug(message);
 		Transaction transaction = null;
@@ -261,7 +261,7 @@ public class AdministrationHandler {
 		try {
 			transaction = HibernateConfig.getSession().beginTransaction();
 			session = HibernateConfig.getSession();
-			LojaDao lojaDao = new LojaDao(Tabelas_Loja.class, session);
+			LojaDao lojaDao = new LojaDao(Loja.class, session);
 			lojaDao.excluir(loja);
 			session.flush();
 			transaction.commit();

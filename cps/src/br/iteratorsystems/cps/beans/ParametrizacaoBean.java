@@ -5,7 +5,7 @@ import org.richfaces.renderkit.html.ModalPanelRenderer;
 
 import br.iteratorsystems.cps.common.FacesUtil;
 import br.iteratorsystems.cps.common.Resources;
-import br.iteratorsystems.cps.entities.Tabelas_Parametrizacao;
+import br.iteratorsystems.cps.entities.Parametrizacao;
 import br.iteratorsystems.cps.exceptions.CpsDaoException;
 import br.iteratorsystems.cps.service.ParametrizacaoService;
 
@@ -18,7 +18,7 @@ public class ParametrizacaoBean {
 	private String diretorioPadraoDeImagens;
 	private String mensagemDeErro = "";
 	private String nomeModalMostrar = "";
-	private Tabelas_Parametrizacao tabelaParametrizacao;
+	private Parametrizacao tabelaParametrizacao;
 
 	ParametrizacaoService parametrizacaoService = new ParametrizacaoService();
 	

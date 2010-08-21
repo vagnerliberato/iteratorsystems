@@ -8,7 +8,7 @@ import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import br.iteratorsystems.cps.entities.Tabelas_Cep;
+import br.iteratorsystems.cps.entities.Cep;
 import br.iteratorsystems.cps.exceptions.CpsHandlerException;
 import br.iteratorsystems.cps.exceptions.FindAddressException;
 import br.iteratorsystems.cps.handler.BuscarCepBaseServiceImpl;
@@ -16,7 +16,7 @@ import br.iteratorsystems.cps.helper.FormatadorEstadorHelper;
 import br.iteratorsystems.cps.helper.FormatadorPadraoStringHelper;
 
 /**
- * Classe que faz a comunicação com o webService de Tabelas_Cep. No momento está feita para interagir com 
+ * Classe que faz a comunicação com o webService de Cep. No momento está feita para interagir com 
  * 2 tipos de webServices diferentes, um do site www.buscarcep.com.br e o outro do site cep.republicavirtual.com.br
  * Por enquanto ficará assim com os dois. Assim que as chamadas de cep á nossa base de dados estiver funcionando,
  * o www.buscarcep.com.br será retirado.
@@ -118,7 +118,7 @@ public class FindAddress {
 	 */
 	private void findByDataBase(String cep) {
 		BuscarCepBaseServiceImpl cepService = new BuscarCepBaseServiceImpl();
-		Tabelas_Cep tabelasCep = null;
+		Cep tabelasCep = null;
 		try {
 			tabelasCep = cepService.buscarCep(cep);
 			

@@ -9,8 +9,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import br.iteratorsystems.cps.config.HibernateConfig;
-import br.iteratorsystems.cps.entities.Tabelas_Cep;
-import br.iteratorsystems.cps.entities.Tabelas_Localidade;
+import br.iteratorsystems.cps.entities.Cep;
+import br.iteratorsystems.cps.entities.Localidade;
 import br.iteratorsystems.cps.exceptions.CpsDaoException;
 
 /**
@@ -28,7 +28,7 @@ public class BuscarCepBaseDao {
 	 * @return - Objeto da Tabela de Cep populado.
 	 * @throws CpsDaoException - Se ocorrer alguma exceção.
 	 */
-	public Tabelas_Cep buscarCep(final String cep) throws CpsDaoException {
+	public Cep buscarCep(final String cep) throws CpsDaoException {
 		log.debug("buscando cep no dao "+cep);
 		String dadosCep = null;
 		Connection con = HibernateConfig.getConnection();
@@ -51,15 +51,15 @@ public class BuscarCepBaseDao {
 	}
 	
 	/**
-	 * Converte o cep da base em um objeto Tabelas_Cep
+	 * Converte o cep da base em um objeto Cep
 	 * @param dadosCep - Dados do Cep retornado da base.
-	 * @return Objeto Tabelas_Cep populado.
+	 * @return Objeto Cep populado.
 	 */
-	private Tabelas_Cep converteObjetoCep(String dadosCep) {
+	private Cep converteObjetoCep(String dadosCep) {
 		String [] partesCep = dadosCep.split(",");
 		
-		Tabelas_Cep tabelasCep = new Tabelas_Cep();
-		Tabelas_Localidade localidade = new Tabelas_Localidade();
+		Cep tabelasCep = new Cep();
+		Localidade localidade = new Localidade();
 		
 		tabelasCep.setLogradouro(limparStringDados(partesCep[0]));
 		tabelasCep.setBairro1(limparStringDados(partesCep[1]));

@@ -8,17 +8,17 @@ import javax.servlet.http.HttpSession;
 import br.iteratorsystems.cps.common.CommonOperations;
 import br.iteratorsystems.cps.common.FacesUtil;
 import br.iteratorsystems.cps.common.Resources;
-import br.iteratorsystems.cps.entities.Tabelas_Endereco;
-import br.iteratorsystems.cps.entities.Tabelas_Login;
-import br.iteratorsystems.cps.entities.Tabelas_Usuario;
+import br.iteratorsystems.cps.entities.Endereco;
+import br.iteratorsystems.cps.entities.Login;
+import br.iteratorsystems.cps.entities.Usuario;
 import br.iteratorsystems.cps.exceptions.CpsGeneralExceptions;
 import br.iteratorsystems.cps.handler.LoginUserHandler;
 
 public class LoginUserBean {
 
-	private Tabelas_Login login;
-	private Tabelas_Usuario usuario;
-	private Tabelas_Endereco endereco;
+	private Login login;
+	private Usuario usuario;
+	private Endereco endereco;
 	private LoginUserHandler loginHandler;
 	
 	private String nomeLogin;
@@ -195,7 +195,7 @@ public class LoginUserBean {
 	/**
 	 * @return the login
 	 */
-	public Tabelas_Login getLogin() {
+	public Login getLogin() {
 		return login;
 	}
 
@@ -203,7 +203,7 @@ public class LoginUserBean {
 	 * @param login
 	 *            the login to set
 	 */
-	public void setLogin(Tabelas_Login login) {
+	public void setLogin(Login login) {
 		this.login = login;
 	}
 	
@@ -212,7 +212,7 @@ public class LoginUserBean {
 	 * @param usuario
 	 */
 
-	public void setUsuario(Tabelas_Usuario usuario) {
+	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}
 	
@@ -221,7 +221,7 @@ public class LoginUserBean {
 	 * @return usuario
 	 */
 
-	public Tabelas_Usuario getUsuario() {
+	public Usuario getUsuario() {
 		return usuario;
 	}
 	
@@ -230,7 +230,7 @@ public class LoginUserBean {
 	 * @param endereco
 	 */
 
-	public void setEndereco(Tabelas_Endereco endereco) {
+	public void setEndereco(Endereco endereco) {
 		this.endereco = endereco;
 	}
 	
@@ -239,7 +239,7 @@ public class LoginUserBean {
 	 * @return endereco
 	 */
 
-	public Tabelas_Endereco getEndereco() {
+	public Endereco getEndereco() {
 		return endereco;
 	}
 	

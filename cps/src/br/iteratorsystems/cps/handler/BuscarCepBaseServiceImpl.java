@@ -4,7 +4,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import br.iteratorsystems.cps.dao.BuscarCepBaseDao;
-import br.iteratorsystems.cps.entities.Tabelas_Cep;
+import br.iteratorsystems.cps.entities.Cep;
 import br.iteratorsystems.cps.exceptions.CpsDaoException;
 import br.iteratorsystems.cps.exceptions.CpsHandlerException;
 
@@ -23,9 +23,9 @@ public class BuscarCepBaseServiceImpl {
 	 * @return Dados de um Cep.
 	 * @throws CpsHandlerException - Se ocorrer alguma exceção na base de dados.
 	 */
-	public Tabelas_Cep buscarCep(String cep) throws CpsHandlerException{
+	public Cep buscarCep(String cep) throws CpsHandlerException{
 		log.debug("buscando na base o cep "+cep);
-		Tabelas_Cep cepObj = null;
+		Cep cepObj = null;
 		try{
 			BuscarCepBaseDao cepDao = new BuscarCepBaseDao();
 			cepObj = cepDao.buscarCep(cep);

@@ -4,10 +4,10 @@ import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
-import br.iteratorsystems.cps.entities.Tabelas_ProdutoGeral;
+import br.iteratorsystems.cps.entities.ProdutoGeral;
 import br.iteratorsystems.cps.exceptions.CpsDaoException;
 
-public class ProdutoGeralDao extends DaoGeneric<Tabelas_ProdutoGeral, String> {
+public class ProdutoGeralDao extends DaoGeneric<ProdutoGeral, String> {
 
 	private static final int BUSCA_POR_DESCRICAO = 1;
 	private static final int VALOR_EXATO = 10;
@@ -15,15 +15,15 @@ public class ProdutoGeralDao extends DaoGeneric<Tabelas_ProdutoGeral, String> {
 	private static final int BUSCA_QUALQUER_POSICAO = 30;
 	private static final int BUSCA_FIM = 40;
 
-	public ProdutoGeralDao(Class<Tabelas_ProdutoGeral> persistentClass, Session session) {
+	public ProdutoGeralDao(Class<ProdutoGeral> persistentClass, Session session) {
 		super(persistentClass, session);
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Tabelas_ProdutoGeral> buscaProduto(String partName) throws CpsDaoException {
-		List<Tabelas_ProdutoGeral> produtos = null;
+	public List<ProdutoGeral> buscaProduto(String partName) throws CpsDaoException {
+		List<ProdutoGeral> produtos = null;
 		StringBuilder querySQL = new StringBuilder();
-		querySQL.append("from Tabelas_ProdutoGeral as entity where entity.descricao like upper(:nome)");
+		querySQL.append("from ProdutoGeral as entity where entity.descricao like upper(:nome)");
 
 		try {
 			String[] pedacos = partName.split("\\s");
@@ -47,9 +47,9 @@ public class ProdutoGeralDao extends DaoGeneric<Tabelas_ProdutoGeral, String> {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Tabelas_ProdutoGeral> obterProduto(final String descricao, final Integer tipoDeBusca, final Integer posicaoDaBusca) throws CpsDaoException{
+	public List<ProdutoGeral> obterProduto(final String descricao, final Integer tipoDeBusca, final Integer posicaoDaBusca) throws CpsDaoException{
 		StringBuilder hql = new StringBuilder();
-		hql.append("select p from Tabelas_ProdutoGeral as p where						");
+		hql.append("select p from ProdutoGeral as p where						");
 		
 		if(tipoDeBusca == BUSCA_POR_DESCRICAO){
 			hql.append(" p.descricao like upper(:descricao)					");

@@ -5,7 +5,7 @@ import java.util.List;
 import org.hibernate.Session;
 
 import br.iteratorsystems.cps.config.HibernateConfig;
-import br.iteratorsystems.cps.entities.Tabelas_Bairro;
+import br.iteratorsystems.cps.entities.Bairro;
 
 public class TestHibernateCrudBairro extends HibernateConfig {
 	
@@ -17,9 +17,9 @@ public class TestHibernateCrudBairro extends HibernateConfig {
 	private void get() {
 
 		Session session = getSession();
-		List<Tabelas_Bairro> bairros = session.createCriteria(Tabelas_Bairro.class).list();
+		List<Bairro> bairros = session.createCriteria(Bairro.class).list();
 		
-		for (Tabelas_Bairro bairro : bairros) {
+		for (Bairro bairro : bairros) {
 			System.out.println(bairro.getBairro());
 		}
 	}

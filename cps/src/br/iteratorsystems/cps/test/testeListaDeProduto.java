@@ -9,10 +9,10 @@ import org.hibernate.Session;
 import br.iteratorsystems.cps.beans.ListaDeProdutoBean;
 import br.iteratorsystems.cps.config.HibernateConfig;
 import br.iteratorsystems.cps.dao.ListaProdutoDao;
-import br.iteratorsystems.cps.entities.Tabelas_ListaProduto;
-import br.iteratorsystems.cps.entities.Tabelas_ListaProdutoItem;
-import br.iteratorsystems.cps.entities.Tabelas_ProdutoGeral;
-import br.iteratorsystems.cps.entities.Tabelas_Usuario;
+import br.iteratorsystems.cps.entities.ListaProduto;
+import br.iteratorsystems.cps.entities.ListaProdutoItem;
+import br.iteratorsystems.cps.entities.ProdutoGeral;
+import br.iteratorsystems.cps.entities.Usuario;
 import br.iteratorsystems.cps.exceptions.CpsGeneralExceptions;
 import br.iteratorsystems.cps.helper.ListaProdutoTOHelper;
 import br.iteratorsystems.cps.service.ListaProdutoService;
@@ -31,8 +31,8 @@ public class testeListaDeProduto {
 		bean.incluirListaDeProdutos();*/
 		
 		Session session = HibernateConfig.getSession();
-		ListaProdutoDao listaProdutoDao = new ListaProdutoDao(Tabelas_ListaProduto.class, session);
-		Tabelas_ListaProduto listaProduto = listaProdutoDao.obter(1);
+		ListaProdutoDao listaProdutoDao = new ListaProdutoDao(ListaProduto.class, session);
+		ListaProduto listaProduto = listaProdutoDao.obter(1);
 		
 		ListaProdutoService listaProdutoService = new ListaProdutoService();
 		listaProdutoService.excluirListaDeProdutos(listaProduto);
@@ -40,20 +40,20 @@ public class testeListaDeProduto {
 		
 		/*ListaProdutoTOHelper helper = new ListaProdutoTOHelper(); 
 		tabelas'
-		Tabelas_Usuario usuario = ListaProdutoTOHelper.popularUsuario(null);
+		Usuario usuario = ListaProdutoTOHelper.popularUsuario(null);
 		*/
 	}
 	
-	private static Tabelas_ProdutoGeral popular() {
-		Tabelas_ProdutoGeral prod  = new Tabelas_ProdutoGeral();
-		Set<Tabelas_ListaProdutoItem> lista = new HashSet<Tabelas_ListaProdutoItem>();
+	private static ProdutoGeral popular() {
+		ProdutoGeral prod  = new ProdutoGeral();
+		Set<ListaProdutoItem> lista = new HashSet<ListaProdutoItem>();
 		prod.setCodigoBarras("789100000943");
 		prod.setDescricao("teste");
 		prod.setEmbalagem("sei la");
 		prod.setImagem('N');
 		prod.setUnidadeMedida("KG");
 		prod.setStatus('A');
-		lista.add(new Tabelas_ListaProdutoItem(null, null, prod, 1));
+		lista.add(new ListaProdutoItem(null, null, prod, 1));
 		prod.setListaProdutoItems(lista);
 		return prod;
 	}

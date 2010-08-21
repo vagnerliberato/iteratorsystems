@@ -14,18 +14,18 @@ import br.iteratorsystems.cps.common.Resources;
 import br.iteratorsystems.cps.config.HibernateConfig;
 import br.iteratorsystems.cps.dao.LojaDao;
 import br.iteratorsystems.cps.dao.RedeDao;
-import br.iteratorsystems.cps.entities.Tabelas_Login;
-import br.iteratorsystems.cps.entities.Tabelas_Loja;
-import br.iteratorsystems.cps.entities.Tabelas_Rede;
+import br.iteratorsystems.cps.entities.Login;
+import br.iteratorsystems.cps.entities.Loja;
+import br.iteratorsystems.cps.entities.Rede;
 import br.iteratorsystems.cps.exceptions.CpsGeneralExceptions;
 import br.iteratorsystems.cps.exceptions.CpsHandlerException;
 import br.iteratorsystems.cps.handler.AdministrationHandler;
 
 public class AdministrationBean {
 
-	private Tabelas_Login loginEntity = new Tabelas_Login();
-	private Tabelas_Rede redeEntity;
-	private Tabelas_Loja lojaEntity;
+	private Login loginEntity = new Login();
+	private Rede redeEntity;
+	private Loja lojaEntity;
 	private AdministrationHandler administrationHandler;
 
 	// booleanos para controle da tela
@@ -45,9 +45,9 @@ public class AdministrationBean {
 	private String mensagemCampoObrigatorio = "Campo de preenchimento obrigatório!";
 	private String mensagem_cnpj = "CNPJ já cadastrado na base de dados!";
 
-	private List<Tabelas_Login> allLogins;
-	private List<Tabelas_Rede> listRedes;
-	private List<Tabelas_Loja> listLojas;
+	private List<Login> allLogins;
+	private List<Rede> listRedes;
+	private List<Loja> listLojas;
 
 	private HtmlDataTable richDataTable;
 	private HtmlDataTable redesDataTable;
@@ -61,8 +61,8 @@ public class AdministrationBean {
 			new SelectItem(3, "Gerenciar Redes Cadastradas"), };
 
 	Session session = HibernateConfig.getSession();
-	RedeDao redeDao = new RedeDao(Tabelas_Rede.class, session);
-	LojaDao lojaDao = new LojaDao(Tabelas_Loja.class, session);
+	RedeDao redeDao = new RedeDao(Rede.class, session);
+	LojaDao lojaDao = new LojaDao(Loja.class, session);
 
 	/**
 	 * Construtor
@@ -83,7 +83,7 @@ public class AdministrationBean {
 		}
 
 		administrationHandler = new AdministrationHandler();
-		redeEntity = new Tabelas_Rede();
+		redeEntity = new Rede();
 
 		try {
 			redeEntity.setNome(this.getNomeRede());
@@ -188,21 +188,21 @@ public class AdministrationBean {
 
 	public SelectItem[] getAllRedes() throws CpsGeneralExceptions {
 		int index = 0;
-		// List<Tabelas_Rede> todasRedes = redeDao.listarTodos();
+		// List<Rede> todasRedes = redeDao.listarTodos();
 		// redes = new SelectItem[todasRedes.size()+1];
 		// redes[index] = new SelectItem(0,"Selecione...");;
-		// for(Tabelas_Rede rede: todasRedes){
+		// for(Rede rede: todasRedes){
 		// index ++;
 		// redes[index] = new SelectItem(rede.getId(),rede.getNome());
 		// }
 		// return redes;
 		try {
 			administrationHandler = new AdministrationHandler();
-			List<Tabelas_Rede> list = administrationHandler.getAllRedes();
+			List<Rede> list = administrationHandler.getAllRedes();
 			redes = new SelectItem[list.size() + 1];
 			redes[index] = new SelectItem(0, "Selecione...");
 			;
-			for (Tabelas_Rede rede : list) {
+			for (Rede rede : list) {
 				index++;
 				redes[index] = new SelectItem(rede.getId(), rede.getNome());
 			}
@@ -284,7 +284,7 @@ public class AdministrationBean {
 
 	public void deleteLogin() throws CpsGeneralExceptions {
 		try {
-			Tabelas_Login newLogin = (Tabelas_Login) this.getRichDataTable()
+			Login newLogin = (Login) this.getRichDataTable()
 					.getRowData();
 			administrationHandler = new AdministrationHandler();
 			this.allLogins.remove(newLogin);
@@ -325,7 +325,7 @@ public class AdministrationBean {
 				if (item.getValue().equals(index)) {
 					this.setRedeEntity(administrationHandler.getRede(item
 							.getLabel()));
-					this.setLojaEntity(new Tabelas_Loja());
+					this.setLojaEntity(new Loja());
 					break;
 				}
 			}
@@ -362,7 +362,7 @@ public class AdministrationBean {
 
 	public void atualizaRede() throws CpsGeneralExceptions {
 		this
-				.setRedeEntity((Tabelas_Rede) this.getRedesDataTable()
+				.setRedeEntity((Rede) this.getRedesDataTable()
 						.getRowData());
 		if (this.getRedeEntity().getNome() == null
 				|| this.getRedeEntity().getNome().equals("")) {
@@ -412,13 +412,13 @@ public class AdministrationBean {
 	 */
 
 	public void excluirRede() throws CpsGeneralExceptions {
-		// this.setRedeEntity((Tabelas_Rede)
+		// this.setRedeEntity((Rede)
 		// this.getRedesDataTable().getRowData());
 		// this.listRedes.remove(this.getRedeEntity());
 		// redeDao.excluir(this.getRedeEntity());
 		administrationHandler = new AdministrationHandler();
 		this
-				.setRedeEntity((Tabelas_Rede) this.getRedesDataTable()
+				.setRedeEntity((Rede) this.getRedesDataTable()
 						.getRowData());
 		try {
 			this.listRedes.remove(this.getRedeEntity());
@@ -435,11 +435,11 @@ public class AdministrationBean {
 	 */
 
 	public void excluirLoja() throws CpsGeneralExceptions {
-//		this.setLojaEntity((Tabelas_Loja) this.getLojasDataTable().getRowData());
+//		this.setLojaEntity((Loja) this.getLojasDataTable().getRowData());
 //		this.listLojas.remove(this.getLojaEntity());
 //		lojaDao.excluir(this.getLojaEntity());
 		administrationHandler = new AdministrationHandler();
-		this.setLojaEntity((Tabelas_Loja) this.getLojasDataTable().getRowData());
+		this.setLojaEntity((Loja) this.getLojasDataTable().getRowData());
 		try {
 			this.listLojas.remove(this.getLojaEntity());
 			administrationHandler.excluirLoja(this.getLojaEntity());
@@ -462,7 +462,7 @@ public class AdministrationBean {
 	 * @param loginEntity
 	 */
 
-	public void setLoginEntity(Tabelas_Login loginEntity) {
+	public void setLoginEntity(Login loginEntity) {
 		this.loginEntity = loginEntity;
 	}
 
@@ -471,7 +471,7 @@ public class AdministrationBean {
 	 * @return loginEntity
 	 */
 
-	public Tabelas_Login getLoginEntity() {
+	public Login getLoginEntity() {
 		return loginEntity;
 	}
 
@@ -480,7 +480,7 @@ public class AdministrationBean {
 	 * @param allLogins
 	 */
 
-	public void setAllLogins(List<Tabelas_Login> allLogins) {
+	public void setAllLogins(List<Login> allLogins) {
 		this.allLogins = allLogins;
 	}
 
@@ -489,7 +489,7 @@ public class AdministrationBean {
 	 * @return allLogins
 	 */
 
-	public List<Tabelas_Login> getAllLogins() {
+	public List<Login> getAllLogins() {
 		return allLogins;
 	}
 
@@ -654,7 +654,7 @@ public class AdministrationBean {
 	 * @param lojaEntity
 	 */
 
-	public void setLojaEntity(Tabelas_Loja lojaEntity) {
+	public void setLojaEntity(Loja lojaEntity) {
 		this.lojaEntity = lojaEntity;
 	}
 
@@ -663,7 +663,7 @@ public class AdministrationBean {
 	 * @return lojaEntity
 	 */
 
-	public Tabelas_Loja getLojaEntity() {
+	public Loja getLojaEntity() {
 		return lojaEntity;
 	}
 
@@ -742,7 +742,7 @@ public class AdministrationBean {
 	/**
 	 * @return the redeEntity
 	 */
-	public Tabelas_Rede getRedeEntity() {
+	public Rede getRedeEntity() {
 		return redeEntity;
 	}
 
@@ -750,7 +750,7 @@ public class AdministrationBean {
 	 * @param redeEntity
 	 *            the redeEntity to set
 	 */
-	public void setRedeEntity(Tabelas_Rede redeEntity) {
+	public void setRedeEntity(Rede redeEntity) {
 		this.redeEntity = redeEntity;
 	}
 
@@ -759,7 +759,7 @@ public class AdministrationBean {
 	 * @param listRedes
 	 */
 
-	public void setListRedes(List<Tabelas_Rede> listRedes) {
+	public void setListRedes(List<Rede> listRedes) {
 		this.listRedes = listRedes;
 	}
 
@@ -768,7 +768,7 @@ public class AdministrationBean {
 	 * @return listRedes
 	 */
 
-	public List<Tabelas_Rede> getListRedes() {
+	public List<Rede> getListRedes() {
 		return listRedes;
 	}
 
@@ -849,7 +849,7 @@ public class AdministrationBean {
 	 * @param listLojas
 	 */
 
-	public void setListLojas(List<Tabelas_Loja> listLojas) {
+	public void setListLojas(List<Loja> listLojas) {
 		this.listLojas = listLojas;
 	}
 
@@ -858,7 +858,7 @@ public class AdministrationBean {
 	 * @return listLojas
 	 */
 
-	public List<Tabelas_Loja> getListLojas() {
+	public List<Loja> getListLojas() {
 		return listLojas;
 	}
 

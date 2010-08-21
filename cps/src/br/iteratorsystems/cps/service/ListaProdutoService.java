@@ -11,22 +11,23 @@ import org.hibernate.Transaction;
 import br.iteratorsystems.cps.config.HibernateConfig;
 import br.iteratorsystems.cps.dao.ItensListaProdutoDao;
 import br.iteratorsystems.cps.dao.ListaProdutoDao;
-import br.iteratorsystems.cps.entities.Tabelas_ListaProduto;
-import br.iteratorsystems.cps.entities.Tabelas_ListaProdutoItem;
-import br.iteratorsystems.cps.entities.Tabelas_ProdutoGeral;
+import br.iteratorsystems.cps.entities.ListaProduto;
+import br.iteratorsystems.cps.entities.ListaProdutoItem;
+import br.iteratorsystems.cps.entities.ProdutoGeral;
 import br.iteratorsystems.cps.exceptions.CpsDaoException;
+import br.iteratorsystems.cps.exceptions.CpsHandlerException;
 
 public class ListaProdutoService {
 
 	private Session session = HibernateConfig.getSession();
-	private ListaProdutoDao listaProdutoDao = new ListaProdutoDao(Tabelas_ListaProduto.class, session);
-	private ItensListaProdutoDao itemListaDao = new ItensListaProdutoDao(Tabelas_ListaProdutoItem.class, session) ;
+	private ListaProdutoDao listaProdutoDao = new ListaProdutoDao(ListaProduto.class, session);
+	private ItensListaProdutoDao itemListaDao = new ItensListaProdutoDao(ListaProdutoItem.class, session) ;
 	
-	public List<Tabelas_ListaProdutoItem> popularItemDaListaDeProduto(Integer idItensLista, Tabelas_ListaProduto listaProduto, List<Tabelas_ProdutoGeral> produtosGerais, HashMap<String, Integer> quantidadePorProduto){
+	public List<ListaProdutoItem> popularItemDaListaDeProduto(Integer idItensLista, ListaProduto listaProduto, List<ProdutoGeral> produtosGerais, HashMap<String, Integer> quantidadePorProduto){
 		
-		List<Tabelas_ListaProdutoItem> listaProdutosItens = new ArrayList<Tabelas_ListaProdutoItem>();
-		for (Tabelas_ProdutoGeral produtogeral : produtosGerais) {
-			Tabelas_ListaProdutoItem itemProduto = new Tabelas_ListaProdutoItem();
+		List<ListaProdutoItem> listaProdutosItens = new ArrayList<ListaProdutoItem>();
+		for (ProdutoGeral produtogeral : produtosGerais) {
+			ListaProdutoItem itemProduto = new ListaProdutoItem();
 			itemProduto.setIdItensLista(idItensLista);
 			itemProduto.setListaProduto(listaProduto);
 			itemProduto.setProdutogeral(produtogeral);
@@ -38,38 +39,55 @@ public class ListaProdutoService {
 		return listaProdutosItens;
 	}
 	
-	public void excluirListaDeProdutos(final Tabelas_ListaProduto listaProduto) throws CpsDaoException {
+	public void excluirListaDeProdutos(final ListaProduto listaProduto) throws CpsDaoException {
 		Session session = HibernateConfig.getSession();
 		listaProdutoDao.excluir(listaProduto);
 		session.flush();
 	}
 
-	public void incluirListaDeProdutos(final Tabelas_ListaProduto listaProduto) throws CpsDaoException {
+	/**
+	 * Inclui uma lista de produtos e seus items.
+	 * @param listaProduto - A lista de produto
+	 * @param itemLista - Os items da lista
+	 * @throws CpsHandlerException - Se alguma exceção ocorrer nas camadas abaixo.
+	 */
+	public void incluirListaDeProdutos(final ListaProduto listaProduto,
+									  final Set<ListaProdutoItem> itemLista) throws CpsHandlerException {
 		Transaction transaction = HibernateConfig.getSession().getTransaction();
 		transaction.begin();
-		listaProdutoDao.salvar(listaProduto);
-		transaction.commit();
-	}
-	
-	public void incluirItensListaDeProdutos(final Set<Tabelas_ListaProdutoItem> itemLista) throws CpsDaoException {
-		Transaction transaction = HibernateConfig.getSession().getTransaction();
-		Tabelas_ListaProduto listaProduto = obterLista();
-		transaction.begin();
-		for(Tabelas_ListaProdutoItem item : itemLista) {
-			item.setListaProduto(listaProduto);
+		try{
+			listaProdutoDao.salvar(listaProduto);
+			ListaProduto newListaProduto = obterLista();
+			for(ListaProdutoItem item : itemLista) {
+				item.setListaProduto(newListaProduto);
+			}
+			itemListaDao.salvarLista(itemLista);
+			transaction.commit();
+		}catch (CpsDaoException e) {
+			transaction.rollback();
+			throw new CpsHandlerException(e);
 		}
-		itemListaDao.salvarLista(itemLista);
-		transaction.commit();
 	}
 	
-	private Tabelas_ListaProduto obterLista() {
-		Tabelas_ListaProduto lista = new Tabelas_ListaProduto();
+
+	
+	/**
+	 * Obtem o ultimo Id da lista inserida no banco.
+	 * @return Uma Entidade Lista de produto.
+	 * @throws IllegalArgumentException - Se algo de errado acontecer nas camadas abaixo,
+	 * ou se id for nulo.
+	 */
+	private ListaProduto obterLista() throws IllegalArgumentException {
+		ListaProduto lista = new ListaProduto();
 		try {
 			Integer id =
-					itemListaDao.getLastIdFromModel(new Tabelas_ListaProduto());
+					itemListaDao.getLastIdFromModel(new ListaProduto());
+			if(id == null) {
+				throw new IllegalArgumentException("O Id não poder ser nulo!");
+			}
 			lista.setId(id);
 		} catch (CpsDaoException e) {
-			e.printStackTrace();
+			throw new IllegalArgumentException(e);
 		}
 		return lista;
 	}

@@ -9,10 +9,10 @@ import javax.faces.context.FacesContext;
 
 import org.richfaces.component.html.HtmlDataTable;
 
-import br.iteratorsystems.cps.entities.Tabelas_ListaProduto;
-import br.iteratorsystems.cps.entities.Tabelas_Parametrizacao;
-import br.iteratorsystems.cps.entities.Tabelas_ProdutoGeral;
-import br.iteratorsystems.cps.entities.Tabelas_Usuario;
+import br.iteratorsystems.cps.entities.ListaProduto;
+import br.iteratorsystems.cps.entities.Parametrizacao;
+import br.iteratorsystems.cps.entities.ProdutoGeral;
+import br.iteratorsystems.cps.entities.Usuario;
 import br.iteratorsystems.cps.exceptions.CpsGeneralExceptions;
 import br.iteratorsystems.cps.exceptions.CpsHandlerException;
 import br.iteratorsystems.cps.handler.BuscaProdutoHandler;
@@ -35,14 +35,14 @@ public class ListaDeProdutoBean {
 	private String paginaAtual;
 	private List<ProdutoTO> listaBusca;
 	private List<ProdutoTO> listaPagina;
-	private List<Tabelas_ListaProduto> listaProdutoUsuario;
+	private List<ListaProduto> listaProdutoUsuario;
 	private ListaProdutoTO listaComprasUsuario;
 	private ListaProdutoService listaProdutoService;
 	private BuscaProdutoHandler buscaProdutoHandler;
 	private LoginUserHandler userHandler;
 	private HtmlDataTable tabelasListaDataTable;
 	private HtmlDataTable listaProdutosDataTable;
-	private Tabelas_Usuario usuario;
+	private Usuario usuario;
 	private ProdutoTO produtoListaSelecionado;
 	private String nomeModalQuantidade;
 	private Integer numeroMaximoItensCarrinho;
@@ -71,8 +71,9 @@ public class ListaDeProdutoBean {
 			setPaginaAtual("newList.jsf");
 		}else{
 			setPaginaAtual("allLists.jsf");
+			listaPagina.clear();
 			listaProdutoUsuario = 
-				new ArrayList<Tabelas_ListaProduto>(
+				new ArrayList<ListaProduto>(
 						usuario.getListaProdutos());
 		}
 	}
@@ -101,7 +102,7 @@ public class ListaDeProdutoBean {
 	 * Obtem uma lista de produto para edição.
 	 */
 	public void obterListaDeProduto() {
-		Tabelas_ListaProduto listaTemp = (Tabelas_ListaProduto) tabelasListaDataTable.getRowData();
+		ListaProduto listaTemp = (ListaProduto) tabelasListaDataTable.getRowData();
 		listaPagina = (List<ProdutoTO>) 
 				ListaProdutoTOHelper.converteItemLista(
 						listaTemp.getListaProdutoItems());
@@ -133,7 +134,7 @@ public class ListaDeProdutoBean {
 	 */
 	public void buscarProduto() throws CpsGeneralExceptions{
 		buscaProdutoHandler = new BuscaProdutoHandler();
-		List<Tabelas_ProdutoGeral> listaTemp = null;
+		List<ProdutoGeral> listaTemp = null;
 		listaBusca = new ArrayList<ProdutoTO>(1);
 
 		try{
@@ -146,7 +147,7 @@ public class ListaDeProdutoBean {
 				this.setNenhumRegistroEncontrado(false);
 			}
 			
-			for(Tabelas_ProdutoGeral produtoGeral : listaTemp) {
+			for(ProdutoGeral produtoGeral : listaTemp) {
 				ProdutoTO produtoTO = new ProdutoTO();
 				produtoTO.setProdutoGeral(produtoGeral);
 				produtoTO.setQuantidadeSelecionada(1);
@@ -163,9 +164,9 @@ public class ListaDeProdutoBean {
 	 * Obtém a parametrização do sistema
 	 * @return Classe de parametrização do sistema.
 	 */
-	private Tabelas_Parametrizacao obterParametrizacao() {
+	private Parametrizacao obterParametrizacao() {
 		ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
-		Tabelas_Parametrizacao parametrizacao = (Tabelas_Parametrizacao)context.getApplicationMap().get("parametrizacao");
+		Parametrizacao parametrizacao = (Parametrizacao)context.getApplicationMap().get("parametrizacao");
 		return parametrizacao;
 	}
 	
@@ -185,9 +186,8 @@ public class ListaDeProdutoBean {
 	public void incluirListaDeProdutos()throws CpsGeneralExceptions{
 		listaComprasUsuario.setListaProdutos(listaPagina);
 		listaProdutoService.incluirListaDeProdutos(
-				ListaProdutoTOHelper.popularUmaListaDeProduto(this.getNomeLista(), getUsuario()));
-		listaProdutoService.incluirItensListaDeProdutos(
-					ListaProdutoTOHelper.converteListaProdutoTO(listaComprasUsuario.getListaProdutos()));
+				ListaProdutoTOHelper.popularUmaListaDeProduto(this.getNomeLista(), getUsuario()),
+				ListaProdutoTOHelper.converteListaProdutoTO(listaComprasUsuario.getListaProdutos()));
 		verificarListaExistente();
 	}
 	
@@ -195,8 +195,8 @@ public class ListaDeProdutoBean {
 	 * Recupera o usuário ativo na sessão.
 	 * @return - Entidade com os dados do usuário.
 	 */
-	private Tabelas_Usuario recuperarUsuario() {
-		Tabelas_Usuario usuario = null;
+	private Usuario recuperarUsuario() {
+		Usuario usuario = null;
 		FacesContext context = FacesContext.getCurrentInstance();
 		ELResolver el = context.getApplication().getELResolver();
 		
@@ -428,14 +428,14 @@ public class ListaDeProdutoBean {
 	/**
 	 * @param usuario the usuario to set
 	 */
-	public void setUsuario(Tabelas_Usuario usuario) {
+	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}
 
 	/**
 	 * @return the usuario
 	 */
-	public Tabelas_Usuario getUsuario() {
+	public Usuario getUsuario() {
 		return usuario;
 	}
 
@@ -456,14 +456,14 @@ public class ListaDeProdutoBean {
 	/**
 	 * @param listaProdutoUsuario the listaProdutoUsuario to set
 	 */
-	public void setListaProdutoUsuario(List<Tabelas_ListaProduto> listaProdutoUsuario) {
+	public void setListaProdutoUsuario(List<ListaProduto> listaProdutoUsuario) {
 		this.listaProdutoUsuario = listaProdutoUsuario;
 	}
 
 	/**
 	 * @return the listaProdutoUsuario
 	 */
-	public List<Tabelas_ListaProduto> getListaProdutoUsuario() {
+	public List<ListaProduto> getListaProdutoUsuario() {
 		return listaProdutoUsuario;
 	}
 

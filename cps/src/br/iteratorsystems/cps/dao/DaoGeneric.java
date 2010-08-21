@@ -105,7 +105,7 @@ public class DaoGeneric<T, ID extends Serializable> implements InterfaceDao<T, I
 	 */
 
 	public void salvar(T entity) throws CpsDaoException{
-		getSession().saveOrUpdate(entity);
+		getSession().save(entity);
 	}
 	
 	/**

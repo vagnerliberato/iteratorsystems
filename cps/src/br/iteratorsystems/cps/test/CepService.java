@@ -17,8 +17,8 @@ public class CepService {
 	public static void main(String[] args) {
 
 
-		// Define o Tabelas_Cep
-		String cep = JOptionPane.showInputDialog(null,"Informe o Tabelas_Cep");
+		// Define o Cep
+		String cep = JOptionPane.showInputDialog(null,"Informe o Cep");
 		
 		// String da url		
 		String urlString = "http://www.buscarcep.com.br/index.php";
@@ -118,11 +118,11 @@ public class CepService {
 						}
                           try{
                         System.out.println(endereco[6]);
-                        String end ="Tabelas_Cep: " +endereco[2]+"\nEstado: "+endereco[3]+"\nCidade: "+endereco[4]+"\nBairro: "+endereco[5]+"\nLogradouro: "+endereco[6]+" "+endereco[7];
+                        String end ="Cep: " +endereco[2]+"\nEstado: "+endereco[3]+"\nCidade: "+endereco[4]+"\nBairro: "+endereco[5]+"\nLogradouro: "+endereco[6]+" "+endereco[7];
                         JOptionPane.showMessageDialog(null,end);
                           } 
                         catch(Exception e){
-                            JOptionPane.showMessageDialog(null,"Tabelas_Cep não consta no banco de dados");
+                            JOptionPane.showMessageDialog(null,"Cep não consta no banco de dados");
                         }
 
 

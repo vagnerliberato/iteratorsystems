@@ -10,11 +10,11 @@ import br.iteratorsystems.cps.common.CommonOperations;
 import br.iteratorsystems.cps.common.FacesUtil;
 import br.iteratorsystems.cps.common.FindAddress;
 import br.iteratorsystems.cps.common.Resources;
-import br.iteratorsystems.cps.entities.Tabelas_Cep;
-import br.iteratorsystems.cps.entities.Tabelas_Endereco;
-import br.iteratorsystems.cps.entities.Tabelas_Login;
-import br.iteratorsystems.cps.entities.Tabelas_Parametrizacao;
-import br.iteratorsystems.cps.entities.Tabelas_Usuario;
+import br.iteratorsystems.cps.entities.Cep;
+import br.iteratorsystems.cps.entities.Endereco;
+import br.iteratorsystems.cps.entities.Login;
+import br.iteratorsystems.cps.entities.Parametrizacao;
+import br.iteratorsystems.cps.entities.Usuario;
 import br.iteratorsystems.cps.exceptions.CpsGeneralExceptions;
 import br.iteratorsystems.cps.exceptions.CpsHandlerException;
 import br.iteratorsystems.cps.handler.LoginUserHandler;
@@ -23,11 +23,11 @@ import br.iteratorsystems.cps.handler.UserManagementHandler;
 public class UserManagementBean {
 
 	private UserManagementHandler userHandler = null;
-	private Tabelas_Usuario usuarioEntity = new Tabelas_Usuario();
-	private Tabelas_Cep cepEntity = new Tabelas_Cep();
-	private Tabelas_Endereco enderecoEntity = new Tabelas_Endereco();
-	private Tabelas_Login loginEntity = new Tabelas_Login();
-	private Tabelas_Parametrizacao parametrizacao;
+	private Usuario usuarioEntity = new Usuario();
+	private Cep cepEntity = new Cep();
+	private Endereco enderecoEntity = new Endereco();
+	private Login loginEntity = new Login();
+	private Parametrizacao parametrizacao;
 	
 	private String estadoSigla;
 	private String put_senha_antiga;
@@ -70,8 +70,8 @@ public class UserManagementBean {
 	 * Obtém a parametrização do sistema.
 	 * @return  Classe de parametrização.
 	 */
-	private Tabelas_Parametrizacao obtemParametrizacao() {
-		Tabelas_Parametrizacao parametrizacao = (Tabelas_Parametrizacao) context.getExternalContext().getApplicationMap().get("parametrizacao");
+	private Parametrizacao obtemParametrizacao() {
+		Parametrizacao parametrizacao = (Parametrizacao) context.getExternalContext().getApplicationMap().get("parametrizacao");
 		return parametrizacao;
 	}
 	
@@ -286,27 +286,27 @@ public class UserManagementBean {
 		this.usuarioEntity = newLoginUserInstance.getUsuario();
 		if(this.usuarioEntity == null) return;
 		//solução paliativa
-		for(Tabelas_Endereco endereco : this.getUsuarioEntity().getEnderecos()){
+		for(Endereco endereco : this.getUsuarioEntity().getEnderecos()){
 			this.enderecoEntity = endereco;
 		}
-		for(Tabelas_Login login : this.getUsuarioEntity().getLogins()){
+		for(Login login : this.getUsuarioEntity().getLogins()){
 			this.loginEntity = login;
 		}
 		this.setAdministrador(this.getLoginEntity().getTipoUsuario() == 'A' ? true : false);
 	}
 	
-	public void atualizaCampos(Tabelas_Usuario paramUser){
+	public void atualizaCampos(Usuario paramUser){
 		this.usuarioEntity = paramUser;
 		LoginUserHandler loginHandler = new LoginUserHandler();
 		
 		if(usuarioEntity.getEnderecos() == null || 
 				usuarioEntity.getEnderecos().isEmpty()) {
-			Set<Tabelas_Endereco> endereco = new HashSet<Tabelas_Endereco>();
+			Set<Endereco> endereco = new HashSet<Endereco>();
 			try {
 				endereco.add(loginHandler.getEnderecoRelated(usuarioEntity.getIdUsuario()));
 				usuarioEntity.setEnderecos(endereco);
 				
-				for(Tabelas_Endereco enderecoEntity : usuarioEntity.getEnderecos()) {
+				for(Endereco enderecoEntity : usuarioEntity.getEnderecos()) {
 					this.enderecoEntity = enderecoEntity;
 				}
 				
@@ -319,12 +319,12 @@ public class UserManagementBean {
 				usuarioEntity.getLogins().isEmpty() ||
 				this.getLoginEntity() == null) {
 			
-			Set<Tabelas_Login> login = new HashSet<Tabelas_Login>();
+			Set<Login> login = new HashSet<Login>();
 			try {
 				login.add(loginHandler.getLogin(usuarioEntity.getIdUsuario()));
 				usuarioEntity.setLogins(login);
 				
-				for(Tabelas_Login loginEntity : usuarioEntity.getLogins()) {
+				for(Login loginEntity : usuarioEntity.getLogins()) {
 					this.setLoginEntity(loginEntity);
 				}
 				
@@ -449,56 +449,56 @@ public class UserManagementBean {
 	/**
 	 * @return the usuarioEntity
 	 */
-	public Tabelas_Usuario getUsuarioEntity() {
+	public Usuario getUsuarioEntity() {
 		return usuarioEntity;
 	}
 
 	/**
 	 * @param usuarioEntity the usuarioEntity to set
 	 */
-	public void setUsuarioEntity(Tabelas_Usuario usuarioEntity) {
+	public void setUsuarioEntity(Usuario usuarioEntity) {
 		this.usuarioEntity = usuarioEntity;
 	}
 
 	/**
 	 * @return the cepEntity
 	 */
-	public Tabelas_Cep getCepEntity() {
+	public Cep getCepEntity() {
 		return cepEntity;
 	}
 
 	/**
 	 * @param cepEntity the cepEntity to set
 	 */
-	public void setCepEntity(Tabelas_Cep cepEntity) {
+	public void setCepEntity(Cep cepEntity) {
 		this.cepEntity = cepEntity;
 	}
 
 	/**
 	 * @return the enderecoEntity
 	 */
-	public Tabelas_Endereco getEnderecoEntity() {
+	public Endereco getEnderecoEntity() {
 		return enderecoEntity;
 	}
 
 	/**
 	 * @param enderecoEntity the enderecoEntity to set
 	 */
-	public void setEnderecoEntity(Tabelas_Endereco enderecoEntity) {
+	public void setEnderecoEntity(Endereco enderecoEntity) {
 		this.enderecoEntity = enderecoEntity;
 	}
 
 	/**
 	 * @return the loginEntity
 	 */
-	public Tabelas_Login getLoginEntity() {
+	public Login getLoginEntity() {
 		return loginEntity;
 	}
 
 	/**
 	 * @param loginEntity the loginEntity to set
 	 */
-	public void setLoginEntity(Tabelas_Login loginEntity) {
+	public void setLoginEntity(Login loginEntity) {
 		this.loginEntity = loginEntity;
 	}
 
@@ -521,14 +521,14 @@ public class UserManagementBean {
 	/**
 	 * @param parametrizacao the parametrizacao to set
 	 */
-	public void setParametrizacao(Tabelas_Parametrizacao parametrizacao) {
+	public void setParametrizacao(Parametrizacao parametrizacao) {
 		this.parametrizacao = parametrizacao;
 	}
 
 	/**
 	 * @return the parametrizacao
 	 */
-	public Tabelas_Parametrizacao getParametrizacao() {
+	public Parametrizacao getParametrizacao() {
 		return parametrizacao;
 	}
 

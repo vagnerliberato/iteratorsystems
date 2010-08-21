@@ -7,9 +7,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import br.iteratorsystems.cps.entities.Tabelas_ListaProduto;
-import br.iteratorsystems.cps.entities.Tabelas_ListaProdutoItem;
-import br.iteratorsystems.cps.entities.Tabelas_Usuario;
+import br.iteratorsystems.cps.entities.ListaProduto;
+import br.iteratorsystems.cps.entities.ListaProdutoItem;
+import br.iteratorsystems.cps.entities.Usuario;
 import br.iteratorsystems.cps.to.ListaProdutoTO;
 import br.iteratorsystems.cps.to.ProdutoTO;
 
@@ -32,8 +32,8 @@ public final class ListaProdutoTOHelper {
 	 * @param produtoTO - Produto TO da lista de produtos.
 	 * @return Lista Produto Item
 	 */
-	private static Tabelas_ListaProdutoItem converteProdutoTO(ProdutoTO produtoTO) {
-		Tabelas_ListaProdutoItem produtoItem = new Tabelas_ListaProdutoItem();
+	private static ListaProdutoItem converteProdutoTO(ProdutoTO produtoTO) {
+		ListaProdutoItem produtoItem = new ListaProdutoItem();
 		produtoItem.setProdutogeral(produtoTO.getProdutoGeral());
 		produtoItem.setQuantidade(produtoTO.getQuantidadeSelecionada());
 		return produtoItem;
@@ -44,8 +44,8 @@ public final class ListaProdutoTOHelper {
 	 * @param listaComprasUsuario - ListaProdutoTo do usuario
 	 * @return Uma lista de ListaProdutoItem
 	 */
-	public static Set<Tabelas_ListaProdutoItem> converteListaProdutoTO(Collection<ProdutoTO> listaComprasUsuario) {
-		Set<Tabelas_ListaProdutoItem> listaProdutoItem = new HashSet<Tabelas_ListaProdutoItem>();
+	public static Set<ListaProdutoItem> converteListaProdutoTO(Collection<ProdutoTO> listaComprasUsuario) {
+		Set<ListaProdutoItem> listaProdutoItem = new HashSet<ListaProdutoItem>();
 		for(ProdutoTO produtoTO : listaComprasUsuario) {
 			listaProdutoItem.add(converteProdutoTO(produtoTO));
 		}
@@ -58,8 +58,8 @@ public final class ListaProdutoTOHelper {
 	 * @param listaDeProdutoItens
 	 * @return Lista de Produto
 	 */
-	public static Tabelas_ListaProduto popularUmaListaDeProduto(String nomeLista,Tabelas_Usuario usuario){
-		Tabelas_ListaProduto listaProduto = new Tabelas_ListaProduto();
+	public static ListaProduto popularUmaListaDeProduto(String nomeLista,Usuario usuario){
+		ListaProduto listaProduto = new ListaProduto();
 		listaProduto.setNomeLista(nomeLista);
 		listaProduto.setDataCriacao(new Date());
 		listaProduto.setUsuario(usuario);
@@ -71,7 +71,7 @@ public final class ListaProdutoTOHelper {
 	 * @param listaProduto - Entidade com a lista de produto.
 	 * @return Lista de Produto TO preenchida.
 	 */
-	public static ListaProdutoTO obterListaProdutoTO(Tabelas_ListaProduto listaProduto) {
+	public static ListaProdutoTO obterListaProdutoTO(ListaProduto listaProduto) {
 		ListaProdutoTO listaProdutoTO = new ListaProdutoTO();
 		listaProdutoTO.setNomeLista(listaProduto.getNomeLista());
 		listaProdutoTO.setListaProdutos(
@@ -84,9 +84,9 @@ public final class ListaProdutoTOHelper {
 	 * @param listaItem - Lista de items.
 	 * @return Lista de produto TO convertida.
 	 */
-	public static Collection<ProdutoTO> converteItemLista(Collection<Tabelas_ListaProdutoItem> listaItem) {
+	public static Collection<ProdutoTO> converteItemLista(Collection<ListaProdutoItem> listaItem) {
 		List<ProdutoTO> listaTO = new ArrayList<ProdutoTO>();
-		for(Tabelas_ListaProdutoItem item : listaItem) {
+		for(ListaProdutoItem item : listaItem) {
 			listaTO.add(
 					new ProdutoTO(item.getProdutogeral(), item.getQuantidade()));
 		}

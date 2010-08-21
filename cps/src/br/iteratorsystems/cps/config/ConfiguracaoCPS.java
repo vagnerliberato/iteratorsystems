@@ -3,7 +3,7 @@ package br.iteratorsystems.cps.config;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
-import br.iteratorsystems.cps.entities.Tabelas_Parametrizacao;
+import br.iteratorsystems.cps.entities.Parametrizacao;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -29,13 +29,13 @@ public class ConfiguracaoCPS implements ServletContextListener{
 	 * Obtem a parametrização do sistema.
 	 * @return Classe de parametrização com os dados do banco.
 	 */
-	private static Tabelas_Parametrizacao obterParametrizacaoCps() {
-		Tabelas_Parametrizacao parametrizacaoCPS = null;
+	private static Parametrizacao obterParametrizacaoCps() {
+		Parametrizacao parametrizacaoCPS = null;
 		try {
 			Criteria criteria = 
-				SESSION.createCriteria(Tabelas_Parametrizacao.class);
+				SESSION.createCriteria(Parametrizacao.class);
 			parametrizacaoCPS = 
-				(Tabelas_Parametrizacao) criteria.uniqueResult();
+				(Parametrizacao) criteria.uniqueResult();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

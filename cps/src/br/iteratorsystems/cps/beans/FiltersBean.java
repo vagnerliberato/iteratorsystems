@@ -4,8 +4,8 @@ import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
 
 import br.iteratorsystems.cps.common.FindAddress;
-import br.iteratorsystems.cps.entities.Tabelas_Endereco;
-import br.iteratorsystems.cps.entities.Tabelas_Login;
+import br.iteratorsystems.cps.entities.Endereco;
+import br.iteratorsystems.cps.entities.Login;
 import br.iteratorsystems.cps.helper.FormatadorEstadorHelper;
 
 /**
@@ -25,7 +25,7 @@ public class FiltersBean {
 	private Boolean buscarPeloMenorPreco;
 	private Boolean buscarPelaMenorDistancia;
 	private FindAddress findAddress;
-	private Tabelas_Login login; 
+	private Login login; 
 	
 	/**
 	 * verifica se o usuário esta logado na aplicação,
@@ -34,11 +34,11 @@ public class FiltersBean {
 	private void verificarUsuarioLogado() {
 		FacesContext context = FacesContext.getCurrentInstance();
 		ServletContext servletContext = (ServletContext) context.getExternalContext().getContext();
-		login = (Tabelas_Login) servletContext.getAttribute("usuarioLogado");
+		login = (Login) servletContext.getAttribute("usuarioLogado");
 		
 		if(login!=null) {
 			if(login.getUsuario()!=null) {
-				for(Tabelas_Endereco endereco : login.getUsuario().getEnderecos()) {
+				for(Endereco endereco : login.getUsuario().getEnderecos()) {
 					this.setBairro(endereco.getBairro());
 					this.setCep(endereco.getCep());
 					this.setCidade(endereco.getCidade());
@@ -168,14 +168,14 @@ public class FiltersBean {
 	/**
 	 * @param login the login to set
 	 */
-	public void setLogin(Tabelas_Login usuario) {
+	public void setLogin(Login usuario) {
 		this.login = usuario;
 	}
 
 	/**
 	 * @return the login
 	 */
-	public Tabelas_Login getLogin() {
+	public Login getLogin() {
 		return login;
 	}
 
