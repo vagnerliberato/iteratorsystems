@@ -80,6 +80,23 @@ public final class ListaProdutoTOHelper {
 	}
 	
 	/**
+	 * Obtem uma lista de lista produto item com base em uma lista de produto TO.
+	 * @param listaProdutoTO - Lista de produto TO
+	 * @return Lista de Produto Item.
+	 */
+	public static Collection<ListaProdutoItem> obtemListaProdutoItem(List<ProdutoTO> listaProdutoTO) {
+		List<ListaProdutoItem> listaItem = new ArrayList<ListaProdutoItem>();
+		
+		for(ProdutoTO produto : listaProdutoTO) {
+			ListaProdutoItem item = new ListaProdutoItem();
+			item.setQuantidade(produto.getQuantidadeSelecionada());
+			item.setProdutogeral(produto.getProdutoGeral());
+			listaItem.add(item);
+		}
+		return listaItem;
+	}
+	
+	/**
 	 * Converte uma lista de items em uma lista de produto TO.
 	 * @param listaItem - Lista de items.
 	 * @return Lista de produto TO convertida.

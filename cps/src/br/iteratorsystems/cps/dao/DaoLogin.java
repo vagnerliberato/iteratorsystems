@@ -57,15 +57,10 @@ public class DaoLogin extends Dao<EntityAble> {
 		Session session = HibernateConfig.getSession();
 		try{
 			usuario = (Usuario)
-				session.get(usuario.getClass(),idLogin);
-			
-			if(usuario != null && (usuario.getListaProdutos() == null 
-					|| usuario.getListaProdutos().isEmpty())) {
-				
-				usuario.setListaProdutos(
+			session.get(usuario.getClass(),idLogin);
+			usuario.setListaProdutos(
 						new HashSet<ListaProduto>(
 								obterListaProdutoUsuario(session, idLogin)));
-			}
 		}catch (HibernateException e) {
 			throw new CpsDaoException(e);
 		}

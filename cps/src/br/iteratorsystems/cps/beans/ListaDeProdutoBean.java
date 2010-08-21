@@ -1,6 +1,7 @@
 package br.iteratorsystems.cps.beans;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.el.ELResolver;
@@ -10,6 +11,7 @@ import javax.faces.context.FacesContext;
 import org.richfaces.component.html.HtmlDataTable;
 
 import br.iteratorsystems.cps.entities.ListaProduto;
+import br.iteratorsystems.cps.entities.ListaProdutoItem;
 import br.iteratorsystems.cps.entities.Parametrizacao;
 import br.iteratorsystems.cps.entities.ProdutoGeral;
 import br.iteratorsystems.cps.entities.Usuario;
@@ -37,6 +39,7 @@ public class ListaDeProdutoBean {
 	private List<ProdutoTO> listaPagina;
 	private List<ListaProduto> listaProdutoUsuario;
 	private ListaProdutoTO listaComprasUsuario;
+	private ListaProduto listaSelecionadaTabela;
 	private ListaProdutoService listaProdutoService;
 	private BuscaProdutoHandler buscaProdutoHandler;
 	private LoginUserHandler userHandler;
@@ -64,7 +67,12 @@ public class ListaDeProdutoBean {
 	 * personalizada. 
 	 */
 	private void verificarListaExistente() {
-		setUsuario(recuperarUsuario());
+		
+		if(usuario == null || 
+				(usuario.getListaProdutos() == null || usuario.getListaProdutos().isEmpty())) {
+			setUsuario(recuperarUsuario());
+		}
+		
 		if(usuario == null ||
 				usuario.getListaProdutos() == null ||
 				usuario.getListaProdutos().isEmpty()) {
@@ -102,10 +110,22 @@ public class ListaDeProdutoBean {
 	 * Obtem uma lista de produto para edição.
 	 */
 	public void obterListaDeProduto() {
-		ListaProduto listaTemp = (ListaProduto) tabelasListaDataTable.getRowData();
+		listaSelecionadaTabela = (ListaProduto) tabelasListaDataTable.getRowData();
 		listaPagina = (List<ProdutoTO>) 
 				ListaProdutoTOHelper.converteItemLista(
-						listaTemp.getListaProdutoItems());
+						listaSelecionadaTabela.getListaProdutoItems());
+	}
+	
+	/**
+	 * Atualiza a lista de produtos.
+	 * @throws CpsHandlerException Se ocorrer algum erro nas camadas abaixo.
+	 */
+	public void atualizarLista() throws CpsHandlerException {
+		listaSelecionadaTabela.setListaProdutoItems(
+				new HashSet<ListaProdutoItem>(
+						ListaProdutoTOHelper.obtemListaProdutoItem(listaPagina)));
+		listaProdutoService.atualizarListaDeProdutos(listaSelecionadaTabela);
+		listaPagina.clear();
 	}
 	
 	/**
@@ -175,8 +195,29 @@ public class ListaDeProdutoBean {
 	 * @throws CpsGeneralExceptions - Se ocorrer alguma exceção na camada abaixo do bean.
 	 */
 	public void excluirListaDeProdutos() throws CpsGeneralExceptions{
-//		listaProdutoService.excluirListaDeProdutos(
-				//ListaProdutoTOHelper.converteListaProdutoTO(listaComprasUsuario.getListaProdutos()));
+		ListaProduto lista = (ListaProduto) tabelasListaDataTable.getRowData();
+		listaProdutoService.excluirListaDeProdutos(lista);
+		
+		FacesContext context = FacesContext.getCurrentInstance();
+		ELResolver el = context.getApplication().getELResolver();
+		
+		LoginUserBean userBean = (LoginUserBean)
+					el.getValue(context.getELContext(),null,"loginUserBean");
+		usuario = userHandler.getUserRelated(userBean.getLogin().getIdLogin());
+		verificarListaExistente();
+		
+		if(usuario.getListaProdutos().isEmpty()) {
+			instanciarListaDeCompras();
+			limparPagina();
+		}
+	}
+	
+	/**
+	 * Limpa a página.
+	 */
+	private void limparPagina() {
+		this.setNomeLista(null);
+		this.setListaBusca(null);
 	}
 	
 	/**
@@ -185,8 +226,13 @@ public class ListaDeProdutoBean {
 	 */
 	public void incluirListaDeProdutos()throws CpsGeneralExceptions{
 		listaComprasUsuario.setListaProdutos(listaPagina);
+		Usuario usuario = getUsuario();
+		
+		if(usuario == null) {
+			usuario = recuperarUsuario();
+		}
 		listaProdutoService.incluirListaDeProdutos(
-				ListaProdutoTOHelper.popularUmaListaDeProduto(this.getNomeLista(), getUsuario()),
+				ListaProdutoTOHelper.popularUmaListaDeProduto(this.getNomeLista(), usuario),
 				ListaProdutoTOHelper.converteListaProdutoTO(listaComprasUsuario.getListaProdutos()));
 		verificarListaExistente();
 	}
@@ -481,5 +527,19 @@ public class ListaDeProdutoBean {
 	 */
 	public HtmlDataTable getTabelasListaDataTable() {
 		return tabelasListaDataTable;
+	}
+
+	/**
+	 * @param listaSelecionadaTabela the listaSelecionadaTabela to set
+	 */
+	public void setListaSelecionadaTabela(ListaProduto listaSelecionadaTabela) {
+		this.listaSelecionadaTabela = listaSelecionadaTabela;
+	}
+
+	/**
+	 * @return the listaSelecionadaTabela
+	 */
+	public ListaProduto getListaSelecionadaTabela() {
+		return listaSelecionadaTabela;
 	}
 }

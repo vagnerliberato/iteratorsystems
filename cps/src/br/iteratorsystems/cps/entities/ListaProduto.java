@@ -3,7 +3,6 @@ package br.iteratorsystems.cps.entities;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -17,6 +16,8 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.Cascade;
 
 import br.iteratorsystems.cps.interfaces.EntityAble;
 
@@ -34,8 +35,7 @@ public class ListaProduto implements java.io.Serializable,EntityAble {
 	private Usuario usuario;
 	private String nomeLista;
 	private Date dataCriacao;
-	private Set<ListaProdutoItem> listaProdutoItems = new HashSet<ListaProdutoItem>(
-			0);
+	private Set<ListaProdutoItem> listaProdutoItems = new HashSet<ListaProdutoItem>(0);
 
 	public ListaProduto() {
 	}
@@ -98,7 +98,8 @@ public class ListaProduto implements java.io.Serializable,EntityAble {
 		this.dataCriacao = dataCriacao;
 	}
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "listaProduto")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "listaProduto")
+	@Cascade(value=org.hibernate.annotations.CascadeType.DELETE)
 	public Set<ListaProdutoItem> getListaProdutoItems() {
 		return this.listaProdutoItems;
 	}

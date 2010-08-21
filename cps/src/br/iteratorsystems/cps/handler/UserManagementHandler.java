@@ -75,9 +75,6 @@ public class UserManagementHandler {
 		}
 	}
 	
-	public void delete(Object instance) throws CpsHandlerException {
-	}
-
 	public Collection<Usuario> getAllUser() throws CpsHandlerException {
 		final String message = "getting All Usuario object instances";
 		log.debug(message);

@@ -39,17 +39,47 @@ public class ListaProdutoService {
 		return listaProdutosItens;
 	}
 	
-	public void excluirListaDeProdutos(final ListaProduto listaProduto) throws CpsDaoException {
-		Session session = HibernateConfig.getSession();
-		listaProdutoDao.excluir(listaProduto);
-		session.flush();
+	/**
+	 * Atualiza uma lista de produto.
+	 * @param listaProduto - Lista de produto.
+	 * @throws CpsHandlerException Se alguma exceção ocorrer nas camadas abaixo.
+	 */
+	public void atualizarListaDeProdutos(final ListaProduto listaProduto) throws CpsHandlerException {
+		Transaction transaction = HibernateConfig.getSession().getTransaction();
+		try{
+			transaction.begin();
+			listaProdutoDao.update(listaProduto);
+			session.flush();
+			transaction.commit();
+		}catch (CpsDaoException e) {
+			transaction.rollback();
+			throw new CpsHandlerException(e);
+		}
+	}
+	
+	/**
+	 * Exclui uma lista de produtos
+	 * @param listaProduto - Lista de produtos
+	 * @throws CpsHandlerException Se alguma exceção ocorrer nas camadas abaixo.
+	 */
+	public void excluirListaDeProdutos(final ListaProduto listaProduto) throws CpsHandlerException {
+		Transaction transaction = HibernateConfig.getSession().getTransaction();
+		try{
+			transaction.begin();
+			listaProdutoDao.excluir(listaProduto);
+			session.flush();
+			transaction.commit();
+		}catch (CpsDaoException e) {
+			transaction.rollback();
+			throw new CpsHandlerException(e);
+		}
 	}
 
 	/**
 	 * Inclui uma lista de produtos e seus items.
 	 * @param listaProduto - A lista de produto
 	 * @param itemLista - Os items da lista
-	 * @throws CpsHandlerException - Se alguma exceção ocorrer nas camadas abaixo.
+	 * @throws CpsHandlerException Se alguma exceção ocorrer nas camadas abaixo.
 	 */
 	public void incluirListaDeProdutos(final ListaProduto listaProduto,
 									  final Set<ListaProdutoItem> itemLista) throws CpsHandlerException {
