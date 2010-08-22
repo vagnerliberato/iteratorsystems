@@ -156,4 +156,29 @@
     	</h:form>
 	</center>
 </rich:modalPanel>
+
+<rich:modalPanel id="modalAtualizarLista" height="100" width="300" resizeable="false">
+	<f:facet name="header">
+		<h:outputText value="#{msg.default_modal_information}"/>
+	</f:facet>
+	<f:facet name="controls">
+           <h:panelGroup>
+               <h:graphicImage value="/view/images/close.png" id="hidelinkAtualizarLista" />
+               <rich:componentControl for="modalAtualizarLista" attachTo="hidelinkAtualizarLista"
+                   operation="hide" event="onclick" />
+           </h:panelGroup>
+       </f:facet>
+	<center>
+		<h:form>
+    		<h:outputText value="#{msg.mylists_modal_update}" styleClass="letras"/>  
+    		<br />
+    		<br />
+    		<h:commandButton styleClass="botaoDefault" action="#{listaDeProdutoBean.atualizarLista}"
+    						 value="#{msg.default_modal_delete_yes}"/>
+    		<rich:spacer width="5"/>
+    		<a4j:commandButton styleClass="botaoDefault"
+    						   value="#{msg.default_modal_delete_no}" onclick="#{rich:component('modalAtualizarLista')}.hide();" />
+    	</h:form>
+	</center>
+</rich:modalPanel>
 </jsp:root>

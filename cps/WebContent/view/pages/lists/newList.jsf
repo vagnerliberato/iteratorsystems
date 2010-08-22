@@ -9,38 +9,43 @@
 
 <h:panelGrid columns="2" width="500">
 	<h:column>
+		<h:graphicImage url="/view/images/name.png"/>
+	</h:column><h:column/>
+	<h:column>
 		<h:outputText value="#{msg.mylists_newname}" styleClass="letras" rendered="#{empty listaDeProdutoBean.nomeLista}"/>
 	</h:column>
 	<h:column>
-		<rich:spacer width="15"/>
 		<h:inputText id="nomeLista" maxlength="30" size="32" value="#{listaDeProdutoBean.nomeLista}" styleClass="barraDefault"
 					 readonly="false" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"
 					 rendered="#{empty listaDeProdutoBean.nomeLista}"/>
 			
 		<a4j:outputPanel id="panelNomeLista" ajaxRendered="true" rendered="#{not empty listaDeProdutoBean.nomeLista}">
-			<h:outputText value="#{msg.mylists_name}" styleClass="letras"/>
-			<h:outputText value="#{listaDeProdutoBean.nomeLista}" styleClass="letrasDefault"/>
-			<rich:toolTip followMouse="true" direction="top-right">
-				<h:outputText value="#{msg.mylists_list_name_inf}"/>
-			</rich:toolTip>
-			<a4j:commandButton image="/view/images/deleteRow.png" onclick="#{rich:component('modalExcluirLista')}.show();"/>
+			<h:panelGroup>
+				<h:outputText value="#{msg.mylists_name}" styleClass="letras"/>
+				<rich:spacer width="5"/>
+				<h:outputText value="#{listaDeProdutoBean.nomeLista}" styleClass="letrasInformacao"/>
+				<rich:spacer width="5"/>
+				<a4j:commandButton image="/view/images/deleteRow.png" style="width:20px;" title="#{msg.mylists_table_header_delete}"
+								   onclick="#{rich:component('modalExcluirLista')}.show();"/>
+			</h:panelGroup>
 		</a4j:outputPanel>
 		
-		<h:commandButton value="#{msg.mylists_create}" rendered="#{empty listaDeProdutoBean.nomeLista}"
+		<h:commandButton value="#{msg.mylists_create}" style="width:80px;" rendered="#{empty listaDeProdutoBean.nomeLista}"
 							 action="#{listaDeProdutoBean.criarLista}"/>
 	</h:column>
 </h:panelGrid>
 
-<rich:separator lineType="solid"/>
-
 <h:panelGrid columns="3" width="500">
+	<h:column>
+		<h:graphicImage url="/view/images/items.png"/>
+	</h:column><h:column/><h:column/>
 	<h:column>
 		<h:outputText value="#{msg.mylists_information}" styleClass="letras" rendered="true"/>
 	</h:column>
 	<h:column>
 		<h:inputText id="barraPesquisa" rendered="true" value="#{listaDeProdutoBean.produtoDigitado}" maxlength="50" size="50" styleClass="barraDefault" 
 						 style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
-			 <p:watermark for="barraPesquisa" value="#{msg.default_information_search}"/>
+			 <p:watermark for="barraPesquisa" value="#{msg.mylists_information_search}"/>
 		</h:inputText>
 	</h:column>
 	<h:column>
@@ -111,7 +116,6 @@
 	</h:panelGrid>
 </center>
 
-<rich:separator lineType="solid"/>
 <br />
 <center>
 	<h:panelGrid columns="1">
