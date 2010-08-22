@@ -130,7 +130,7 @@ public class ListaProdutoItem implements java.io.Serializable,
 	@Override
 	public String toString() {
 		return "ListaProdutoItem [idItensLista=" + idItensLista
-				+ ", listaProduto=" + listaProduto + ", produtogeral="
+				+ ", listaProduto=" + listaProduto.getId() + ", produtogeral="
 				+ produtogeral + ", quantidade=" + quantidade + "]";
 	}
 }

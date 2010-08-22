@@ -2,6 +2,7 @@ package br.iteratorsystems.cps.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -16,6 +17,7 @@ import br.iteratorsystems.cps.entities.ListaProdutoItem;
 import br.iteratorsystems.cps.entities.ProdutoGeral;
 import br.iteratorsystems.cps.exceptions.CpsDaoException;
 import br.iteratorsystems.cps.exceptions.CpsHandlerException;
+import br.iteratorsystems.cps.helper.ListaProdutoTOHelper;
 
 public class ListaProdutoService {
 
@@ -48,12 +50,36 @@ public class ListaProdutoService {
 		Transaction transaction = HibernateConfig.getSession().getTransaction();
 		try{
 			transaction.begin();
+			ListaProdutoTOHelper.atualizaObjetoItemLista(
+					listaProduto, listaProduto.getListaProdutoItems());
+			atualizarItensListaProduto(new ArrayList<ListaProdutoItem>(
+													listaProduto.getListaProdutoItems()));
+			
+			Set<ListaProdutoItem> temp = new HashSet<ListaProdutoItem>(listaProduto.getListaProdutoItems()); 
+			listaProduto.getListaProdutoItems().clear();
+			
 			listaProdutoDao.update(listaProduto);
 			session.flush();
 			transaction.commit();
+			listaProduto.setListaProdutoItems(temp);
 		}catch (CpsDaoException e) {
 			transaction.rollback();
 			throw new CpsHandlerException(e);
+		}
+	}
+	
+	/**
+	 * Atualiza os itens de uma lista de produtos.
+	 * @param session - Sessão
+	 * @param listaItens - Lista de itens.
+	 * @throws CpsDaoException Se alguma exceção ocorrer nas camadas abaixo.
+	 */
+	private void atualizarItensListaProduto(final List<ListaProdutoItem> listaItens) throws CpsDaoException {
+		try{
+			itemListaDao.updateList(listaItens);
+			session.flush();
+		}catch (CpsDaoException e) {
+			throw new CpsDaoException(e);
 		}
 	}
 	
@@ -87,6 +113,8 @@ public class ListaProdutoService {
 		transaction.begin();
 		try{
 			listaProdutoDao.salvar(listaProduto);
+			session.flush();
+			
 			ListaProduto newListaProduto = obterLista();
 			for(ListaProdutoItem item : itemLista) {
 				item.setListaProduto(newListaProduto);

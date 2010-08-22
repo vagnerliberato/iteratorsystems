@@ -119,7 +119,7 @@ public class DaoGeneric<T, ID extends Serializable> implements InterfaceDao<T, I
 	}
 	
 	/**
-	 * 
+	 *  
 	 */
 
 	public T salvarOrUpdate(T entity) throws CpsDaoException{
@@ -133,6 +133,22 @@ public class DaoGeneric<T, ID extends Serializable> implements InterfaceDao<T, I
 
 	public void update(T entity) throws CpsDaoException{
 		getSession().merge(entity);
+	}
+	
+	/**
+	 * Atualiza todas as entidades.
+	 * @param listEntity - Lista de entidades a serem atualizadas.
+	 * @throws CpsDaoException - Se algum erro ocorrer nas camadas abaixo.
+	 */
+	public void updateList(List<T> listEntity) throws CpsDaoException {
+		for(T t: listEntity) {
+			update(t);
+		}
+	}
+	
+	//TODO verificar utilidade
+	public void updateT(T entity) throws CpsDaoException {
+		getSession().update(entity);
 	}
 	
 	/**

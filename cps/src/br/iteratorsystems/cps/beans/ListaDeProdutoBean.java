@@ -196,6 +196,7 @@ public class ListaDeProdutoBean {
 	 */
 	public void excluirListaDeProdutos() throws CpsGeneralExceptions{
 		ListaProduto lista = (ListaProduto) tabelasListaDataTable.getRowData();
+		lista.getListaProdutoItems().clear();
 		listaProdutoService.excluirListaDeProdutos(lista);
 		
 		FacesContext context = FacesContext.getCurrentInstance();

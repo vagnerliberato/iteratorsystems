@@ -13,6 +13,7 @@ public class ProdutoTO implements Serializable{
 
 	private static final long serialVersionUID = 7446849227982421202L;
 	
+	private Integer id;
 	private ProdutoGeral produtoGeral;
 	private Boolean possuiImagem;
 	private Integer quantidadeSelecionada;
@@ -23,7 +24,8 @@ public class ProdutoTO implements Serializable{
 	 * @param produtoGeral
 	 * @param quantidadeSelecionada
 	 */
-	public ProdutoTO(ProdutoGeral produtoGeral, Integer quantidadeSelecionada) {
+	public ProdutoTO(Integer id,ProdutoGeral produtoGeral, Integer quantidadeSelecionada) {
+		this.id = id;
 		this.produtoGeral = produtoGeral;
 		this.quantidadeSelecionada = quantidadeSelecionada;
 	}
@@ -118,6 +120,20 @@ public class ProdutoTO implements Serializable{
 		return possuiImagem;
 	}
 	
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	/**
+	 * @return the id
+	 */
+	public Integer getId() {
+		return id;
+	}
+
 	/**
 	 * to String
 	 * @return Variaveis da classe em string

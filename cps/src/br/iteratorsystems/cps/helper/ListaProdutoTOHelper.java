@@ -89,6 +89,7 @@ public final class ListaProdutoTOHelper {
 		
 		for(ProdutoTO produto : listaProdutoTO) {
 			ListaProdutoItem item = new ListaProdutoItem();
+			item.setIdItensLista(produto.getId());
 			item.setQuantidade(produto.getQuantidadeSelecionada());
 			item.setProdutogeral(produto.getProdutoGeral());
 			listaItem.add(item);
@@ -105,8 +106,20 @@ public final class ListaProdutoTOHelper {
 		List<ProdutoTO> listaTO = new ArrayList<ProdutoTO>();
 		for(ListaProdutoItem item : listaItem) {
 			listaTO.add(
-					new ProdutoTO(item.getProdutogeral(), item.getQuantidade()));
+					new ProdutoTO(item.getIdItensLista(),item.getProdutogeral(), item.getQuantidade()));
 		}
 		return listaTO;
+	}
+	
+	/**
+	 * Atualiza os objetos de lista de produto item, com a lista de produto.
+	 * @param listaProduto - Lista de produto.
+	 * @param listaItems - Items da lista de produto.
+	 */
+	public static void atualizaObjetoItemLista(final ListaProduto listaProduto,
+											Collection<ListaProdutoItem> listaItems) {
+		for(ListaProdutoItem item : listaItems) {
+			item.setListaProduto(listaProduto);
+		}
 	}
 }
