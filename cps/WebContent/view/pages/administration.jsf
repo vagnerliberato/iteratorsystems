@@ -772,7 +772,7 @@
 			</rich:tab>
 		</rich:tabPanel>
 
-			<rich:modalPanel id="modalParametrizacaoErro" height="110" width="500" resizeable="false">
+			<rich:modalPanel id="modalParametrizacaoErro" height="160" width="500" resizeable="false" moveable="true" >
 				<f:facet name="header">
 					<h:outputText value="#{msg.parametrizacao}"/>
 				</f:facet>
@@ -784,7 +784,7 @@
 		        </f:facet>
 				<center>
 					<h:form id="msgErroParametrizacao">
-			    		<h:messages id="textErrorParametrizacao" errorClass="letras"/>
+			    		<h:messages id="textErrorParametrizacao" errorClass="letras" layout="table"/>
 			    		<rich:spacer width="3"/>
 			    		<br />
 			    		<br />
