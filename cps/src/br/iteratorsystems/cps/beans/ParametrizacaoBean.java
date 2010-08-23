@@ -1,8 +1,5 @@
 package br.iteratorsystems.cps.beans;
 
-import org.richfaces.renderkit.ModalPanelRendererBase;
-import org.richfaces.renderkit.html.ModalPanelRenderer;
-
 import br.iteratorsystems.cps.common.FacesUtil;
 import br.iteratorsystems.cps.common.Resources;
 import br.iteratorsystems.cps.entities.Parametrizacao;
@@ -16,7 +13,6 @@ public class ParametrizacaoBean {
 	private Integer quantidadeMaximaDeLojas;
 	private String diretorioPadraoXML;
 	private String diretorioPadraoDeImagens;
-	private String mensagemDeErro = "";
 	private String nomeModalMostrar = "";
 	private Parametrizacao tabelaParametrizacao;
 
@@ -101,7 +97,7 @@ public class ParametrizacaoBean {
 			tabelaParametrizacao.setNumMaxLojasComparacao(String.valueOf(quantidadeMaximaDeLojas));
 			
 			parametrizacaoService.salvar(tabelaParametrizacao);
-			mensagemDeErro = "Dados salvos com sucesso.";
+			FacesUtil.errorMessage("", Resources.getErrorProperties().getString("parametrizacao_dados_salvos_com_sucesso"),"usuario cadastrado"); 
 			this.nomeModalMostrar =  "Richfaces.showModalPanel('modalParametrizacaoErro')";
 		}else{
 			this.nomeModalMostrar =  "Richfaces.showModalPanel('modalParametrizacaoErro')";
@@ -109,49 +105,36 @@ public class ParametrizacaoBean {
 	}
 	private boolean isParametrizacaoValida() {
 		boolean isParametrizacaoValida = true;
-		mensagemDeErro = "";
 		
-		//this.diretorioPadraoDeImagens = this.diretorioPadraoDeImagens.replace("\\", "\\\\");
 		boolean regexDiretorioPadraoDeImagensEhInvalido = !this.diretorioPadraoDeImagens.matches("[a-zA-Z]{1}[:]{1}[\\\\][0-9a-zA-Z.\\_]*");
 		if(regexDiretorioPadraoDeImagensEhInvalido || this.diretorioPadraoDeImagens == null){
 			isParametrizacaoValida = false;
-			mensagemDeErro += "Endereço de imagens invalido(Ex: c:\\teste).";
 			
-			FacesUtil.errorMessage("", Resources.getErrorProperties().getString("user_registered"),"usuario cadastrado");
+			FacesUtil.errorMessage("", Resources.getErrorProperties().getString("parametrizacao_error_endereco_imagem"),"usuario cadastrado");
 		}
 		
-		//this.diretorioPadraoXML = this.diretorioPadraoXML.replace("\\", "\\\\");
 		boolean regexDiretorioPadraoXMLEhInvalido = !this.diretorioPadraoXML.matches("[a-zA-Z]{1}[:]{1}[\\\\][0-9a-zA-Z.\\_]*");
 		if(regexDiretorioPadraoXMLEhInvalido || this.diretorioPadraoXML == null){
 			isParametrizacaoValida = false;
-			mensagemDeErro += "\nEndereço de XML invalido(Ex: c:\\teste).";
+			
+			FacesUtil.errorMessage("", Resources.getErrorProperties().getString("parametrizacao_error_endereco_xml"),"usuario cadastrado");
 		}
 		
 		boolean regexQuantidadeMaximaDeItensEhInvalida = !String.valueOf(this.quantidadeMaximaDeItens).matches("[0-9]{3}");
 		if(regexQuantidadeMaximaDeItensEhInvalida || this.quantidadeMaximaDeItens > 250){
 			isParametrizacaoValida = false;
-			mensagemDeErro += "\nQuantidade de itens invalido (maximo 250)";
+			
+			FacesUtil.errorMessage("", Resources.getErrorProperties().getString("parametrizacao_error_qtd_itens"),"usuario cadastrado");
 		}
 		
 		boolean regexQuantidadeMaximaDeLojasEhInvalida = !String.valueOf(this.quantidadeMaximaDeLojas).matches("[0-5]{1}");
 		if(regexQuantidadeMaximaDeLojasEhInvalida || this.quantidadeMaximaDeLojas > 5){
 			isParametrizacaoValida = false;
-			mensagemDeErro += "\nQuantidade de lojas invalido (maximo 5)";
-		}
-		
-		if(!isParametrizacaoValida){
 			
+			FacesUtil.errorMessage("", Resources.getErrorProperties().getString("parametrizacao_error_qtd_loja"),"usuario cadastrado");
 		}
 		
 		return isParametrizacaoValida;
-	}
-	
-	public String getMensagemDeErro() {
-		return mensagemDeErro;
-	}
-	
-	public void setMensagemDeErro(String mensagemDeErro) {
-		this.mensagemDeErro = mensagemDeErro;
 	}
 	
 	public String getNomeModalMostrar() {
