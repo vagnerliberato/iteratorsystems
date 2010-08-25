@@ -70,19 +70,28 @@ public class ListaProdutoService {
 	
 	/**
 	 * Atualiza os itens de uma lista de produtos.
-	 * @param session - Sessão
 	 * @param listaItens - Lista de itens.
 	 * @throws CpsDaoException Se alguma exceção ocorrer nas camadas abaixo.
 	 */
-	private void atualizarItensListaProduto(final List<ListaProdutoItem> listaItens) throws CpsDaoException {
-		try{
-			itemListaDao.updateList(listaItens);
-			session.flush();
-		}catch (CpsDaoException e) {
-			throw new CpsDaoException(e);
+	public void atualizarItensListaProduto(List<ListaProdutoItem> listaItens) throws CpsHandlerException {
+		for(ListaProdutoItem item : listaItens) {
+			atualizarItensListaProduto(item);
 		}
 	}
 	
+	/**
+	 * Atualiza os itens de uma lista de produtos.
+	 * @param item - Item
+	 * @throws CpsHandlerException Se alguma exceção ocorrer nas camadas abaixo.s
+	 */
+	public void atualizarItensListaProduto(ListaProdutoItem item) throws CpsHandlerException{
+		try{
+			itemListaDao.update(item);
+			session.flush();
+		}catch (CpsDaoException e) {
+			throw new CpsHandlerException(e);
+		}
+	}
 	/**
 	 * Exclui uma lista de produtos
 	 * @param listaProduto - Lista de produtos
@@ -97,6 +106,20 @@ public class ListaProdutoService {
 			transaction.commit();
 		}catch (CpsDaoException e) {
 			transaction.rollback();
+			throw new CpsHandlerException(e);
+		}
+	}
+	
+	/**
+	 * Exclui um item de produto.
+	 * @param listaProdutoItem - Lista Item de produto.
+	 * @throws CpsHandlerException Se ocorrer algum erro nas camadas abaixo.
+	 */
+	public void excluirItensListaProduto(final ListaProdutoItem listaProdutoItem) throws CpsHandlerException {
+		try{
+			itemListaDao.excluir(listaProdutoItem);
+			session.flush();
+		}catch (CpsDaoException e) {
 			throw new CpsHandlerException(e);
 		}
 	}

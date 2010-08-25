@@ -52,7 +52,6 @@ public final class ListaProdutoTOHelper {
 		return listaProdutoItem;
 	}
 
-	
 	/**
 	 * Método responsavel por popular uma lista de produto
 	 * @param listaDeProdutoItens
@@ -88,15 +87,36 @@ public final class ListaProdutoTOHelper {
 		List<ListaProdutoItem> listaItem = new ArrayList<ListaProdutoItem>();
 		
 		for(ProdutoTO produto : listaProdutoTO) {
-			ListaProdutoItem item = new ListaProdutoItem();
-			item.setIdItensLista(produto.getId());
-			item.setQuantidade(produto.getQuantidadeSelecionada());
-			item.setProdutogeral(produto.getProdutoGeral());
-			listaItem.add(item);
+			listaItem.add(obtemListaProdutoItem(produto));
 		}
 		return listaItem;
 	}
 	
+	/**
+	 * Obtem uma lista de lista produto item com base em uma lista de produto TO.
+	 * @param produtoTO - Produto TO.
+	 * @return Lista de produto item.
+	 */
+	public static ListaProdutoItem obtemListaProdutoItem(ProdutoTO produtoTO) {
+		ListaProdutoItem item = new ListaProdutoItem();
+		item.setIdItensLista(produtoTO.getId());
+		item.setQuantidade(produtoTO.getQuantidadeSelecionada());
+		item.setProdutogeral(produtoTO.getProdutoGeral());
+		return item;
+	}
+	
+//	/**
+//	 * Obtém uma lista de produto item com uma lista de produto e produto TO.
+//	 * @param listaProduto - Lista de produto.
+//	 * @param produtoTO - Produto TO. 
+//	 * @return Lista de produto item.
+//	 */
+//	public static ListaProdutoItem obtemListaProdutoItem(final ListaProduto listaProduto,ProdutoTO produtoTO) {
+//		ListaProdutoItem item = obtemListaProdutoItem(produtoTO);
+//		item.setListaProduto(listaProduto);
+//		return item;
+//	}
+//	
 	/**
 	 * Converte uma lista de items em uma lista de produto TO.
 	 * @param listaItem - Lista de items.
