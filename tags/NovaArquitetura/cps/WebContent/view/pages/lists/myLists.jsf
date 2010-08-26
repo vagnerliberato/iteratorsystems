@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j">
+
+<h:form id="formMyLists">
+	<a4j:include viewId="#{listaDeProdutoBean.paginaAtual}"/>
+</h:form>
+		
+<!-- Modais -->
+<rich:modalPanel id="modalInfoQuantidade" height="100" width="200" resizeable="false">
+	<f:facet name="header">
+		<h:outputText value="#{msg.default_modal_information}"/>
+	</f:facet>
+	<f:facet name="controls">
+           <h:panelGroup>
+               <h:graphicImage value="/view/images/close.png" id="hidelink1" />
+               <rich:componentControl for="modalInfoQuantidade" attachTo="hidelink1"
+                   operation="hide" event="onclick" />
+           </h:panelGroup>
+      </f:facet>
+	<center>
+		<h:form>
+    		<h:outputText value="#{msg.default_modal_message}" styleClass="letras"/>  
+    		<br />
+    		<br />
+    		<a4j:commandButton  value="#{msg.default_modal_button}" onclick="#{rich:component('modalInfoQuantidade')}.hide();"
+    							styleClass="botaoDefault"/>
+   		</h:form>
+	</center>
+</rich:modalPanel>
+	
+<rich:modalPanel id="modalQuantidadeCarrinho" height="110" width="500" resizeable="false">
+		<f:facet name="header">
+			<h:outputText value="#{msg.default_modal_information}"/>
+		</f:facet>
+		<f:facet name="controls">
+           <h:panelGroup>
+               <h:graphicImage value="/view/images/close.png" id="hidelink3" />
+               <rich:componentControl for="modalQuantidadeCarrinho" attachTo="hidelink3"
+                   operation="hide" event="onclick" />
+           </h:panelGroup>
+       </f:facet>
+	<center>
+		<h:form>
+    		<h:outputText value="#{msg.default_modal_max_size_message}" styleClass="letras"/>
+    		<rich:spacer width="3"/>
+    		<h:outputText value="#{defaultBean.numeroMaximoItensCarrinho}" styleClass="letras"/>  
+    		<br />
+    		<br />
+    		<a4j:commandButton value="#{msg.default_modal_button}" onclick="#{rich:component('modalQuantidadeCarrinho')}.hide();"
+    						   styleClass="botaoDefault"/>
+   		</h:form>
+	</center>
+</rich:modalPanel>
+
+<rich:modalPanel id="modalExcluirItemLista" height="100" width="300" resizeable="false">
+	<f:facet name="header">
+		<h:outputText value="#{msg.default_modal_information}"/>
+	</f:facet>
+	<f:facet name="controls">
+           <h:panelGroup>
+               <h:graphicImage value="/view/images/close.png" id="hidelinkExcItemLista" />
+               <rich:componentControl for="modalExcluirItemLista" attachTo="hidelinkExcItemLista"
+                   operation="hide" event="onclick" />
+           </h:panelGroup>
+       </f:facet>
+	<center>
+		<h:form>
+    		<h:outputText value="#{msg.mylists_modal_delete_message}" styleClass="letras"/>  
+    		<br />
+    		<br />
+    		<h:commandButton styleClass="botaoDefault" action="#{listaDeProdutoBean.excluirProdutoDaListaDeProduto}"
+    						 value="#{msg.default_modal_delete_yes}"/>
+    		<rich:spacer width="5"/>
+    		<a4j:commandButton styleClass="botaoDefault"
+    						   value="#{msg.default_modal_delete_no}" onclick="#{rich:component('modalExcluirItemLista')}.hide();" />
+    	</h:form>
+	</center>
+</rich:modalPanel>
+
+<rich:modalPanel id="modalExcluirItemListaBanco" height="100" width="300" resizeable="false">
+	<f:facet name="header">
+		<h:outputText value="#{msg.default_modal_information}"/>
+	</f:facet>
+	<f:facet name="controls">
+           <h:panelGroup>
+               <h:graphicImage value="/view/images/close.png" id="hidelinkExcItemListaBanco" />
+               <rich:componentControl for="modalExcluirItemListaBanco" attachTo="hidelinkExcItemListaBanco"
+                   operation="hide" event="onclick" />
+           </h:panelGroup>
+       </f:facet>
+	<center>
+		<h:form>
+    		<h:outputText value="#{msg.mylists_modal_delete_message}" styleClass="letras"/>  
+    		<br />
+    		<br />
+    		<h:commandButton styleClass="botaoDefault" action="#{listaDeProdutoBean.excluirProdutoDoBanco}"
+    						 value="#{msg.default_modal_delete_yes}"/>
+    		<rich:spacer width="5"/>
+    		<a4j:commandButton styleClass="botaoDefault"
+    						   value="#{msg.default_modal_delete_no}" onclick="#{rich:component('modalExcluirItemListaBanco')}.hide();" />
+    	</h:form>
+	</center>
+</rich:modalPanel>
+
+<rich:modalPanel id="modalExcluirLista" height="100" width="300" resizeable="false">
+	<f:facet name="header">
+		<h:outputText value="#{msg.default_modal_information}"/>
+	</f:facet>
+	<f:facet name="controls">
+           <h:panelGroup>
+               <h:graphicImage value="/view/images/close.png" id="hidelinkExcLista" />
+               <rich:componentControl for="modalExcluirLista" attachTo="hidelinkExcLista"
+                   operation="hide" event="onclick" />
+           </h:panelGroup>
+       </f:facet>
+	<center>
+		<h:form>
+    		<h:outputText value="#{msg.mylists_modal_delete}" styleClass="letras"/>  
+    		<br />
+    		<br />
+    		<h:commandButton styleClass="botaoDefault" action="#{listaDeProdutoBean.excluirLista}"
+    						 value="#{msg.default_modal_delete_yes}"/>
+    		<rich:spacer width="5"/>
+    		<a4j:commandButton styleClass="botaoDefault"
+    						   value="#{msg.default_modal_delete_no}" onclick="#{rich:component('modalExcluirLista')}.hide();" />
+    	</h:form>
+	</center>
+</rich:modalPanel>
+
+<rich:modalPanel id="modalConfirmarSalvar" height="100" width="300" resizeable="false">
+	<f:facet name="header">
+		<h:outputText value="#{msg.default_modal_information}"/>
+	</f:facet>
+	<f:facet name="controls">
+           <h:panelGroup>
+               <h:graphicImage value="/view/images/close.png" id="hidelinkSalvarLista" />
+               <rich:componentControl for="modalConfirmarSalvar" attachTo="hidelinkSalvarLista"
+                   operation="hide" event="onclick" />
+           </h:panelGroup>
+       </f:facet>
+	<center>
+		<h:form>
+    		<h:outputText value="#{msg.mylists_modal_save}" styleClass="letras"/>  
+    		<br />
+    		<br />
+    		<h:commandButton styleClass="botaoDefault" action="#{listaDeProdutoBean.incluirListaDeProdutos}" 
+    						 value="#{msg.default_modal_delete_yes}"/>
+    		<rich:spacer width="5"/>
+    		<a4j:commandButton styleClass="botaoDefault"
+    						   value="#{msg.default_modal_delete_no}" onclick="#{rich:component('modalConfirmarSalvar')}.hide();" />
+    	</h:form>
+	</center>
+</rich:modalPanel>
+
+<rich:modalPanel id="modalExcluirListaBanco" height="100" width="300" resizeable="false">
+	<f:facet name="header">
+		<h:outputText value="#{msg.default_modal_information}"/>
+	</f:facet>
+	<f:facet name="controls">
+           <h:panelGroup>
+               <h:graphicImage value="/view/images/close.png" id="hidelinkExcListaBanco" />
+               <rich:componentControl for="modalExcluirListaBanco" attachTo="hidelinkExcListaBanco"
+                   operation="hide" event="onclick" />
+           </h:panelGroup>
+       </f:facet>
+	<center>
+		<h:form>
+    		<h:outputText value="#{msg.mylists_modal_delete}" styleClass="letras"/>  
+    		<br />
+    		<br />
+    		<h:commandButton styleClass="botaoDefault" action="#{listaDeProdutoBean.excluirListaDeProdutos}"
+    						 value="#{msg.default_modal_delete_yes}"/>
+    		<rich:spacer width="5"/>
+    		<a4j:commandButton styleClass="botaoDefault"
+    						   value="#{msg.default_modal_delete_no}" onclick="#{rich:component('modalExcluirListaBanco')}.hide();" />
+    	</h:form>
+	</center>
+</rich:modalPanel>
+
+<rich:modalPanel id="modalAtualizarLista" height="100" width="300" resizeable="false">
+	<f:facet name="header">
+		<h:outputText value="#{msg.default_modal_information}"/>
+	</f:facet>
+	<f:facet name="controls">
+           <h:panelGroup>
+               <h:graphicImage value="/view/images/close.png" id="hidelinkAtualizarLista" />
+               <rich:componentControl for="modalAtualizarLista" attachTo="hidelinkAtualizarLista"
+                   operation="hide" event="onclick" />
+           </h:panelGroup>
+       </f:facet>
+	<center>
+		<h:form>
+    		<h:outputText value="#{msg.mylists_modal_update}" styleClass="letras"/>  
+    		<br />
+    		<br />
+    		<h:commandButton styleClass="botaoDefault" action="#{listaDeProdutoBean.atualizarLista}"
+    						 value="#{msg.default_modal_delete_yes}"/>
+    		<rich:spacer width="5"/>
+    		<a4j:commandButton styleClass="botaoDefault"
+    						   value="#{msg.default_modal_delete_no}" onclick="#{rich:component('modalAtualizarLista')}.hide();" />
+    	</h:form>
+	</center>
+</rich:modalPanel>
+</jsp:root>

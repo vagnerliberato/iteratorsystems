@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j">
+
+<rich:modalPanel id="modalCepIncorreto" height="120" width="310" resizeable="false">
+	<f:facet name="header">
+		<h:outputText value="#{msg.modalcep_information}"/>
+	</f:facet>
+       <f:facet name="controls">
+           <h:panelGroup>
+               <h:graphicImage value="/view/images/close.png" id="hidelinkCep" />
+               <rich:componentControl for="modalCepIncorreto" attachTo="hidelinkCep"
+                   operation="hide" event="onclick" />
+           </h:panelGroup>
+       </f:facet>
+	<center>
+   		<h:outputText value="#{msg.modalcep_message}" styleClass="letras"/>  
+   		<br />
+		<h:outputLink target="_blank" value="http://www.buscacep.correios.com.br/" >
+			<h:outputText value="#{msg.modalcep_link}"/>
+		</h:outputLink>
+		<br />
+		<br />
+		<a4j:commandButton value="#{msg.modalcep_close}" onclick="#{rich:component('modalCepIncorreto')}.hide();"/>
+	</center>
+</rich:modalPanel>
+</jsp:root>

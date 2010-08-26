@@ -1,0 +1,27 @@
+# DEFAULT CACHE REGION
+jcs.default=
+jcs.default.cacheattributes=org.apache.jcs.engine.CompositeCacheAttributes
+jcs.default.cacheattributes.MaxObjects=500
+jcs.default.cacheattributes.MemoryCacheName=org.apache.jcs.engine.memory.lru.LRUMemoryCache
+jcs.default.cacheattributes.UseMemoryShrinker=false
+jcs.default.cacheattributes.MaxMemoryIdleTimeSeconds=3600
+jcs.default.cacheattributes.ShrinkerIntervalSeconds=60
+jcs.default.elementattributes=org.apache.jcs.engine.ElementAttributes
+jcs.default.elementattributes.IsEternal=false
+jcs.default.elementattributes.MaxLifeSeconds=60000
+jcs.default.elementattributes.IdleTime=1800
+jcs.default.elementattributes.IsSpool=true
+jcs.default.elementattributes.IsRemote=true
+jcs.default.elementattributes.IsLateral=true
+
+# PRE-DEFINED CACHE REGIONS
+jcs.region.cpsBuscaCache=
+jcs.region.cpsBuscaCache.cacheattributes=org.apache.jcs.engine.CompositeCacheAttributes
+jcs.region.testCache1.cacheattributes.MaxObjects=1000
+jcs.region.cpsBuscaCache.cacheattributes.MemoryCacheName=org.apache.jcs.engine.memory.lru.LRUMemoryCache
+jcs.region.cpsBuscaCache.cacheattributes.UseMemoryShrinker=false
+jcs.region.cpsBuscaCache.cacheattributes.MaxMemoryIdleTimeSeconds=3600
+jcs.region.cpsBuscaCache.cacheattributes.ShrinkerIntervalSeconds=60
+jcs.region.cpsBuscaCache.cacheattributes.MaxSpoolPerRun=500
+jcs.region.cpsBuscaCache.elementattributes=org.apache.jcs.engine.ElementAttributes
+jcs.region.cpsBuscaCache.elementattributes.IsEternal=false

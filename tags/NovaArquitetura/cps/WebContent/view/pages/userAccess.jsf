@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j">
+
+	<ui:composition template="../template/template.jsf">
+		<ui:define name="content">
+			<rich:spacer height="30"/>			
+			<center>
+				<h:panelGrid border="0" style="height: 100px; width: 100px;" columns="1" styleClass="">
+					<h:form id="userAccessForm">
+						<h:column>
+							<rich:panel id="richPanelLog" style="width: 320px;" rendered="#{not loginUserBean.displayTelaCadastro}">
+								<!-- Cabeçalho do Login. Alterações no CSS Geral.css. Chame pelo ID -->
+								<f:facet name="header">
+									<h:panelGroup>
+									<h:graphicImage url="/view/images/login.png" id="logincadastrado"/>
+									</h:panelGroup>
+								</f:facet>						
+								<h:messages id="errorMsgLog" rendered="true" style="color:red;font-size:9pt;font-style: bold;"/>
+								<h:panelGrid>
+									<h:column>
+										<h:outputText value="#{msg.useraccess_mailorusername}" styleClass="letras"/>
+									</h:column>
+									<h:column>
+										<h:inputText id="inputUsername" value="#{loginUserBean.nomeLogin}" maxlength="50" size="35" styleClass="barraDefault" style="font-size:10px; font-family:Verdana; color:black; font-weight:bold"/>
+									</h:column>
+									<h:column>
+										<h:outputText value="#{msg.useraccess_password}" styleClass="letras"/>
+									</h:column>
+									<h:column>
+										<h:inputSecret id="inputPassword" value="#{loginUserBean.senha}" maxlength="8" size="12" styleClass="barraDefault" style="font-size:10px; font-family:Verdana; color:black; font-weight:bold"/>		
+									</h:column>
+									<h:column>
+										<h:commandButton action="#{loginUserBean.validaLogin}" value="#{msg.useraccess_btn_login}" styleClass="letras" style="width: 60px;"/>								
+										<rich:spacer width="3"/>
+										<h:panelGroup>
+											<a4j:commandLink value="#{msg.useraccess_new_cad}" styleClass="letrasDefault" reRender="userAccessForm,richPanelLog,richPanelCad">
+												<f:setPropertyActionListener value="true" target="#{loginUserBean.displayTelaCadastro}"/>
+											</a4j:commandLink>
+										</h:panelGroup>
+									</h:column>
+								</h:panelGrid>
+							</rich:panel>
+							
+							<rich:panel id="richPanelCad" style="width: 320px;" rendered="#{loginUserBean.displayTelaCadastro}">
+								<f:facet name="header">
+								<h:panelGroup>
+									<h:graphicImage url="/view/images/createLogin.png"/>
+								</h:panelGroup>
+								</f:facet>
+								<h:messages id="errorMsgCad" rendered="true" style="color:red;font-size:9pt;font-style: bold;"/>
+								<h:panelGrid>
+									<h:column>
+										<h:outputText value="#{msg.useraccess_email}" styleClass="letras"/>
+									</h:column>
+									<h:column>
+										<h:inputText id="newEmail" value="#{loginUserBean.email}" maxlength="50" size="35" styleClass="barraDefault" style="font-size:10px; font-family:Verdana; color:black; font-weight:bold"/>
+									</h:column>
+									<h:column>
+										<h:outputText value="#{msg.useraccess_cep}" styleClass="letras"/>
+									</h:column>
+									<h:column>
+										<h:inputText id="newCep" value="#{loginUserBean.cep}" maxlength="9" size="10" styleClass="barraDefault" style="font-size:10px; font-family:Verdana; color:black; font-weight:bold">
+											<rich:jQuery name="cepQuery" selector="#newCep" query="mask('99999-999')" timing="immediate" />
+										</h:inputText>
+										<h:outputText value="#{msg.personalcontatc_CEP_info}" styleClass="letrasInfo"/>
+									</h:column>
+									<h:column>
+										<h:commandButton action="#{loginUserBean.novo}" value="#{msg.useraccess_cad}" styleClass="letras" />
+										<rich:spacer width="3"/>
+										<h:panelGroup>
+											<a4j:commandLink value="#{msg.useraccess_to_login}" styleClass="letrasDefault" reRender="userAccessForm,richPanelLog,richPanelCad">
+												<f:setPropertyActionListener value="false" target="#{loginUserBean.displayTelaCadastro}"/>
+											</a4j:commandLink>
+										</h:panelGroup>								
+									</h:column>
+								</h:panelGrid>
+						   </rich:panel>
+						</h:column>
+					</h:form>			
+			</h:panelGrid>
+		</center>	
+		
+		<ui:include src="common/modalCepIncorreto.jsf"/>	
+		</ui:define>
+	</ui:composition>
+</jsp:root>
