@@ -218,15 +218,20 @@ public class UserManagementBean {
 
 		try{
 			userHandler.save(usuarioEntity,loginEntity,enderecoEntity);
-			
-			this.limpa();
-			FacesUtil.errorMessage("", Resources.getErrorProperties().getString("user_registered"),"usuario cadastrado");
-			return "toLoginPage";
+			return "";
 		}catch (CpsHandlerException e) {
 			throw new CpsGeneralExceptions(e);
 		}
 	}
 
+
+	public String retorna() {
+		this.limpa();
+		FacesUtil.errorMessage("", Resources.getErrorProperties().getString("user_registered"),"usuario cadastrado");
+		return "toLoginPage";
+	}
+
+	
 	/**
 	 * Valida se um endereço informado é valido
 	 * @return Se é valido ou não.
@@ -272,9 +277,10 @@ public class UserManagementBean {
 		if(this.cpfExists(usuarioEntity.getCpfUsuario(),loginEntity.getNomeLogin()))
 			return;
 		
+		enderecoEntity.setEstado(this.getEstadoSigla());
 		userHandler = new UserManagementHandler();
 		try{
-			userHandler.update(this.getUsuarioEntity(),this.getLoginEntity(),this.getEnderecoEntity());
+			userHandler.update(this.getUsuarioEntity());
 		}catch (CpsGeneralExceptions e) {
 			throw new CpsGeneralExceptions(e);
 		}

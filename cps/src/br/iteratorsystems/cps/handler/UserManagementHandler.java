@@ -120,8 +120,8 @@ public class UserManagementHandler {
 		}
 	}
 	
-	public void update(final Usuario usuario,final Login login,final Endereco endereco) throws CpsHandlerException {
-		final String message = "merging object with instance: "+usuario+" "+login+" "+endereco;
+	public void update(final Usuario usuario) throws CpsHandlerException {
+		final String message = "merging object with instance: "+usuario;
 		log.debug(message);
 		Transaction transaction = null;
 		try{
