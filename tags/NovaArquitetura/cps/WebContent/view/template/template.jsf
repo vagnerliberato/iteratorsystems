@@ -38,6 +38,7 @@
 			<td>
 				<ui:insert name="top-menu">
 					<ui:include src="barraMenu.jsf"/>
+				<center><h:outputText value="Versão da TAG!" style="color:red;"/></center>
 				</ui:insert>		
 			</td>
 		</tr>
