@@ -1,0 +1,192 @@
+@CHARSET "ISO-8859-1";
+
+html, body{
+	height: 100%;	
+}	
+
+body {
+	margin: 0px;
+	padding: 0px;	
+	font-size: 12px;
+	font-family: Georgia, "Times New Roman", Times, serif;
+	text-align: center;
+	color: blue;
+	background:#FFFFFF;
+	overflow-x: hidden; 
+}
+
+.letrasTopo {
+	font-weight: normal;
+	font-size: 8pt;
+	font-style: italic;
+	font-family: Verdana;
+	white-space: nowrap;
+	padding: 10px;
+}
+
+.letrasDefault {
+	font-weight:lighter;
+	font-size: 8pt;
+	font-family: Verdana;
+	white-space: nowrap;
+	padding: 30px;
+	color: #09F;
+}
+
+.frame {	
+	min-width: 800px;
+	min-height: 500px; 
+	width: 750px;
+	height: 650px;		
+}
+
+.frame_menu{
+	border: 1px solid #ECECEC;
+	}
+	
+.letras {
+	font-weight: normal;
+	font-size: 9pt;
+	font-style: bold;
+	font-family: Verdana;
+	white-space: nowrap;
+	color: blue;
+	padding: 2px;
+}
+
+#menu_top{
+	align: center;
+	width: 700px;
+	height: 10px;		
+	}
+
+#loginGroup{
+	align: center;
+	width: 700px;
+	height: 50px;
+	}	
+
+.letrasTitulo {
+	font-weight: normal;
+	font-size: 13pt;
+	font-style: bold;
+	font-family: Verdana;
+	white-space: nowrap;
+	color: green;
+}
+
+.letrasInformacao {
+	font-weight: bold;
+	font-size: 10pt;
+	font-style: italic;
+	font-family: Verdana;
+	white-space: nowrap;
+	color: green;	 
+}
+
+.letrasAba {
+	font-weight: normal;
+	font-size: 10pt;
+	font-style: oblique;
+	font-style: bold;
+	font-family: sans-serif;
+	white-space: normal;
+	color: black;
+	padding: 10px;
+}
+
+#logincadastrado{
+	width: 20px;
+}
+
+
+.letrasAbaB {
+	font-weight: bold;
+	font-size: 10pt;
+	font-family: sans-serif;
+	white-space: normal;
+	color: darkblue;
+}
+
+.letrasToolTip {
+	font-weight: lighter;
+	font-size: 12pt;
+	font-style: italic;
+	font-family: cursive;
+	color: black;
+}
+
+.letrasInfo {
+	font-weight: normal;
+	font-size: 10pt;
+	font-style: bold;
+	font-family: sans-serif;
+	white-space: nowrap;
+	color: red;
+	padding: 10px;
+}
+
+.barraPesquisa {
+	height: 25px;
+	width: 550px;
+}
+
+.barraDefault {
+	height: 20px;
+}
+
+.carInformation {
+	font-weight: normal;
+	font-size: 17pt;
+	font-style: italic;
+	font-family: Verdana;
+	letter-spacing: normal;
+	color: darkblue;
+}
+
+.botaoDefault {
+	height: 25px;
+	width: 130px;
+}
+
+.Logo {
+	background-position: center;
+	margin-top: 1px;
+	width: 250%;
+	background-repeat: no-repeat;
+	height: 7px;
+}
+
+#logomarca{
+	height: 0px;
+	width: 150px;	
+	}
+
+.camposObr {
+	font-weight: bold;
+	font-size: 9pt;
+	font-stretch: semi-condensed;
+	font-family: Verdana;
+	white-space: nowrap;
+	color: red;
+}
+.nenhumResultado {
+	font-size: 11pt;
+	font-family: Verdana;
+	white-space: nowrap;
+	color: red;
+	font-weight: normal;
+	letter-spacing: normal;
+}
+.textoDireita {
+    text-align : right;
+}
+.textoEsquerda {
+    text-align : left;
+}
+.textoCentralizado {
+    text-align : center;
+}
+.textoJustificado {
+    text-align : justify;
+}

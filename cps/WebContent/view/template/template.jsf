@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.prime.com.tr/ui">
+
+	<html>
+	<head>
+	<title>CPS - Beta</title>
+		
+	<link rel="shortcut icon"
+		href="#{facesContext.externalContext.requestContextPath}/view/images/favicon.ico"
+		type="image/x-icon" />
+	
+	<link 
+		href="#{facesContext.externalContext.requestContextPath}/view/style/skin.css"
+		type="text/css" rel="stylesheet"/>
+	
+	<link
+		href="#{facesContext.externalContext.requestContextPath}/view/style/geral.css"
+		rel="stylesheet" type="text/css" />
+		
+	<script language="JavaScript"
+		src="#{facesContext.externalContext.request.contextPath}/view/js/jquerymaskedinput-121.js"
+		type="text/javascript"/>
+	
+	<p:resources />
+	
+	</head>
+	<body>
+	
+	<table align="center" bgcolor="#FFFFFF" border="0" class="frame">
+	<tr valign="top">
+	<td>	
+		<table bgcolor="#FFFFFF" align="center">
+		<tr>
+			<td>
+				<ui:insert name="top-menu">
+					<ui:include src="barraMenu.jsf"/>
+				</ui:insert>		
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<f:view>
+					<ui:insert name="content" />						
+				</f:view>						
+			</td>
+		</tr>
+		</table>
+		</td>
+	</tr>	
+	</table>
+	<a>© Iterator Systems 2010</a>	
+	</body>
+	</html>
+</jsp:root>

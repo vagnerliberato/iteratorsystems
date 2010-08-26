@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:p="http://primefaces.prime.com.tr/ui">
+
+<h:panelGroup>
+	<rich:separator lineType="solid"/>
+	<rich:spacer height="10"/>
+		<center>
+			<rich:panel style="width: 80%;">
+				<f:facet name="header">
+					<h:outputText value="#{msg.mylists_edit_information}" styleClass="letrasAba"/>
+				</f:facet>
+				<center>
+					<rich:dataTable columns="3" width="60%" id="tableListas" rows="4" columnsWidth="80%,20%" 
+									binding="#{listaDeProdutoBean.tabelasListaDataTable}"
+									value="#{listaDeProdutoBean.listaProdutoUsuario}" var="listas">
+						<rich:column> 
+							<f:facet name="header">
+								<h:outputText value="#{msg.mylists_table_header}"/>
+							</f:facet>
+							<h:inputText id="nomeLista" value="#{listas.nomeLista}" onmouseover="">
+								<rich:toolTip id="tipNomeLista" direction="top-right" followMouse="true" event="onmouseover" for="nomeLista">
+									<h:outputText value="#{msg.mylists_table_tip}"/>
+								</rich:toolTip>
+							</h:inputText>
+						</rich:column>
+						<rich:column>
+							<f:facet name="header">
+								<h:outputText value="#{msg.mylists_table_header_edit}"/>
+							</f:facet>
+							<center>
+								<a4j:commandButton action="#{listaDeProdutoBean.obterListaDeProduto}" image="/view/images/edit_list.png"
+												   title="#{msg.mylists_table_header_edit}" 
+												   reRender="gridTabelaResumo,tableResumo,botaoAtualizarLista"/>
+							</center>
+						</rich:column>
+						<rich:column>
+							<f:facet name="header">
+								<h:outputText value="#{msg.mylists_table_header_delete}"/>
+							</f:facet>
+							<center>
+								<a4j:commandButton image="/view/images/deleteRow.png" title="#{msg.mylists_table_header_delete}" 
+												   onclick="#{rich:component('modalExcluirListaBanco')}.show();"/>
+							</center>
+						</rich:column>
+						<f:facet name="footer">
+							<rich:datascroller for="tableListas" renderIfSinglePage="false"/>
+						</f:facet>
+					</rich:dataTable>
+				</center>
+			</rich:panel>
+		</center>
+	<br /><br />
+	
+<rich:spacer height="10"/>
+	
+<center>
+	<a4j:outputPanel ajaxRendered="true">
+		<h:panelGrid columns="3" width="500">
+			<h:column>
+				<h:outputText value="#{msg.mylists_information}" styleClass="letras" rendered="#{not empty listaDeProdutoBean.listaPagina}"/>
+			</h:column>
+			<h:column>
+				<h:inputText id="barraPesquisaAll" rendered="#{not empty listaDeProdutoBean.listaPagina}" value="#{listaDeProdutoBean.produtoDigitado}"
+						     maxlength="50" size="50" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
+					 <p:watermark for="barraPesquisaAll" value="#{msg.mylists_information_search}"/>
+				</h:inputText>
+			</h:column>
+			<h:column>
+				<h:commandButton image="/view/images/Lupa.png" title="#{msg.default_button_search}" rendered="#{not empty listaDeProdutoBean.listaPagina}"
+							 style="height: 80%;" action="#{listaDeProdutoBean.buscarProduto}"/>
+			</h:column>
+		</h:panelGrid>
+		<center>
+			<h:panelGrid columns="1">
+				<h:column>
+					<rich:dataTable id="tableProductAll" width="550" value="#{listaDeProdutoBean.listaBusca}" 
+									rows="4" var="produto" rendered="#{not empty listaDeProdutoBean.listaBusca}"
+									binding="#{listaDeProdutoBean.listaProdutosDataTable}" styleClass="letras">
+							
+							<rich:column width="650">
+									<f:facet name="header">
+										<h:outputText value="#{msg.default_producttable_description}"/>
+									</f:facet>
+								<center>
+									<h:outputText value="#{produto.produtoGeral.descricao}" styleClass="letrasDefault"/>
+								</center>
+							</rich:column>
+			
+							 <rich:column width="80" sortBy="#{produto.quantidadeSelecionada}">
+							 	<f:facet name="header">
+							 		<h:outputText value="Quantidade"/>
+							 	</f:facet>
+							 	<center>
+									<h:inputText size="6" value="#{produto.quantidadeSelecionada}" maxlength="4"/>
+										<rich:toolTip followMouse="true" direction="top-right">
+											<h:outputText value="#{msg.default_producttable_qtd_tip}"/>
+										</rich:toolTip>
+								</center>
+							 </rich:column>
+							 
+							 <rich:column width="150">
+								<f:facet name="header">
+									<h:outputText value="#{msg.default_producttable_add}"/>
+								</f:facet>
+								<h:panelGroup>
+									<center>
+										<a4j:commandButton image="/view/images/addCar.png" oncomplete="#{listaDeProdutoBean.nomeModalQuantidade}" title="#{msg.default_producttable_add}"
+														   action="#{listaDeProdutoBean.adicionarProdutoNaListaDeProdutos}"
+														   reRender="panelListProdutos,tableResumo,tableProductAll,labelListaUser,painelToogle"/>
+									</center>
+								</h:panelGroup>
+							</rich:column> 
+									
+							<f:facet name="footer">
+									<rich:datascroller for="tableProductAll" renderIfSinglePage="false"/>
+							</f:facet>
+						</rich:dataTable>
+					</h:column>
+				</h:panelGrid>
+			</center>
+			<h:panelGroup rendered="#{listaDeProdutoBean.nenhumRegistroEncontrado}">
+				<h:panelGrid columns="2">
+					<h:column>
+						<h:graphicImage url="/view/images/notFound.png"/>
+					</h:column>
+					<h:column>
+						<h:outputText value="#{msg.default_notFound_search}" styleClass="nenhumResultado"/>
+					</h:column>
+				</h:panelGrid>
+			</h:panelGroup>
+		</a4j:outputPanel>
+			
+		<h:panelGrid id="gridTabelaResumo">
+			<rich:dataTable id="tableResumo" value="#{listaDeProdutoBean.listaPagina}" columns="3"
+							rendered="#{not empty listaDeProdutoBean.listaPagina}" rows="2" var="lista">
+				<rich:column>
+					<f:facet name="header">
+						<h:outputText value="#{msg.default_summarytable_delete}"/>
+					</f:facet>
+					<center>
+						<a4j:commandButton image="/view/images/deleteRow.png" onclick="#{rich:component('modalExcluirItemListaBanco')}.show();">
+							<f:setPropertyActionListener value="#{lista}" target="#{listaDeProdutoBean.produtoListaSelecionado}"/>
+						</a4j:commandButton>
+					</center>
+				</rich:column>
+				
+				<rich:column> 
+					<f:facet name="header">
+						<h:outputText value="#{msg.default_summarytable_product}"/>
+					</f:facet>
+					<h:outputText value="#{lista.produtoGeral.descricao}"/>
+				</rich:column>
+				
+				<rich:column >
+					<f:facet name="header">
+						<h:outputText value="#{msg.default_summarytable_amount}"/>
+					</f:facet>
+					<h:inputText value="#{lista.quantidadeSelecionada}" maxlength="4" size="6"/>
+				</rich:column>
+				
+				<f:facet name="footer">
+					<rich:datascroller for="tableResumo" renderIfSinglePage="false"/>
+				</f:facet>
+			</rich:dataTable>
+		</h:panelGrid>
+	
+		<rich:spacer height="5"/>
+		<a4j:outputPanel ajaxRendered="true">
+			<a4j:commandButton id="botaoAtualizarLista" onclick="#{rich:component('modalAtualizarLista')}.show();" value="Atualizar Lista" rendered="#{not empty listaDeProdutoBean.listaPagina}"/>
+		</a4j:outputPanel>
+	</center>
+</h:panelGroup>
+</jsp:root>

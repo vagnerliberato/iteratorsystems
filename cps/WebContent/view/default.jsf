@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:p="http://primefaces.prime.com.tr/ui">
+
+	<ui:composition template="template/template.jsf">
+		<ui:define name="content">
+			<h:form id="defaultForm" prependId="false">
+			<rich:spacer height="5px"/>
+				<table align="center" border="0" width="900px">
+				<td width="150px" align="center">
+					</td>
+					<td  width="500px" align="center">
+						<h:inputText id="barraPesquisa" value="#{defaultBean.produtoDigitado}" maxlength="50"  
+									 styleClass="barraPesquisa" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
+							<p:watermark for="barraPesquisa" value="#{msg.default_information_search}"/>
+						</h:inputText>
+						
+						<rich:suggestionbox var="complete" for="barraPesquisa" suggestionAction="#{defaultBean.recuperarAutoComplete}"
+											usingSuggestObjects="true" width="550" height="200" >
+							<h:column>
+								<h:outputText value="#{complete}"/>
+							</h:column>	
+						</rich:suggestionbox>
+					</td>
+					<td> 
+					<h:commandButton action="#{defaultBean.buscarProduto}" image="/view/images/Lupa.png" title="#{msg.default_button_search}" />
+					</td>
+				</table>
+			<rich:spacer height="5px"/>
+		
+				<center>
+				<h:panelGrid id="resultDataTable" rendered="true" columns="1">
+					<h:column>
+						<a4j:outputPanel ajaxRendered="true">
+							 <rich:dataTable id="tableProduct" width="750" value="#{defaultBean.listaProdutoTO}" 
+									rows="4" var="produto" rendered="#{not empty defaultBean.listaProdutoTO}"
+									binding="#{defaultBean.listaProdutosDataTable}" styleClass="letras">
+									
+										<rich:column sortable="false" width="100">
+											<f:facet name="header">
+												<h:outputText value="#{msg.default_producttable_image}"/>
+											</f:facet>
+											<center>
+												<p:lightBox id="imageLightBox" iframe="true"
+															width="300px" height="250px"
+															rendered="#{produto.possuiImagem}">
+												    <h:outputLink value="#{produto.imagem}">  
+		       											<h:graphicImage value="/view/images/camera.png"/>  
+		   											</h:outputLink> 
+		   											<p:tooltip value="#{msg.default_image_found}"/>
+												</p:lightBox>
+												
+												<p:outputPanel rendered="#{not produto.possuiImagem}">
+												<h:graphicImage value="/view/images/ImageNotFound.png"
+																rendered="#{not produto.possuiImagem}"/>
+													<p:tooltip value="#{msg.default_image_not_found}"/>
+												</p:outputPanel>
+											</center>
+										</rich:column>
+										
+										<rich:column width="650">
+												<f:facet name="header">
+													<h:outputText value="#{msg.default_producttable_description}"/>
+												</f:facet>
+											<center>
+												<h:outputText value="#{produto.produtoGeral.descricao}" styleClass="letrasDefault"/>
+											</center>
+										</rich:column>
+		
+									 <rich:column width="80">
+									 	<f:facet name="header">
+									 		<h:outputText value="Quantidade"/>
+									 	</f:facet>
+									 	<center>
+											<h:inputText size="6" value="#{produto.quantidadeSelecionada}" maxlength="4"/>
+												<rich:toolTip followMouse="true" direction="top-right">
+													<h:outputText value="#{msg.default_producttable_qtd_tip}"/>
+												</rich:toolTip>
+										</center>
+									 </rich:column>
+									 
+									 <rich:column width="150">
+										<f:facet name="header">
+											<h:outputText value="#{msg.default_producttable_add}"/>
+										</f:facet>
+										<h:panelGroup>
+											<center>
+												<a4j:commandButton image="/view/images/addCar.png" oncomplete="#{defaultBean.nomeModalQuantidade}" title="#{msg.default_producttable_add}"
+																   action="#{defaultBean.adicionarCarrinho}"
+																   reRender="tableProduct,painelAjax,tableResumo,myCarGroup,carrinhoVazioImg,carrinhoCheioImg,quantidadeItemsCarrinhoTip,fixedInformationCar"/>
+											</center>
+										</h:panelGroup>
+									</rich:column> 
+										
+									<f:facet name="footer">
+											<rich:datascroller for="tableProduct" renderIfSinglePage="false"/>
+									</f:facet>
+								</rich:dataTable>
+						
+								<h:panelGroup rendered="#{defaultBean.nenhumRegistroEncontrado}">
+									<h:panelGrid columns="2">
+										<h:column>
+											<h:graphicImage url="/view/images/notFound.png"/>
+										</h:column>
+										<h:column>
+											<h:outputText value="#{msg.default_notFound_search}" styleClass="nenhumResultado"/>
+										</h:column>
+									</h:panelGrid>
+								</h:panelGroup>
+						</a4j:outputPanel>					
+					</h:column>
+				</h:panelGrid>
+				
+					<a4j:outputPanel id="painelAjax" ajaxRendered="true">
+					
+						<h:panelGroup id="resumoCarrinhoPanel" rendered="#{not empty defaultBean.produtosCarrinho}">
+						
+							<h:panelGroup>
+								<rich:spacer height="20"/>
+								<rich:separator lineType="solid"/>
+								<rich:spacer height="15"/>
+								<h:outputText value="#{msg.default_car_information}" styleClass="letrasInfo"/>
+								<rich:spacer height="10"/>
+							</h:panelGroup>
+							
+							<rich:dataTable id="tableResumo" columns="3" rows="2" width="60%" var="carrinho"
+											value="#{defaultBean.produtosCarrinho}" rendered="#{not empty defaultBean.produtosCarrinho}">
+								
+								<rich:column width="10%">
+									<f:facet name="header">
+										<h:outputText value="#{msg.default_summarytable_product}"/>
+									</f:facet>
+									<center>
+										<a4j:commandButton image="/view/images/deleteRow.png" onclick="#{rich:component('modalExclusao')}.show();">
+											<f:setPropertyActionListener value="#{carrinho}" target="#{defaultBean.produtoCarrinhoSelecionado}"/>
+										</a4j:commandButton>
+									</center>
+								</rich:column>
+								
+								<rich:column width="70%" sortBy="#{carrinho.produtoGeral.descricao}" 
+											 filterBy="#{carrinho.produtoGeral.descricao}" filterEvent="onkeyup"> 
+									<f:facet name="header">
+										<h:outputText value="#{msg.default_summarytable_product}"/>
+									</f:facet>
+									<h:outputText value="#{carrinho.produtoGeral.descricao}"/>
+								</rich:column>
+								
+								<rich:column width="20%" sortBy="#{carrinho.quantidadeSelecionada}">
+									<f:facet name="header">
+										<h:outputText value="#{msg.default_summarytable_amount}"/>
+									</f:facet>
+									<h:outputText value="#{carrinho.quantidadeSelecionada}"/>
+								</rich:column>
+								
+								<f:facet name="footer">
+									<rich:datascroller for="tableResumo" renderIfSinglePage="false"/>
+								</f:facet>
+							</rich:dataTable>
+								
+							<h:panelGroup>
+								<rich:spacer height="10"/>
+								<h:commandButton value="#{msg.default_button_compare}" styleClass="botaoDefault" action="#{defaultBean.toFilters}"/>
+							</h:panelGroup>
+							
+							<h:panelGroup>
+								<rich:spacer height="10"/>
+								<a4j:commandButton value="#{msg.default_button_esvaziar_car}" styleClass="botaoDefault" onclick="#{rich:component('modalEsvaziarCarrinho')}.show();"/>
+							</h:panelGroup>
+						
+						</h:panelGroup>
+					</a4j:outputPanel>
+				</center>
+			</h:form>
+		
+			<!-- Modais -->
+
+			<rich:modalPanel id="modalInfoQuantidade" height="100" width="200" resizeable="false">
+				<f:facet name="header">
+					<h:outputText value="#{msg.default_modal_information}"/>
+				</f:facet>
+				<f:facet name="controls">
+		            <h:panelGroup>
+		                <h:graphicImage value="/view/images/close.png" id="hidelink1" />
+		                <rich:componentControl for="modalInfoQuantidade" attachTo="hidelink1"
+		                    operation="hide" event="onclick" />
+		            </h:panelGroup>
+		        </f:facet>
+				<center>
+					<h:form>
+			    		<h:outputText value="#{msg.default_modal_message}" styleClass="letras"/>  
+			    		<br />
+			    		<br />
+			    		<a4j:commandButton  value="#{msg.default_modal_button}" onclick="#{rich:component('modalInfoQuantidade')}.hide();"
+			    							styleClass="botaoDefault"/>
+		    		</h:form>
+				</center>
+			</rich:modalPanel>
+			
+			<rich:modalPanel id="modalExclusao" height="100" width="310" resizeable="false">
+				<f:facet name="header">
+					<h:outputText value="#{msg.default_modal_information}"/>
+				</f:facet>
+		        <f:facet name="controls">
+		            <h:panelGroup>
+		                <h:graphicImage value="/view/images/close.png" id="hidelink2" />
+		                <rich:componentControl for="modalExclusao" attachTo="hidelink2"
+		                    operation="hide" event="onclick" />
+		            </h:panelGroup>
+		        </f:facet>
+				<center>
+					<h:form>
+			    		<h:outputText value="#{msg.default_modal_delete_message}" styleClass="letras"/>  
+			    		<br />
+			    		<br />
+			    		<h:commandButton styleClass="botaoDefault" action="#{defaultBean.excluirProdutoCarrinho}"
+			    						 value="#{msg.default_modal_delete_yes}"/>
+			    		<rich:spacer width="5"/>
+			    		<a4j:commandButton styleClass="botaoDefault"
+			    						   value="#{msg.default_modal_delete_no}" onclick="#{rich:component('modalExclusao')}.hide();" />
+		    		</h:form>
+	    		</center>
+			</rich:modalPanel>
+			
+			<rich:modalPanel id="modalQuantidadeCarrinho" height="110" width="500" resizeable="false">
+				<f:facet name="header">
+					<h:outputText value="#{msg.default_modal_information}"/>
+				</f:facet>
+				<f:facet name="controls">
+		            <h:panelGroup>
+		                <h:graphicImage value="/view/images/close.png" id="hidelink3" />
+		                <rich:componentControl for="modalQuantidadeCarrinho" attachTo="hidelink3"
+		                    operation="hide" event="onclick" />
+		            </h:panelGroup>
+		        </f:facet>
+				<center>
+					<h:form>
+			    		<h:outputText value="#{msg.default_modal_max_size_message}" styleClass="letras"/>
+			    		<rich:spacer width="3"/>
+			    		<h:outputText value="#{defaultBean.numeroMaximoItensCarrinho}" styleClass="letras"/>  
+			    		<br />
+			    		<br />
+			    		<a4j:commandButton value="#{msg.default_modal_button}" onclick="#{rich:component('modalQuantidadeCarrinho')}.hide();"
+			    						   styleClass="botaoDefault"/>
+		    		</h:form>
+				</center>
+			</rich:modalPanel>
+			
+			<rich:modalPanel id="modalEsvaziarCarrinho" height="120" width="310" resizeable="false">
+				<f:facet name="header">
+					<h:outputText value="#{msg.default_modal_information}"/>
+				</f:facet>
+		        <f:facet name="controls">
+		            <h:panelGroup>
+		                <h:graphicImage value="/view/images/close.png" id="hidelink4" />
+		                <rich:componentControl for="modalEsvaziarCarrinho" attachTo="hidelink4"
+		                    operation="hide" event="onclick" />
+		            </h:panelGroup>
+		        </f:facet>
+				<center>
+					<h:form>
+			    		<h:outputText value="#{msg.default_modal_delete_all_message}" styleClass="letras"/>  
+			    		<br />
+			    		<br />
+			    		<h:commandButton styleClass="botaoDefault" action="#{defaultBean.excluirallProdutoCarrinho}"
+			    						 value="#{msg.default_modal_delete_yes}"/>
+			    		<rich:spacer width="5"/>
+			    		<a4j:commandButton styleClass="botaoDefault"
+			    						   value="#{msg.default_modal_delete_no}" onclick="#{rich:component('modalEsvaziarCarrinho')}.hide();" />
+		    		</h:form>
+	    		</center>
+			</rich:modalPanel>
+			
+
+		</ui:define>
+	</ui:composition>
+</jsp:root>

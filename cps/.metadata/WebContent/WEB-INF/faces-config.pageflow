@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf12690883301200" configfile="/cps/WebContent/WEB-INF/faces-config.xml">
+  <nodes xsi:type="pageflow:PFPage" name="view/default.jsf" x="408" y="168" id="pf12715475555230" referenceLink="//@navigationRule.3/@navigationCase.0/@toViewId|" outlinks="pf12715475555231" inlinks="pf12723795523730" path="/view/default.jsf"/>
+  <nodes xsi:type="pageflow:PFPage" name="view/pages/addFilters.jsf" x="648" y="168" id="pf12715475555232" referenceLink="//@navigationRule.0/@navigationCase.0/@toViewId|" inlinks="pf12715475555231" path="/view/pages/addFilters.jsf"/>
+  <nodes xsi:type="pageflow:PFPage" name="view/pages/userAccess.jsf" x="338" y="562" id="pf12715475555233" referenceLink="//@navigationRule.2/@navigationCase.0/@toViewId|" inlinks="pf12723795523741" path="/view/pages/userAccess.jsf"/>
+  <nodes xsi:type="pageflow:PFPage" name="*" x="122" y="370" id="pf12723795523742" outlinks="pf12723795523741 pf12723795523730 pf12723931147420 pf12723931378922" path="*"/>
+  <nodes xsi:type="pageflow:PFPage" name="userAccess.jsf" x="50" y="516" id="pf12723815838704" referenceLink="//@navigationRule.4/@navigationCase.0/@toViewId|" path="/userAccess.jsf"/>
+  <nodes xsi:type="pageflow:PFPage" name="view/pages/myCar.jsf" x="50" y="72" id="pf12723931147421" referenceLink="//@navigationRule.4/@navigationCase.0/@toViewId|" inlinks="pf12723931147420" path="/view/pages/myCar.jsf"/>
+  <nodes xsi:type="pageflow:PFPage" name="view/pages/myLists.jsf" x="219" y="24" id="pf12723931378923" referenceLink="//@navigationRule.5/@navigationCase.0/@toViewId|" inlinks="pf12723931378922" path="/view/pages/myLists.jsf"/>
+  <nodes xsi:type="pageflow:PFPage" name="*" id="pf12724024915990" referenceLink="//@navigationRule.1/@fromViewId|" outlinks="pf12724024915991" path="/*"/>
+  <nodes xsi:type="pageflow:PFPage" name="view/pages/userManager.jsf" id="pf12724024916002" referenceLink="//@navigationRule.1/@navigationCase.0/@toViewId|" inlinks="pf12724024915991" path="/view/pages/userManager.jsf"/>
+  <links id="pf12715475555231" target="pf12715475555232" source="pf12715475555230" outcome="filtersOk"/>
+  <links id="pf12723795523741" target="pf12715475555233" source="pf12723795523742" outcome="toLoginPage"/>
+  <links id="pf12723795523730" target="pf12715475555230" source="pf12723795523742" outcome="toDefaultPage"/>
+  <links id="pf12723931147420" target="pf12723931147421" source="pf12723795523742" outcome="toMyCar"/>
+  <links id="pf12724024915991" target="pf12724024916002" source="pf12724024915990" outcome="toCadUser"/>
+  <links id="pf12818094000060" target="pf12818094000071" source="pf12723795523742" outcome="toMyLists"/>
+</pageflow:Pageflow>

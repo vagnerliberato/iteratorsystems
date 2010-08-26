@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:p="http://primefaces.prime.com.tr/ui">
+
+<ui:composition template="../template/template.jsf">
+	<ui:define name="content">
+		<h:form id="helpForm">
+			<center>
+				<p:stack icon="/view/images/help/stack.png">  
+				    <p:menuitem value="Chrome" icon="/view/images/help/chrome.png" target="_blank" url="http://www.google.com.br/chrome"/>  
+				    <p:menuitem value="Java" icon="/view/images/help/java.png" target="_blank" url="http://www.java.com/pt_BR/"/>  
+				    <p:menuitem value="PostgreSQL" icon="/view/images/help/postgresql.png" target="_blank" url="http://www.postgresql.org/"/>  
+				</p:stack>
+			</center>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</jsp:root>
