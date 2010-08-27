@@ -144,7 +144,7 @@
 						<h:outputText value="#{msg.default_summarytable_delete}"/>
 					</f:facet>
 					<center>
-						<a4j:commandButton image="/view/images/deleteRow.png" onclick="#{rich:component('modalExcluirItemListaBanco')}.show();">
+						<a4j:commandButton image="/view/images/deleteRow.png" onclick="#{rich:component('modalExcluirItemLista')}.show();">
 							<f:setPropertyActionListener value="#{lista}" target="#{listaDeProdutoBean.produtoListaSelecionado}"/>
 						</a4j:commandButton>
 					</center>
