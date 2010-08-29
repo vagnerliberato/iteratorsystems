@@ -1,20 +1,21 @@
 package br.iteratorsystems.cps.service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+
 
 import br.iteratorsystems.cps.config.HibernateConfig;
 import br.iteratorsystems.cps.dao.ItensListaProdutoDao;
 import br.iteratorsystems.cps.dao.ListaProdutoDao;
 import br.iteratorsystems.cps.entities.ListaProduto;
 import br.iteratorsystems.cps.entities.ListaProdutoItem;
-import br.iteratorsystems.cps.entities.ProdutoGeral;
 import br.iteratorsystems.cps.exceptions.CpsDaoException;
 import br.iteratorsystems.cps.exceptions.CpsHandlerException;
 import br.iteratorsystems.cps.helper.ListaProdutoTOHelper;
@@ -24,22 +25,6 @@ public class ListaProdutoService {
 	private Session session = HibernateConfig.getSession();
 	private ListaProdutoDao listaProdutoDao = new ListaProdutoDao(ListaProduto.class, session);
 	private ItensListaProdutoDao itemListaDao = new ItensListaProdutoDao(ListaProdutoItem.class, session) ;
-	
-	public List<ListaProdutoItem> popularItemDaListaDeProduto(Integer idItensLista, ListaProduto listaProduto, List<ProdutoGeral> produtosGerais, HashMap<String, Integer> quantidadePorProduto){
-		
-		List<ListaProdutoItem> listaProdutosItens = new ArrayList<ListaProdutoItem>();
-		for (ProdutoGeral produtogeral : produtosGerais) {
-			ListaProdutoItem itemProduto = new ListaProdutoItem();
-			itemProduto.setIdItensLista(idItensLista);
-			itemProduto.setListaProduto(listaProduto);
-			itemProduto.setProdutogeral(produtogeral);
-			itemProduto.setQuantidade(quantidadePorProduto.get(produtogeral.getCodigoBarras()));
-
-			listaProdutosItens.add(itemProduto);
-		}
-		
-		return listaProdutosItens;
-	}
 	
 	/**
 	 * Atualiza uma lista de produto.
@@ -52,8 +37,10 @@ public class ListaProdutoService {
 			transaction.begin();
 			ListaProdutoTOHelper.atualizaObjetoItemLista(
 					listaProduto, listaProduto.getListaProdutoItems());
-			atualizarItensListaProduto(new ArrayList<ListaProdutoItem>(
-													listaProduto.getListaProdutoItems()));
+			
+			excluirItensHQL(listaProduto);
+			session.evict(ListaProdutoItem.class);
+			incluirItensListaProduto(listaProduto.getListaProdutoItems());
 			
 			Set<ListaProdutoItem> temp = new HashSet<ListaProdutoItem>(listaProduto.getListaProdutoItems()); 
 			listaProduto.getListaProdutoItems().clear();
@@ -66,6 +53,39 @@ public class ListaProdutoService {
 			transaction.rollback();
 			throw new CpsHandlerException(e);
 		}
+	}
+	
+	/**
+	 * Excluir itens da lista com HQL para atualização
+	 * @param listaProduto - Lista de produto
+	 * @throws CpsHandlerException Se alguma exceção ocorrer nas camadas abaixo.
+	 */
+	public void excluirItensHQL(final ListaProduto listaProduto) throws CpsHandlerException {
+		String query = "delete from ListaProdutoItem i where i.listaProduto.id =:codigoLista";
+		try{
+			Query queryObj = HibernateConfig.getSession().createQuery(query);
+			queryObj.setParameter("codigoLista",listaProduto.getId());
+			queryObj.executeUpdate();
+			session.flush();
+		}catch (HibernateException e) {
+			throw new CpsHandlerException(e);
+		}
+	}
+	
+	/**
+	 * Inclui items da lista de produtos no banco.
+	 * @param listaItens - Lista de itens
+	 * @throws CpsHandlerException
+	 */
+	public void incluirItensListaProduto(final Collection<ListaProdutoItem> listaItens) throws CpsHandlerException {
+			try {
+				for(ListaProdutoItem item : listaItens) {
+					itemListaDao.salvar(item);
+				}
+				session.flush();
+			} catch (CpsDaoException e) {
+				throw new CpsHandlerException(e);
+			}
 	}
 	
 	/**
@@ -149,8 +169,6 @@ public class ListaProdutoService {
 			throw new CpsHandlerException(e);
 		}
 	}
-	
-
 	
 	/**
 	 * Obtem o ultimo Id da lista inserida no banco.

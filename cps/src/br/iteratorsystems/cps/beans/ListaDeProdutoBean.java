@@ -3,7 +3,6 @@ package br.iteratorsystems.cps.beans;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.el.ELResolver;
 import javax.faces.context.ExternalContext;
@@ -138,6 +137,10 @@ public class ListaDeProdutoBean {
 						ListaProdutoTOHelper.obtemListaProdutoItem(listaPagina)));
 		listaProdutoService.atualizarListaDeProdutos(listaSelecionadaTabela);
 		listaPagina.clear();
+		limparPagina();
+		if(listaBusca != null) {
+			listaBusca.clear();
+		}
 	}
 	
 	/**
@@ -308,29 +311,6 @@ public class ListaDeProdutoBean {
 	 */
 	public void excluirProdutoDaListaDeProduto(){
 		listaPagina.remove(produtoListaSelecionado);
-	}
-	
-	/**
-	 * Exclui um produto da lista e do banco.
-	 * @throws CpsHandlerException Se ocorrer algum erro nas camadas abaixo.
-	 */
-	public void excluirProdutoDoBanco() throws CpsHandlerException {
-		listaPagina.remove(produtoListaSelecionado);
-		Set<ListaProdutoItem> listaItemTemp = 
-				new HashSet<ListaProdutoItem>(
-						ListaProdutoTOHelper.obtemListaProdutoItem(listaPagina));
-		
-		if(listaSelecionadaTabela.getListaProdutoItems() != null) {
-			listaSelecionadaTabela.getListaProdutoItems().clear();
-		}
-		
-		listaProdutoService.excluirListaDeProdutos(listaSelecionadaTabela);
-		listaProdutoService.incluirListaDeProdutos(listaSelecionadaTabela,listaItemTemp);
-		
-		if(listaBusca != null) {
-			listaBusca.clear();
-		}
-		limparPagina();
 	}
 	
 	/**

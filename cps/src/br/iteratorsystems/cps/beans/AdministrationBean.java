@@ -24,7 +24,7 @@ import br.iteratorsystems.cps.handler.AdministrationHandler;
 public class AdministrationBean {
 
 	private Login loginEntity = new Login();
-	private Rede redeEntity;
+	private Rede rede;
 	private Loja lojaEntity;
 	private AdministrationHandler administrationHandler;
 
@@ -83,11 +83,11 @@ public class AdministrationBean {
 		}
 
 		administrationHandler = new AdministrationHandler();
-		redeEntity = new Rede();
+		rede = new Rede();
 
 		try {
-			redeEntity.setNome(this.getNomeRede());
-			administrationHandler.saveNewRede(redeEntity);
+			rede.setNome(this.getNomeRede());
+			administrationHandler.saveNewRede(rede);
 			this.setNomeRede("");
 			this.getAllRedes();
 		} catch (CpsHandlerException e) {
@@ -740,18 +740,18 @@ public class AdministrationBean {
 	}
 
 	/**
-	 * @return the redeEntity
+	 * @return the rede
 	 */
 	public Rede getRedeEntity() {
-		return redeEntity;
+		return rede;
 	}
 
 	/**
-	 * @param redeEntity
-	 *            the redeEntity to set
+	 * @param rede
+	 *            the rede to set
 	 */
-	public void setRedeEntity(Rede redeEntity) {
-		this.redeEntity = redeEntity;
+	public void setRedeEntity(Rede rede) {
+		this.rede = rede;
 	}
 
 	/**
