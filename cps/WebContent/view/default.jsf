@@ -41,25 +41,17 @@
 									rows="4" var="produto" rendered="#{not empty defaultBean.listaProdutoTO}"
 									binding="#{defaultBean.listaProdutosDataTable}" styleClass="letras">
 									
-										<rich:column sortable="false" width="100">
+										<rich:column sortable="false" width="100" style="height: 50;">
 											<f:facet name="header">
 												<h:outputText value="#{msg.default_producttable_image}"/>
 											</f:facet>
 											<center>
-												<p:lightBox id="imageLightBox" iframe="true"
-															width="300px" height="250px"
-															rendered="#{produto.possuiImagem}">
-												    <h:outputLink value="#{produto.imagem}">  
-		       											<h:graphicImage value="#{produto.imagem}"/>  
-		   											</h:outputLink> 
-		   											<p:tooltip value="#{msg.default_image_found}"/>
-												</p:lightBox>
-												
-												<p:outputPanel rendered="#{not produto.possuiImagem}">
-												<h:graphicImage value="/view/images/ImageNotFound.png"
-																rendered="#{not produto.possuiImagem}"/>
-													<p:tooltip value="#{msg.default_image_not_found}"/>
-												</p:outputPanel>
+	       										<h:graphicImage id="imagem" value="#{produto.imagem}" rendered="#{produto.possuiImagem}"/>  
+	       										<h:graphicImage id="semImagem" value="/view/images/ImageNotFound.png" 
+	       														rendered="#{not produto.possuiImagem}"/>
+	   											<rich:toolTip for="semImagem" event="onmouseover" rendered="#{not produto.possuiImagem}">
+	   												<h:outputText value="#{msg.default_image_not_found}"/>
+	   											</rich:toolTip>
 											</center>
 										</rich:column>
 										

@@ -290,10 +290,10 @@
 						<h:column>
 							<h:inputText value="#{administrationBean.lojaEntity.nomedoresponsavelpelaloja}" maxlength="30" size="31" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
 						</h:column>
-						<h:column>
+						<h:column rendered="false">
 							<h:outputText value="#{msg.adm_param_uv_loja_tipodevenda}" styleClass="letras"/>
 						</h:column>
-						<h:column>
+						<h:column rendered="false">
 							<h:selectOneMenu id="selectTipoVenda" disabled="true" value="#{administrationBean.tipoVendaSelecionada}">
 								<f:selectItems value="#{administrationBean.tipoVendas}"/>
 							</h:selectOneMenu>

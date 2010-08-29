@@ -8,7 +8,9 @@
 
 <ui:composition template="../template/template.jsf">
 		<ui:define name="content">
-		<h:form id="addFiltersForm">
+		<a4j:form id="addFiltersForm"><!-- Porque nao funciona?? -->
+			<a4j:loadScript src="/view/js/jquerymaskedinput-121.js"/>
+		<!--<h:form id="addFiltersForm">-->
 			<h:inputHidden value="#{filtersBean.campoHidden}"/>
 			<rich:spacer height="20"/>
 			<h:panelGroup id="selectCepPanel" >
@@ -175,7 +177,8 @@
 					</h:panelGrid>	
 				</rich:panel>
 			</h:panelGroup>
-			</h:form>
+			<!--</h:form>-->
+			</a4j:form>
 		</ui:define>
 </ui:composition>
 </jsp:root>
