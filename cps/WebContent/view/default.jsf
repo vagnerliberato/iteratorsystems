@@ -50,7 +50,7 @@
 															width="300px" height="250px"
 															rendered="#{produto.possuiImagem}">
 												    <h:outputLink value="#{produto.imagem}">  
-		       											<h:graphicImage value="/view/images/camera.png"/>  
+		       											<h:graphicImage value="#{produto.imagem}"/>  
 		   											</h:outputLink> 
 		   											<p:tooltip value="#{msg.default_image_found}"/>
 												</p:lightBox>
