@@ -75,6 +75,34 @@ ALTER TABLE tabelas.produto
   ADD CONSTRAINT fk_id_loja_produto FOREIGN KEY (id_loja, id_rede)
       REFERENCES tabelas.loja (id_loja, id_rede) MATCH SIMPLE
       ON UPDATE CASCADE ON DELETE CASCADE;
-
+      
 /* 21/08/2010 - Fim - Vagner */
 
+
+*/ 02/09/2010 - Inicio - Vagner */
+
+alter table tabelas.parametrizacao_cps add valormediocombustivel float;
+alter table tabelas.parametrizacao_cps add rendimentomediocombustivel float;
+
+CREATE TABLE TABELAS.LOCALIZACAO (
+  Country varchar(2) NOT NULL,
+  Language varchar(2) NOT NULL,
+  ID bigint[20] NOT NULL,
+  ISO2 varchar(6) NOT NULL,
+  Region1 varchar(60) NOT NULL,
+  Region2 varchar(60) NOT NULL,
+  Region3 varchar(60) NOT NULL,
+  Region4 varchar(60) NOT NULL,
+  ZIP varchar(10) NOT NULL,
+  City varchar(60) NOT NULL,
+  Area1 varchar(80) NOT NULL,
+  Area2 varchar(80) NOT NULL,
+  Lat float NOT NULL,
+  Lng float NOT NULL,
+  TZ varchar(30) NOT NULL,
+  UTC varchar(10) NOT NULL,
+  DST varchar(1) NOT NULL,
+	constraint pk_localizacao primary key (ID)
+)
+
+/* 02/09/2010 - Fim - Vagner */
