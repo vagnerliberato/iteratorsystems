@@ -106,3 +106,87 @@ CREATE TABLE TABELAS.LOCALIZACAO (
 )
 
 /* 02/09/2010 - Fim - Vagner */
+
+*/ 03/09/2010 - Inicio - Ronald */
+
+---------------------------------------------------------------------------------
+--view tabelas.vw__listar_lojas
+---------------------------------------------------------------------------------
+
+create view tabelas.vw_listar_lojas
+as    select id_loja,
+	id_rede,
+	nomefantasia,
+	cep,
+	estado
+	from tabelas.loja 
+	
+
+---------------------------------------------------------------------------------
+--FUNCTION tabelas.sp_listar_lojas
+---------------------------------------------------------------------------------
+
+CREATE or replace FUNCTION tabelas.sp_listar_lojas(char (9)) RETURNS SETOF tabelas.vw_listar_lojas AS $$
+	select * from tabelas.vw_listar_lojas where estado = $1;
+$$ LANGUAGE SQL;
+
+--select tabelas.sp_listar_lojas ('SP')
+
+
+---------------------------------------------------------------------------------
+--view tabelas.vw_listar_produto
+---------------------------------------------------------------------------------
+
+create view tabelas.vw_listar_produto
+as    select id_rede,
+	id_loja,
+	codigo_barras,
+	descricao
+	from tabelas.produto
+	
+
+---------------------------------------------------------------------------------
+--FUNCTION tabelas.sp_listar_produto
+---------------------------------------------------------------------------------
+
+CREATE or replace FUNCTION tabelas.sp_listar_produto(int, int,char (20)) RETURNS SETOF tabelas.vw_listar_produto AS $$
+	select * from tabelas.vw_listar_produto where id_rede = $1 and id_loja = $2 and codigo_barras = $3;
+$$ LANGUAGE SQL;
+
+--select tabelas.sp_listar_produto (1,1,'789333324612')
+
+
+---------------------------------------------------------------------------------
+--view tabelas.vw_listar_localizacao
+---------------------------------------------------------------------------------
+
+create view tabelas.vw_localizacao
+as    select ISO2,
+	Region1,
+	Region2,
+	Region3,
+	Region4,
+	ZIP,
+	City,
+	Area1,
+	Area2,
+	Lat,
+	Lng,
+	TZ,
+	UTC,
+	DST
+	from tabelas.LOCALIZACAO
+	
+
+---------------------------------------------------------------------------------
+--FUNCTION tabelas.sp_listar_localizacao
+---------------------------------------------------------------------------------
+
+CREATE or replace FUNCTION tabelas.sp_localizacao(char (9)) RETURNS SETOF tabelas.vw_localizacao AS $$
+	select * from tabelas.vw_localizacao where zip = $1;
+$$ LANGUAGE SQL;
+
+--select tabelas.sp_localizacao ('')
+
+
+/* 03/09/2010 - Fim - Ronald */
