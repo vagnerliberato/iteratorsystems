@@ -13,14 +13,14 @@ import br.iteratorsystems.cps.entities.ListaProduto;
 import br.iteratorsystems.cps.entities.ListaProdutoItem;
 import br.iteratorsystems.cps.entities.ProdutoGeral;
 import br.iteratorsystems.cps.entities.Usuario;
-import br.iteratorsystems.cps.exceptions.CpsGeneralExceptions;
+import br.iteratorsystems.cps.exceptions.CpsExceptions;
 import br.iteratorsystems.cps.helper.ListaProdutoTOHelper;
 import br.iteratorsystems.cps.service.ListaProdutoService;
 import br.iteratorsystems.cps.to.ProdutoTO;
 
 public class testeListaDeProduto {
 
-	public static void main(String[] args) throws CpsGeneralExceptions {
+	public static void main(String[] args) throws CpsExceptions {
 		
 		/*Set<ProdutoTO> listaProdutoTO = new HashSet<ProdutoTO>();
 		ProdutoTO produtoTO = new ProdutoTO(popular(),12);

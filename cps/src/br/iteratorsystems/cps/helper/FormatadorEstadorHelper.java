@@ -34,6 +34,27 @@ public final class FormatadorEstadorHelper {
 	}
 
 	/**
+	 * Obtem a sigla do estado com base no nome.
+	 * @param nomeEstado - nome do estado
+	 * @return sigla do estado
+	 */
+	public static String obterSiglaEstado(String nomeEstado) {
+		String result = null;
+		
+		if(nomeEstado == null) {
+			throw new IllegalArgumentException("nome do estado é nulo!");
+		}
+		
+		for(EEstados estado : EEstados.values()) {
+			if(estado.getNome().equals(nomeEstado)) {
+				result = estado.name();
+				break;
+			}
+		}
+		return result;
+	}
+	
+	/**
 	 * Formata o estado.
 	 * @param antigo - Estado não formatado.
 	 * @return Estado formatado.

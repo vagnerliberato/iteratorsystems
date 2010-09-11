@@ -105,18 +105,6 @@ public final class ListaProdutoTOHelper {
 		return item;
 	}
 	
-//	/**
-//	 * Obtém uma lista de produto item com uma lista de produto e produto TO.
-//	 * @param listaProduto - Lista de produto.
-//	 * @param produtoTO - Produto TO. 
-//	 * @return Lista de produto item.
-//	 */
-//	public static ListaProdutoItem obtemListaProdutoItem(final ListaProduto listaProduto,ProdutoTO produtoTO) {
-//		ListaProdutoItem item = obtemListaProdutoItem(produtoTO);
-//		item.setListaProduto(listaProduto);
-//		return item;
-//	}
-//	
 	/**
 	 * Converte uma lista de items em uma lista de produto TO.
 	 * @param listaItem - Lista de items.

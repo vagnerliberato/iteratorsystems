@@ -1,6 +1,6 @@
 package br.iteratorsystems.cps.exceptions;
 
-public class CpsHandlerException extends CpsGeneralExceptions {
+public class CpsHandlerException extends CpsExceptions {
 
 	private static final long serialVersionUID = 11666L;
 	
