@@ -10,9 +10,11 @@
 <h:panelGrid columns="2" width="500">
 	<h:column>
 		<h:graphicImage url="/view/images/name.png"/>
-	</h:column><h:column/>
+	</h:column>
+	<h:column/>
 	<h:column>
 		<h:outputText value="#{msg.mylists_newname}" styleClass="letras" rendered="#{empty listaDeProdutoBean.nomeLista}"/>
+		<h:outputText value="#{msg.mylists_name}" styleClass="letras" rendered="#{not empty listaDeProdutoBean.nomeLista}"/>
 	</h:column>
 	<h:column>
 		<h:inputText id="nomeLista" maxlength="30" size="32" value="#{listaDeProdutoBean.nomeLista}" styleClass="barraDefault"
@@ -21,7 +23,6 @@
 			
 		<a4j:outputPanel id="panelNomeLista" ajaxRendered="true" rendered="#{not empty listaDeProdutoBean.nomeLista}">
 			<h:panelGroup>
-				<h:outputText value="#{msg.mylists_name}" styleClass="letras"/>
 				<rich:spacer width="5"/>
 				<h:outputText value="#{listaDeProdutoBean.nomeLista}" styleClass="letrasInformacao"/>
 				<rich:spacer width="5"/>

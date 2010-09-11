@@ -16,7 +16,7 @@
 					<h:outputText value="#{msg.mylists_edit_information}" styleClass="letrasAba"/>
 				</f:facet>
 				<center>
-					<rich:dataTable columns="3" width="60%" id="tableListas" rows="4" columnsWidth="80%,20%" 
+					<rich:dataTable columns="4" width="60%" id="tableListas" rows="4" columnsWidth="80%,20%" 
 									binding="#{listaDeProdutoBean.tabelasListaDataTable}"
 									value="#{listaDeProdutoBean.listaProdutoUsuario}" var="listas">
 						<rich:column> 
@@ -48,6 +48,15 @@
 												   onclick="#{rich:component('modalExcluirListaBanco')}.show();"/>
 							</center>
 						</rich:column>
+						<rich:column>
+							<f:facet name="header">
+								<h:outputText value="#{msg.mylists_atualizar_lista}"/>				
+							</f:facet>
+							<center>
+								<a4j:commandButton id="botaoAtualizarLista" onclick="#{rich:component('modalAtualizarLista')}.show();"
+							   				       image="/view/images/addNewList.png" styleClass="botaoDefault"/>		
+							</center>
+						</rich:column>
 						<f:facet name="footer">
 							<rich:datascroller for="tableListas" renderIfSinglePage="false"/>
 						</f:facet>
@@ -61,8 +70,8 @@
 	
 <center>
 	<a4j:outputPanel ajaxRendered="true">
-		<h:panelGrid columns="3" width="500">
-			<h:column>
+		<h:panelGrid columns="3" width="300">
+			<h:column rendered="false">
 				<h:outputText value="#{msg.mylists_information}" styleClass="letras" rendered="#{not empty listaDeProdutoBean.listaPagina}"/>
 			</h:column>
 			<h:column>
@@ -92,7 +101,7 @@
 								</center>
 							</rich:column>
 			
-							 <rich:column width="80" sortBy="#{produto.quantidadeSelecionada}">
+							 <rich:column width="80">
 							 	<f:facet name="header">
 							 		<h:outputText value="Quantidade"/>
 							 	</f:facet>
@@ -169,11 +178,6 @@
 				</f:facet>
 			</rich:dataTable>
 		</h:panelGrid>
-	
-		<rich:spacer height="5"/>
-		<a4j:outputPanel ajaxRendered="true">
-			<a4j:commandButton id="botaoAtualizarLista" onclick="#{rich:component('modalAtualizarLista')}.show();" value="Atualizar Lista" rendered="#{not empty listaDeProdutoBean.listaPagina}"/>
-		</a4j:outputPanel>
 	</center>
 </h:panelGroup>
 </jsp:root>

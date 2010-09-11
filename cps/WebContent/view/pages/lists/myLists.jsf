@@ -7,6 +7,16 @@
 	xmlns:a4j="http://richfaces.org/a4j">
 
 <h:form id="formMyLists">
+	<rich:toolBar width="90" height="15" itemSeparator="line">
+			<h:panelGroup>
+				<h:commandButton id="linkViewList" action="#{listaDeProdutoBean.carregarListasUsuario}" 
+								   value="#{msg.mylists_view_all}"/>
+			</h:panelGroup>
+			<h:panelGroup>
+				<h:commandButton id="linkNewList" action="#{listaDeProdutoBean.carregarPaginaBusca}" value="#{msg.mylists_add_new}"/>
+			</h:panelGroup>
+	</rich:toolBar>
+	<rich:spacer height="10"/>
 	<a4j:include viewId="#{listaDeProdutoBean.paginaAtual}"/>
 </h:form>
 		
