@@ -12,6 +12,7 @@ import br.iteratorsystems.cps.config.HibernateConfig;
 import br.iteratorsystems.cps.entities.Cep;
 import br.iteratorsystems.cps.entities.Localidade;
 import br.iteratorsystems.cps.exceptions.CpsDaoException;
+import br.iteratorsystems.cps.helper.ProcedureHelper;
 
 /**
  * Classe de busca de Cep na base de dados do Cps. 
@@ -61,24 +62,13 @@ public class BuscarCepBaseDao {
 		Cep tabelasCep = new Cep();
 		Localidade localidade = new Localidade();
 		
-		tabelasCep.setLogradouro(limparStringDados(partesCep[0]));
-		tabelasCep.setBairro1(limparStringDados(partesCep[1]));
-		localidade.setLocalidade(limparStringDados(partesCep[2]));
+		tabelasCep.setLogradouro(ProcedureHelper.limparDadosString(partesCep[0]));
+		tabelasCep.setBairro1(ProcedureHelper.limparDadosString(partesCep[1]));
+		localidade.setLocalidade(ProcedureHelper.limparDadosString(partesCep[2]));
 		tabelasCep.setLocalidade(localidade);
-		tabelasCep.setUf(limparStringDados(partesCep[3]));
-		tabelasCep.setCep(limparStringDados(partesCep[4]));
+		tabelasCep.setUf(ProcedureHelper.limparDadosString(partesCep[3]));
+		tabelasCep.setCep(ProcedureHelper.limparDadosString(partesCep[4]));
 		
 		return tabelasCep;
-	}
-	
-	/**
-	 * Limpa os dados não utilizados da string.
-	 * @param partesCep - dados do cep.
-	 * @return String limpa.
-	 */
-	private String limparStringDados(String partesCep) {
-		StringBuilder builder = new StringBuilder();
-		builder.append(partesCep.replaceAll("[\"^(^)]",""));
-		return builder.toString();
 	}
 }
