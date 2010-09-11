@@ -772,25 +772,24 @@
 			</rich:tab>
 		</rich:tabPanel>
 
-			<rich:modalPanel id="modalParametrizacaoErro" height="160" width="500" resizeable="false" moveable="true" >
-				<f:facet name="header">
-					<h:outputText value="#{msg.parametrizacao}"/>
-				</f:facet>
-				<f:facet name="controls">
-		            <h:panelGroup>
-		                <h:graphicImage value="/view/images/close.png" id="hideError" />
-		                <rich:componentControl for="modalParametrizacaoErro" attachTo="hideError" operation="hide" event="onclick" />
-		            </h:panelGroup>
-		        </f:facet>
-				<center>
-					<h:form id="msgErroParametrizacao">
-			    		<h:messages id="textErrorParametrizacao" errorClass="letras" layout="table"/>
-			    		<rich:spacer width="3"/>
-			    		<br />
-			    		<br />
-			    		<a4j:commandButton value="#{msg.button_close_modal_parametrizacao}" onclick="#{rich:component('modalParametrizacaoErro')}.hide();" styleClass="botaoDefault"/>
-		    		</h:form>
-				</center>
-			</rich:modalPanel>
-			
+		<rich:modalPanel id="modalParametrizacaoErro" height="160" width="500" resizeable="false" moveable="true" >
+			<f:facet name="header">
+				<h:outputText value="#{msg.parametrizacao}"/>
+			</f:facet>
+			<f:facet name="controls">
+	            <h:panelGroup>
+	                <h:graphicImage value="/view/images/close.png" id="hideError" />
+	                <rich:componentControl for="modalParametrizacaoErro" attachTo="hideError" operation="hide" event="onclick" />
+	            </h:panelGroup>
+	        </f:facet>
+			<center>
+				<h:form id="msgErroParametrizacao">
+		    		<h:messages id="textErrorParametrizacao" errorClass="letras" layout="table"/>
+		    		<rich:spacer width="3"/>
+		    		<br />
+		    		<br />
+		    		<a4j:commandButton value="#{msg.button_close_modal_parametrizacao}" onclick="#{rich:component('modalParametrizacaoErro')}.hide();" styleClass="botaoDefault"/>
+	    		</h:form>
+			</center>
+		</rich:modalPanel>
 </jsp:root>
