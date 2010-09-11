@@ -1,5 +1,6 @@
 package br.iteratorsystems.cps.beans;
 
+
 import javax.el.ELResolver;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
@@ -11,7 +12,7 @@ import br.iteratorsystems.cps.common.Resources;
 import br.iteratorsystems.cps.entities.Endereco;
 import br.iteratorsystems.cps.entities.Login;
 import br.iteratorsystems.cps.entities.Usuario;
-import br.iteratorsystems.cps.exceptions.CpsGeneralExceptions;
+import br.iteratorsystems.cps.exceptions.CpsExceptions;
 import br.iteratorsystems.cps.handler.LoginUserHandler;
 
 public class LoginUserBean {
@@ -32,10 +33,10 @@ public class LoginUserBean {
 	/**
 	 * Método que valida o login do usuario
 	 * @return
-	 * @throws CpsGeneralExceptions
+	 * @throws CpsExceptions
 	 */
 
-	public String validaLogin() throws CpsGeneralExceptions {
+	public String validaLogin() throws CpsExceptions {
 
 		if ("".equals(this.getNomeLogin()) || "".equals(this.getSenha()))
 			return "";
@@ -50,6 +51,7 @@ public class LoginUserBean {
 			servletContext.setAttribute("usuarioLogado", this.getLogin());
 			
 			this.setLogado(true);
+			limparObjetoPaginaInicio(context);
 			return "toDefaultPage";
 		} else {
 			FacesUtil.errorMessage("", Resources.getErrorProperties().getString("incorrect_user_or_pass"),"usuario ou senha incorretos");
@@ -58,12 +60,23 @@ public class LoginUserBean {
 	}
 	
 	/**
+	 * Limpa o objeto bean da página inicial
+	 * @param context - Faces context
+	 */
+	private void limparObjetoPaginaInicio(FacesContext context) {
+		ELResolver el = context.getApplication().getELResolver();
+		DefaultBean defaultBean = (DefaultBean) 
+					el.getValue(context.getELContext(),null,"defaultBean");
+		defaultBean.limparTudo();
+	}
+	
+	/**
 	 * 
 	 * @return
-	 * @throws CpsGeneralExceptions
+	 * @throws CpsExceptions
 	 */
 	
-	public String novo() throws CpsGeneralExceptions {
+	public String novo() throws CpsExceptions {
 		String regex = "[A-Za-z0-9\\._-]+@[A-Za-z]+\\.[A-Za-z\\.a-zA-Z]+";
 
 		if (this.getEmail() == null || this.getCep() == null || "".equals(this.getEmail()) || "".equals(this.getCep())) {
@@ -98,7 +111,7 @@ public class LoginUserBean {
 			ELResolver el = context.getApplication().getELResolver();
 			UserManagementBean temporaryUserBean = (UserManagementBean) el.getValue(context.getELContext(), null,"userManagementBean");
 			temporaryUserBean.atualizaCampos(this.getUsuario());
-		} catch (CpsGeneralExceptions e) {
+		} catch (CpsExceptions e) {
 			e.printStackTrace();
 		}
 		return "toCadUser";
@@ -106,10 +119,10 @@ public class LoginUserBean {
 	
 	/**
 	 * 
-	 * @throws CpsGeneralExceptions
+	 * @throws CpsExceptions
 	 */
 
-	public void getUserData() throws CpsGeneralExceptions {
+	public void getUserData() throws CpsExceptions {
 		loginHandler = new LoginUserHandler();
 		setUsuario(loginHandler.getUserRelated(login.getIdLogin()));
 	}
@@ -122,10 +135,20 @@ public class LoginUserBean {
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 		HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(false);
 		session.invalidate();
+		removerObjetosDaSessao(facesContext);
 		restaurarDados();
 		return "toDefaultPage";
 	}
-
+	
+	/**
+	 * Remove os objetos da sessão.
+	 * @param context - Faces context
+	 */
+	private void removerObjetosDaSessao(FacesContext context) {
+		ServletContext servletContext = (ServletContext) context.getExternalContext().getContext();
+		servletContext.removeAttribute("usuarioLogado");
+	}
+	
 	/**
 	 * Restaura os dados padrões do bean.
 	 */

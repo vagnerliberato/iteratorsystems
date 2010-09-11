@@ -17,7 +17,7 @@ import br.iteratorsystems.cps.dao.RedeDao;
 import br.iteratorsystems.cps.entities.Login;
 import br.iteratorsystems.cps.entities.Loja;
 import br.iteratorsystems.cps.entities.Rede;
-import br.iteratorsystems.cps.exceptions.CpsGeneralExceptions;
+import br.iteratorsystems.cps.exceptions.CpsExceptions;
 import br.iteratorsystems.cps.exceptions.CpsHandlerException;
 import br.iteratorsystems.cps.handler.AdministrationHandler;
 
@@ -74,10 +74,10 @@ public class AdministrationBean {
 	/**
 	 * Cadastra Rede
 	 * 
-	 * @throws CpsGeneralExceptions
+	 * @throws CpsExceptions
 	 */
 
-	public void cadastrarRede() throws CpsGeneralExceptions {
+	public void cadastrarRede() throws CpsExceptions {
 		if (this.getNomeRede() == null || this.getNomeRede().equals("")) {
 			return;
 		}
@@ -91,7 +91,7 @@ public class AdministrationBean {
 			this.setNomeRede("");
 			this.getAllRedes();
 		} catch (CpsHandlerException e) {
-			throw new CpsGeneralExceptions(e);
+			throw new CpsExceptions(e);
 		}
 	}
 
@@ -114,10 +114,10 @@ public class AdministrationBean {
 	/**
 	 * Pega Redes
 	 * 
-	 * @throws CpsGeneralExceptions
+	 * @throws CpsExceptions
 	 */
 
-	public void getRedesByName() throws CpsGeneralExceptions {
+	public void getRedesByName() throws CpsExceptions {
 		if (this.getNomeRede() == null || "".equals(this.getNomeRede())) {
 			return;
 		}
@@ -126,17 +126,17 @@ public class AdministrationBean {
 		try {
 			listRedes = administrationHandler.getAllRedes(this.getNomeRede());
 		} catch (CpsHandlerException e) {
-			throw new CpsGeneralExceptions(e);
+			throw new CpsExceptions(e);
 		}
 	}
 
 	/**
 	 * Pega Lojas
 	 * 
-	 * @throws CpsGeneralExceptions
+	 * @throws CpsExceptions
 	 */
 
-	public void getLojasByName() throws CpsGeneralExceptions {
+	public void getLojasByName() throws CpsExceptions {
 		if (this.getNomeLoja() == null || "".equals(this.getNomeLoja())) {
 			return;
 		}
@@ -145,7 +145,7 @@ public class AdministrationBean {
 		try {
 			listLojas = administrationHandler.getAllLojas(this.getNomeLoja());
 		} catch (CpsHandlerException e) {
-			throw new CpsGeneralExceptions(e);
+			throw new CpsExceptions(e);
 		}
 	}
 
@@ -161,7 +161,7 @@ public class AdministrationBean {
 				return;
 			}
 			this.setCnpj_valido(true);
-		} catch (CpsGeneralExceptions e) {
+		} catch (CpsExceptions e) {
 			e.printStackTrace();
 		}
 	}
@@ -183,10 +183,10 @@ public class AdministrationBean {
 	/**
 	 * 
 	 * @return
-	 * @throws CpsGeneralExceptions
+	 * @throws CpsExceptions
 	 */
 
-	public SelectItem[] getAllRedes() throws CpsGeneralExceptions {
+	public SelectItem[] getAllRedes() throws CpsExceptions {
 		int index = 0;
 		// List<Rede> todasRedes = redeDao.listarTodos();
 		// redes = new SelectItem[todasRedes.size()+1];
@@ -208,7 +208,7 @@ public class AdministrationBean {
 			}
 			return redes;
 		} catch (CpsHandlerException e) {
-			throw new CpsGeneralExceptions(e);
+			throw new CpsExceptions(e);
 		}
 	}
 
@@ -263,26 +263,26 @@ public class AdministrationBean {
 	/**
 	 * Pega Usuarios
 	 * 
-	 * @throws CpsGeneralExceptions
+	 * @throws CpsExceptions
 	 */
 
-	public void findUsers() throws CpsGeneralExceptions {
+	public void findUsers() throws CpsExceptions {
 		try {
 			administrationHandler = new AdministrationHandler();
 			allLogins = administrationHandler.getAllLogins(this
 					.getLoginEntity().getNomeLogin());
 		} catch (CpsHandlerException e) {
-			throw new CpsGeneralExceptions(e);
+			throw new CpsExceptions(e);
 		}
 	}
 
 	/**
 	 * Exclui Login
 	 * 
-	 * @throws CpsGeneralExceptions
+	 * @throws CpsExceptions
 	 */
 
-	public void deleteLogin() throws CpsGeneralExceptions {
+	public void deleteLogin() throws CpsExceptions {
 		try {
 			Login newLogin = (Login) this.getRichDataTable()
 					.getRowData();
@@ -290,7 +290,7 @@ public class AdministrationBean {
 			this.allLogins.remove(newLogin);
 			administrationHandler.deleteLogin(newLogin);
 		} catch (CpsHandlerException e) {
-			throw new CpsGeneralExceptions(e);
+			throw new CpsExceptions(e);
 		}
 	}
 
@@ -314,10 +314,10 @@ public class AdministrationBean {
 
 	/**
 	 * 
-	 * @throws CpsGeneralExceptions
+	 * @throws CpsExceptions
 	 */
 
-	public void convertToObj() throws CpsGeneralExceptions {
+	public void convertToObj() throws CpsExceptions {
 		administrationHandler = new AdministrationHandler();
 		Integer index = new Integer(this.getRedeSelecionada());
 		try {
@@ -337,10 +337,10 @@ public class AdministrationBean {
 	/**
 	 * Cadastra Loja
 	 * 
-	 * @throws CpsGeneralExceptions
+	 * @throws CpsExceptions
 	 */
 
-	public void cadastraLoja() throws CpsGeneralExceptions {
+	public void cadastraLoja() throws CpsExceptions {
 		if (!this.isCnpj_valido()) {
 			return;
 		}
@@ -350,17 +350,17 @@ public class AdministrationBean {
 					.getRedeEntity());
 			this.limpaCampos();
 		} catch (CpsHandlerException e) {
-			throw new CpsGeneralExceptions(e);
+			throw new CpsExceptions(e);
 		}
 	}
 
 	/**
 	 * Atualiza Rede
 	 * 
-	 * @throws CpsGeneralExceptions
+	 * @throws CpsExceptions
 	 */
 
-	public void atualizaRede() throws CpsGeneralExceptions {
+	public void atualizaRede() throws CpsExceptions {
 		this
 				.setRedeEntity((Rede) this.getRedesDataTable()
 						.getRowData());
@@ -377,17 +377,17 @@ public class AdministrationBean {
 			administrationHandler.updateRede(this.getRedeEntity());
 			this.setNomeRede("");
 		} catch (CpsHandlerException e) {
-			throw new CpsGeneralExceptions(e);
+			throw new CpsExceptions(e);
 		}
 	}
 
 	/**
 	 * Atualiza Loja
 	 * 
-	 * @throws CpsGeneralExceptions
+	 * @throws CpsExceptions
 	 */
 
-	public void atualizaLoja() throws CpsGeneralExceptions {
+	public void atualizaLoja() throws CpsExceptions {
 		if (!this.isCnpj_valido()) {
 			return;
 		}
@@ -401,17 +401,17 @@ public class AdministrationBean {
 			this.setMostrarLojaUpd(false);
 
 		} catch (CpsHandlerException e) {
-			throw new CpsGeneralExceptions(e);
+			throw new CpsExceptions(e);
 		}
 	}
 
 	/**
 	 * Exclui Rede
 	 * 
-	 * @throws CpsGeneralExceptions
+	 * @throws CpsExceptions
 	 */
 
-	public void excluirRede() throws CpsGeneralExceptions {
+	public void excluirRede() throws CpsExceptions {
 		// this.setRedeEntity((Rede)
 		// this.getRedesDataTable().getRowData());
 		// this.listRedes.remove(this.getRedeEntity());
@@ -424,17 +424,17 @@ public class AdministrationBean {
 			this.listRedes.remove(this.getRedeEntity());
 			administrationHandler.excluirRede(this.getRedeEntity());
 		} catch (CpsHandlerException e) {
-			throw new CpsGeneralExceptions(e);
+			throw new CpsExceptions(e);
 		}
 	}
 
 	/**
 	 * Exclui Loja
 	 * 
-	 * @throws CpsGeneralExceptions
+	 * @throws CpsExceptions
 	 */
 
-	public void excluirLoja() throws CpsGeneralExceptions {
+	public void excluirLoja() throws CpsExceptions {
 //		this.setLojaEntity((Loja) this.getLojasDataTable().getRowData());
 //		this.listLojas.remove(this.getLojaEntity());
 //		lojaDao.excluir(this.getLojaEntity());
@@ -444,7 +444,7 @@ public class AdministrationBean {
 			this.listLojas.remove(this.getLojaEntity());
 			administrationHandler.excluirLoja(this.getLojaEntity());
 		}catch (CpsHandlerException e) {		
-			throw new CpsGeneralExceptions(e);
+			throw new CpsExceptions(e);
 		}
 	}
 

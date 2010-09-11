@@ -15,7 +15,7 @@ import br.iteratorsystems.cps.entities.Endereco;
 import br.iteratorsystems.cps.entities.Login;
 import br.iteratorsystems.cps.entities.Parametrizacao;
 import br.iteratorsystems.cps.entities.Usuario;
-import br.iteratorsystems.cps.exceptions.CpsGeneralExceptions;
+import br.iteratorsystems.cps.exceptions.CpsExceptions;
 import br.iteratorsystems.cps.exceptions.CpsHandlerException;
 import br.iteratorsystems.cps.handler.LoginUserHandler;
 import br.iteratorsystems.cps.handler.UserManagementHandler;
@@ -157,7 +157,7 @@ public class UserManagementBean {
 		}
 	}
 
-	public boolean userExists() throws CpsGeneralExceptions{
+	public boolean userExists() throws CpsExceptions{
 		if(CommonOperations.userExists(this.getLoginEntity().getNomeLogin())){
 			this.setValidUsername(false);
 			this.setMensagem_username(MENSAGENS_JSF[0]);
@@ -168,7 +168,7 @@ public class UserManagementBean {
 		}
 	}
 	
-	public boolean cpfExists() throws CpsGeneralExceptions{
+	public boolean cpfExists() throws CpsExceptions{
 		if(CommonOperations.cpfExists(this.getUsuarioEntity().getCpfUsuario().replace(".","").replace("-",""))){
 			this.setMensagem_cpf(MENSAGENS_JSF[3]);
 			this.setValidCpf(false);
@@ -180,7 +180,7 @@ public class UserManagementBean {
 		}
 	}
 	
-	public boolean cpfExists(String cpf,String username) throws CpsGeneralExceptions{
+	public boolean cpfExists(String cpf,String username) throws CpsExceptions{
 		if(CommonOperations.cpfExists(cpf,username)){
 			this.setMensagem_cpf(MENSAGENS_JSF[3]);
 			this.setValidCpf(false);
@@ -199,7 +199,7 @@ public class UserManagementBean {
 		return "toCadUser";
 	}
 	
-	public String salva() throws CpsGeneralExceptions {
+	public String salva() throws CpsExceptions {
 		if(!this.validatePassword())
 			return "";
 		
@@ -220,7 +220,7 @@ public class UserManagementBean {
 			userHandler.save(usuarioEntity,loginEntity,enderecoEntity);
 			return "";
 		}catch (CpsHandlerException e) {
-			throw new CpsGeneralExceptions(e);
+			throw new CpsExceptions(e);
 		}
 	}
 
@@ -255,7 +255,7 @@ public class UserManagementBean {
 		return ok;
 	}
 
-	public void atualiza() throws CpsGeneralExceptions{
+	public void atualiza() throws CpsExceptions{
 
 		if(!"".equals(this.getPut_senha_antiga())){
 			if(!this.validateOldPassword()) {
@@ -281,8 +281,8 @@ public class UserManagementBean {
 		userHandler = new UserManagementHandler();
 		try{
 			userHandler.update(this.getUsuarioEntity());
-		}catch (CpsGeneralExceptions e) {
-			throw new CpsGeneralExceptions(e);
+		}catch (CpsExceptions e) {
+			throw new CpsExceptions(e);
 		}
 	}
 	

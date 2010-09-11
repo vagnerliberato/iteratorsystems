@@ -15,7 +15,7 @@ import br.iteratorsystems.cps.entities.ListaProdutoItem;
 import br.iteratorsystems.cps.entities.Parametrizacao;
 import br.iteratorsystems.cps.entities.ProdutoGeral;
 import br.iteratorsystems.cps.entities.Usuario;
-import br.iteratorsystems.cps.exceptions.CpsGeneralExceptions;
+import br.iteratorsystems.cps.exceptions.CpsExceptions;
 import br.iteratorsystems.cps.exceptions.CpsHandlerException;
 import br.iteratorsystems.cps.handler.BuscaProdutoHandler;
 import br.iteratorsystems.cps.handler.LoginUserHandler;
@@ -59,42 +59,47 @@ public class ListaDeProdutoBean {
 		userHandler = new LoginUserHandler();
 		numeroMaximoItensCarrinho = Integer.parseInt(obterParametrizacao().getNumMaxItensLista().trim());
 		instanciarListaDeCompras();
-		verificarListaExistente();
+		carregarPaginaBusca();
 	}
 	
 	/**
 	 * Verifica se o usuário tem lista de compras e mostra uma página
 	 * personalizada. 
 	 */
-	private void verificarListaExistente() {
+	public void carregarPaginaBusca() {
+		
+		setPaginaAtual("newList.jsf");
+		this.limparPagina();
+		
+		if(listaPagina != null) {
+			listaPagina.clear();
+		}if(listaBusca != null) {
+			listaBusca.clear();
+		}
 		
 		if(usuario == null || 
 				(usuario.getListaProdutos() == null || usuario.getListaProdutos().isEmpty())) {
 			setUsuario(recuperarUsuario());
 		}
+	}
+	
+	/**
+	 * Carrega as listas de compra do usuário
+	 */
+	public void carregarListasUsuario(){
+		setPaginaAtual("allLists.jsf");
 		
-		if(usuario == null ||
-				usuario.getListaProdutos() == null ||
-				usuario.getListaProdutos().isEmpty()) {
-			setPaginaAtual("newList.jsf");
-			this.limparPagina();
-			if(listaPagina != null) {
-				listaPagina.clear();
-			}if(listaBusca != null) {
-				listaBusca.clear();
-			}
-		}else{
-			setPaginaAtual("allLists.jsf");
-			if(listaPagina != null) {
-				listaPagina.clear();
-			}if(listaBusca != null) {
-				listaBusca.clear();
-			}
-			this.limparPagina();
-			listaProdutoUsuario = 
-				new ArrayList<ListaProduto>(
-						usuario.getListaProdutos());
+		if(listaPagina != null) {
+			listaPagina.clear();
+		}if(listaBusca != null) {
+			listaBusca.clear();
 		}
+		this.limparPagina();
+		
+		setUsuario(recuperarUsuario());
+		listaProdutoUsuario = 
+			new ArrayList<ListaProduto>(
+					usuario.getListaProdutos());
 	}
 	
 	/**
@@ -164,10 +169,10 @@ public class ListaDeProdutoBean {
 	
 	/**
 	 * Busca os produtos com base no que foi digitado pelo usuário.
-	 * @throws CpsGeneralExceptions Alguma exceção, verificada ou não nas
+	 * @throws CpsExceptions Alguma exceção, verificada ou não nas
 	 * camadas abaixo do Bean.
 	 */
-	public void buscarProduto() throws CpsGeneralExceptions{
+	public void buscarProduto() throws CpsExceptions{
 		buscaProdutoHandler = new BuscaProdutoHandler();
 		List<ProdutoGeral> listaTemp = null;
 		listaBusca = new ArrayList<ProdutoTO>(1);
@@ -191,7 +196,7 @@ public class ListaDeProdutoBean {
 			
 			listaBusca.removeAll(listaPagina);
 		}catch (CpsHandlerException e) {
-			throw new CpsGeneralExceptions(e);
+			throw new CpsExceptions(e);
 		}
 	}
 	
@@ -207,9 +212,9 @@ public class ListaDeProdutoBean {
 	
 	/**
 	 * Exclui uma lista de produto
-	 * @throws CpsGeneralExceptions - Se ocorrer alguma exceção na camada abaixo do bean.
+	 * @throws CpsExceptions - Se ocorrer alguma exceção na camada abaixo do bean.
 	 */
-	public void excluirListaDeProdutos() throws CpsGeneralExceptions{
+	public void excluirListaDeProdutos() throws CpsExceptions{
 		ListaProduto lista = (ListaProduto) tabelasListaDataTable.getRowData();
 		lista.getListaProdutoItems().clear();
 		listaProdutoService.excluirListaDeProdutos(lista);
@@ -220,7 +225,7 @@ public class ListaDeProdutoBean {
 		LoginUserBean userBean = (LoginUserBean)
 					el.getValue(context.getELContext(),null,"loginUserBean");
 		usuario = userHandler.getUserRelated(userBean.getLogin().getIdLogin());
-		verificarListaExistente();
+		carregarPaginaBusca();
 		
 		if(usuario.getListaProdutos().isEmpty()) {
 			instanciarListaDeCompras();
@@ -239,9 +244,9 @@ public class ListaDeProdutoBean {
 	
 	/**
 	 * Inclui uma lista de produto
-	 * @throws CpsGeneralExceptions - Se ocorrer alguma exceção na camada abaixo do bean.
+	 * @throws CpsExceptions - Se ocorrer alguma exceção na camada abaixo do bean.
 	 */
-	public void incluirListaDeProdutos()throws CpsGeneralExceptions{
+	public void incluirListaDeProdutos()throws CpsExceptions{
 		listaComprasUsuario.setListaProdutos(listaPagina);
 		Usuario usuario = getUsuario();
 		
@@ -251,7 +256,7 @@ public class ListaDeProdutoBean {
 		listaProdutoService.incluirListaDeProdutos(
 				ListaProdutoTOHelper.popularUmaListaDeProduto(this.getNomeLista(), usuario),
 				ListaProdutoTOHelper.converteListaProdutoTO(listaComprasUsuario.getListaProdutos()));
-		verificarListaExistente();
+		carregarPaginaBusca();
 	}
 	
 	/**

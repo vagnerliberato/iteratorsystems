@@ -1,12 +1,24 @@
 package br.iteratorsystems.cps.beans;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.el.ELResolver;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
 
 import br.iteratorsystems.cps.common.FindAddress;
 import br.iteratorsystems.cps.entities.Endereco;
+import br.iteratorsystems.cps.entities.ListaProduto;
 import br.iteratorsystems.cps.entities.Login;
+import br.iteratorsystems.cps.entities.Parametrizacao;
+import br.iteratorsystems.cps.enums.TipoDeComparacao;
+import br.iteratorsystems.cps.exceptions.CpsExceptions;
 import br.iteratorsystems.cps.helper.FormatadorEstadorHelper;
+import br.iteratorsystems.cps.helper.ListaProdutoTOHelper;
+import br.iteratorsystems.cps.interfaces.MotorComparacao;
+import br.iteratorsystems.cps.motor.MotorComparacaoImpl;
+import br.iteratorsystems.cps.to.ProdutoTO;
 
 /**
  * Classe bean da página de filtros de comparação
@@ -15,6 +27,8 @@ import br.iteratorsystems.cps.helper.FormatadorEstadorHelper;
  */
 public class FiltersBean {
 	
+	private static final int VALOR_MAX_LOJA_COMPARACAO = 5;
+	
 	private String cep;
 	private String cepAlternativo;
 	private String logradouro;
@@ -22,10 +36,272 @@ public class FiltersBean {
 	private String cidade;
 	private String estado;
 	private String campoHidden;
+	private String valorCampoComparacao;
+	private String valorInformacaoModal;
 	private Boolean buscarPeloMenorPreco;
 	private Boolean buscarPelaMenorDistancia;
 	private FindAddress findAddress;
-	private Login login; 
+	private Login login;
+	private List<String> listasUsuario;
+	private String produtoSelecionadoCombo;
+
+	private MotorComparacao motorComparacao;
+	private Parametrizacao parametrizacao;
+	
+	/**
+	 * Carrega o combo da lista de usuario.
+	 */
+	private void carregarComboProdutosUsuario() {
+		List<ListaProduto> listaProdutos = null;
+		if(login != null) {
+			if(login.getUsuario() != null) {
+				listaProdutos = 
+					new ArrayList<ListaProduto>(login.getUsuario().getListaProdutos());
+				
+				listasUsuario = new ArrayList<String>();
+				if(verificarCarrinhoPreenchido()) {
+					listasUsuario.add("Usar meu carrinho");
+				}
+				
+				for(ListaProduto lista : listaProdutos) {
+					listasUsuario.add(lista.getId()+" - "+lista.getNomeLista());
+				}
+			}
+		}
+	}
+
+	/**
+	 * Cria o motor de comparação de produtos
+	 */
+	public void compararProdutos() {
+		if(verificarCamposPreenchidos()){
+			if(buscarPeloMenorPreco) {
+				comparar(TipoDeComparacao.MENOR_PRECO);
+			}else if(buscarPelaMenorDistancia) {
+				comparar(TipoDeComparacao.MENOR_DISTANCIA);
+			}else{
+				comparar(TipoDeComparacao.MENOR_PRECO_E_DISTANCIA);
+			}
+		}
+	}
+	
+	/**
+	 * Verifica se os campos da página foram preenhcidos corretamente.
+	 * @return Se foram ou não
+	 */
+	private boolean verificarCamposPreenchidos() {
+		boolean correto = true;
+		
+		if(cep == null || cep.isEmpty()) {
+			correto = false;
+			valorInformacaoModal = "Informe um cep válido.";
+			valorCampoComparacao = "Richfaces.showModalPanel('modalErroPreenchimento');";
+		}else{
+			valorInformacaoModal = "";
+			valorCampoComparacao = "";
+		}
+		
+		if(correto) {
+			if(!buscarPeloMenorPreco && !buscarPelaMenorDistancia) {
+				
+				correto = false;
+				valorInformacaoModal = "Selecione busca pelo menor preço, ou distância, ou os dois.";
+				valorCampoComparacao = "Richfaces.showModalPanel('modalErroPreenchimento');";
+			}else{
+				valorInformacaoModal = "";
+				valorCampoComparacao = "";
+			}
+		}
+		
+		if(correto) {
+			if(login != null && (produtoSelecionadoCombo == null || 
+					produtoSelecionadoCombo.isEmpty())) {
+				
+				correto = false;
+				valorInformacaoModal = "Selecione uma lista, ou o carrinho para comparação";
+				valorCampoComparacao = "Richfaces.showModalPanel('modalErroPreenchimento');";
+				
+			}else{
+				valorCampoComparacao = "";
+				valorInformacaoModal = "";
+			}
+		}
+		return correto;
+	}
+	
+	/**
+	 * Compara os produtos do usuario
+	 * @param tipoDeComparacao - tipo de comparacao
+	 */
+	private void comparar(TipoDeComparacao tipoDeComparacao) {
+		this.obterParametrizacao();
+		motorComparacao = 
+			new MotorComparacaoImpl(
+					verificarProdutoParaComparacao(),
+					tipoDeComparacao,verificarUFUsuario(),
+					obterMaxLojasComparacao(),
+					obterValorMedioCombustivel(),
+					obterRendimentoCombustivel(),
+					obterCepUsuarioComparacao());
+		try {
+			motorComparacao.comparar();
+		} catch (CpsExceptions e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Obtem o cep do usuario
+	 * @return Cep
+	 */
+	private String obterCepUsuarioComparacao() {
+		String cep = null;
+		if(cepAlternativo != null && !cepAlternativo.isEmpty()) {
+			cep = cepAlternativo;
+		}else{
+			cep = this.getCep();
+		}
+		return cep;
+	}
+	
+	/**
+	 * Obtem o rendimento medio do cumbustivel, em KM/Litros
+	 * @return Valor do rendimento
+	 */
+	private Double obterRendimentoCombustivel() {
+		Double valor  = 0d;
+		valor = parametrizacao.getRendimentomediocombustivel();
+		return valor;
+	}
+	
+	/**
+	 * Obtém o valor médio do combustivel em Litros.
+	 * @return Valor médio
+	 */
+	private Double obterValorMedioCombustivel() {
+		Double valor = 0d;
+		valor = parametrizacao.getValormediocombustivel();
+		return valor;
+	}
+	
+	/**
+	 * Obtem a parametrizacao do sistema
+	 */
+	private void obterParametrizacao() {
+		parametrizacao = (Parametrizacao) FacesContext.getCurrentInstance()
+				.getExternalContext().getApplicationMap().get("parametrizacao");
+	}
+
+	/**
+	 * Obtem a parametrização para o maximo de lojas.
+	 * @return Valor de quantidade de lojas.
+	 */
+	private Integer obterMaxLojasComparacao() {
+		Integer valor = VALOR_MAX_LOJA_COMPARACAO; // valor default
+		
+		if(parametrizacao.getNumMaxLojasComparacao() != null) {
+			valor = Integer.parseInt(parametrizacao.getNumMaxLojasComparacao().trim());
+		}
+		
+		return valor;
+	}
+	
+	/**
+	 * Verifica a UF do usuario
+	 * @return Uf do usuario
+	 */
+	private String verificarUFUsuario() {
+		String uf = null;
+		uf = 
+			FormatadorEstadorHelper.obterSiglaEstado(this.getEstado());
+		return uf;
+	}
+	
+	/**
+	 * Verifica qual lista de produtos ou carrinho sera usado para comparacao.
+	 * @return Lista de produto TO
+	 */
+	private List<ProdutoTO> verificarProdutoParaComparacao() {
+		List<ProdutoTO> listaProdutoTO = null;
+		DefaultBean defaultBean = null;
+		
+		if(login != null) {
+			List<ListaProduto> listaProduto = 
+				new ArrayList<ListaProduto>(login.getUsuario().getListaProdutos());
+			
+			if(verificarEscolhaUsuario()) {
+				for(ListaProduto listaProdutoObj : listaProduto) {
+					if(listaProdutoObj.getId().compareTo(Integer.parseInt(obterCodigoListaCombo())) == 0) {
+						listaProdutoTO = 
+							new ArrayList<ProdutoTO>(
+									ListaProdutoTOHelper.converteItemLista(listaProdutoObj.getListaProdutoItems()));
+					}
+				}
+			}else{
+				FacesContext context = FacesContext.getCurrentInstance();
+				ELResolver el = context.getApplication().getELResolver();
+				defaultBean = (DefaultBean) el.getValue(context.getELContext(),null,"defaultBean");
+				
+				listaProdutoTO = defaultBean.getProdutosCarrinho();
+			}
+		}else{
+			FacesContext context = FacesContext.getCurrentInstance();
+			ELResolver el = context.getApplication().getELResolver();
+			defaultBean = (DefaultBean) el.getValue(context.getELContext(),null,"defaultBean");
+			
+			listaProdutoTO = defaultBean.getProdutosCarrinho();
+		}
+		return listaProdutoTO;
+	}
+
+	/**
+	 * Verifica se o usuario logado escolheu uma lista ou carrinho.
+	 * @return Verdadeiro ou falso.
+	 */
+	private boolean verificarEscolhaUsuario() {
+		boolean lista = true;
+		try{
+			Integer.parseInt(obterCodigoListaCombo());
+		}catch (Exception e) {
+			lista = false; 
+		}
+		return lista;
+	}
+	
+	/**
+	 * Obtem o codigo da lista do combo
+	 * @return Codigo
+	 */
+	private String obterCodigoListaCombo() {
+		String codigo = null;
+		String [] partes = produtoSelecionadoCombo.split("[-]");
+		
+		if(partes.length > 1) {
+			codigo = partes[0];
+		}
+		return codigo;
+	}
+	
+	/**
+	 * Verifica se o carrinho do usuário foi preenchido.
+	 * @return Se foi ou não preenchido.
+	 */
+	private boolean verificarCarrinhoPreenchido() {
+		boolean carrinhoCheio = false;
+		
+		FacesContext context = FacesContext.getCurrentInstance();
+		ELResolver el = context.getApplication().getELResolver();
+		DefaultBean defaultBean = 
+					(DefaultBean) el.getValue(context.getELContext(),null,"defaultBean");
+		
+		if(defaultBean != null) {
+			if(defaultBean.getProdutosCarrinho() != null &&
+					!defaultBean.getProdutosCarrinho().isEmpty()) {
+				carrinhoCheio = true;
+			}
+		}
+		return carrinhoCheio;
+	}
 	
 	/**
 	 * verifica se o usuário esta logado na aplicação,
@@ -36,7 +312,7 @@ public class FiltersBean {
 		ServletContext servletContext = (ServletContext) context.getExternalContext().getContext();
 		login = (Login) servletContext.getAttribute("usuarioLogado");
 		
-		if(login!=null) {
+		if(login!=null && cepAlternativo == null) {
 			if(login.getUsuario()!=null) {
 				for(Endereco endereco : login.getUsuario().getEnderecos()) {
 					this.setBairro(endereco.getBairro());
@@ -47,6 +323,14 @@ public class FiltersBean {
 				}
 			}
 		}
+	}
+	
+	/**
+	 * Mostra a pagina de carrinho para visualização dos itens
+	 * @return String com a navigation rule
+	 */
+	public String visualizarCarrinho() {
+		return "toMyCar";
 	}
 	
 	/**
@@ -66,14 +350,6 @@ public class FiltersBean {
 		this.setCidade(findAddress.getCidade());
 		this.setEstado(findAddress.getEstado());
 		findAddress = null;
-	}
-	
-	/**
-	 * Chama o motor de comparação de produtos
-	 */
-	public void compararProdutos() {
-		//TODO comparar
-		System.out.println("comparando");
 	}
 	
 	/**
@@ -189,8 +465,10 @@ public class FiltersBean {
 	/**
 	 * @return the campoHidden
 	 */
+	//TODO existe uma forma melhor do que essa :*)
 	public String getCampoHidden() {
 		verificarUsuarioLogado();
+		carregarComboProdutosUsuario();
 		return campoHidden;
 	}
 
@@ -206,5 +484,61 @@ public class FiltersBean {
 	 */
 	public String getCepAlternativo() {
 		return cepAlternativo;
+	}
+
+	/**
+	 * @param listasUsuario the listasUsuario to set
+	 */
+	public void setListasUsuario(List<String> listasUsuario) {
+		this.listasUsuario = listasUsuario;
+	}
+
+	/**
+	 * @return the listasUsuario
+	 */
+	public List<String> getListasUsuario() {
+		return listasUsuario;
+	}
+
+	/**
+	 * @param produtoSelecionadoCombo the produtoSelecionadoCombo to set
+	 */
+	public void setProdutoSelecionadoCombo(String produtoSelecionadoCombo) {
+		this.produtoSelecionadoCombo = produtoSelecionadoCombo;
+	}
+
+	/**
+	 * @return the produtoSelecionadoCombo
+	 */
+	public String getProdutoSelecionadoCombo() {
+		return produtoSelecionadoCombo;
+	}
+
+	/**
+	 * @param valorCampoComparacao the valorCampoComparacao to set
+	 */
+	public void setValorCampoComparacao(String valorCampoComparacao) {
+		this.valorCampoComparacao = valorCampoComparacao;
+	}
+
+	/**
+	 * @return the valorCampoComparacao
+	 */
+	public String getValorCampoComparacao() {
+		return valorCampoComparacao;
+	}
+
+	/**
+	 * @param valorInformacaoModal the valorInformacaoModal to set
+	 */
+	public void setValorInformacaoModal(String valorInformacaoModal) {
+		this.valorInformacaoModal = valorInformacaoModal;
+	}
+
+	/**
+	 * @return the valorInformacaoModal
+	 */
+	public String getValorInformacaoModal() {
+		return valorInformacaoModal;
 	}
 }

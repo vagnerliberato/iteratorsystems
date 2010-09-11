@@ -10,7 +10,7 @@ import org.richfaces.component.html.HtmlDataTable;
 
 import br.iteratorsystems.cps.entities.Parametrizacao;
 import br.iteratorsystems.cps.entities.ProdutoGeral;
-import br.iteratorsystems.cps.exceptions.CpsGeneralExceptions;
+import br.iteratorsystems.cps.exceptions.CpsExceptions;
 import br.iteratorsystems.cps.exceptions.CpsHandlerException;
 import br.iteratorsystems.cps.handler.BuscaProdutoHandler;
 import br.iteratorsystems.cps.to.ProdutoTO;
@@ -68,10 +68,10 @@ public class DefaultBean {
 	
 	/**
 	 * Busca os produtos com base no que foi digitado pelo usuário.
-	 * @throws CpsGeneralExceptions Alguma exceção, verificada ou não nas
+	 * @throws CpsExceptions Alguma exceção, verificada ou não nas
 	 * camadas abaixo do Bean.
 	 */
-	public void buscarProduto() throws CpsGeneralExceptions{
+	public void buscarProduto() throws CpsExceptions{
 		buscaProdutoHandler = new BuscaProdutoHandler();
 		List<ProdutoGeral> listaTemp = null;
 		listaProdutoTO = new ArrayList<ProdutoTO>(1);
@@ -100,9 +100,11 @@ public class DefaultBean {
 				listaProdutoTO.add(produtoTO);
 			}
 			
-			listaProdutoTO.removeAll(produtosCarrinho);
+			if(produtosCarrinho != null) {
+				listaProdutoTO.removeAll(produtosCarrinho);
+			}
 		}catch (CpsHandlerException e) {
-			throw new CpsGeneralExceptions(e);
+			throw new CpsExceptions(e);
 		}
 	}
 	
@@ -131,12 +133,14 @@ public class DefaultBean {
 		if(quantidadeSelecionada < 1) {
 			nomeModalQuantidade = "Richfaces.showModalPanel('modalInfoQuantidade');";
 		}else {
-			if(produtosCarrinho.size() +1 > getNumeroMaximoItensCarrinho()) {
-				nomeModalQuantidade = "Richfaces.showModalPanel('modalQuantidadeCarrinho');";
-			}else {
-				if(!produtosCarrinho.contains(produtoSelecionado)) {
-					produtosCarrinho.add(produtoSelecionado);
-					listaProdutoTO.remove(produtoSelecionado);
+			if(produtosCarrinho != null) {
+				if(produtosCarrinho.size() +1 > getNumeroMaximoItensCarrinho()) {
+					nomeModalQuantidade = "Richfaces.showModalPanel('modalQuantidadeCarrinho');";
+				}else {
+					if(!produtosCarrinho.contains(produtoSelecionado)) {
+						produtosCarrinho.add(produtoSelecionado);
+						listaProdutoTO.remove(produtoSelecionado);
+					}
 				}
 			}
 		}
@@ -193,6 +197,17 @@ public class DefaultBean {
  	
 	public void excluirallProdutoCarrinho(){
 		produtosCarrinho.clear();				
+	}
+
+	/**
+	 * limpa os dados da tela e do bean
+	 */
+	public void limparTudo() {
+		this.setProdutosCarrinho(new ArrayList<ProdutoTO>());
+		this.setListaProdutoTO(null);
+		this.setProdutoCarrinhoSelecionado(null);
+		this.setProdutoDigitado(null);
+		this.setNenhumRegistroEncontrado(false);
 	}
 	
 	/**
@@ -343,5 +358,4 @@ public class DefaultBean {
 	public String getDiretorioImagem() {
 		return diretorioImagem;
 	}
-
 }
