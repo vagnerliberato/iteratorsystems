@@ -8,9 +8,9 @@
 
 <ui:composition template="../template/template.jsf">
 		<ui:define name="content">
-		<a4j:form id="addFiltersForm"><!-- Porque nao funciona?? -->
+		<!--<a4j:form id="addFiltersForm"> Porque nao funciona?? -->
 			<a4j:loadScript src="/view/js/jquerymaskedinput-121.js"/>
-		<!--<h:form id="addFiltersForm">-->
+			<h:form id="addFiltersForm">
 			<h:inputHidden value="#{filtersBean.campoHidden}"/>
 			<rich:spacer height="20"/>
 			<h:panelGroup id="selectCepPanel" >
@@ -87,16 +87,16 @@
 						<h:outputText value="#{msg.personalcontact_state}" styleClass="letras"/>
 					</h:column>
 					<h:column>
-						<h:inputText disabled="true" value="#{filtersBean.logradouro}" id="inputRua" maxlength="50" size="30" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+						<h:inputText readonly="true" value="#{filtersBean.logradouro}" id="inputRua" maxlength="50" size="30" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
 					</h:column>
 					<h:column>
-						<h:inputText disabled="true" id="inputBairro" value="#{filtersBean.bairro}" maxlength="50" size="20" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+						<h:inputText readonly="true" id="inputBairro" value="#{filtersBean.bairro}" maxlength="50" size="20" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
 					</h:column>
 					<h:column>
-						<h:inputText disabled="true" value="#{filtersBean.cidade}" id="inputCidade" maxlength="50" size="25" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+						<h:inputText readonly="true" value="#{filtersBean.cidade}" id="inputCidade" maxlength="50" size="25" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
 					</h:column>
 					<h:column>
-						<h:inputText disabled="true" value="#{filtersBean.estado}" id="selectEstado" maxlength="25" size="27" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
+						<h:inputText readonly="true" value="#{filtersBean.estado}" id="selectEstado" maxlength="25" size="27" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
 					</h:column>
 				</h:panelGrid>
 				</rich:panel>
@@ -113,18 +113,18 @@
 							<h:outputText value="#{msg.addfilters_header_information}" styleClass="letrasAba"/>
 						</h:panelGroup>
 					</f:facet>
-					<h:panelGrid columns="4">
+					<h:panelGrid columns="6">
 						<h:column>
-							<rich:panel>
+							<rich:panel style="width:100px;">
 								<f:facet name="header">
 									<h:panelGroup>
-									<h:graphicImage url="/view/images/price.png"/>
+									<h:graphicImage url="/view/images/price.png" width="50%"/>
 									<h:outputText value="#{msg.addfilters_filtersbox_price}" styleClass="letrasAbaB"/>
 									</h:panelGroup>
 								</f:facet>
-								<h:selectBooleanCheckbox value="#{filtersBean.buscarPeloMenorPreco}"/>
-								<rich:spacer width="3"/>
-								<h:outputText value="#{msg.addfilters_select}" styleClass="letrasInfo"/>
+								<center>
+									<h:selectBooleanCheckbox value="#{filtersBean.buscarPeloMenorPreco}"/>
+								</center>
 								<rich:toolTip followMouse="true" layout="block" mode="ajax" direction="top-right">
 									<span>
 										<h:outputText value="#{msg.addfilters_tip_price_1}"/>
@@ -143,16 +143,16 @@
 							</rich:panel>
 						</h:column>
 						<h:column>
-							<rich:panel>
+							<rich:panel style="width:125px;">
 								<f:facet name="header">
 									<h:panelGroup>
-									<h:graphicImage url="/view/images/distance.png"/>
+									<h:graphicImage url="/view/images/distance.png" width="38%"/>
 									<h:outputText value="#{msg.addfilters_filtersbox_distance}" styleClass="letrasAbaB"/>
 									</h:panelGroup>
 								</f:facet>
-								<h:selectBooleanCheckbox value="#{filtersBean.buscarPelaMenorDistancia}"/>
-								<rich:spacer width="3"/>
-								<h:outputText value="#{msg.addfilters_select}" styleClass="letrasInfo"/>
+								<center>
+									<h:selectBooleanCheckbox value="#{filtersBean.buscarPelaMenorDistancia}"/>
+								</center>
 								<rich:toolTip followMouse="true" layout="block" mode="ajax" direction="top-right">
 									<h:outputText value="#{msg.addfilters_tip_distance_1}"/>
 									<br />
@@ -167,18 +167,88 @@
 							</rich:panel>
 						</h:column>
 						<h:column>
+							<rich:panel style="width: 180px;" rendered="#{not empty filtersBean.login}">
+								<f:facet name="header">
+									<h:panelGroup>
+										<h:graphicImage url="/view/images/car.png" width="27%"/>
+										<h:outputText value="#{msg.addfilters_filtersbox_products}" styleClass="letrasAbaB"/>
+									</h:panelGroup>
+								</f:facet>
+								<center>	
+									<rich:comboBox id="myLists" value="#{filtersBean.produtoSelecionadoCombo}" 
+												   suggestionValues="#{filtersBean.listasUsuario}"
+												   enableManualInput="false" listWidth="150px;" listHeight="50px;"/>
+												   
+									<rich:toolTip followMouse="true" layout="block" mode="ajax" direction="top-right">
+										<h:outputText value="#{msg.addfilters_tip_list_1}"/>
+										<br />
+										<h:outputText value="#{msg.addfilters_tip_list_2}"/>
+										<br />
+										<h:outputText value="#{msg.addfilters_tip_list_3}"/>
+										<br />
+										<h:outputText value="#{msg.addfilters_tip_list_4}"/>
+									</rich:toolTip>
+								</center>
+							</rich:panel>							
+							<rich:panel style="width: 120px;" rendered="#{empty filtersBean.login}">
+								<f:facet name="header">
+									<h:panelGroup>
+										<h:graphicImage url="/view/images/car.png" width="42%"/>
+										<h:outputText value="#{msg.addfilters_filtersbox_products}" styleClass="letrasAbaB"/>
+									</h:panelGroup>
+								</f:facet>
+								<center>	
+									<h:commandLink id="linkCar" action="#{filtersBean.visualizarCarrinho}" value="#{msg.addfilters_linkCar}"/>
+									<rich:spacer width="3"/>
+									<rich:toolTip followMouse="true" layout="block" mode="ajax" direction="top-right" rendered="#{empty filtersBean.login}">
+										<h:outputText value="#{msg.addfilters_tip_car_1}"/>
+										<br />
+										<h:outputText value="#{msg.addfilters_tip_car_2}"/>
+									</rich:toolTip>
+								</center>
+							</rich:panel>
+						</h:column>
+						<h:column>
 							<rich:spacer width="40"/>
 							<a4j:commandButton value="#{msg.addfilter_button_compare}" 
-								action="#{filtersBean.compararProdutos}" style="width:70px;height:50px;"
-								oncomplete="submit();"/>
-								
-							<rich:progressBar />
+								action="#{filtersBean.compararProdutos}" style="width:70px;height:25px;"
+								oncomplete="#{filtersBean.valorCampoComparacao}" reRender="modalErroPreenchimento"/>
+						</h:column>
+						<h:column>
+							<rich:spacer width="15"/>
+							<a4j:outputPanel id="barraProgressoPanel" ajaxRendered="true">
+								<rich:progressBar mode="client" value="10" label="buscando o menor preço" id="barraProgresso"
+												  minValue="0" maxValue="100" reRenderAfterComplete="barraProgressoPanel,barraProgresso"/>
+							</a4j:outputPanel>
 						</h:column>
 					</h:panelGrid>	
 				</rich:panel>
 			</h:panelGroup>
-			<!--</h:form>-->
-			</a4j:form>
+			</h:form>
+			<!--</a4j:form>-->
+			
+			<!-- Modais -->
+			
+			<rich:modalPanel id="modalErroPreenchimento" height="95" width="395" resizeable="false">
+				<f:facet name="header">
+					<h:outputText value="#{msg.filter_modal_header}" />
+				</f:facet>
+				<f:facet name="controls">
+					<h:panelGroup>
+						<h:graphicImage value="/view/images/close.png" id="hidelink1" />
+						<rich:componentControl for="modalErroPreenchimento"
+							attachTo="hidelink1" operation="hide" event="onclick"/>
+					</h:panelGroup>
+				</f:facet>
+				<center>
+					<h:outputText value="#{filtersBean.valorInformacaoModal}" styleClass="letras" />
+					<br />
+					<br />
+					<h:commandButton styleClass="botaoDefault" onclick="#{rich:component('modalErroPreenchimento')}.hide();"
+									 value="#{msg.default_modal_button}" />
+				</center>
+			</rich:modalPanel>
+			
 		</ui:define>
 </ui:composition>
 </jsp:root>
