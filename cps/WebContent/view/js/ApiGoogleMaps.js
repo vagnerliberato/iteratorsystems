@@ -27,8 +27,8 @@
             // Essa function é responsável pelo direcionamento do mapa para os endereços informados. Acredito que não iremos colocar mapa em nossa aplicação, porém o método está criado.
             function gerarRota(){      
             	
-            	from = document.forms['defaultForm'].elements['address1'].value;
-                to = document.forms['defaultForm'].elements['address2'].value;
+            	from = document.forms['google'].elements['address1'].value;
+                to = document.forms['google'].elements['address2'].value;
             	                            	
                 //Verifica a instância desta classe e faz um get na Latitute e Logitude do Ponto de Origem e Ponto de Destino.
                 if ( geocoder ) {
@@ -62,14 +62,10 @@
             // Neste método coloquei as variáveis que vamos utilizar para o cálculo de distância.
             function showLocation() {
              	
-            	from = document.forms['defaultForm'].elements['address1'].value;
-                to = document.forms['defaultForm'].elements['address2'].value;
-            	                
-            	alert(from);
-                alert(to);
-                gerarRota();
-            	
-            	geocoder.getLocations(document.forms['defaultForm'].elements['address1'].value,
+            	from = document.forms['google'].elements['address1'].value;
+                to = document.forms['google'].elements['address2'].value;
+
+                geocoder.getLocations(document.forms['google'].elements['address1'].value,
                 function (response) {
                     if (!response || response.Status.code != 200)
                     {
@@ -79,7 +75,7 @@
                     {
                         //Essa são as variáveis para utilização no nosso projeto (Latitude - lat, Longitude - lon, Endereço - Address. 
                     	location1 = {lat: response.Placemark[0].Point.coordinates[1], lon: response.Placemark[0].Point.coordinates[0], address: response.Placemark[0].address, precision: response.Placemark[0].AddressDetails.Accuracy};
-                        geocoder.getLocations(document.forms['defaultForm'].elements['address2'].value, function (response) {
+                        geocoder.getLocations(document.forms['google'].elements['address2'].value, function (response) {
                             if (!response || response.Status.code != 200)
                             {
                                 alert("Desculpe, Não foi encontrado o segundo endereço ");
@@ -109,10 +105,19 @@
                     kmdistance = (miledistance * 1.609344).toFixed(1);
                     quilometros = glatlng1.distanceFrom(glatlng2, 6371).toFixed(1);
                     
-                    alert("Quilometros"+quilometros);
-                    
+                    alert("Quilometros: "+quilometros);
+                    alert("Glat1 "+glatlng1);
                     // Carrega o resultado para a div abaixo. O valor encontram-se nas variáveis: miledistance, kmdistance e quilometros   
                     document.getElementById('results').innerHTML = '<strong>Origem: </strong>' + location1.address +' '+ location1.precision+ '   Latitude: '+ location1.lat +'   Longitude: '+ location1.lon + '<br /><strong>Destino: </strong>' + location2.address +' '+ location2.precision+ '   Latitude: '+ location2.lat +'   Longitude: '+ location2.lon +'<br /><strong>Distance: </strong>' + miledistance + ' milhas ou ' + kmdistance + ' kilometros ' + quilometros;
+                    document.getElementById('localizacaoOrigem').value = glatlng1;
+                    document.getElementById('localizacaoDestino').value = glatlng2;
+                    document.getElementById('distancia').value = kmdistance;
+                    
+                   var teste = document.getElementById('localizacaoOrigem').value;
+                   alert(teste);
+                    
+                    //document.forms['google'].elements['localizacaoOrigem'].innerHTML = glatlng1;
+                    
                 }
                 catch (error)
                 {
