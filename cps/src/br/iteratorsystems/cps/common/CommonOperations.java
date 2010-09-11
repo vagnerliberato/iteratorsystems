@@ -6,7 +6,7 @@ import java.util.List;
 import br.iteratorsystems.cps.entities.Login;
 import br.iteratorsystems.cps.entities.Loja;
 import br.iteratorsystems.cps.entities.Usuario;
-import br.iteratorsystems.cps.exceptions.CpsGeneralExceptions;
+import br.iteratorsystems.cps.exceptions.CpsExceptions;
 import br.iteratorsystems.cps.handler.AdministrationHandler;
 import br.iteratorsystems.cps.handler.UserManagementHandler;
 
@@ -15,7 +15,7 @@ public class CommonOperations {
 	static UserManagementHandler userHandler;
 	static AdministrationHandler admHandler;
 
-	public static boolean mailExists(String email) throws CpsGeneralExceptions {
+	public static boolean mailExists(String email) throws CpsExceptions {
 		userHandler = new UserManagementHandler();
 		Collection<Usuario> list = userHandler.getAllUser();
 		for (Usuario user : list) {
@@ -26,7 +26,7 @@ public class CommonOperations {
 	}
 
 	public static boolean userExists(String username)
-			throws CpsGeneralExceptions {
+			throws CpsExceptions {
 		userHandler = new UserManagementHandler();
 		Collection<Login> list = userHandler.getAllLogin();
 
@@ -38,7 +38,7 @@ public class CommonOperations {
 		return false;
 	}
 
-	public static boolean cpfExists(String cpf) throws CpsGeneralExceptions {
+	public static boolean cpfExists(String cpf) throws CpsExceptions {
 		userHandler = new UserManagementHandler();
 		Collection<Usuario> list = userHandler.getAllCpf();
 
@@ -50,7 +50,7 @@ public class CommonOperations {
 		return false;
 	}
 
-	public static boolean cnpjExists(String cnpj,Loja obj) throws CpsGeneralExceptions {
+	public static boolean cnpjExists(String cnpj,Loja obj) throws CpsExceptions {
 		admHandler = new AdministrationHandler();
 		List<Loja> loja = admHandler.getAllCnpj();
 	
@@ -62,7 +62,7 @@ public class CommonOperations {
 		return false;
 	}
 	
-	public static boolean cpfExists(String cpf, String username) throws CpsGeneralExceptions {
+	public static boolean cpfExists(String cpf, String username) throws CpsExceptions {
 		userHandler = new UserManagementHandler();
 		Collection<Usuario> list = userHandler.getAllCpf();
 
