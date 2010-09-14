@@ -28,7 +28,7 @@
 	<script language="JavaScript"
 		src="#{facesContext.externalContext.request.contextPath}/view/js/jscripts.js"
 		type="text/javascript" />
-		
+	
 	<p:resources />
 	
 	</head>

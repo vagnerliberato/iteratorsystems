@@ -64,6 +64,10 @@
 							styleClass="letrasDefault">
 							<h:outputText value="#{msg.top_menu_search}" />
 						</h:commandLink>
+						<h:commandLink action="#{navigationBean.toFilters}"
+							styleClass="letrasDefault">
+							<h:outputText value="#{msg.top_menu_filters}" />
+						</h:commandLink>
 						<h:commandLink action="#{navigationBean.toMyCar}"
 							styleClass="letrasDefault">
 							<h:outputText value="#{msg.top_menu_car}" />

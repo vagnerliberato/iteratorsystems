@@ -42,7 +42,7 @@ body {
 
 .frame_menu{
 	border: 1px solid #ECECEC;
-	}
+}
 	
 .letras {
 	font-weight: normal;
@@ -99,7 +99,6 @@ body {
 	width: 20px;
 }
 
-
 .letrasAbaB {
 	font-weight: bold;
 	font-size: 10pt;
@@ -136,12 +135,12 @@ body {
 }
 
 .carInformation {
-	font-weight: normal;
-	font-size: 17pt;
-	font-style: italic;
-	font-family: Verdana;
+	font-weight: bold;
+	font-size: 15pt;
+	font-style: normal;
+	font-family: cursive;
 	letter-spacing: normal;
-	color: darkblue;
+	color: blue;
 }
 
 .botaoDefault {
@@ -178,6 +177,87 @@ body {
 	font-weight: normal;
 	letter-spacing: normal;
 }
+
+.valorResultado {
+	font-weight: normal;
+	font-size: 13pt;
+	font-style: italic;
+	font-family: Verdana;
+	color: red;
+	white-space: nowrap;
+	padding: 10px;
+}
+
+.deslocamento {
+	font-weight: normal;
+	font-size: 13pt;
+	font-style: italic;
+	font-family: Verdana;
+	color: black;
+	white-space: nowrap;
+	padding: 8px;
+}
+
+.valorHeaderInterno {
+	font-weight: normal;
+	font-size: 12pt;
+	font-style: oblique;
+	font-family: Verdana;
+	color: black;
+	white-space: nowrap;
+	padding: 10px;
+}
+	
+.nomeMercado {
+	font-weight: bold;
+	font-size: 11pt;
+	font-style: normal;
+	font-family: Verdana;
+	color: blue;
+	white-space: nowrap;
+	padding: 8px;
+}
+
+.tipoComparacao {
+	font-weight: lighter;
+	font-size: 10pt;
+	font-style: normal;
+	font-family: sans-serif;
+	color: red;
+	white-space: nowrap;
+	padding: 8px;
+}
+
+.abaComparacao {
+	font-weight: lighter;
+	font-size: 13pt;
+	font-style: normal;
+	font-family: sans-serif;
+	color: rgb(12,43,54);
+	white-space: nowrap;
+	padding: 8px;
+}
+
+.resultado {
+	font-weight: bold;
+	font-size: 15pt;
+	font-style: normal;
+	font-family: cursive;
+	color: black;
+	white-space: nowrap;
+	padding: 8px;
+}
+
+.headerResultado {
+	font-weight: bold;
+	font-size: 12pt;
+	font-style: normal;
+	font-family: serif;
+	color: blue;
+	white-space: nowrap;
+	padding: 8px;
+}
+
 .textoDireita {
     text-align : right;
 }

@@ -8,22 +8,79 @@
 
 <ui:composition template="../template/template.jsf">
 	<ui:define name="content">
-		<h:form>
-		<rich:spacer height="15"/>
-		<center>
-		<h:outputText value="#{msg.mycar_information}" styleClass="carInformation"/>
-		<br />
-		<rich:spacer height="40"/>
-		<h:commandLink value="#{msg.mycar_suggestion}" styleClass="letrasDefault"/>
-		</center>
-		<rich:spacer height="40"/>
-		<h:panelGroup id="carGroup" rendered="true">
-			<h:graphicImage url="/view/images/defaultCar.png" width="5%"/>
-			<rich:dataTable rows="10" width="100%">
-			
-			</rich:dataTable>
-		</h:panelGroup>
+		<h:form id="formCar">
+			<rich:spacer height="15"/>
+			<center>
+				<h:outputText value="#{msg.mycar_information}" styleClass="carInformation"/>
+			<br />
+			<rich:spacer height="30"/>
+			</center>
+			<h:panelGroup>
+				<center><h:commandLink value="#{msg.mycar_suggestion}" action="#{navigationBean.toDefaultPage}" rendered="#{empty defaultBean.produtosCarrinho}"/></center>
+				<rich:dataTable id="tabelaCarrinho" rows="15" value="#{defaultBean.produtosCarrinho}"
+							rendered="#{not empty defaultBean.produtosCarrinho}" var="carrinho" width="800px;">
+					<rich:column>
+						<f:facet name="header">
+							<h:outputText value="#{msg.mylists_table_header_delete}"/>
+						</f:facet>
+						<a4j:commandButton image="/view/images/deleteRow.png"
+										   onclick="#{rich:component('modalExclusao')}.show();">
+							<f:setPropertyActionListener value="#{carrinho}" target="#{defaultBean.produtoCarrinhoSelecionado}" />
+						</a4j:commandButton>
+					</rich:column>
+					<rich:column id="colunaDescricao" width="700">
+						<f:facet name="header">
+							<h:outputText value="#{msg.default_producttable_description}"/>
+						</f:facet>
+						<h:outputText value="#{carrinho.produtoGeral.descricao}"/>
+						<rich:toolTip event="onmouseover" followMouse="true" for="colunaDescricao" direction="top-right" rendered="#{carrinho.possuiImagem}">
+							<a4j:outputPanel ajaxRendered="true">
+								<h:graphicImage id="imagem"	value="#{carrinho.imagem}" rendered="#{carrinho.possuiImagem}" />
+							</a4j:outputPanel> 
+						</rich:toolTip>
+					</rich:column>
+					<rich:column width="30">
+						<f:facet name="header">
+							<h:outputText value="#{msg.default_summarytable_amount}"/>
+						</f:facet>
+						<h:inputText size="6" value="#{carrinho.quantidadeSelecionada}" maxlength="4" validatorMessage="">
+							<f:validateLongRange minimum="1" maximum="9999"/>
+							<a4j:support event="onblur" ajaxSingle="true"/>
+						</h:inputText>
+					</rich:column>
+					<f:facet name="footer">
+						<rich:datascroller renderIfSinglePage="false" fastControls="show" for="tabelaCarrinho" reRender="tabelaCarrinho"/>
+					</f:facet>
+				</rich:dataTable>
+			</h:panelGroup>
 		</h:form>
+		
+		<rich:modalPanel id="modalExclusao" height="100" width="310"
+			resizeable="false">
+			<f:facet name="header">
+				<h:outputText value="#{msg.default_modal_information}" />
+			</f:facet>
+			<f:facet name="controls">
+				<h:panelGroup>
+					<h:graphicImage value="/view/images/close.png" id="hidelink2" />
+					<rich:componentControl for="modalExclusao" attachTo="hidelink2"
+						operation="hide" event="onclick" />
+				</h:panelGroup>
+			</f:facet>
+			<center><h:form>
+				<h:outputText value="#{msg.default_modal_delete_message}"
+					styleClass="letras" />
+				<br />
+				<br />
+				<h:commandButton styleClass="botaoDefault"
+					action="#{defaultBean.excluirProdutoCarrinho}"
+					value="#{msg.default_modal_delete_yes}" />
+				<rich:spacer width="5" />
+				<a4j:commandButton styleClass="botaoDefault"
+					value="#{msg.default_modal_delete_no}"
+					onclick="#{rich:component('modalExclusao')}.hide();" />
+			</h:form></center>
+		</rich:modalPanel>
 	</ui:define>
 </ui:composition>
 </jsp:root>

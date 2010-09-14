@@ -27,7 +27,9 @@
 						</h:column>
 					</rich:suggestionbox></td>
 					<td><h:commandButton action="#{defaultBean.buscarProduto}"
-						image="/view/images/Lupa.png" title="#{msg.default_button_search}" />
+										 image="/view/images/Lupa.png" title="#{msg.default_button_search}" />
+						<h:commandButton action="#{defaultBean.limparBusca}" image="/view/images/clear.png"
+						 				 title="#{msg.default_button_clean}" />
 					</td>
 				</table>
 				<rich:spacer height="5px" />
@@ -117,11 +119,8 @@
 						rendered="#{not empty defaultBean.produtosCarrinho}">
 
 						<h:panelGroup>
-							<rich:spacer height="20" />
-							<rich:separator lineType="solid" />
-							<rich:spacer height="15" />
-							<h:outputText value="#{msg.default_car_information}"
-								styleClass="letrasInfo" />
+							<rich:spacer height="40" />
+							<h:outputText value="#{msg.default_car_information}" styleClass="letrasInfo" />
 							<rich:spacer height="10" />
 						</h:panelGroup>
 
@@ -141,18 +140,14 @@
 								</a4j:commandButton></center>
 							</rich:column>
 
-							<rich:column width="70%"
-								sortBy="#{carrinho.produtoGeral.descricao}"
-								filterBy="#{carrinho.produtoGeral.descricao}"
-								filterEvent="onkeyup">
+							<rich:column width="70%">
 								<f:facet name="header">
 									<h:outputText value="#{msg.default_summarytable_product}" />
 								</f:facet>
 								<h:outputText value="#{carrinho.produtoGeral.descricao}" />
 							</rich:column>
 
-							<rich:column width="20%"
-								sortBy="#{carrinho.quantidadeSelecionada}">
+							<rich:column width="20%">
 								<f:facet name="header">
 									<h:outputText value="#{msg.default_summarytable_amount}" />
 								</f:facet>
