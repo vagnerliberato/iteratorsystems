@@ -74,6 +74,11 @@
 		<managed-bean-class>br.iteratorsystems.cps.beans.ParametrizacaoBean</managed-bean-class>
 		<managed-bean-scope>session</managed-bean-scope>
 	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>resultadoBean</managed-bean-name>
+		<managed-bean-class>br.iteratorsystems.cps.beans.ResultadoComparacaoBean</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+	</managed-bean>
 	
 	<!-- Filtro controlador de acesso -->
 	<lifecycle>
@@ -86,6 +91,20 @@
 		<navigation-case>
 			<from-outcome>filtersOk</from-outcome>
 			<to-view-id>/view/pages/addFilters.jsf</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/*</from-view-id>
+		<navigation-case>
+			<from-outcome>toFilters</from-outcome>
+			<to-view-id>/view/pages/addFilters.jsf</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/view/pages/addFilters.jsf</from-view-id>
+		<navigation-case>
+			<from-outcome>toResultPage</from-outcome>
+			<to-view-id>/view/pages/result.jsf</to-view-id>
 		</navigation-case>
 	</navigation-rule>
 	<navigation-rule>
