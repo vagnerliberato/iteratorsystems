@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:p="http://primefaces.prime.com.tr/ui">
+
+<ui:composition template="../template/template.jsf">
+	<ui:define name="content">
+		<h:inputHidden value="#{resultadoBean.campoHidden}"/>
+		<h:form id="compareForm">
+			<h:panelGroup style="margin-left: 940px;">
+				<a4j:commandButton image="/view/images/question.png" style="height: 25px;"/>
+			</h:panelGroup>
+			<rich:spacer height="15"/>
+			<center>
+				<h:panelGroup>
+					<h:panelGrid columns="1">
+						<h:column>
+							<rich:dataTable id="dataTableResultado" width="1000px;"
+											var="resultado" value="#{resultadoBean.listaComparacao}">
+								<rich:column>
+									<rich:simpleTogglePanel id="tooglePanel" opened="true" switchType="client" width="950" height="750">
+										<f:facet name="header">
+											<h:panelGroup>
+												<h:graphicImage url="/view/images/trofeu.png"/>
+												<rich:spacer width="3"/>
+												<h:outputText value="#{resultado.posicao}" styleClass="resultado"/>
+												<rich:spacer width="3"/>
+												<h:outputText value="-" styleClass="resultado"/>
+												<rich:spacer width="3"/>
+												<h:outputText value="#{resultado.nomeMercado}" styleClass="resultado"/>
+											</h:panelGroup>
+										</f:facet>
+										<ui:include src="resultadoPorMercado.jsf"/>
+									</rich:simpleTogglePanel>
+								</rich:column>
+							</rich:dataTable>
+						</h:column>
+					</h:panelGrid>			
+				</h:panelGroup>
+			</center>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</jsp:root>

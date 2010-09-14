@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:p="http://primefaces.prime.com.tr/ui">
+
+<style>
+.rich-table-cell {
+	border-bottom:1px solid #FFFFFF;
+	border-left:1px solid #FFFFFF;
+	border-top:1px solid #FFFFFF;
+	border-right:1px solid #FFFFFF;
+	color:#474747;
+	font-family:Arial,Verdana,sans-serif;
+	font-size:11px;
+	padding:4px;
+}
+</style>
+
+<h:panelGroup>
+	 <rich:tabPanel id="tabPanelResultado" switchType="client" width="900px;" height="550">
+		<rich:tab>
+			<f:facet name="label">
+				<h:outputText value="#{msg.tab_resultado}" styleClass="abaComparacao"/>
+			</f:facet>
+			<h:panelGrid columns="3">
+				<h:column>
+					<rich:panel>
+						<f:facet name="header">
+							<h:panelGroup>
+								<h:graphicImage url="/view/images/escolha.png"/>
+								<rich:spacer width="3"/>
+								<h:outputText value="#{msg.tab_tipo_comp_label}" styleClass="valorHeaderInterno"/>
+							</h:panelGroup>
+						</f:facet>
+						<center>
+							<h:outputText value="#{msg.sua_escolha}"/>
+							<br />
+							<h:outputText value="#{resultadoBean.escolhaComparacao}" styleClass="tipoComparacao"/>
+						</center>
+					</rich:panel>
+				</h:column>
+				<h:column>
+					<rich:panel style="height: 87px;">
+						<f:facet name="header">
+							<h:panelGroup>
+								<h:graphicImage url="/view/images/mercado.png"/>
+								<rich:spacer width="3"/>
+								<h:outputText value="#{msg.tab_nome_mercado}" styleClass="valorHeaderInterno"/>
+							</h:panelGroup>
+						</f:facet>
+						<center>
+							<h:outputText value="#{resultado.nomeMercado}" styleClass="nomeMercado"/>
+						</center>
+					</rich:panel>
+				</h:column>
+				<h:column>
+					<rich:panel>
+						<f:facet name="header">
+							<h:panelGroup>
+								<h:graphicImage url="/view/images/totalValue.png"/>
+								<rich:spacer width="3"/>
+								<h:outputText value="#{msg.valor_total}" styleClass="valorHeaderInterno"/>
+							</h:panelGroup>
+						</f:facet>
+						<center>
+							<h:outputText value="R$" styleClass="valorResultado"/>
+							<rich:spacer width="3"/>
+							<h:outputText value="#{resultado.valorTotalLista}" styleClass="valorResultado">
+								<f:convertNumber maxFractionDigits="2"/>
+							</h:outputText>
+						</center>
+					</rich:panel>
+				</h:column>
+			</h:panelGrid>
+			
+			<rich:spacer height="10"/>
+			<center>
+				<rich:toolBar itemSeparator="line" width="100px" height="25px">
+					<h:graphicImage url="/view/images/greenBall.png" rendered="#{empty resultado.listaNaoEncontrados}"/>
+					<h:graphicImage url="/view/images/yellowBall.png" rendered="#{not empty resultado.listaNaoEncontrados}"/>
+					<h:outputText value="#{msg.tab_inf_todos_enc}" rendered="#{empty resultado.listaNaoEncontrados}"/>
+					<h:outputText value="#{msg.tab_inf_nem_todos_enc}" rendered="#{not empty resultado.listaNaoEncontrados}"/>
+				</rich:toolBar>
+			</center>
+			<rich:spacer height="10"/>
+			
+			<h:panelGrid id="panelProduto" columns="1" width="900">
+				<h:column>
+					<rich:simpleTogglePanel switchType="client">
+						<f:facet name="header">
+							<h:outputText value="#{msg.tab_modal_enc}" styleClass="valorHeaderInterno"/>
+						</f:facet>
+						<center>
+							<rich:dataTable id="tableProdEnc" value="#{resultado.listaEncontrados}" var="encontrados">
+								<rich:column>
+									<f:facet name="header">
+										<h:outputText value="#{msg.tab_enc_desc}"/>
+									</f:facet>
+									<h:outputText value="#{encontrados.descricao}"/>
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">
+										<h:outputText value="#{msg.tab_enc_qtd}"/>
+									</f:facet>
+									<h:outputText value="#{encontrados.quantidade}"/>
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">
+										<h:outputText value="#{msg.tab_enc_vlr}"/>
+									</f:facet>
+									<h:outputText value="#{encontrados.valor}">
+										<f:convertNumber maxFractionDigits="2"/>
+									</h:outputText>
+								</rich:column>
+							</rich:dataTable>
+						</center>
+					</rich:simpleTogglePanel>
+				</h:column>
+				<h:column>
+					<rich:simpleTogglePanel rendered="#{not empty resultado.listaNaoEncontrados}" switchType="client">
+						<f:facet name="header">
+							<h:outputText value="#{msg.tab_modal_n_enc}" styleClass="valorHeaderInterno"/>
+						</f:facet>
+						<center>
+							<rich:dataTable id="tableProdNaoEnc" value="#{resultado.listaNaoEncontrados}" var="naoencontrados">
+								<rich:column>
+									<f:facet name="header">
+										<h:outputText value="#{msg.tab_enc_desc}"/>
+									</f:facet>
+									<h:outputText value="#{naoencontrados.descricao}"/>
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">
+										<h:outputText value="#{msg.tab_enc_qtd}"/>
+									</f:facet>
+									<h:outputText value="#{naoencontrados.quantidade}"/>
+								</rich:column>
+							</rich:dataTable>
+						</center>
+					</rich:simpleTogglePanel>
+				</h:column>
+			</h:panelGrid>
+			
+			<h:panelGroup>
+				<rich:panel style="width: 500px;">
+					<f:facet name="header">
+						<h:panelGroup>
+							<h:graphicImage url="/view/images/semaforo.png"/>
+							<h:outputText value="#{msg.tab_inf_desloc}" styleClass="valorHeaderInterno"/>
+						</h:panelGroup>
+					</f:facet>
+					<center>
+						<h:panelGrid id="panelConsumo" columns="2" width="350">
+							<h:column>
+								<h:outputText value="#{msg.tab_distancia_ate}" styleClass="deslocamento"/>
+							</h:column>			
+							<h:column>
+								<h:outputText value="#{resultado.distanciaUsuario}" styleClass="valorResultado">
+									<f:convertNumber maxFractionDigits="2"/>
+								</h:outputText>
+								<h:outputText value="Km" styleClass="deslocamento"/>
+							</h:column>
+							<h:column>
+								<h:outputText value="#{msg.tab_vl_desloc}" styleClass="deslocamento"/>
+							</h:column>
+							<h:column>
+								<h:outputText value="R$" styleClass="deslocamento"/>
+								<h:outputText value="#{resultado.valorDeslocamento}" styleClass="valorResultado">
+									<f:convertNumber maxFractionDigits="2"/>
+								</h:outputText>
+							</h:column>
+						</h:panelGrid>
+					</center>
+				</rich:panel>
+			</h:panelGroup>
+		</rich:tab>
+		
+		<rich:tab>
+			<f:facet name="label">
+				<h:outputText value="#{msg.tab_chegar}" styleClass="abaComparacao"/>
+			</f:facet>
+			<h:panelGrid columns="2" rendered="false">
+				<h:column>
+					<h:outputText value="#{msg.tab_como_chegar_inf}"/>
+				</h:column>
+				<h:column>
+					<a4j:commandButton value="#{msg.tab_como_chegar_button}"/>
+				</h:column>
+			</h:panelGrid>
+			<rich:spacer height="5"/>
+			<h:panelGroup>
+				<rich:panel>
+					<f:facet name="header">
+						<h:panelGroup>
+							<h:graphicImage url="/view/images/gmap.png" width="40"/>
+							<h:outputText value="#{msg.tab2_local}" styleClass="valorHeaderInterno"/>
+						</h:panelGroup>
+					</f:facet>
+						<center>
+							<rich:gmap id="gmapResultado" lat="#{resultado.latitude}" lng="#{resultado.longitude}" 
+									   gmapVar="map" gmapKey="#{resultadoBean.chaveGoogleMaps}"
+									   mapType="G_HYBRID_MAP" style="width:400px;height:350px;"/>
+						</center>
+				</rich:panel>
+			</h:panelGroup>
+		</rich:tab>
+	</rich:tabPanel>
+</h:panelGroup>
+</jsp:root>
