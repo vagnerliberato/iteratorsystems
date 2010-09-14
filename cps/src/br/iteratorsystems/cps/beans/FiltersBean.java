@@ -1,6 +1,7 @@
 package br.iteratorsystems.cps.beans;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.el.ELResolver;
@@ -19,6 +20,7 @@ import br.iteratorsystems.cps.helper.ListaProdutoTOHelper;
 import br.iteratorsystems.cps.interfaces.MotorComparacao;
 import br.iteratorsystems.cps.motor.MotorComparacaoImpl;
 import br.iteratorsystems.cps.to.ProdutoTO;
+import br.iteratorsystems.cps.to.ResultadoComparacaoTO;
 
 /**
  * Classe bean da página de filtros de comparação
@@ -43,6 +45,7 @@ public class FiltersBean {
 	private FindAddress findAddress;
 	private Login login;
 	private List<String> listasUsuario;
+	private List<ResultadoComparacaoTO> listaComparacao;
 	private String produtoSelecionadoCombo;
 
 	private MotorComparacao motorComparacao;
@@ -73,16 +76,27 @@ public class FiltersBean {
 	/**
 	 * Cria o motor de comparação de produtos
 	 */
-	public void compararProdutos() {
+	public String compararProdutos() {
+		String retorno = "";
 		if(verificarCamposPreenchidos()){
 			if(buscarPeloMenorPreco) {
-				comparar(TipoDeComparacao.MENOR_PRECO);
+				retorno = comparar(TipoDeComparacao.MENOR_PRECO);
 			}else if(buscarPelaMenorDistancia) {
-				comparar(TipoDeComparacao.MENOR_DISTANCIA);
+				retorno = comparar(TipoDeComparacao.MENOR_DISTANCIA);
 			}else{
-				comparar(TipoDeComparacao.MENOR_PRECO_E_DISTANCIA);
+				retorno = comparar(TipoDeComparacao.MENOR_PRECO_E_DISTANCIA);
 			}
 		}
+		return retorno;
+	}
+	
+	public Long getProgressBar() {
+		Long current = (new Date().getTime() - new Date().getTime()) / 1000;
+		if (current > 100) {
+		} else if (current.equals(0)) {
+			return new Long(1);
+		}
+		return (new Date().getTime() - new Date().getTime()) / 1000;
 	}
 	
 	/**
@@ -133,7 +147,8 @@ public class FiltersBean {
 	 * Compara os produtos do usuario
 	 * @param tipoDeComparacao - tipo de comparacao
 	 */
-	private void comparar(TipoDeComparacao tipoDeComparacao) {
+	private String comparar(TipoDeComparacao tipoDeComparacao) {
+		String retorno = "toResultPage";
 		this.obterParametrizacao();
 		motorComparacao = 
 			new MotorComparacaoImpl(
@@ -144,10 +159,15 @@ public class FiltersBean {
 					obterRendimentoCombustivel(),
 					obterCepUsuarioComparacao());
 		try {
-			motorComparacao.comparar();
+			listaComparacao =
+						motorComparacao.comparar();
+			this.setValorCampoComparacao("submit();");
 		} catch (CpsExceptions e) {
+			retorno = "toDefaultPage";
+			this.setValorCampoComparacao("");
 			e.printStackTrace();
 		}
+		return retorno;
 	}
 	
 	/**
@@ -277,7 +297,7 @@ public class FiltersBean {
 		String [] partes = produtoSelecionadoCombo.split("[-]");
 		
 		if(partes.length > 1) {
-			codigo = partes[0];
+			codigo = partes[0].trim();
 		}
 		return codigo;
 	}
@@ -512,6 +532,20 @@ public class FiltersBean {
 	 */
 	public String getProdutoSelecionadoCombo() {
 		return produtoSelecionadoCombo;
+	}
+
+	/**
+	 * @param listaComparacao the listaComparacao to set
+	 */
+	public void setListaComparacao(List<ResultadoComparacaoTO> listaComparacao) {
+		this.listaComparacao = listaComparacao;
+	}
+
+	/**
+	 * @return the listaComparacao
+	 */
+	public List<ResultadoComparacaoTO> getListaComparacao() {
+		return listaComparacao;
 	}
 
 	/**

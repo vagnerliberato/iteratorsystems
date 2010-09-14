@@ -44,6 +44,8 @@ public class ProdutoBuscaDAOImpl {
 
 		for (ProdutoTO produtoTO : listaDeProdutosTO) {
 			ProdutoBuscaTO buscaTO = obterProduto(codigoMercado, codigoRede,produtoTO);
+			resultado.setCodigoMercado(codigoMercado);
+			resultado.setCodigoRede(codigoRede);
 			
 			if (buscaTO == null) {
 				resultado.getListaNaoEncontrados().add(

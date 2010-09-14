@@ -23,7 +23,7 @@ public class AutorizationController implements PhaseListener{
 	private static final String DIRETORIO_IMAGENS = "/view/images/";
 	private static final String[] NO_FILTERS_PAGES = {"/view/default.jsf","/view/pages/myCar.jsf",
 											   "/view/pages/addFilters.jsf","/view/pages/userAccess.jsf",
-											   "/view/pages/lists/myLists.jsf"};
+											   "/view/pages/lists/myLists.jsf","/view/pages/result.jsf"};
 	
 	/**
 	 *After phase.

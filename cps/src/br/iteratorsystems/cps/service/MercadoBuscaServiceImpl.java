@@ -4,6 +4,7 @@ import java.util.List;
 
 import br.iteratorsystems.cps.dao.MercadoBuscaDAOImpl;
 import br.iteratorsystems.cps.exceptions.CpsDaoException;
+import br.iteratorsystems.cps.to.DadosGeograficosTO;
 import br.iteratorsystems.cps.to.MercadoTO;
 
 /**
@@ -42,5 +43,15 @@ public class MercadoBuscaServiceImpl {
 	 */
 	public List<MercadoTO> obterFiltroMercadoMaisProximo(List<MercadoTO> listaMercado, Integer quantidadeMaximaMercados,String cepUsuario) throws CpsDaoException{
 		return mercadoBuscaDAOImpl.obterFiltroMercadoMaisProximo(listaMercado,quantidadeMaximaMercados,cepUsuario);
+	}
+	
+	/**
+	 * Obtem a latitude e longitude com base em um cep.
+	 * @param cep - cep
+	 * @return Latitude e longitude
+	 * @throws CpsDaoException - Se ocorrer algum erro.
+	 */
+	public DadosGeograficosTO obterLatitudeLongitude(String cep) throws CpsDaoException{
+		return mercadoBuscaDAOImpl.obterLatitudeLongitude(cep);
 	}
 }

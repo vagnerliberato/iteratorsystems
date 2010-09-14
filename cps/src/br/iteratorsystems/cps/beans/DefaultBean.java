@@ -46,6 +46,15 @@ public class DefaultBean {
 	}
 	
 	/**
+	 * Limpa a busca efetuada
+	 */
+	public void limparBusca() {
+		if(listaProdutoTO != null) {
+			listaProdutoTO.clear();
+		}
+	}
+	
+	/**
 	 * Obtém a parametrização do sistema
 	 * @return Classe de parametrização do sistema.
 	 */

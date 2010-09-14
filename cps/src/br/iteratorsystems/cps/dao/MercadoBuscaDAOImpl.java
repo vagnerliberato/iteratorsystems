@@ -144,7 +144,10 @@ public class MercadoBuscaDAOImpl {
 		Arrays.sort(menores);
 		
 		for(int i = 0; i < quantidadeMaxima; i++) {
-			listaFiltrada.add(listaDistancia.get(menores[i]));
+			if(i < menores.length) {
+				listaFiltrada.add(listaDistancia.get(menores[i]));
+				listaFiltrada.get(i).setDistanciaAproximada(menores[i]);
+			}
 		}
 		
 		return listaFiltrada;
@@ -156,7 +159,7 @@ public class MercadoBuscaDAOImpl {
 	 * @return Latitude e longitude
 	 * @throws CpsDaoException - Se ocorrer algum erro.
 	 */
-	private DadosGeograficosTO obterLatitudeLongitude(String cep) throws CpsDaoException{
+	public DadosGeograficosTO obterLatitudeLongitude(String cep) throws CpsDaoException{
 		log.debug("obtendo latitude e longitude com base no cep "+cep);
 		DadosGeograficosTO dados = new DadosGeograficosTO();
 		Connection con = HibernateConfig.getConnection();

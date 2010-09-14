@@ -47,9 +47,14 @@ public class ProdutoBuscaImpl implements Serializable{
 		
 		for (MercadoTO mercadoTO : listaMercado) {
 			try {
-				listaResultadoMercado.add(produtoBuscaServiceImpl
+				ResultadoProdutoMercadoTO resultadoTemp = produtoBuscaServiceImpl
 						.obterListaDeProdutosPorMercado(mercadoTO.getCodigo(),
-								mercadoTO.getCodigoRede(), listaProdutos));
+								mercadoTO.getCodigoRede(), listaProdutos);
+
+				if(!(resultadoTemp.getListaEncontrados() == null || 
+						resultadoTemp.getListaEncontrados().isEmpty())) {
+					listaResultadoMercado.add(resultadoTemp);
+				}
 			} catch (CpsDaoException e) {
 				throw new CpsExceptions(e);
 			}
@@ -69,7 +74,7 @@ public class ProdutoBuscaImpl implements Serializable{
 		for(ResultadoProdutoMercadoTO resultado : listaResultadoMercado) {
 			Double valorTotal = 0d;
 			for(ProdutoBuscaTO produtoBuscaTO : resultado.getListaEncontrados()) {
-				valorTotal += produtoBuscaTO.getValor();
+				valorTotal += produtoBuscaTO.getValor() * produtoBuscaTO.getQuantidade();
 			}
 			resultado.setValorTotalLista(valorTotal);
 		}

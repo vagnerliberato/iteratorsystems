@@ -1,5 +1,6 @@
 package br.iteratorsystems.cps.to;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -20,6 +21,7 @@ public class MercadoTO{
 	private Double valorTotal;
 	private Double valorCompras;
 	private Double valorDeslocamento;
+	private BigDecimal distanciaAproximada;
 	
 	/**
 	 * @return the codigo
@@ -155,6 +157,18 @@ public class MercadoTO{
 		this.valorDeslocamento = valorDeslocamento;
 	}
 	
+	/**
+	 * @param distanciaAproximada the distanciaAproximada to set
+	 */
+	public void setDistanciaAproximada(BigDecimal distanciaAproximada) {
+		this.distanciaAproximada = distanciaAproximada;
+	}
+	/**
+	 * @return the distanciaAproximada
+	 */
+	public BigDecimal getDistanciaAproximada() {
+		return distanciaAproximada;
+	}
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */

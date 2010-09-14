@@ -20,6 +20,14 @@ public class NavigationBean {
 	
 	/**
 	 * 
+	 * @return toFilters
+	 */
+	public String toFilters() {
+		return "toFilters";
+	}
+	
+	/**
+	 * 
 	 * @return toLoginPage
 	 */
 	public static String toUserAccess(){
