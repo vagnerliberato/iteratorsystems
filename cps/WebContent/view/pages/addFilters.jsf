@@ -218,6 +218,7 @@
 							<rich:spacer width="15"/>
 							<a4j:outputPanel id="barraProgressoPanel" ajaxRendered="true">
 								<rich:progressBar value="#{filtersBean.progressBar}"
+											rendered="false"
 							                interval="500"  id="barraProgresso" label="buscando o menor preço"
 							                minValue="-1" maxValue="100"
 							                reRenderAfterComplete="barraProgressoPanel,barraProgresso"/>

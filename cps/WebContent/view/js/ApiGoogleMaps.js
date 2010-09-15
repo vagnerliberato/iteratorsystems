@@ -1,4 +1,5 @@
-			var geocoder, location1, location2;
+
+var geocoder, location1, location2;
             var map = null;
             var geocoder = null;
             var from;
@@ -19,8 +20,6 @@
                     map.addControl( new GMapTypeControl() );
                     directionsPanel = document.getElementById("route");
                     directions = new GDirections(map, directionsPanel);                    
-                    alert("Roda o Inicialize");
-                    
                 }
             }
 

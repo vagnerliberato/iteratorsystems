@@ -146,40 +146,58 @@
 			</h:panelGrid>
 			
 			<h:panelGroup>
-				<rich:panel style="width: 500px;">
-					<f:facet name="header">
-						<h:panelGroup>
-							<h:graphicImage url="/view/images/semaforo.png"/>
-							<h:outputText value="#{msg.tab_inf_desloc}" styleClass="valorHeaderInterno"/>
-						</h:panelGroup>
-					</f:facet>
-					<center>
-						<h:panelGrid id="panelConsumo" columns="2" width="350">
-							<h:column>
-								<h:outputText value="#{msg.tab_distancia_ate}" styleClass="deslocamento"/>
-							</h:column>			
-							<h:column>
-								<h:outputText value="#{resultado.distanciaUsuario}" styleClass="valorResultado">
-									<f:convertNumber maxFractionDigits="2"/>
-								</h:outputText>
-								<h:outputText value="Km" styleClass="deslocamento"/>
-							</h:column>
-							<h:column>
-								<h:outputText value="#{msg.tab_vl_desloc}" styleClass="deslocamento"/>
-							</h:column>
-							<h:column>
-								<h:outputText value="R$" styleClass="deslocamento"/>
-								<h:outputText value="#{resultado.valorDeslocamento}" styleClass="valorResultado">
-									<f:convertNumber maxFractionDigits="2"/>
-								</h:outputText>
-							</h:column>
-						</h:panelGrid>
-					</center>
-				</rich:panel>
+				<h:panelGrid columns="2">
+					<h:column>
+						<rich:panel style="width: 450px;">
+							<f:facet name="header">
+								<h:panelGroup>
+									<h:graphicImage url="/view/images/semaforo.png"/>
+									<h:outputText value="#{msg.tab_inf_desloc}" styleClass="valorHeaderInterno"/>
+								</h:panelGroup>
+							</f:facet>
+							<center>
+								<h:panelGrid id="panelConsumo" columns="2" width="350">
+									<h:column>
+										<h:outputText value="#{msg.tab_distancia_ate}" styleClass="deslocamento"/>
+									</h:column>			
+									<h:column>
+										<h:outputText value="#{resultado.distanciaUsuario}" styleClass="valorResultado">
+											<f:convertNumber maxFractionDigits="2"/>
+										</h:outputText>
+										<h:outputText value="Km" styleClass="deslocamento"/>
+									</h:column>
+									<h:column>
+										<h:outputText value="#{msg.tab_vl_desloc}" styleClass="deslocamento"/>
+									</h:column>
+									<h:column>
+										<h:outputText value="R$" styleClass="deslocamento"/>
+										<h:outputText value="#{resultado.valorDeslocamento}" styleClass="valorResultado">
+											<f:convertNumber maxFractionDigits="2"/>
+										</h:outputText>
+									</h:column>
+								</h:panelGrid>
+							</center>
+						</rich:panel>
+					</h:column>
+					<h:column>
+						<rich:panel style="width: 350px;height: 120;">
+							<f:facet name="header">
+								<h:panelGroup>
+									<h:graphicImage url="/view/images/google.png"/>
+									<h:outputText value="#{msg.tab_inf_desloc}" styleClass="valorHeaderInterno"/>
+								</h:panelGroup>
+							</f:facet>
+							<rich:spacer height="10"/>
+							<center>
+								<a4j:commandLink ajaxSingle="true" value="Onde fica?" onclick="#{rich:component('modalMaps')}.show();"/>
+							</center>
+						</rich:panel>
+					</h:column>
+				</h:panelGrid>
 			</h:panelGroup>
 		</rich:tab>
 		
-		<rich:tab>
+		<rich:tab rendered="false">
 			<f:facet name="label">
 				<h:outputText value="#{msg.tab_chegar}" styleClass="abaComparacao"/>
 			</f:facet>
@@ -193,21 +211,47 @@
 			</h:panelGrid>
 			<rich:spacer height="5"/>
 			<h:panelGroup>
-				<rich:panel>
-					<f:facet name="header">
-						<h:panelGroup>
-							<h:graphicImage url="/view/images/gmap.png" width="40"/>
-							<h:outputText value="#{msg.tab2_local}" styleClass="valorHeaderInterno"/>
-						</h:panelGroup>
-					</f:facet>
-						<center>
-							<rich:gmap id="gmapResultado" lat="#{resultado.latitude}" lng="#{resultado.longitude}" 
-									   gmapVar="map" gmapKey="#{resultadoBean.chaveGoogleMaps}"
-									   mapType="G_HYBRID_MAP" style="width:400px;height:350px;"/>
-						</center>
-				</rich:panel>
+
 			</h:panelGroup>
 		</rich:tab>
 	</rich:tabPanel>
+	
+	<rich:modalPanel id="modalMaps" resizeable="false" width="900" height="630">
+			<f:facet name="header">
+				<h:panelGroup>
+					<h:graphicImage url="/view/images/gmap.png" width="40"/>
+					<h:outputText value="#{msg.tab2_local}" styleClass="valorHeaderInterno"/>
+				</h:panelGroup>
+			</f:facet>
+			<f:facet name="controls">
+				<h:panelGroup>
+					<h:graphicImage value="/view/images/close.png" id="hidelink4" />
+					<rich:componentControl for="modalMaps"
+						attachTo="hidelink4" operation="hide" event="onclick" />
+				</h:panelGroup>
+			</f:facet>
+			<rich:panel>
+				<center>
+					<a4j:outputPanel>
+						<rich:gmap id="gmapResultado" lat="#{resultado.latitude}" lng="#{resultado.longitude}" 
+								   gmapVar="map" gmapKey="#{resultadoBean.chaveGoogleMaps}" zoom="17"
+								   mapType="G_HYBRID_MAP" style="width:750px;height:500px;"/>
+					</a4j:outputPanel>
+					
+					<h:panelGrid rendered="false">
+						<h:column>
+							<h:inputText value="06604-110" label="address1" id="address1">
+							</h:inputText>
+							<h:inputText value="06053-160" id="address2" label="address2">
+							</h:inputText>
+							<h:commandButton type="submit" value="Teste Google Maps"></h:commandButton>
+						</h:column>
+					</h:panelGrid>
+				
+				 <!-- <div id="mapa_base" style="width: 800px; height: 500px;"></div>
+					<p id="results"></p> -->
+				</center>
+			</rich:panel>
+		</rich:modalPanel>
 </h:panelGroup>
 </jsp:root>
