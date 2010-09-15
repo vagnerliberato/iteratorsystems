@@ -23,6 +23,7 @@ public class ResultadoComparacaoTO implements Comparable<ResultadoComparacaoTO>{
 	private Double valorTotalLista;
 	private Double valorDeslocamento;
 	private Double distanciaUsuario;
+	private boolean expande;
 	
 	/**
 	 * Construtor default
@@ -206,6 +207,20 @@ public class ResultadoComparacaoTO implements Comparable<ResultadoComparacaoTO>{
 	 */
 	public void setDistanciaUsuario(Double distanciaUsuario) {
 		this.distanciaUsuario = distanciaUsuario;
+	}
+
+	/**
+	 * @param expande the expande to set
+	 */
+	public void setExpande(boolean expande) {
+		this.expande = expande;
+	}
+
+	/**
+	 * @return the expande
+	 */
+	public boolean isExpande() {
+		return expande;
 	}
 
 	/**

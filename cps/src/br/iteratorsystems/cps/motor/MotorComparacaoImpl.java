@@ -114,16 +114,22 @@ public final class MotorComparacaoImpl implements MotorComparacao{
 					resultadoComparacao.setLongitude(mercadoTO.getLongitude());
 					resultadoComparacao.setListaEncontrados(resultadoTO.getListaEncontrados());
 					resultadoComparacao.setListaNaoEncontrados(resultadoTO.getListaNaoEncontrados());
-					resultadoComparacao.setValorDeslocamento(
-							obterValorDeslocamento(mercadoTO.getDistanciaAproximada(),
-									this.valorCombustivel,
-									this.rendimentoCombustivel));
-					resultadoComparacao.setDistanciaUsuario(
-							Double.parseDouble(mercadoTO.getDistanciaAproximada().toString()));
 					resultadoComparacao.setValorTotalLista(resultadoTO.getValorTotalLista());
 					resultadoComparacao.setNomeMercado(mercadoTO.getNome());
 					resultadoComparacao.setLongitudeUsusario(dadosTO.getLongitude());
 					resultadoComparacao.setLatitudeUsusario(dadosTO.getLatitude());
+					resultadoComparacao.setDistanciaUsuario(
+							Double.parseDouble(mercadoTO.getDistanciaAproximada().toString()));
+					resultadoComparacao.setValorDeslocamento(
+							obterValorDeslocamento(mercadoTO.getDistanciaAproximada(),
+									this.valorCombustivel,
+									this.rendimentoCombustivel));
+					
+					if(index == 1) {
+						resultadoComparacao.setExpande(true);
+					}else{
+						resultadoComparacao.setExpande(false);
+					}
 					listaComparacao.add(resultadoComparacao);
 				}
 			}
@@ -202,6 +208,11 @@ public final class MotorComparacaoImpl implements MotorComparacao{
 				int index = 0;
 				for(ResultadoComparacaoTO resultado : resultadoComparacao) {
 					resultado.setPosicao(++index);
+					if(resultado.getPosicao() == 1) {
+						resultado.setExpande(true);
+					}else{
+						resultado.setExpande(false);
+					}
 				}
 			}catch (CpsExceptions e) {
 				log.error(e.getMessage());

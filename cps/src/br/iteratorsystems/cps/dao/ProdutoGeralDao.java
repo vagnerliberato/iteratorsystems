@@ -32,13 +32,14 @@ public class ProdutoGeralDao extends DaoGeneric<ProdutoGeral, String> {
 				querySQL.append(" and entity.descricao like upper(:nome"+ index + ")");
 			}
 
+			querySQL.append("order by entity.imagem desc");
 			Query query = this.getSession().createQuery(querySQL.toString());
 
 			for (int index = 0; index < pedacos.length; index++) {
 				query.setParameter("nome", "%" + pedacos[index] + "%");
 				query.setParameter("nome" + index, "%" + pedacos[index] + "%");
 			}
-
+			
 			produtos = query.list();
 		} catch (Exception e) {
 			throw new CpsDaoException(e);
