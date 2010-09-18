@@ -77,9 +77,13 @@ public class FindAddress {
 			e.printStackTrace();
 		}
 
-		Pattern p = Pattern.compile("<.*?>");
-		Matcher m = p.matcher(incomingData.toString());
-		String semHtml = m.replaceAll(" ");
+		String semHtml = "";
+		if(incomingData != null){
+			Pattern p = Pattern.compile("<.*?>");
+			Matcher m = p.matcher(incomingData.toString());
+			semHtml = m.replaceAll(" ");
+		}
+		
 		String[] resultado = semHtml.split("  ");
 		
 		if(resultado.length!=8){
@@ -103,11 +107,15 @@ public class FindAddress {
 	public void find(String cep) {
 		final String cepModificado = cep.replace("-","");
 		try{
-			this.findByWebService(cepModificado);
-			return;
-		}catch (FindAddressException e) {
-			e.printStackTrace();
 			this.findByDataBase(cepModificado);
+			return;
+		}catch (CpsHandlerException e) {
+			try {
+				this.findByWebService(cepModificado);
+			} catch (FindAddressException e1) {
+				e1.printStackTrace();
+			}
+			e.printStackTrace();
 		}
 	}
 	
@@ -115,23 +123,25 @@ public class FindAddress {
 	 * Busca os dados de cep na base de dados se o serviço web estiver indisponível,
 	 * ou o cep não for encontrado no mesmo.
 	 * @param cep - Cep a procurar.
+	 * @throws CpsHandlerException 
 	 */
-	private void findByDataBase(String cep) {
+	private void findByDataBase(String cep) throws CpsHandlerException {
 		BuscarCepBaseServiceImpl cepService = new BuscarCepBaseServiceImpl();
 		Cep tabelasCep = null;
-		try {
-			tabelasCep = cepService.buscarCep(cep);
-			
-			if(tabelasCep != null) {
-				this.setBairro(FormatadorPadraoStringHelper.formataStringEntrada(tabelasCep.getBairro1()));
-				this.setCidade(FormatadorPadraoStringHelper.formataStringEntrada(tabelasCep.getLocalidade().getLocalidade()));
-				this.setLogradouro(FormatadorPadraoStringHelper.formataStringEntrada(tabelasCep.getLogradouro()));
-				this.setEstadoSigla(tabelasCep.getUf());
-				this.setEstado(FormatadorEstadorHelper.recuperaEstado(tabelasCep.getUf()));
-				this.setPais(PAIS);
-			}
-		} catch (CpsHandlerException e) {
-			e.printStackTrace();
+		tabelasCep = cepService.buscarCep(cep);
+
+		if (tabelasCep != null) {
+			this.setBairro(FormatadorPadraoStringHelper
+					.formataStringEntrada(tabelasCep.getBairro1()));
+			this.setCidade(FormatadorPadraoStringHelper
+					.formataStringEntrada(tabelasCep.getLocalidade()
+							.getLocalidade()));
+			this.setLogradouro(FormatadorPadraoStringHelper
+					.formataStringEntrada(tabelasCep.getLogradouro()));
+			this.setEstadoSigla(tabelasCep.getUf());
+			this.setEstado(FormatadorEstadorHelper.recuperaEstado(tabelasCep
+					.getUf()));
+			this.setPais(PAIS);
 		}
 	}
 

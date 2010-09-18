@@ -1,7 +1,6 @@
 package br.iteratorsystems.cps.beans;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.el.ELResolver;
@@ -51,6 +50,8 @@ public class FiltersBean {
 	private MotorComparacao motorComparacao;
 	private Parametrizacao parametrizacao;
 	
+	private boolean renderizarGif;
+	
 	/**
 	 * Carrega o combo da lista de usuario.
 	 */
@@ -77,35 +78,41 @@ public class FiltersBean {
 	 * Cria o motor de comparação de produtos
 	 */
 	public String compararProdutos() {
+		this.limparDadosDefault();
 		String retorno = "";
-		if(verificarCamposPreenchidos()){
-			if(buscarPeloMenorPreco) {
+		if(verificarCamposPreenchidos()) {
+			if (buscarPeloMenorPreco) {
 				retorno = comparar(TipoDeComparacao.MENOR_PRECO);
-			}else if(buscarPelaMenorDistancia) {
+			} else if (buscarPelaMenorDistancia) {
 				retorno = comparar(TipoDeComparacao.MENOR_DISTANCIA);
-			}else{
+			} else {
 				retorno = comparar(TipoDeComparacao.MENOR_PRECO_E_DISTANCIA);
 			}
 		}
+		renderizarGif = false;
 		return retorno;
 	}
-	
-	public Long getProgressBar() {
-		Long current = (new Date().getTime() - new Date().getTime()) / 1000;
-		if (current > 100) {
-		} else if (current.equals(0)) {
-			return new Long(1);
-		}
-		return (new Date().getTime() - new Date().getTime()) / 1000;
+
+	/**
+	 * Renderiza o gif
+	 */
+	public void renderizarImagem() {
+		renderizarGif = true;
 	}
 	
+	private void limparDadosDefault() {//TODO verificar outra forma
+		FacesContext context = FacesContext.getCurrentInstance();
+		ELResolver el = context.getApplication().getELResolver();
+		DefaultBean defaultBean = (DefaultBean) el.getValue(context.getELContext(),null,"defaultBean");
+		defaultBean.limparBusca();
+	}
+
 	/**
 	 * Verifica se os campos da página foram preenhcidos corretamente.
 	 * @return Se foram ou não
 	 */
 	private boolean verificarCamposPreenchidos() {
-		boolean correto = true;
-		
+		 boolean correto = true;
 		if(cep == null || cep.isEmpty()) {
 			correto = false;
 			valorInformacaoModal = "Informe um cep válido.";
@@ -574,5 +581,19 @@ public class FiltersBean {
 	 */
 	public String getValorInformacaoModal() {
 		return valorInformacaoModal;
+	}
+
+	/**
+	 * @param renderizarGif the renderizarGif to set
+	 */
+	public void setRenderizarGif(boolean renderizarGif) {
+		this.renderizarGif = renderizarGif;
+	}
+
+	/**
+	 * @return the renderizarGif
+	 */
+	public boolean isRenderizarGif() {
+		return renderizarGif;
 	}
 }
