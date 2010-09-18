@@ -110,6 +110,7 @@ public final class MotorComparacaoImpl implements MotorComparacao{
 					resultadoComparacao.setCodigoMercado(resultadoTO.getCodigoMercado());
 					resultadoComparacao.setCodigoRede(resultadoTO.getCodigoRede());
 					resultadoComparacao.setCep(mercadoTO.getCep());
+					resultadoComparacao.setCepUsuario(this.cepUsuario);
 					resultadoComparacao.setLatitude(mercadoTO.getLatitude());
 					resultadoComparacao.setLongitude(mercadoTO.getLongitude());
 					resultadoComparacao.setListaEncontrados(resultadoTO.getListaEncontrados());
@@ -124,12 +125,6 @@ public final class MotorComparacaoImpl implements MotorComparacao{
 							obterValorDeslocamento(mercadoTO.getDistanciaAproximada(),
 									this.valorCombustivel,
 									this.rendimentoCombustivel));
-					
-					if(index == 1) {
-						resultadoComparacao.setExpande(true);
-					}else{
-						resultadoComparacao.setExpande(false);
-					}
 					listaComparacao.add(resultadoComparacao);
 				}
 			}
@@ -193,35 +188,58 @@ public final class MotorComparacaoImpl implements MotorComparacao{
 				.obterFiltroMercadoMaisProximo(listaMercado));
 
 		if (tipoDeComparacao == TipoDeComparacao.MENOR_PRECO) {
-			try {
-				resultadoComparacao = this.calcularMenorPreco(listaFiltrada,
-						listaDeProdutos);
-				log.debug("resultado por menor preço "+resultadoComparacao);
-			} catch (CpsExceptions e) {
-				log.error(e.getMessage());
-				throw new CpsComparacaoException(e);
-			}
+			resultadoComparacao = obterComparacaoMenorPreco(listaFiltrada);
 		} else if (tipoDeComparacao == TipoDeComparacao.MENOR_DISTANCIA) {
-			try{
-				resultadoComparacao = this.calcularMenorPreco(listaFiltrada, listaDeProdutos);
-				Collections.sort(resultadoComparacao);
-				int index = 0;
-				for(ResultadoComparacaoTO resultado : resultadoComparacao) {
-					resultado.setPosicao(++index);
-					if(resultado.getPosicao() == 1) {
-						resultado.setExpande(true);
-					}else{
-						resultado.setExpande(false);
-					}
-				}
-			}catch (CpsExceptions e) {
-				log.error(e.getMessage());
-				throw new CpsComparacaoException(e);
-			}
+			resultadoComparacao = obterComparacaoMenorDistancia(listaFiltrada);
 		} else {
 			// TODO
 		}
 		log.trace("Fim Comparação");
+		return resultadoComparacao;
+	}
+
+	/**
+	 * Obtem a comparação com base na menor distância
+	 * @param listaFiltrada - lista filtrada
+	 * @return lista de resultado da comparação
+	 * @throws CpsComparacaoException Se ocorrer algum erro.
+	 */
+	private List<ResultadoComparacaoTO> obterComparacaoMenorDistancia(
+			List<MercadoTO> listaFiltrada) throws CpsComparacaoException {
+		List<ResultadoComparacaoTO> resultadoComparacao = null;
+		try {
+			resultadoComparacao = this.calcularMenorPreco(listaFiltrada,
+					listaDeProdutos);
+			Collections.sort(resultadoComparacao);
+			int index = 0;
+			for (ResultadoComparacaoTO resultado : resultadoComparacao) {
+				resultado.setPosicao(++index);
+			}
+		} catch (CpsExceptions e) {
+			log.error(e.getMessage());
+			throw new CpsComparacaoException(e);
+		}
+		return resultadoComparacao;
+	}
+
+	/**
+	 * Obtem a comparação com base no menor preço
+	 * @param listaFiltrada - lista filtrada
+	 * @return lista de resultado da comparação
+	 * @throws CpsComparacaoException Se ocorrer algum erro.
+	 */
+	private List<ResultadoComparacaoTO> obterComparacaoMenorPreco(
+			List<MercadoTO> listaFiltrada) throws CpsComparacaoException {
+		
+		List<ResultadoComparacaoTO> resultadoComparacao = null;
+		try {
+			resultadoComparacao = this.calcularMenorPreco(listaFiltrada,
+					listaDeProdutos);
+			log.debug("resultado por menor preço " + resultadoComparacao);
+		} catch (CpsExceptions e) {
+			log.error(e.getMessage());
+			throw new CpsComparacaoException(e);
+		}
 		return resultadoComparacao;
 	}
 

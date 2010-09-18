@@ -18,6 +18,7 @@ public class ResultadoComparacaoTO implements Comparable<ResultadoComparacaoTO>{
 	private String latitudeUsusario;
 	private String longitudeUsusario;
 	private String cep;
+	private String cepUsuario;
 	private List<ProdutoBuscaTO> listaEncontrados;
 	private List<ProdutoBuscaTO> listaNaoEncontrados;
 	private Double valorTotalLista;
@@ -148,6 +149,20 @@ public class ResultadoComparacaoTO implements Comparable<ResultadoComparacaoTO>{
 	public void setCep(String cep) {
 		this.cep = cep;
 	}
+	/**
+	 * @param cepUsuario the cepUsuario to set
+	 */
+	public void setCepUsuario(String cepUsuario) {
+		this.cepUsuario = cepUsuario;
+	}
+
+	/**
+	 * @return the cepUsuario
+	 */
+	public String getCepUsuario() {
+		return cepUsuario;
+	}
+
 	/**
 	 * @return the listaEncontrados
 	 */
