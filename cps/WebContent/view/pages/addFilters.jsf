@@ -208,22 +208,24 @@
 								</center>
 							</rich:panel>
 						</h:column>
-						<h:column>
-							<rich:spacer width="40"/>
-							<a4j:commandButton value="#{msg.addfilter_button_compare}" 
-								action="#{filtersBean.compararProdutos}" style="width:70px;height:25px;"
-								oncomplete="#{filtersBean.valorCampoComparacao}" reRender="modalErroPreenchimento"/>
-						</h:column>
-						<h:column>
-							<rich:spacer width="15"/>
-							<a4j:outputPanel id="barraProgressoPanel" ajaxRendered="true">
-								<rich:progressBar value="#{filtersBean.progressBar}"
-											rendered="false"
-							                interval="500"  id="barraProgresso" label="buscando o menor preço"
-							                minValue="-1" maxValue="100"
-							                reRenderAfterComplete="barraProgressoPanel,barraProgresso"/>
-							</a4j:outputPanel>
-						</h:column>
+							<h:column>
+								<rich:spacer width="40"/>
+								<a4j:outputPanel id="barraProgressoPanel" ajaxRendered="true">
+									<a4j:commandButton value="#{msg.addfilter_button_compare}" 
+													   id="botaoComparacao" 
+													   style="width:70px;height:25px;"
+													   action="#{filtersBean.compararProdutos}"  
+													   oncomplete="#{filtersBean.valorCampoComparacao}"
+													   rendered="#{not filtersBean.renderizarGif}"
+													   reRender="modalErroPreenchimento,barraProgressoPanel,imagemGif">
+									</a4j:commandButton>
+									
+									<rich:spacer width="15"/>
+									<h:graphicImage id="imagemGif" url="/view/images/gifComparacao.gif" rendered="#{filtersBean.renderizarGif}" height="90" width="320"/>
+								</a4j:outputPanel>
+							</h:column>
+							<h:column>
+							</h:column>
 					</h:panelGrid>	
 				</rich:panel>
 			</h:panelGroup>

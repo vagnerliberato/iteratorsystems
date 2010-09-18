@@ -232,11 +232,10 @@
 			</f:facet>
 			<rich:panel>
 				<center>
-					<a4j:outputPanel>
-						<rich:gmap id="gmapResultado" lat="#{resultado.latitude}" lng="#{resultado.longitude}" 
-								   gmapVar="map" gmapKey="#{resultadoBean.chaveGoogleMaps}" zoom="17"
-								   mapType="G_HYBRID_MAP" style="width:750px;height:500px;"/>
-					</a4j:outputPanel>
+					<rich:gmap id="gmapResultado" lat="#{resultado.latitude}" lng="#{resultado.longitude}" 
+							   gmapVar="map" gmapKey="#{resultadoBean.chaveGoogleMaps}" zoom="17"
+							   mapType="G_NORMAL_MAP" style="width:750px;height:500px;"
+							   rendered="false"/>
 					
 					<h:panelGrid rendered="false">
 						<h:column>
@@ -248,8 +247,8 @@
 						</h:column>
 					</h:panelGrid>
 				
-				 <!-- <div id="mapa_base" style="width: 800px; height: 500px;"></div>
-					<p id="results"></p> -->
+				 <div id="mapa_base" style="width: 800px; height: 500px;"></div>
+				<p id="results"></p>
 				</center>
 			</rich:panel>
 		</rich:modalPanel>

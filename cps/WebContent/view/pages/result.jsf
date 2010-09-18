@@ -22,7 +22,7 @@
 							<rich:dataTable id="dataTableResultado" width="1000px;"
 											var="resultado" value="#{resultadoBean.listaComparacao}">
 								<rich:column>
-									<rich:simpleTogglePanel id="tooglePanel" opened="#{resultado.expande}" switchType="client" width="950" height="750">
+									<rich:simpleTogglePanel id="tooglePanel" opened="#{resultado.expande}" switchType="client" width="950" height="550">
 										<f:facet name="header">
 											<h:panelGroup>
 												<h:graphicImage url="/view/images/trofeu.png"/>
