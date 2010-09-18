@@ -83,5 +83,6 @@
 	<servlet-mapping>
 		<servlet-name>Image Servlet</servlet-name>
 		<url-pattern>/faces/view/image/*</url-pattern>
+		<url-pattern>/faces/view/pages/image/*</url-pattern>
 	</servlet-mapping>
 </web-app>
