@@ -28,7 +28,7 @@
 					</rich:suggestionbox></td>
 					<td><h:commandButton action="#{defaultBean.buscarProduto}"
 										 image="/view/images/Lupa.png" title="#{msg.default_button_search}" />
-						<h:commandButton action="#{defaultBean.limparBusca}" image="/view/images/clear.png"
+						<h:commandButton action="#{defaultBean.limparBusca}" rendered="false" image="/view/images/clear.png"
 						 				 title="#{msg.default_button_clean}" />
 					</td>
 				</table>
@@ -48,15 +48,13 @@
 									<f:facet name="header">
 										<h:outputText value="#{msg.default_producttable_image}" />
 									</f:facet>
-									<center><h:graphicImage id="imagem"
-										value="#{produto.imagem}" rendered="#{produto.possuiImagem}" />
-									<h:graphicImage id="semImagem"
-										value="/view/images/ImageNotFound.png"
-										rendered="#{not produto.possuiImagem}" /> <rich:toolTip
-										for="semImagem" event="onmouseover"
-										rendered="#{not produto.possuiImagem}">
-										<h:outputText value="#{msg.default_image_not_found}" />
-									</rich:toolTip></center>
+									<center>
+										<h:graphicImage id="imagem" value="#{produto.imagem}" rendered="#{produto.possuiImagem}" />
+										<h:graphicImage id="semImagem" value="/view/images/ImageNotFound.png" rendered="#{not produto.possuiImagem}" />
+									    <rich:toolTip for="semImagem" event="onmouseover" rendered="#{not produto.possuiImagem}">
+											<h:outputText value="#{msg.default_image_not_found}" />
+										</rich:toolTip>
+									</center>
 								</rich:column>
 
 								<rich:column width="650">
