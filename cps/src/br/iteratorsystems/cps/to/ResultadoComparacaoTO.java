@@ -24,7 +24,7 @@ public class ResultadoComparacaoTO implements Comparable<ResultadoComparacaoTO>{
 	private Double valorTotalLista;
 	private Double valorDeslocamento;
 	private Double distanciaUsuario;
-	private boolean expande;
+	private boolean expande = true;
 	
 	/**
 	 * Construtor default
