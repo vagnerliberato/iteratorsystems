@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -79,10 +81,6 @@ public final class MotorComparacaoImpl implements MotorComparacao{
 		produtoBuscaImpl  = new ProdutoBuscaImpl();
 	}
 	
-	private List<MercadoTO> buscarProduto(List<Integer> listaCodigoProduto) {
-		return null;
-	}
-
 	/**
 	 * Calcula o menor preço da lista de compras com base nos mercados selecionados.
 	 * @param listaMercadoTO - lista de mercado TO
@@ -101,12 +99,10 @@ public final class MotorComparacaoImpl implements MotorComparacao{
 		DadosGeograficosTO dadosTO = 
 				mercadoBuscaImpl.obterLatitudeLongitude(this.cepUsuario);
 		
-		int index = 0;
 		for(ResultadoProdutoMercadoTO resultadoTO : listaResultadoTO) {
 			for(MercadoTO mercadoTO : listaMercadoTO) {
 				if(mercadoTO.getCodigo().compareTo(resultadoTO.getCodigoMercado()) == 0) {
 					ResultadoComparacaoTO resultadoComparacao = new ResultadoComparacaoTO(); 
-					resultadoComparacao.setPosicao(++index);
 					resultadoComparacao.setCodigoMercado(resultadoTO.getCodigoMercado());
 					resultadoComparacao.setCodigoRede(resultadoTO.getCodigoRede());
 					resultadoComparacao.setCep(mercadoTO.getCep());
@@ -171,10 +167,6 @@ public final class MotorComparacaoImpl implements MotorComparacao{
 		return listaMercado;
 	}
 
-	private List<ResultadoComparacaoTO> obterMenorCustoBeneficio() {
-		return null;
-	}
-
 	/**
 	 * Método responsável por efetuar a comparação dos produtos e mercados.
 	 * @return Lista Com o resultado da comparação
@@ -192,10 +184,57 @@ public final class MotorComparacaoImpl implements MotorComparacao{
 		} else if (tipoDeComparacao == TipoDeComparacao.MENOR_DISTANCIA) {
 			resultadoComparacao = obterComparacaoMenorDistancia(listaFiltrada);
 		} else {
-			// TODO
+			resultadoComparacao = obterMenorCustoBeneficio(listaFiltrada);
 		}
+		
+		if(resultadoComparacao != null) {
+			int index = 0;
+			for (ResultadoComparacaoTO resultado : resultadoComparacao) {
+				resultado.setPosicao(++index);
+			}
+		}
+		
 		log.trace("Fim Comparação");
 		return resultadoComparacao;
+	}
+
+	/**
+	 * Obtem o menor custo benefício com base no valor total da compra e valor gasto no deslocamento.
+	 * @param listaFiltrada  - lista filtrada de mercados
+	 * @return Resultado da comparação
+	 * @throws CpsComparacaoException Se ocorrer algum erro nas camadas abaixo
+	 */
+	private List<ResultadoComparacaoTO> obterMenorCustoBeneficio(
+			List<MercadoTO> listaFiltrada) throws CpsComparacaoException {
+		List<ResultadoComparacaoTO> listaResultadoBusca = null;
+		List<ResultadoComparacaoTO> listaResultadoComparacao = new ArrayList<ResultadoComparacaoTO>();
+		Map<Double,Integer> listaCustoTotal = new TreeMap<Double,Integer>();
+		
+		try{
+			listaResultadoBusca = this.calcularMenorPreco(listaFiltrada, listaDeProdutos);
+			
+			for(ResultadoComparacaoTO resultadoTO : listaResultadoBusca) {
+				listaCustoTotal.put(
+						resultadoTO.getValorDeslocamento() + 
+						resultadoTO.getValorTotalLista(),resultadoTO.getCodigoMercado());
+			}
+
+			for (Double custoBeneficio : listaCustoTotal.keySet()) {
+				for (ResultadoComparacaoTO resultadoTO : listaResultadoBusca) {
+					Double somaTemp = resultadoTO.getValorDeslocamento()
+							+ resultadoTO.getValorTotalLista();
+					
+					if (somaTemp.equals(custoBeneficio)) {
+						listaResultadoComparacao.add(resultadoTO);
+						break;
+					}
+				}
+			}
+		}catch (CpsExceptions e) {
+			log.error(e.getMessage());
+			throw new CpsComparacaoException(e);
+		}
+		return listaResultadoComparacao;
 	}
 
 	/**
@@ -211,10 +250,6 @@ public final class MotorComparacaoImpl implements MotorComparacao{
 			resultadoComparacao = this.calcularMenorPreco(listaFiltrada,
 					listaDeProdutos);
 			Collections.sort(resultadoComparacao);
-			int index = 0;
-			for (ResultadoComparacaoTO resultado : resultadoComparacao) {
-				resultado.setPosicao(++index);
-			}
 		} catch (CpsExceptions e) {
 			log.error(e.getMessage());
 			throw new CpsComparacaoException(e);

@@ -20,6 +20,9 @@ public class ResultadoComparacaoBean {
 	private FiltersBean filtersBean;
 	private String campoHidden;
 	
+	private static final String CHAVE_GOOGLE_MAPS = 
+		"ABQIAAAA7j_Q-rshuWkc8HyFI4V2HxQYPm-xtd00hTQOC0OXpAMO40FHAxT29dNBGfxqMPq5zwdeiDSHEPL89A";
+	
 	/**
 	 * Obtem o resultado da comparacao
 	 */
@@ -39,19 +42,18 @@ public class ResultadoComparacaoBean {
 	 * obtem a chave do google maps para ser usada no mapa
 	 */
 	private void obterChaveGoogleMaps() {
-		setChaveGoogleMaps("ABQIAAAA7j_Q-rshuWkc8HyFI4V2HxQYPm-xtd00hTQOC0OXpAMO40FHAxT29dNBGfxqMPq5zwdeiDSHEPL89A");
+		setChaveGoogleMaps(CHAVE_GOOGLE_MAPS);
 	}
 
 	/**
 	 * Obtem a escolha de comparação feita pelo usuário
 	 */
 	private void obterEscolhaComparacao() {
-		if (filtersBean.getBuscarPeloMenorPreco()) {
+		if (filtersBean.getBuscarPeloMenorPreco() && !filtersBean.getBuscarPelaMenorDistancia()) {
 			escolhaComparacao = "Busca pelo menor preço!";
-		} else if (filtersBean.getBuscarPelaMenorDistancia()) {
+		} else if (filtersBean.getBuscarPelaMenorDistancia() && !filtersBean.getBuscarPeloMenorPreco()) {
 			escolhaComparacao = "Busca pela menor distância!";
-		} else if (filtersBean.getBuscarPelaMenorDistancia()
-				&& filtersBean.getBuscarPeloMenorPreco()) {
+		} else {
 			escolhaComparacao = "Busca pelo menor preço e distância!";
 		}
 	}

@@ -81,9 +81,9 @@ public class FiltersBean {
 		this.limparDadosDefault();
 		String retorno = "";
 		if(verificarCamposPreenchidos()) {
-			if (buscarPeloMenorPreco) {
+			if (buscarPeloMenorPreco && !buscarPelaMenorDistancia) {
 				retorno = comparar(TipoDeComparacao.MENOR_PRECO);
-			} else if (buscarPelaMenorDistancia) {
+			} else if (buscarPelaMenorDistancia && !buscarPeloMenorPreco) {
 				retorno = comparar(TipoDeComparacao.MENOR_DISTANCIA);
 			} else {
 				retorno = comparar(TipoDeComparacao.MENOR_PRECO_E_DISTANCIA);
