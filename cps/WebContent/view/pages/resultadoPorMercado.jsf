@@ -146,7 +146,7 @@
 			</h:panelGrid>
 			
 			<h:panelGroup>
-				<h:panelGrid columns="2">
+				<h:panelGrid columns="1">
 					<h:column>
 						<rich:panel style="width: 450px;">
 							<f:facet name="header">
@@ -179,78 +179,25 @@
 							</center>
 						</rich:panel>
 					</h:column>
+				</h:panelGrid>
+				<h:panelGrid>
 					<h:column>
-						<rich:panel style="width: 350px;height: 120;">
+						<rich:simpleTogglePanel opened="false" switchType="client" width="900" height="500">
 							<f:facet name="header">
 								<h:panelGroup>
-									<h:graphicImage url="/view/images/google.png"/>
-									<h:outputText value="#{msg.tab_inf_desloc}" styleClass="valorHeaderInterno"/>
+									<h:graphicImage url="/view/images/gmap.png" width="40"/>
+									<h:outputText value="#{msg.tab2_local}" styleClass="valorHeaderInterno"/>
 								</h:panelGroup>
 							</f:facet>
-							<rich:spacer height="10"/>
-							<center>
-								<a4j:commandLink ajaxSingle="true" value="Onde fica?" onclick="#{rich:component('modalMaps')}.show();"/>
-							</center>
-						</rich:panel>
+							<rich:gmap id="gmapResultado" lat="#{resultado.latitude}" lng="#{resultado.longitude}" 
+							   		   gmapVar="map" gmapKey="#{resultadoBean.chaveGoogleMaps}" zoom="17"
+							           mapType="G_HYBRID_MAP" style="width:850px;height:500px;"
+							           rendered="true" enableContinuousZoom="true" enableDoubleClickZoom="true" enableInfoWindow="true"/>
+						</rich:simpleTogglePanel>
 					</h:column>
 				</h:panelGrid>
 			</h:panelGroup>
 		</rich:tab>
-		
-		<rich:tab rendered="false">
-			<f:facet name="label">
-				<h:outputText value="#{msg.tab_chegar}" styleClass="abaComparacao"/>
-			</f:facet>
-			<h:panelGrid columns="2" rendered="false">
-				<h:column>
-					<h:outputText value="#{msg.tab_como_chegar_inf}"/>
-				</h:column>
-				<h:column>
-					<a4j:commandButton value="#{msg.tab_como_chegar_button}"/>
-				</h:column>
-			</h:panelGrid>
-			<rich:spacer height="5"/>
-			<h:panelGroup>
-
-			</h:panelGroup>
-		</rich:tab>
 	</rich:tabPanel>
-	
-	<rich:modalPanel id="modalMaps" resizeable="false" width="900" height="630">
-			<f:facet name="header">
-				<h:panelGroup>
-					<h:graphicImage url="/view/images/gmap.png" width="40"/>
-					<h:outputText value="#{msg.tab2_local}" styleClass="valorHeaderInterno"/>
-				</h:panelGroup>
-			</f:facet>
-			<f:facet name="controls">
-				<h:panelGroup>
-					<h:graphicImage value="/view/images/close.png" id="hidelink4" />
-					<rich:componentControl for="modalMaps"
-						attachTo="hidelink4" operation="hide" event="onclick" />
-				</h:panelGroup>
-			</f:facet>
-			<rich:panel>
-				<center>
-					<rich:gmap id="gmapResultado" lat="#{resultado.latitude}" lng="#{resultado.longitude}" 
-							   gmapVar="map" gmapKey="#{resultadoBean.chaveGoogleMaps}" zoom="17"
-							   mapType="G_NORMAL_MAP" style="width:750px;height:500px;"
-							   rendered="false"/>
-					
-					<h:panelGrid rendered="false">
-						<h:column>
-							<h:inputText value="06604-110" label="address1" id="address1">
-							</h:inputText>
-							<h:inputText value="06053-160" id="address2" label="address2">
-							</h:inputText>
-							<h:commandButton type="submit" value="Teste Google Maps"></h:commandButton>
-						</h:column>
-					</h:panelGrid>
-				
-				 <div id="mapa_base" style="width: 800px; height: 500px;"></div>
-				<p id="results"></p>
-				</center>
-			</rich:panel>
-		</rich:modalPanel>
 </h:panelGroup>
 </jsp:root>

@@ -32,16 +32,16 @@
 										<h:outputText value="#{msg.useraccess_password}" styleClass="letras"/>
 									</h:column>
 									<h:column>
-										<h:inputSecret id="inputPassword" value="#{loginUserBean.senha}" maxlength="8" size="12" styleClass="barraDefault" style="font-size:10px; font-family:Verdana; color:black; font-weight:bold"/>		
+										<h:inputSecret id="inputPassword" value="#{loginUserBean.senha}" maxlength="8" size="12" styleClass="barraDefault" style="font-size:10px; font-family:Verdana; color:black; font-weight:bold"/>
+										<rich:spacer width="7"/>
+										<h:commandButton action="#{loginUserBean.validaLogin}" value="#{msg.useraccess_btn_login}" styleClass="letras" style="width: 60px;"/>
 									</h:column>
 									<h:column>
-										<h:commandButton action="#{loginUserBean.validaLogin}" value="#{msg.useraccess_btn_login}" styleClass="letras" style="width: 60px;"/>								
-										<rich:spacer width="3"/>
-										<h:panelGroup>
-											<a4j:commandLink value="#{msg.useraccess_new_cad}" styleClass="letrasDefault" reRender="userAccessForm,richPanelLog,richPanelCad">
-												<f:setPropertyActionListener value="true" target="#{loginUserBean.displayTelaCadastro}"/>
-											</a4j:commandLink>
-										</h:panelGroup>
+										<a4j:commandLink value="#{msg.useraccess_lost_pass}" action="#{loginUserBean.limparMensagemRecuperacao}" 
+														 oncomplete="#{rich:component('modalSenha')}.show();" reRender="modalSenha"/>
+										<a4j:commandLink value="#{msg.useraccess_new_cad}" reRender="userAccessForm,richPanelLog,richPanelCad" rendered="false">
+											<f:setPropertyActionListener value="true" target="#{loginUserBean.displayTelaCadastro}"/>
+										</a4j:commandLink>
 									</h:column>
 								</h:panelGrid>
 							</rich:panel>
@@ -72,11 +72,9 @@
 									<h:column>
 										<h:commandButton action="#{loginUserBean.novo}" value="#{msg.useraccess_cad}" styleClass="letras" />
 										<rich:spacer width="3"/>
-										<h:panelGroup>
-											<a4j:commandLink value="#{msg.useraccess_to_login}" styleClass="letrasDefault" reRender="userAccessForm,richPanelLog,richPanelCad">
-												<f:setPropertyActionListener value="false" target="#{loginUserBean.displayTelaCadastro}"/>
-											</a4j:commandLink>
-										</h:panelGroup>								
+										<a4j:commandLink value="#{msg.useraccess_to_login}" reRender="userAccessForm,richPanelLog,richPanelCad">
+											<f:setPropertyActionListener value="false" target="#{loginUserBean.displayTelaCadastro}"/>
+										</a4j:commandLink>
 									</h:column>
 								</h:panelGrid>
 						   </rich:panel>
@@ -84,6 +82,48 @@
 					</h:form>			
 			</h:panelGrid>
 		</center>	
+		
+		<!-- modal recuperação de acesso -->
+		<rich:modalPanel id="modalSenha" resizeable="false" width="600" height="150">
+			<f:facet name="header">
+				<h:panelGroup>
+					<h:graphicImage url="/view/images/recoverPass.png"/>
+					<h:outputText value="Recuperar dados de acesso"/>
+				</h:panelGroup>
+			</f:facet>		
+				<f:facet name="controls">
+					<h:panelGroup>
+						<h:graphicImage value="/view/images/close.png" id="hidelink4" />
+						<rich:componentControl for="modalSenha"
+							attachTo="hidelink4" operation="hide" event="onclick" />
+					</h:panelGroup>
+				</f:facet>
+			<h:form>
+				<h:message for="entrada"/>
+				<h:panelGrid columns="3" rendered="true" width="300">
+					<h:column>
+						<h:outputText value="Digite seu nome de usuário ou email:" styleClass="letras"/>
+					</h:column>
+					<h:column>
+						<h:inputText id="entrada" validatorMessage="Preencha o campo" size="40" value="#{loginUserBean.entradaRecuperacao}" maxlength="30">
+							<f:validateLength minimum="1" maximum="30"/>
+						</h:inputText>
+					</h:column>
+					<h:column>
+						<a4j:commandButton value="Recuperar" reRender="panelMensagem" action="#{loginUserBean.recuperarAcesso}"/>
+					</h:column>
+				</h:panelGrid>
+				<center>	
+					<a4j:outputPanel ajaxRendered="true">
+						<h:panelGroup id="panelMensagem" rendered="#{not empty loginUserBean.mensagemRecuperacao}">
+							<h:outputText value="#{loginUserBean.mensagemRecuperacao}" style="color: red;"/>
+							<br />
+							<a4j:commandButton value="Fechar" onclick="#{rich:component('modalSenha')}.hide();"/>
+						</h:panelGroup>
+					</a4j:outputPanel>
+				</center>
+			</h:form>
+		</rich:modalPanel>
 		
 		<ui:include src="common/modalCepIncorreto.jsf"/>	
 		</ui:define>

@@ -36,7 +36,7 @@
 	<p:resources />
 	
 	</head>
-	<body onload="initialize();" onunload="GUnload();">
+	<body onunload="GUnload();">
 	
 	<table align="center" bgcolor="#FFFFFF" border="0" class="frame">
 	<tr valign="top">

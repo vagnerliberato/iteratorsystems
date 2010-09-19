@@ -6,13 +6,11 @@
 	xmlns:rich="http://richfaces.org/rich"
 	xmlns:a4j="http://richfaces.org/a4j">
 
-	<f:view contentType="text/html"
-		locale="#{localeController.currentLocale}">
+	<f:view contentType="text/html" locale="#{localeController.currentLocale}">
 		<h:form>
 			<table align="center" width="750px" border="0" cellspacing="10px" id="tablemenu" class="frame_menu">
 				<tr align="right">
 					<td colspan="2" >
-					
 					<!-- Grupo do Itens no Carrinho. O CSS deste item está no pelo nome do ID -->
 					<h:panelGroup id="myCarGroup">
 						<h:panelGroup id="fixedInformationCar" rendered="#{not empty defaultBean.produtosCarrinho}" style="width:10%;">
@@ -32,55 +30,49 @@
 						</rich:toolTip>
 					</h:panelGroup>
 					 <!-- Grupo do Login. O CSS deste item está no pelo nome do ID -->
-					<h:panelGroup id="loginGroup">
-						<h:outputText value="#{msg.information_welcome}"
-							styleClass="letrasTopo" rendered="#{loginUserBean.logado}" />
-						<h:outputText value="#{loginUserBean.login.nomeLogin}"
-							styleClass="letrasTopo" rendered="#{loginUserBean.logado}" />
-						<rich:spacer width="5" />
-						<h:graphicImage url="/view/images/loginTopo.png"
-							rendered="#{not loginUserBean.logado}" />
-						<h:commandLink value="#{msg.information_login}"
-							action="#{loginUserBean.toUserManagerPage}"
-							styleClass="letrasTopo" rendered="#{not loginUserBean.logado}" />
-						<h:graphicImage url="/view/images/logoutTopo.png"
-							rendered="#{loginUserBean.logado}" />
-						<rich:spacer width="10" />
-						<h:commandLink action="#{loginUserBean.logout}"
-							value="#{msg.information_logout}" styleClass="letrasTopo"
-							rendered="#{loginUserBean.logado}" />
-
-					</h:panelGroup></td>
+						<h:panelGroup id="loginGroup">
+							<h:outputText value="#{msg.information_welcome}" styleClass="letrasTopo" rendered="#{loginUserBean.logado}" />
+							<h:outputText value="#{loginUserBean.login.nomeLogin}" styleClass="letrasTopo" rendered="#{loginUserBean.logado}" />
+							<rich:spacer width="5" />
+							<h:graphicImage url="/view/images/loginTopo.png" rendered="#{not loginUserBean.logado}" />
+							<h:commandLink value="#{msg.information_login}" action="#{loginUserBean.toUserManagerPage}" 
+										   styleClass="letrasTopo" rendered="#{not loginUserBean.logado}" >
+								<f:setPropertyActionListener value="false" target="#{loginUserBean.displayTelaCadastro}"/>
+							</h:commandLink>
+							<h:graphicImage url="/view/images/logoutTopo.png" rendered="#{loginUserBean.logado}" />
+							<rich:spacer width="10" />
+							<h:commandLink action="#{loginUserBean.logout}" value="#{msg.information_logout}" styleClass="letrasTopo"
+										   rendered="#{loginUserBean.logado}" />
+						</h:panelGroup>
+					</td>
 				</tr>
 				<tr align="center">
-					<div class="Logo"></div>
-					<td id="logomarca" align="center"><h:graphicImage
-						url="/view/images/logo.png" height="60" /></td>
-
+					<div class="Logo"/>
+					<td id="logomarca" align="center">
+						<h:graphicImage url="/view/images/logo.png" height="60" />
+					</td>
 					<!-- Grupo do Menu Principal. O CSS deste item deve ser localizado pelo ID -->
-					<td id="menu_top"><!-- menu topo --> <rich:toolBar
-						itemSeparator="line" width="150px" height="25px">
-						<h:commandLink action="#{navigationBean.toDefaultPage}"
-							styleClass="letrasDefault">
-							<h:outputText value="#{msg.top_menu_search}" />
-						</h:commandLink>
-						<h:commandLink action="#{navigationBean.toFilters}"
-							styleClass="letrasDefault">
-							<h:outputText value="#{msg.top_menu_filters}" />
-						</h:commandLink>
-						<h:commandLink action="#{navigationBean.toMyCar}"
-							styleClass="letrasDefault">
-							<h:outputText value="#{msg.top_menu_car}" />
-						</h:commandLink>
-						<h:commandLink action="#{loginUserBean.toUserManagerPage}"
-							styleClass="letrasDefault">
-							<h:outputText value="#{msg.top_menu_access}" />
-						</h:commandLink>
-						<h:commandLink action="#{navigationBean.toAboutPage}"
-							styleClass="letrasDefault">
-							<h:outputText value="#{msg.top_menu_about}" />
-						</h:commandLink>
-					</rich:toolBar></td>
+					<!-- menu topo -->
+					<td id="menu_top"> 
+						<rich:toolBar itemSeparator="line" width="150px" height="25px">
+							<h:commandLink action="#{navigationBean.toDefaultPage}" styleClass="letrasDefault">
+								<h:outputText value="#{msg.top_menu_search}" />
+							</h:commandLink>
+							<h:commandLink action="#{navigationBean.toFilters}" styleClass="letrasDefault">
+								<h:outputText value="#{msg.top_menu_filters}" />
+							</h:commandLink>
+							<h:commandLink action="#{navigationBean.toMyCar}" styleClass="letrasDefault">
+								<h:outputText value="#{msg.top_menu_car}" />
+							</h:commandLink>
+							<h:commandLink action="#{loginUserBean.toUserManagerPage}" styleClass="letrasDefault">
+								<h:outputText value="#{msg.top_menu_access}" />
+								<f:setPropertyActionListener value="true" target="#{loginUserBean.displayTelaCadastro}"/>
+							</h:commandLink>
+							<h:commandLink action="#{navigationBean.toAboutPage}" styleClass="letrasDefault">
+								<h:outputText value="#{msg.top_menu_about}" />
+							</h:commandLink>
+						</rich:toolBar>
+					</td>
 				</tr>
 			</table>
 		</h:form>

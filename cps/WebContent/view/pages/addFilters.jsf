@@ -219,7 +219,6 @@
 													   rendered="#{not filtersBean.renderizarGif}"
 													   reRender="modalErroPreenchimento,barraProgressoPanel,imagemGif">
 									</a4j:commandButton>
-									
 									<rich:spacer width="15"/>
 									<h:graphicImage id="imagemGif" url="/view/images/gifComparacao.gif" rendered="#{filtersBean.renderizarGif}" height="90" width="320"/>
 								</a4j:outputPanel>
