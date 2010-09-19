@@ -11,6 +11,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
 import br.iteratorsystems.cps.common.CommonOperations;
+import br.iteratorsystems.cps.common.EnviarEmail;
 import br.iteratorsystems.cps.common.FacesUtil;
 import br.iteratorsystems.cps.common.Resources;
 import br.iteratorsystems.cps.entities.Endereco;
@@ -19,7 +20,6 @@ import br.iteratorsystems.cps.entities.Usuario;
 import br.iteratorsystems.cps.exceptions.CpsExceptions;
 import br.iteratorsystems.cps.exceptions.CpsHandlerException;
 import br.iteratorsystems.cps.handler.LoginUserHandler;
-import br.iteratorsystems.cps.test.EnviarEmail;
 
 public class LoginUserBean {
 
