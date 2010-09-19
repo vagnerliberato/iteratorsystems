@@ -60,6 +60,25 @@ public class LoginUserHandler {
 		}
 	}
 
+	public Usuario getLoginBy(String email,String username) throws CpsHandlerException {
+		final String message = "recovering login";
+		log.debug(message);
+		Usuario usuario = null;
+		try{
+			idaoLogin = new DaoLogin();
+			if(email != null) {
+				usuario = idaoLogin.getByEmail(email);
+			}else{
+				usuario = idaoLogin.getByUsername(username);
+			}
+		}catch (CpsDaoException e) {
+			final String errMsg = "error! " + message;
+			log.error(errMsg, e);
+			throw new CpsHandlerException(errMsg, e);
+		}
+		return usuario;
+	}
+	
 	public Endereco getEnderecoRelated(final Integer idUsuario)	throws CpsHandlerException {
 		final String message = "getting Endereco with idUsuario: " + idUsuario;
 		log.debug(message);
