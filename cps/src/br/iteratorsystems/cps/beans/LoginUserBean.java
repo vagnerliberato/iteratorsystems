@@ -1,6 +1,10 @@
 package br.iteratorsystems.cps.beans;
 
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 import javax.el.ELResolver;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
@@ -13,7 +17,9 @@ import br.iteratorsystems.cps.entities.Endereco;
 import br.iteratorsystems.cps.entities.Login;
 import br.iteratorsystems.cps.entities.Usuario;
 import br.iteratorsystems.cps.exceptions.CpsExceptions;
+import br.iteratorsystems.cps.exceptions.CpsHandlerException;
 import br.iteratorsystems.cps.handler.LoginUserHandler;
+import br.iteratorsystems.cps.test.EnviarEmail;
 
 public class LoginUserBean {
 
@@ -26,9 +32,13 @@ public class LoginUserBean {
 	private String senha;
 	private String email;
 	private String cep;
+	private String entradaRecuperacao;
+	private String mensagemRecuperacao;
 	private boolean logado = false;
 	private boolean firstAccess = false;
 	private boolean displayTelaCadastro;
+	
+	private static final String REGEX = "[A-Za-z0-9\\._-]+@[A-Za-z]+\\.[A-Za-z\\.a-zA-Z]+";
 	
 	/**
 	 * Método que valida o login do usuario
@@ -60,6 +70,105 @@ public class LoginUserBean {
 	}
 	
 	/**
+	 * Limpa a mensagem de recuperação de acesso.
+	 */
+	public void limparMensagemRecuperacao() {
+		mensagemRecuperacao = "";
+		entradaRecuperacao = "";
+	}
+	
+	/**
+	 * Recupera o acesso
+	 * @throws CpsHandlerException Se ocorrer algum erro
+	 */
+	public void recuperarAcesso() throws CpsHandlerException {
+		loginHandler = new LoginUserHandler();
+		Usuario usuario = null;
+		if(entradaRecuperacao.matches(REGEX)) {
+			usuario = loginHandler.getLoginBy(entradaRecuperacao, null);
+		}else{
+			usuario = loginHandler.getLoginBy(null,entradaRecuperacao);
+		}
+		if(usuario != null) {
+			if(enviarEmail(usuario)) {
+				mensagemRecuperacao = "Um email foi enviado para você com seus dados de acesso!";
+			}else{
+				mensagemRecuperacao = "Houve um erro ao enviar o email";
+			}
+		}else{
+			mensagemRecuperacao = "Seus dados não foram encontrados no servidor.";
+		}
+	}
+	
+	/**
+	 * Envia o email
+	 * @param usuario - usuario
+	 * @return Se o email foi enviado
+	 */
+	private boolean enviarEmail(Usuario usuario) {
+		boolean sucesso = true;
+		EnviarEmail email = new EnviarEmail();
+		String titulo = "Sistema CPS - Recuperação de Acesso";
+		String corpo = obterCorpoMensagem(usuario);
+		try {
+			if (!email.enviarEmail(titulo, corpo, usuario.getEmail())) {
+				sucesso = false;
+			}
+		} catch (Exception e) {
+			sucesso = false;
+			e.printStackTrace();
+		}
+		return sucesso;
+	}
+
+	/**
+	 * Obtem o corpo da mensage para recuperação do acesso
+	 * @param usuario - usuario.
+	 * @return Mensagem
+	 */
+	private String obterCorpoMensagem(Usuario usuario) {
+		StringBuilder mensagem = new StringBuilder();
+		Calendar calendar = GregorianCalendar.getInstance();
+		mensagem.append("Olá, ");
+		mensagem.append(usuario.getNomeUsuario());
+		mensagem.append(" você solicitou o envio de seus dados de acesso às ");
+		
+		SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy HH:MM:SS"); 
+		mensagem.append(formatador.format(calendar.getTime())+", do sistema CPS.");
+		mensagem.append("\n");
+		mensagem.append("\n");
+		mensagem.append("Seguem seus dados: ");
+		mensagem.append("\n");
+		
+		Login loginUsuarioRecuperacao = null;
+		for(Login loginRec : usuario.getLogins()) {
+			loginUsuarioRecuperacao = loginRec;
+			break;
+		}
+		
+		mensagem.append("Nome de usuário: "+loginUsuarioRecuperacao.getNomeLogin());
+		mensagem.append("\n");
+		mensagem.append("Senha: "+loginUsuarioRecuperacao.getSenha());
+		mensagem.append("\n");
+		mensagem.append("\n");
+		mensagem.append("Qualquer dúvida entre em contato com a central de relacionamento.");
+		mensagem.append("\n");
+		mensagem.append("Obrigado,");
+		mensagem.append("\n");
+		mensagem.append("Sistema CPS - Porquê aqui a sua compra tem valor!");
+		mensagem.append("\n");
+		mensagem.append("\n");
+		mensagem.append("\n");
+		mensagem.append("ATENÇÃO: ISTO NÃO É UM SPAM, E SIM UMA SOLICITAÇÃO DE RECUPERAÇÃO DE ACESSO.");
+		mensagem.append("\n");
+		mensagem.append("Se você não solicitou a recuperação, entre IMEDIATAMENTE em contato com a central de relacionamento.");
+		mensagem.append("\n");
+		mensagem.append("\n");
+		mensagem.append("Iterator Systems - Todos os direitos reservados. @Copyright "+calendar.get(Calendar.YEAR)+".");
+		return mensagem.toString();
+	}
+
+	/**
 	 * Limpa o objeto bean da página inicial
 	 * @param context - Faces context
 	 */
@@ -77,13 +186,11 @@ public class LoginUserBean {
 	 */
 	
 	public String novo() throws CpsExceptions {
-		String regex = "[A-Za-z0-9\\._-]+@[A-Za-z]+\\.[A-Za-z\\.a-zA-Z]+";
-
 		if (this.getEmail() == null || this.getCep() == null || "".equals(this.getEmail()) || "".equals(this.getCep())) {
 			return "";
 		}
 
-		if (this.getEmail().matches(regex)) {
+		if (this.getEmail().matches(REGEX)) {
 			if(CommonOperations.mailExists(this.getEmail())){
 				FacesUtil.errorMessage("", Resources.getErrorProperties().getString("email_exists"), "email já cadastrado");
 				return "";
@@ -332,5 +439,33 @@ public class LoginUserBean {
 	 */
 	public boolean isDisplayTelaCadastro() {
 		return displayTelaCadastro;
+	}
+
+	/**
+	 * @param entradaRecuperacao the entradaRecuperacao to set
+	 */
+	public void setEntradaRecuperacao(String entradaRecuperacao) {
+		this.entradaRecuperacao = entradaRecuperacao;
+	}
+
+	/**
+	 * @return the entradaRecuperacao
+	 */
+	public String getEntradaRecuperacao() {
+		return entradaRecuperacao;
+	}
+
+	/**
+	 * @param mensagemRecuperacao the mensagemRecuperacao to set
+	 */
+	public void setMensagemRecuperacao(String mensagemRecuperacao) {
+		this.mensagemRecuperacao = mensagemRecuperacao;
+	}
+
+	/**
+	 * @return the mensagemRecuperacao
+	 */
+	public String getMensagemRecuperacao() {
+		return mensagemRecuperacao;
 	}
 }

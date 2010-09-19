@@ -129,4 +129,23 @@ public class DaoLogin extends Dao<EntityAble> {
 		result = (Login) criteria.uniqueResult();
 		return result == null ? false : true;
 	}
+	
+	public Usuario getByUsername(String username) throws CpsDaoException{
+		Usuario usuario = null;
+		Criteria criteria = HibernateConfig.getSession().createCriteria(
+				Login.class);
+		criteria.add(Restrictions.eq("nomeLogin", username));
+		Login login = (Login) criteria.uniqueResult();
+		if(login != null) {
+			usuario = getUsuarioRelated(login.getIdLogin());
+		}
+		return usuario;
+	}
+
+	public Usuario getByEmail(String email) throws CpsDaoException{
+		Criteria criteria = HibernateConfig.getSession().createCriteria(
+				Usuario.class);
+		criteria.add(Restrictions.eq("email", email));
+		return (Usuario) criteria.uniqueResult();
+	}
 }
