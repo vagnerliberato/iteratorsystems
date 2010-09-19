@@ -165,14 +165,12 @@ public class MercadoBuscaDAOImpl {
 		Connection con = HibernateConfig.getConnection();
 		try{
 			con.setAutoCommit(false);
-			CallableStatement cs = con.prepareCall("select tabelas.sp_localizacao_geo (?)");
+			CallableStatement cs = con.prepareCall("select * from tabelas.vw_localizacao where zip = ?");
 			cs.setString(1,cep.trim());
 			ResultSet rs = cs.executeQuery();
 			
 			if(rs.next()) {
-				dados = 
-					obterLatitudeLongitudeTO(
-							ProcedureHelper.limparDadosString(rs.getString(1)));
+				dados = obterLatitudeLongitudeTO(rs.getString(2),rs.getString(3));
 			}
 		}catch (SQLException e) {
 			log.error("erro ao buscar o cep "+e);
@@ -186,11 +184,10 @@ public class MercadoBuscaDAOImpl {
 	 * @param entrada - entrada
 	 * @return Dados geograficos TO.
 	 */
-	private DadosGeograficosTO obterLatitudeLongitudeTO(String entrada) {
+	private DadosGeograficosTO obterLatitudeLongitudeTO(String latitude,String longitude) {
 		DadosGeograficosTO dadosTO = new DadosGeograficosTO();
-		String [] split = entrada.split("[,]");
-		dadosTO.setLatitude(split[1]);
-		dadosTO.setLongitude(split[2]);
+		dadosTO.setLatitude(latitude);
+		dadosTO.setLongitude(longitude);
 		return dadosTO;
 	}
 }
