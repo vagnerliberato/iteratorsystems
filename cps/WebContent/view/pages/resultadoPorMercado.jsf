@@ -90,7 +90,7 @@
 			
 			<h:panelGrid id="panelProduto" columns="1" width="900">
 				<h:column>
-					<rich:simpleTogglePanel switchType="client">
+					<rich:simpleTogglePanel switchType="client" opened="false">
 						<f:facet name="header">
 							<h:outputText value="#{msg.tab_modal_enc}" styleClass="valorHeaderInterno"/>
 						</f:facet>
@@ -121,7 +121,7 @@
 					</rich:simpleTogglePanel>
 				</h:column>
 				<h:column>
-					<rich:simpleTogglePanel rendered="#{not empty resultado.listaNaoEncontrados}" switchType="client">
+					<rich:simpleTogglePanel rendered="#{not empty resultado.listaNaoEncontrados}" opened="false" switchType="client">
 						<f:facet name="header">
 							<h:outputText value="#{msg.tab_modal_n_enc}" styleClass="valorHeaderInterno"/>
 						</f:facet>
@@ -182,7 +182,7 @@
 				</h:panelGrid>
 				<h:panelGrid>
 					<h:column>
-						<rich:simpleTogglePanel opened="false" switchType="client" width="900" height="500">
+						<rich:simpleTogglePanel switchType="client" width="900" height="500">
 							<f:facet name="header">
 								<h:panelGroup>
 									<h:graphicImage url="/view/images/gmap.png" width="40"/>
