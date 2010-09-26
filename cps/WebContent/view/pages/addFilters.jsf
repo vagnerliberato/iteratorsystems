@@ -213,14 +213,12 @@
 								<a4j:outputPanel id="barraProgressoPanel" ajaxRendered="true">
 									<a4j:commandButton value="#{msg.addfilter_button_compare}" 
 													   id="botaoComparacao" 
+													   onclick="#{rich:component('modalGif')}.show();"
 													   style="width:70px;height:25px;"
 													   action="#{filtersBean.compararProdutos}"  
-													   oncomplete="#{filtersBean.valorCampoComparacao}"
-													   rendered="#{not filtersBean.renderizarGif}"
-													   reRender="modalErroPreenchimento,barraProgressoPanel,imagemGif">
+													   oncomplete="#{rich:component('modalGif')}.hide();#{filtersBean.valorCampoComparacao}"
+													   reRender="modalErroPreenchimento,barraProgressoPanel">
 									</a4j:commandButton>
-									<rich:spacer width="15"/>
-									<h:graphicImage id="imagemGif" url="/view/images/gifComparacao.gif" rendered="#{filtersBean.renderizarGif}" height="90" width="320"/>
 								</a4j:outputPanel>
 							</h:column>
 							<h:column>
@@ -232,6 +230,13 @@
 			<!--</a4j:form>-->
 			
 			<!-- Modais -->
+			
+			<rich:modalPanel id="modalGif" resizeable="false" width="380" height="130">
+				<f:facet name="header">
+					<h:outputText value="#{msg.header_gif_comparacao}"/>
+				</f:facet>
+				<h:graphicImage id="imagemGif" url="/view/images/gifComparacao.gif" height="90" width="380"/>
+			</rich:modalPanel>
 			
 			<rich:modalPanel id="modalErroPreenchimento" height="95" width="395" resizeable="false">
 				<f:facet name="header">
