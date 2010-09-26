@@ -27,7 +27,7 @@
 							<h:panelGrid columns="3">
 								<h:column>
 									<h:inputText id="addNewCep" value="#{filtersBean.cep}" maxlength="9" size="11" rendered="#{empty filtersBean.login}" styleClass="barraDefault" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold" title="#{msg.personalcontatc_CEP_info}">
-										<rich:jQuery selector="#addNewCep" query="mask('99999-999')" timing="immediate" />
+										<rich:jQuery selector="#addNewCep" query="mask('99999-999')" timing="onload" />
 									</h:inputText>
 									<rich:spacer width="2"/>
 									<h:outputText value="#{msg.personalcontatc_CEP_info}" rendered="#{empty filtersBean.login}" styleClass="letrasInfo"/>
@@ -213,6 +213,7 @@
 								<a4j:outputPanel id="barraProgressoPanel" ajaxRendered="true">
 									<a4j:commandButton value="#{msg.addfilter_button_compare}" 
 													   id="botaoComparacao" 
+													   disabled="#{empty filtersBean.estado}"
 													   onclick="#{rich:component('modalGif')}.show();"
 													   style="width:70px;height:25px;"
 													   action="#{filtersBean.compararProdutos}"  

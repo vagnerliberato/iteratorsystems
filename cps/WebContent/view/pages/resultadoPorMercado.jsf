@@ -189,10 +189,11 @@
 									<h:outputText value="#{msg.tab2_local}" styleClass="valorHeaderInterno"/>
 								</h:panelGroup>
 							</f:facet>
+							<rich:spacer height="10"/>
 							<rich:gmap id="gmapResultado" lat="#{resultado.latitude}" lng="#{resultado.longitude}" 
 							   		   gmapVar="map" gmapKey="#{resultadoBean.chaveGoogleMaps}" zoom="17"
-							           mapType="G_HYBRID_MAP" style="width:850px;height:500px;"
-							           rendered="true" enableContinuousZoom="true" enableDoubleClickZoom="true" enableInfoWindow="true"/>
+							           mapType="G_HYBRID_MAP" style="width:850px;height:500px;" 
+							           enableContinuousZoom="true" enableDoubleClickZoom="true" enableInfoWindow="true"/>
 						</rich:simpleTogglePanel>
 					</h:column>
 				</h:panelGrid>
