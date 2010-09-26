@@ -54,7 +54,7 @@
 							</f:facet>
 							<center>
 								<a4j:commandButton id="botaoAtualizarLista" onclick="#{rich:component('modalAtualizarLista')}.show();"
-							   				       image="/view/images/addNewList.png" styleClass="botaoDefault"/>		
+							   				       image="/view/images/addNewList.png"/>		
 							</center>
 						</rich:column>
 						<f:facet name="footer">
