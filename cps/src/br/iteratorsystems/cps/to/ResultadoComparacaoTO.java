@@ -25,6 +25,9 @@ public class ResultadoComparacaoTO implements Comparable<ResultadoComparacaoTO>{
 	private Double valorDeslocamento;
 	private Double distanciaUsuario;
 	private boolean expande = true;
+	private boolean expandeProdutosEncontrados;
+	private boolean expandeProdutosNaoEncontrados;
+	private boolean expandeGmap = true;
 	
 	/**
 	 * Construtor default
@@ -236,6 +239,49 @@ public class ResultadoComparacaoTO implements Comparable<ResultadoComparacaoTO>{
 	 */
 	public boolean isExpande() {
 		return expande;
+	}
+
+	/**
+	 * @return the expandeProdutosEncontrados
+	 */
+	public boolean isExpandeProdutosEncontrados() {
+		return expandeProdutosEncontrados;
+	}
+
+	/**
+	 * @param expandeProdutosEncontrados the expandeProdutosEncontrados to set
+	 */
+	public void setExpandeProdutosEncontrados(boolean expandeProdutosEncontrados) {
+		this.expandeProdutosEncontrados = expandeProdutosEncontrados;
+	}
+
+	/**
+	 * @return the expandeProdutosNaoEncontrados
+	 */
+	public boolean isExpandeProdutosNaoEncontrados() {
+		return expandeProdutosNaoEncontrados;
+	}
+
+	/**
+	 * @param expandeProdutosNaoEncontrados the expandeProdutosNaoEncontrados to set
+	 */
+	public void setExpandeProdutosNaoEncontrados(
+			boolean expandeProdutosNaoEncontrados) {
+		this.expandeProdutosNaoEncontrados = expandeProdutosNaoEncontrados;
+	}
+
+	/**
+	 * @return the expandeGmap
+	 */
+	public boolean isExpandeGmap() {
+		return expandeGmap;
+	}
+
+	/**
+	 * @param expandeGmap the expandeGmap to set
+	 */
+	public void setExpandeGmap(boolean expandeGmap) {
+		this.expandeGmap = expandeGmap;
 	}
 
 	/**
