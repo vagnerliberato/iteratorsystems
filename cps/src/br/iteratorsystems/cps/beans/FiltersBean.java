@@ -353,20 +353,26 @@ public class FiltersBean {
 	/**
 	 * Busca um cep
 	 */
-	public void find(){
+	public void find() {
 		findAddress = new FindAddress();
-		
-		if(cepAlternativo != null && !"".equals(cepAlternativo)) {
-			findAddress.find(this.getCepAlternativo());
-		}else {
-			findAddress.find(this.getCep());
+		boolean sucesso = false;
+		if (cepAlternativo != null && !"".equals(cepAlternativo)) {
+			sucesso = findAddress.find(this.getCepAlternativo());
+		} else {
+			sucesso = findAddress.find(this.getCep());
 		}
 
-		this.setLogradouro(findAddress.getLogradouro());
-		this.setBairro(findAddress.getBairro());
-		this.setCidade(findAddress.getCidade());
-		this.setEstado(findAddress.getEstado());
-		findAddress = null;
+		if (sucesso) {
+			this.setLogradouro(findAddress.getLogradouro());
+			this.setBairro(findAddress.getBairro());
+			this.setCidade(findAddress.getCidade());
+			this.setEstado(findAddress.getEstado());
+		} else {
+			this.setLogradouro(null);
+			this.setBairro(null);
+			this.setCidade(null);
+			this.setEstado(null);
+		}
 	}
 	
 	/**

@@ -8,6 +8,9 @@ import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import br.iteratorsystems.cps.entities.Cep;
 import br.iteratorsystems.cps.exceptions.CpsHandlerException;
 import br.iteratorsystems.cps.exceptions.FindAddressException;
@@ -32,8 +35,8 @@ public class FindAddress {
 	protected String estado;
 	protected String estadoSigla;
 
-	//private static final String baseUrl2 = "http://www.buscarcep.com.br/index.php";
-	//private static final String CHAVE = "1Maco/svVvWvqJ1sNk5prmVd9kbaK7";
+	private static final Log log = LogFactory.getLog(FindAddress.class);
+	
 	private static final String baseUrl = "http://cep.republicavirtual.com.br/web_cep.php";
 	private static final String PAIS = "BRASIL";
 
@@ -48,7 +51,6 @@ public class FindAddress {
 		StringBuilder finalUrl = new StringBuilder(baseUrl);
 		finalUrl.append("?cep=" + cep);
 		finalUrl.append("&formato=xml");
-		//finalUrl.append("&chave=" + CHAVE);
 
 		try {
 			URL url = new URL(finalUrl.toString());
@@ -58,7 +60,7 @@ public class FindAddress {
 			connection.setDoInput(true);
 			connection.setDoOutput(false);
 
-			new ObterProxyHelper().createProxy(connection);
+			//new ObterProxyHelper().createProxy(connection);
 
 			connection.connect();
 		} catch (Exception e) {
@@ -103,20 +105,24 @@ public class FindAddress {
 	 * A prioridade é o web service por ser mais rápido, mas se o mesmo não estiver disponível ou ainda
 	 * o cep não for encontrado, faz a busca na base local.
 	 * @param cep - Cep
+	 * @return Se houve sucesso na busca
 	 */
-	public void find(String cep) {
+	public boolean find(String cep) {
+		boolean sucesso = true;
 		final String cepModificado = cep.replace("-","");
 		try{
 			this.findByDataBase(cepModificado);
-			return;
+			log.debug("cep encontrado na base "+cepModificado);
 		}catch (CpsHandlerException e) {
 			try {
 				this.findByWebService(cepModificado);
+				log.debug("cep encontrado no web service " + cepModificado);
 			} catch (FindAddressException e1) {
-				e1.printStackTrace();
+				log.error("erro ao buscar cep" + e1.getMessage());
+				sucesso = false;
 			}
-			e.printStackTrace();
 		}
+		return sucesso;
 	}
 	
 	/**
