@@ -50,8 +50,6 @@ public class FiltersBean {
 	private MotorComparacao motorComparacao;
 	private Parametrizacao parametrizacao;
 	
-	private boolean renderizarGif;
-	
 	/**
 	 * Carrega o combo da lista de usuario.
 	 */
@@ -89,17 +87,9 @@ public class FiltersBean {
 				retorno = comparar(TipoDeComparacao.MENOR_PRECO_E_DISTANCIA);
 			}
 		}
-		renderizarGif = false;
 		return retorno;
 	}
 
-	/**
-	 * Renderiza o gif
-	 */
-	public void renderizarImagem() {
-		renderizarGif = true;
-	}
-	
 	private void limparDadosDefault() {//TODO verificar outra forma
 		FacesContext context = FacesContext.getCurrentInstance();
 		ELResolver el = context.getApplication().getELResolver();
@@ -581,19 +571,5 @@ public class FiltersBean {
 	 */
 	public String getValorInformacaoModal() {
 		return valorInformacaoModal;
-	}
-
-	/**
-	 * @param renderizarGif the renderizarGif to set
-	 */
-	public void setRenderizarGif(boolean renderizarGif) {
-		this.renderizarGif = renderizarGif;
-	}
-
-	/**
-	 * @return the renderizarGif
-	 */
-	public boolean isRenderizarGif() {
-		return renderizarGif;
 	}
 }

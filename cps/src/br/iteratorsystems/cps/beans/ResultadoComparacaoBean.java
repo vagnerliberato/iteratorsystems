@@ -19,6 +19,7 @@ public class ResultadoComparacaoBean {
 	private String chaveGoogleMaps;
 	private FiltersBean filtersBean;
 	private String campoHidden;
+	private boolean expande;
 	
 	private static final String CHAVE_GOOGLE_MAPS = 
 		"ABQIAAAA7j_Q-rshuWkc8HyFI4V2HxQYPm-xtd00hTQOC0OXpAMO40FHAxT29dNBGfxqMPq5zwdeiDSHEPL89A";
@@ -35,6 +36,12 @@ public class ResultadoComparacaoBean {
 			setListaComparacao(this.getFiltersBean().getListaComparacao());
 			obterEscolhaComparacao();
 			obterChaveGoogleMaps();
+		}
+	}
+	
+	public void expandir() {
+		for(ResultadoComparacaoTO resultadoTO : listaComparacao) {
+			resultadoTO.setExpande(expande);
 		}
 	}
 	
@@ -127,5 +134,19 @@ public class ResultadoComparacaoBean {
 	 */
 	public String getChaveGoogleMaps() {
 		return chaveGoogleMaps;
+	}
+
+	/**
+	 * @param expande the expande to set
+	 */
+	public void setExpande(boolean expande) {
+		this.expande = expande;
+	}
+
+	/**
+	 * @return the expande
+	 */
+	public boolean isExpande() {
+		return expande;
 	}
 }
