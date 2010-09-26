@@ -70,7 +70,7 @@
 							<h:outputText value="R$" styleClass="valorResultado"/>
 							<rich:spacer width="3"/>
 							<h:outputText value="#{resultado.valorTotalLista}" styleClass="valorResultado">
-								<f:convertNumber maxFractionDigits="2"/>
+								<f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
 							</h:outputText>
 						</center>
 					</rich:panel>
@@ -90,7 +90,7 @@
 			
 			<h:panelGrid id="panelProduto" columns="1" width="900">
 				<h:column>
-					<rich:simpleTogglePanel switchType="client" opened="false">
+					<rich:simpleTogglePanel switchType="client" opened="#{resultado.expandeProdutosEncontrados}">
 						<f:facet name="header">
 							<h:outputText value="#{msg.tab_modal_enc}" styleClass="valorHeaderInterno"/>
 						</f:facet>
@@ -113,7 +113,7 @@
 										<h:outputText value="#{msg.tab_enc_vlr}"/>
 									</f:facet>
 									<h:outputText value="#{encontrados.valor}">
-										<f:convertNumber maxFractionDigits="2"/>
+										<f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
 									</h:outputText>
 								</rich:column>
 							</rich:dataTable>
@@ -121,7 +121,7 @@
 					</rich:simpleTogglePanel>
 				</h:column>
 				<h:column>
-					<rich:simpleTogglePanel rendered="#{not empty resultado.listaNaoEncontrados}" opened="false" switchType="client">
+					<rich:simpleTogglePanel rendered="#{not empty resultado.listaNaoEncontrados}" opened="#{resultado.expandeProdutosNaoEncontrados}" switchType="client">
 						<f:facet name="header">
 							<h:outputText value="#{msg.tab_modal_n_enc}" styleClass="valorHeaderInterno"/>
 						</f:facet>
@@ -162,7 +162,7 @@
 									</h:column>			
 									<h:column>
 										<h:outputText value="#{resultado.distanciaUsuario}" styleClass="valorResultado">
-											<f:convertNumber maxFractionDigits="2"/>
+											<f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
 										</h:outputText>
 										<h:outputText value="Km" styleClass="deslocamento"/>
 									</h:column>
@@ -172,7 +172,7 @@
 									<h:column>
 										<h:outputText value="R$" styleClass="deslocamento"/>
 										<h:outputText value="#{resultado.valorDeslocamento}" styleClass="valorResultado">
-											<f:convertNumber maxFractionDigits="2"/>
+											<f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
 										</h:outputText>
 									</h:column>
 								</h:panelGrid>
@@ -182,7 +182,7 @@
 				</h:panelGrid>
 				<h:panelGrid>
 					<h:column>
-						<rich:simpleTogglePanel switchType="client" width="900" height="500">
+						<rich:simpleTogglePanel switchType="client" opened="#{resultado.expandeGmap}" width="900" height="500">
 							<f:facet name="header">
 								<h:panelGroup>
 									<h:graphicImage url="/view/images/gmap.png" width="40"/>

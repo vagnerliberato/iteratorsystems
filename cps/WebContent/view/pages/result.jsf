@@ -11,8 +11,20 @@
 	<ui:define name="content">
 		<h:inputHidden value="#{resultadoBean.campoHidden}"/>
 		<h:form id="compareForm">
-			<h:panelGroup style="margin-left: 940px;">
-				<a4j:commandButton image="/view/images/question.png" style="height: 25px;"/>
+			<h:panelGroup style="margin-left: 40px;">
+				<rich:toolBar>
+					<rich:dropDownMenu>
+						<f:facet name="label">
+							<h:outputText value="Operações"/>
+						</f:facet>
+						<rich:menuItem action="#{resultadoBean.expandir}" submitMode="server" value="Abrir Todos">
+							<f:setPropertyActionListener value="true" target="#{resultadoBean.expande}"/>
+						</rich:menuItem>
+						<rich:menuItem action="#{resultadoBean.expandir}" submitMode="server" value="Fechar Todos">
+							<f:setPropertyActionListener value="false" target="#{resultadoBean.expande}"/>
+						</rich:menuItem>
+					</rich:dropDownMenu>
+				</rich:toolBar>
 			</h:panelGroup>
 			<rich:spacer height="15"/>
 			<center>
