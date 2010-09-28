@@ -1,5 +1,5 @@
 
-var geocoder, location1, location2;
+			var geocoder, location1, location2;
             var map = null;
             var geocoder = null;
             var from;
@@ -12,6 +12,7 @@ var geocoder, location1, location2;
             
             //Inicializa mapa e variáveis com valor default.
             function initialize() {
+            	alert("testa o inicialize");
                 if (GBrowserIsCompatible()) {
                     map = new GMap2(document.getElementById("mapa_base"));
                     map.setCenter(new GLatLng(-22.5489433, -46.6388182), 7);
@@ -26,9 +27,16 @@ var geocoder, location1, location2;
             // Essa function é responsável pelo direcionamento do mapa para os endereços informados. Acredito que não iremos colocar mapa em nossa aplicação, porém o método está criado.
             function gerarRota(){      
             	
-            	from = document.forms['google'].elements['address1'].value;
-                to = document.forms['google'].elements['address2'].value;
-            	                            	
+            	alert("testa o gera rota");
+            	//from = document.forms['google'].elements['address1'].value;
+                //to = document.forms['google'].elements['address2'].value;
+            	 
+            	from = "06604-110";
+            	to = "01223-010";
+            	
+                alert(from);
+                alert(to);
+                
                 //Verifica a instância desta classe e faz um get na Latitute e Logitude do Ponto de Origem e Ponto de Destino.
                 if ( geocoder ) {
                     geocoder.getLatLng(from,
@@ -59,8 +67,8 @@ var geocoder, location1, location2;
                         
             //Essa é uma das principais funções para localização. Esse método verifica se os endereços são válidos.
             // Neste método coloquei as variáveis que vamos utilizar para o cálculo de distância.
-            function showLocation() {
-             	
+            function showLocation() {            	
+            	
             	from = document.forms['google'].elements['address1'].value;
                 to = document.forms['google'].elements['address2'].value;
 
@@ -85,7 +93,7 @@ var geocoder, location1, location2;
                                 location2 = {lat: response.Placemark[0].Point.coordinates[1], lon: response.Placemark[0].Point.coordinates[0], address: response.Placemark[0].address, precision: response.Placemark[0].AddressDetails.Accuracy};
                                 
                                 alert("CEP já testado")
-                                calculateDistance();
+                                //calculateDistance();
                                 gerarRota();
                             }
                         });
