@@ -96,8 +96,9 @@ public final class MotorComparacaoImpl implements MotorComparacao{
 		List<ResultadoComparacaoTO> listaComparacao = new ArrayList<ResultadoComparacaoTO>();
 		List<ResultadoProdutoMercadoTO> listaResultadoTO = produtoBuscaImpl
 							.obterListaDeProdutosPorMercado(listaMercadoTO, listaProdutos);
+		
 		DadosGeograficosTO dadosTO = 
-				mercadoBuscaImpl.obterLatitudeLongitude(this.cepUsuario);
+				mercadoBuscaImpl.obterLatitudeLongitude(this.cepUsuario.replaceAll("-",""));
 		
 		for(ResultadoProdutoMercadoTO resultadoTO : listaResultadoTO) {
 			for(MercadoTO mercadoTO : listaMercadoTO) {
@@ -113,10 +114,12 @@ public final class MotorComparacaoImpl implements MotorComparacao{
 					resultadoComparacao.setListaNaoEncontrados(resultadoTO.getListaNaoEncontrados());
 					resultadoComparacao.setValorTotalLista(resultadoTO.getValorTotalLista());
 					resultadoComparacao.setNomeMercado(mercadoTO.getNome());
-					resultadoComparacao.setLongitudeUsusario(dadosTO.getLongitude());
-					resultadoComparacao.setLatitudeUsusario(dadosTO.getLatitude());
+					resultadoComparacao.setLongitudeUsuario(dadosTO.getLongitude());
+					resultadoComparacao.setLatitudeUsuario(dadosTO.getLatitude());
+					
 					resultadoComparacao.setDistanciaUsuario(
 							Double.parseDouble(mercadoTO.getDistanciaAproximada().toString()));
+					
 					resultadoComparacao.setValorDeslocamento(
 							obterValorDeslocamento(mercadoTO.getDistanciaAproximada(),
 									this.valorCombustivel,

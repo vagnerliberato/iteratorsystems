@@ -15,14 +15,12 @@ import br.iteratorsystems.cps.to.ResultadoComparacaoTO;
 public class ResultadoComparacaoBean {
 	
 	private List<ResultadoComparacaoTO> listaComparacao;
+	private ResultadoComparacaoTO resultado;
 	private String escolhaComparacao;
 	private String chaveGoogleMaps;
 	private FiltersBean filtersBean;
 	private String campoHidden;
-	private boolean expande;
-	
-	private static final String CHAVE_GOOGLE_MAPS = 
-		"ABQIAAAA7j_Q-rshuWkc8HyFI4V2HxQYPm-xtd00hTQOC0OXpAMO40FHAxT29dNBGfxqMPq5zwdeiDSHEPL89A";
+	private boolean mostrarResultadoDetalhe;
 	
 	/**
 	 * Obtem o resultado da comparacao
@@ -32,26 +30,13 @@ public class ResultadoComparacaoBean {
 		ELResolver el = context.getApplication().getELResolver();
 		setFiltersBean((FiltersBean) el.getValue(context.getELContext(), null,
 				"filtersBean"));
-		if(this.getFiltersBean() != null) {
+
+		if (this.getFiltersBean() != null) {
 			setListaComparacao(this.getFiltersBean().getListaComparacao());
 			obterEscolhaComparacao();
-			obterChaveGoogleMaps();
 		}
 	}
 	
-	public void expandir() {
-		for(ResultadoComparacaoTO resultadoTO : listaComparacao) {
-			resultadoTO.setExpande(expande);
-		}
-	}
-	
-	/**
-	 * obtem a chave do google maps para ser usada no mapa
-	 */
-	private void obterChaveGoogleMaps() {
-		setChaveGoogleMaps(CHAVE_GOOGLE_MAPS);
-	}
-
 	/**
 	 * Obtem a escolha de comparação feita pelo usuário
 	 */
@@ -137,16 +122,30 @@ public class ResultadoComparacaoBean {
 	}
 
 	/**
-	 * @param expande the expande to set
+	 * @param mostrarResultadoDetalhe the mostrarResultadoDetalhe to set
 	 */
-	public void setExpande(boolean expande) {
-		this.expande = expande;
+	public void setMostrarResultadoDetalhe(boolean mostrarResultadoDetalhe) {
+		this.mostrarResultadoDetalhe = mostrarResultadoDetalhe;
 	}
 
 	/**
-	 * @return the expande
+	 * @return the mostrarResultadoDetalhe
 	 */
-	public boolean isExpande() {
-		return expande;
+	public boolean isMostrarResultadoDetalhe() {
+		return mostrarResultadoDetalhe;
+	}
+
+	/**
+	 * @param resultado the resultado to set
+	 */
+	public void setResultado(ResultadoComparacaoTO resultado) {
+		this.resultado = resultado;
+	}
+
+	/**
+	 * @return the resultado
+	 */
+	public ResultadoComparacaoTO getResultado() {
+		return resultado;
 	}
 }

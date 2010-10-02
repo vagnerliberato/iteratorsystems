@@ -15,8 +15,8 @@ public class ResultadoComparacaoTO implements Comparable<ResultadoComparacaoTO>{
 	private String nomeMercado;
 	private String latitude;
 	private String longitude;
-	private String latitudeUsusario;
-	private String longitudeUsusario;
+	private String latitudeUsuario;
+	private String longitudeUsuario;
 	private String cep;
 	private String cepUsuario;
 	private List<ProdutoBuscaTO> listaEncontrados;
@@ -111,33 +111,6 @@ public class ResultadoComparacaoTO implements Comparable<ResultadoComparacaoTO>{
 	 */
 	public void setLongitude(String longitude) {
 		this.longitude = longitude;
-	}
-	/**
-	 * @return the latitudeUsusario
-	 */
-	public String getLatitudeUsusario() {
-		return latitudeUsusario;
-	}
-
-	/**
-	 * @param latitudeUsusario the latitudeUsusario to set
-	 */
-	public void setLatitudeUsusario(String latitudeUsusario) {
-		this.latitudeUsusario = latitudeUsusario;
-	}
-
-	/**
-	 * @return the longitudeUsusario
-	 */
-	public String getLongitudeUsusario() {
-		return longitudeUsusario;
-	}
-
-	/**
-	 * @param longitudeUsusario the longitudeUsusario to set
-	 */
-	public void setLongitudeUsusario(String longitudeUsusario) {
-		this.longitudeUsusario = longitudeUsusario;
 	}
 
 	/**
@@ -291,5 +264,33 @@ public class ResultadoComparacaoTO implements Comparable<ResultadoComparacaoTO>{
 	 */
 	public int compareTo(ResultadoComparacaoTO obj) {
 		return this.getDistanciaUsuario().compareTo(obj.getDistanciaUsuario());
+	}
+
+	/**
+	 * @param latitudeUsuario the latitudeUsuario to set
+	 */
+	public void setLatitudeUsuario(String latitudeUsuario) {
+		this.latitudeUsuario = latitudeUsuario;
+	}
+
+	/**
+	 * @return the latitudeUsuario
+	 */
+	public String getLatitudeUsuario() {
+		return latitudeUsuario;
+	}
+
+	/**
+	 * @param longitudeUsuario the longitudeUsuario to set
+	 */
+	public void setLongitudeUsuario(String longitudeUsuario) {
+		this.longitudeUsuario = longitudeUsuario;
+	}
+
+	/**
+	 * @return the longitudeUsuario
+	 */
+	public String getLongitudeUsuario() {
+		return longitudeUsuario;
 	}
 }

@@ -87,9 +87,20 @@ public class FiltersBean {
 				retorno = comparar(TipoDeComparacao.MENOR_PRECO_E_DISTANCIA);
 			}
 		}
+		
+		FacesContext context = FacesContext.getCurrentInstance();
+		ELResolver el = context.getApplication().getELResolver();
+		ResultadoComparacaoBean comparacaoBean = (ResultadoComparacaoBean) el.getValue(context.getELContext(),null,"resultadoBean");
+		
+		if(comparacaoBean != null) {
+			comparacaoBean.setMostrarResultadoDetalhe(false);
+		}
 		return retorno;
 	}
 
+	/**
+	 * Limpa a busca na pagina default
+	 */
 	private void limparDadosDefault() {//TODO verificar outra forma
 		FacesContext context = FacesContext.getCurrentInstance();
 		ELResolver el = context.getApplication().getELResolver();
