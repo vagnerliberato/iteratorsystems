@@ -9,50 +9,81 @@
 
 <ui:composition template="../template/template.jsf">
 	<ui:define name="content">
+	
+<style>
+.rich-table-cell {
+	border-bottom:1px solid #FFFFFF;
+	border-left:1px solid #FFFFFF;
+	border-top:1px solid #FFFFFF;
+	border-right:1px solid #FFFFFF;
+	color:#474747;
+	font-family:Arial,Verdana,sans-serif;
+	font-size:11px;
+	padding:4px;
+}
+</style>
+
 		<h:inputHidden value="#{resultadoBean.campoHidden}"/>
 		<h:form id="compareForm">
-			<h:panelGroup style="margin-left: 40px;">
-				<rich:toolBar>
-					<rich:dropDownMenu>
-						<f:facet name="label">
-							<h:outputText value="Operações"/>
-						</f:facet>
-						<rich:menuItem action="#{resultadoBean.expandir}" submitMode="server" value="Abrir Todos">
-							<f:setPropertyActionListener value="true" target="#{resultadoBean.expande}"/>
-						</rich:menuItem>
-						<rich:menuItem action="#{resultadoBean.expandir}" submitMode="server" value="Fechar Todos">
-							<f:setPropertyActionListener value="false" target="#{resultadoBean.expande}"/>
-						</rich:menuItem>
-					</rich:dropDownMenu>
-				</rich:toolBar>
-			</h:panelGroup>
-			<rich:spacer height="15"/>
+			<rich:spacer height="10"/>
 			<center>
 				<h:panelGroup>
 					<h:panelGrid columns="1">
 						<h:column>
-							<rich:dataTable id="dataTableResultado" width="1000px;"
-											var="resultado" value="#{resultadoBean.listaComparacao}">
-								<rich:column>
-									<rich:simpleTogglePanel id="tooglePanel" opened="#{resultado.expande}" switchType="client" width="950" height="1000">
-										<f:facet name="header">
-											<h:panelGroup>
-												<h:graphicImage url="/view/images/trofeu.png"/>
-												<rich:spacer width="3"/>
-												<h:outputText value="#{resultado.posicao}" styleClass="resultado"/>
-												<rich:spacer width="3"/>
-												<h:outputText value="-" styleClass="resultado"/>
-												<rich:spacer width="3"/>
-												<h:outputText value="#{resultado.nomeMercado}" styleClass="resultado"/>
-											</h:panelGroup>
-										</f:facet>
-										<ui:include src="resultadoPorMercado.jsf"/>
-									</rich:simpleTogglePanel>
+							<rich:dataTable id="dataTableResultado" width="800px;" 
+											rows="15" columns="1"
+											rendered="#{not resultadoBean.mostrarResultadoDetalhe}"
+											var="resultadoLista" value="#{resultadoBean.listaComparacao}">
+											
+								<rich:column width="700">
+									<br />
+									<h:panelGroup>
+										<h:graphicImage url="/view/images/trofeu.png"/>
+										<h:outputText value="#{resultadoLista.posicao}" styleClass="resultadoPosicao"/>
+									</h:panelGroup>
+									<rich:spacer width="10"/>
+									
+									<h:commandLink id="linkMercado" value="#{resultadoLista.nomeMercado}" styleClass="resultadoLink">
+										<f:setPropertyActionListener value="#{resultadoLista}" target="#{resultadoBean.resultado}"/>
+										<f:setPropertyActionListener value="true" target="#{resultadoBean.mostrarResultadoDetalhe}"/>
+									</h:commandLink>
+									<rich:toolTip followMouse="true" for="linkMercado" event="onmouseover">
+										<h:outputText value="Clique no Nome do mercado para mais detalhes"/>
+									</rich:toolTip>		
+									
+									<br />
+									<h:outputText value="#{msg.valor_total}" styleClass="resultado"/>
+									<h:outputText value="R$" styleClass="valorResultado"/>
+									<h:outputText value="#{resultadoLista.valorTotalLista}" styleClass="valorResultado">
+										<f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
+									</h:outputText>	
+									
+									<br />			
+									<h:outputText value="#{msg.tab_vl_desloc}" styleClass="resultado"/>
+									<h:outputText value="R$" styleClass="valorResultado"/>
+									<rich:spacer width="3"/>
+									<h:outputText value="#{resultadoLista.valorDeslocamento}" styleClass="valorResultado">
+										<f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
+									</h:outputText>
+									
+									<br />
+									<h:outputText value="#{msg.tab_distancia_ate}" styleClass="resultado"/>
+									<h:outputText value="#{resultadoLista.distanciaUsuario}" styleClass="valorResultado">
+										<f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
+									</h:outputText>
+									<h:outputText value="Km" styleClass="valorResultado"/>
 								</rich:column>
+								<f:facet name="footer">
+									<rich:datascroller renderIfSinglePage="false" stepControls="auto"/>
+								</f:facet>
 							</rich:dataTable>
 						</h:column>
 					</h:panelGrid>			
 				</h:panelGroup>
+				
+				<ui:fragment rendered="#{resultadoBean.mostrarResultadoDetalhe}">
+					<ui:include src="resultadoPorMercado.jsf"/>
+				</ui:fragment>
 			</center>
 		</h:form>
 	</ui:define>

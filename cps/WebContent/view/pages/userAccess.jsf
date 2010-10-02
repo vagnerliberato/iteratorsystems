@@ -110,7 +110,7 @@
 						</h:inputText>
 					</h:column>
 					<h:column>
-						<a4j:commandButton value="Recuperar" reRender="panelMensagem" action="#{loginUserBean.recuperarAcesso}"/>
+						<a4j:commandButton value="Recuperar" reRender="panelMensagem" action="#{loginUserBean.recuperarAcesso}" />
 					</h:column>
 				</h:panelGrid>
 				<center>	

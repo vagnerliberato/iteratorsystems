@@ -7,26 +7,21 @@
 	xmlns:a4j="http://richfaces.org/a4j"
 	xmlns:p="http://primefaces.prime.com.tr/ui">
 
-<style>
-.rich-table-cell {
-	border-bottom:1px solid #FFFFFF;
-	border-left:1px solid #FFFFFF;
-	border-top:1px solid #FFFFFF;
-	border-right:1px solid #FFFFFF;
-	color:#474747;
-	font-family:Arial,Verdana,sans-serif;
-	font-size:11px;
-	padding:4px;
-}
-</style>
+<script>
+	window.onload = function(){
+		initialize(#{resultadoBean.resultado.latitude},
+				   #{resultadoBean.resultado.longitude},
+				   '#{resultadoBean.resultado.nomeMercado}');
+	}
+</script>
 
 <h:panelGroup>
-	 <rich:tabPanel id="tabPanelResultado" switchType="client" width="900px;" height="550">
+	 <rich:tabPanel id="tabPanelResultado" switchType="client" width="920px;" height="700">
 		<rich:tab>
 			<f:facet name="label">
 				<h:outputText value="#{msg.tab_resultado}" styleClass="abaComparacao"/>
 			</f:facet>
-			<h:panelGrid columns="3">
+			<h:panelGrid columns="4">
 				<h:column>
 					<rich:panel>
 						<f:facet name="header">
@@ -53,7 +48,7 @@
 							</h:panelGroup>
 						</f:facet>
 						<center>
-							<h:outputText value="#{resultado.nomeMercado}" styleClass="nomeMercado"/>
+							<h:outputText value="#{resultadoBean.resultado.nomeMercado}" styleClass="nomeMercado"/>
 						</center>
 					</rich:panel>
 				</h:column>
@@ -69,10 +64,24 @@
 						<center>
 							<h:outputText value="R$" styleClass="valorResultado"/>
 							<rich:spacer width="3"/>
-							<h:outputText value="#{resultado.valorTotalLista}" styleClass="valorResultado">
+							<h:outputText value="#{resultadoBean.resultado.valorTotalLista}" styleClass="valorResultado">
 								<f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
 							</h:outputText>
 						</center>
+					</rich:panel>
+				</h:column>
+				<h:column>
+					<rich:panel>
+						<f:facet name="header">
+							<h:panelGroup>
+								<h:graphicImage url="/view/images/voltar.png"/>
+								<rich:spacer width="3"/>
+								<h:outputText value="#{msg.voltar}" styleClass="valorHeaderInterno"/>
+							</h:panelGroup>
+						</f:facet>
+						<h:commandLink value="#{msg.voltar}" styleClass="resultado">
+							<f:setPropertyActionListener value="false" target="#{resultadoBean.mostrarResultadoDetalhe}"/>
+						</h:commandLink>
 					</rich:panel>
 				</h:column>
 			</h:panelGrid>
@@ -80,22 +89,22 @@
 			<rich:spacer height="10"/>
 			<center>
 				<rich:toolBar itemSeparator="line" width="100px" height="25px">
-					<h:graphicImage url="/view/images/greenBall.png" rendered="#{empty resultado.listaNaoEncontrados}"/>
-					<h:graphicImage url="/view/images/yellowBall.png" rendered="#{not empty resultado.listaNaoEncontrados}"/>
-					<h:outputText value="#{msg.tab_inf_todos_enc}" rendered="#{empty resultado.listaNaoEncontrados}"/>
-					<h:outputText value="#{msg.tab_inf_nem_todos_enc}" rendered="#{not empty resultado.listaNaoEncontrados}"/>
+					<h:graphicImage url="/view/images/greenBall.png" rendered="#{empty resultadoBean.resultado.listaNaoEncontrados}"/>
+					<h:graphicImage url="/view/images/yellowBall.png" rendered="#{not empty resultadoBean.resultado.listaNaoEncontrados}"/>
+					<h:outputText value="#{msg.tab_inf_todos_enc}" rendered="#{empty resultadoBean.resultado.listaNaoEncontrados}"/>
+					<h:outputText value="#{msg.tab_inf_nem_todos_enc}" rendered="#{not empty resultadoBean.resultado.listaNaoEncontrados}"/>
 				</rich:toolBar>
 			</center>
 			<rich:spacer height="10"/>
 			
 			<h:panelGrid id="panelProduto" columns="1" width="900">
 				<h:column>
-					<rich:simpleTogglePanel switchType="client" opened="#{resultado.expandeProdutosEncontrados}">
+					<rich:simpleTogglePanel switchType="client" opened="#{resultadoBean.resultado.expandeProdutosEncontrados}">
 						<f:facet name="header">
 							<h:outputText value="#{msg.tab_modal_enc}" styleClass="valorHeaderInterno"/>
 						</f:facet>
 						<center>
-							<rich:dataTable id="tableProdEnc" value="#{resultado.listaEncontrados}" var="encontrados">
+							<rich:dataTable id="tableProdEnc" value="#{resultadoBean.resultado.listaEncontrados}" var="encontrados">
 								<rich:column>
 									<f:facet name="header">
 										<h:outputText value="#{msg.tab_enc_desc}"/>
@@ -121,12 +130,12 @@
 					</rich:simpleTogglePanel>
 				</h:column>
 				<h:column>
-					<rich:simpleTogglePanel rendered="#{not empty resultado.listaNaoEncontrados}" opened="#{resultado.expandeProdutosNaoEncontrados}" switchType="client">
+					<rich:simpleTogglePanel rendered="#{not empty resultadoBean.resultado.listaNaoEncontrados}" opened="#{resultadoBean.resultado.expandeProdutosNaoEncontrados}" switchType="client">
 						<f:facet name="header">
 							<h:outputText value="#{msg.tab_modal_n_enc}" styleClass="valorHeaderInterno"/>
 						</f:facet>
 						<center>
-							<rich:dataTable id="tableProdNaoEnc" value="#{resultado.listaNaoEncontrados}" var="naoencontrados">
+							<rich:dataTable id="tableProdNaoEnc" value="#{resultadoBean.resultado.listaNaoEncontrados}" var="naoencontrados">
 								<rich:column>
 									<f:facet name="header">
 										<h:outputText value="#{msg.tab_enc_desc}"/>
@@ -161,7 +170,7 @@
 										<h:outputText value="#{msg.tab_distancia_ate}" styleClass="deslocamento"/>
 									</h:column>			
 									<h:column>
-										<h:outputText value="#{resultado.distanciaUsuario}" styleClass="valorResultado">
+										<h:outputText value="#{resultadoBean.resultado.distanciaUsuario}" styleClass="valorResultado">
 											<f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
 										</h:outputText>
 										<h:outputText value="Km" styleClass="deslocamento"/>
@@ -171,7 +180,7 @@
 									</h:column>
 									<h:column>
 										<h:outputText value="R$" styleClass="deslocamento"/>
-										<h:outputText value="#{resultado.valorDeslocamento}" styleClass="valorResultado">
+										<h:outputText value="#{resultadoBean.resultado.valorDeslocamento}" styleClass="valorResultado">
 											<f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
 										</h:outputText>
 									</h:column>
@@ -182,7 +191,7 @@
 				</h:panelGrid>
 				<h:panelGrid>
 					<h:column>
-						<rich:simpleTogglePanel switchType="client" opened="#{resultado.expandeGmap}" width="900" height="500">
+						<rich:simpleTogglePanel switchType="client" opened="#{resultadoBean.resultado.expandeGmap}" width="900" height="750">
 							<f:facet name="header">
 								<h:panelGroup>
 									<h:graphicImage url="/view/images/gmap.png" width="40"/>
@@ -190,10 +199,20 @@
 								</h:panelGroup>
 							</f:facet>
 							<rich:spacer height="10"/>
-							<rich:gmap id="gmapResultado" lat="#{resultado.latitude}" lng="#{resultado.longitude}" 
-							   		   gmapVar="map" gmapKey="#{resultadoBean.chaveGoogleMaps}" zoom="17"
-							           mapType="G_HYBRID_MAP" style="width:850px;height:500px;" 
-							           enableContinuousZoom="true" enableDoubleClickZoom="true" enableInfoWindow="true"/>
+							
+							<a4j:commandButton value="Onde fica?" 
+											   onclick="initialize(#{resultadoBean.resultado.latitude},
+											   					   #{resultadoBean.resultado.longitude},
+											   					   '#{resultadoBean.resultado.nomeMercado}')"/>
+											   					   
+							<a4j:commandButton value="Como chegar?" onclick="calcRoute(#{resultadoBean.resultado.latitudeUsuario},
+																			     	   #{resultadoBean.resultado.longitudeUsuario},
+																			     	   #{resultadoBean.resultado.latitude},
+																			     	   #{resultadoBean.resultado.longitude})"/>
+							
+							<rich:separator lineType="solid"/>
+							<rich:spacer height="15"/>
+							<div id="map_canvas" style="width: 95%; height: 95%"/>	
 						</rich:simpleTogglePanel>
 					</h:column>
 				</h:panelGrid>

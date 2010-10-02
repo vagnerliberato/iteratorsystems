@@ -178,16 +178,6 @@ body {
 	letter-spacing: normal;
 }
 
-.valorResultado {
-	font-weight: normal;
-	font-size: 13pt;
-	font-style: italic;
-	font-family: Verdana;
-	color: red;
-	white-space: nowrap;
-	padding: 10px;
-}
-
 .deslocamento {
 	font-weight: normal;
 	font-size: 13pt;
@@ -240,12 +230,42 @@ body {
 
 .resultado {
 	font-weight: bold;
-	font-size: 15pt;
+	font-size: 14pt;
 	font-style: normal;
 	font-family: cursive;
 	color: black;
 	white-space: nowrap;
 	padding: 8px;
+}
+
+.resultadoPosicao {
+	font-weight: bold;
+	font-size: 14pt;
+	font-style: normal;
+	font-family: cursive;
+	color: #FF9900;
+	white-space: nowrap;
+	padding: 3px;
+}
+
+.resultadoLink {
+	font-weight: bold;
+	font-size: 17pt;
+	font-style: normal;
+	font-family: cursive;
+	color: blue;
+	white-space: nowrap;
+	padding: 5px;
+}
+
+.valorResultado {
+	font-weight: bold;
+	font-size: 14pt;
+	font-style: normal;
+	font-family: cursive;
+	color: #006633;
+	white-space: nowrap;
+	padding: 3px;
 }
 
 .headerResultado {
