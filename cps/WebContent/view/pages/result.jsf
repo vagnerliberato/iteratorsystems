@@ -37,7 +37,7 @@
 							<h:graphicImage url="/view/images/lista_mercado.png" />
 							<rich:spacer width="3" />
 							<h:outputText value="#{msg.lista_mercados_pesquisados}"
-								styleClass="valorHeaderInterno" />
+								styleClass="valorHeaderTitulo" />
 						</h:panelGroup>
 					</f:facet>
 				 <h:panelGroup>

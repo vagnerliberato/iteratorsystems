@@ -190,12 +190,24 @@ body {
 
 .valorHeaderInterno {
 	font-weight: normal;
-	font-size: 12pt;
+	font-size: 10pt;
 	font-style: oblique;
-	font-family: Verdana;
+	font-family: Verdana, Arial, Tahoma, Calibri;
 	color: black;
 	white-space: nowrap;
 	padding: 10px;
+	vertical-align: middle;
+}
+
+.valorHeaderTitulo {
+	font-weight: normal;
+	font-size: 16pt;
+	font-style: oblique;
+	font-family: Verdana, Arial, Tahoma, Calibri;
+	color: black;
+	white-space: nowrap;
+	padding: 10px;
+	vertical-align: middle;
 }
 	
 .nomeMercado {
@@ -209,10 +221,12 @@ body {
 }
 
 .tipoComparacao {
-	font-weight: lighter;
+	font-weight: bolder;
 	font-size: 10pt;
-	font-style: normal;
-	font-family: sans-serif;
+	font-style: italic, normal;
+	font-variant:small-caps;
+	font-family: Verdana, Arial, Tahoma, Calibri;
+	font-style: oblique;
 	color: red;
 	white-space: nowrap;
 	padding: 8px;
@@ -260,7 +274,7 @@ body {
 
 .valorResultado {
 	font-weight: bold;
-	font-size: 13pt;
+	font-size: 15pt;
 	font-style: normal;
 	font-family: Verdana, Arial;
 	color: #FF0000;

@@ -160,8 +160,8 @@
 						<rich:panel style="width: 450px;">
 							<f:facet name="header">
 								<h:panelGroup>
-									<h:graphicImage url="/view/images/semaforo.png"/>
-									<h:outputText value="#{msg.tab_inf_desloc}" styleClass="valorHeaderInterno"/>
+									<h:graphicImage url="/view/images/cab.png"/>
+									<h:outputText value="   #{msg.tab_inf_desloc}" styleClass="valorHeaderInterno"/>
 								</h:panelGroup>
 							</f:facet>
 							<center>
@@ -200,12 +200,12 @@
 							</f:facet>
 							<rich:spacer height="10"/>
 							
-							<a4j:commandButton value="Onde fica?" 
+							<a4j:commandButton value="Onde fica?" style="width: 130" 
 											   onclick="initialize(#{resultadoBean.resultado.latitude},
 											   					   #{resultadoBean.resultado.longitude},
 											   					   '#{resultadoBean.resultado.nomeMercado}')"/>
 											   					   
-							<a4j:commandButton value="Como chegar?" onclick="calcRoute(#{resultadoBean.resultado.latitudeUsuario},
+							<a4j:commandButton value="Como chegar?" style="width: 130" onclick="calcRoute(#{resultadoBean.resultado.latitudeUsuario},
 																			     	   #{resultadoBean.resultado.longitudeUsuario},
 																			     	   #{resultadoBean.resultado.latitude},
 																			     	   #{resultadoBean.resultado.longitude})"/>
