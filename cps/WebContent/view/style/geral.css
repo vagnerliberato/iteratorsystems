@@ -230,9 +230,9 @@ body {
 
 .resultado {
 	font-weight: bold;
-	font-size: 14pt;
+	font-size: 12pt;
 	font-style: normal;
-	font-family: cursive;
+	font-family: Verdana, Tahoma, Arial;
 	color: black;
 	white-space: nowrap;
 	padding: 8px;
@@ -242,17 +242,17 @@ body {
 	font-weight: bold;
 	font-size: 14pt;
 	font-style: normal;
-	font-family: cursive;
-	color: #FF9900;
+	font-family: sans-serif;
+	color: #778899;
 	white-space: nowrap;
 	padding: 3px;
 }
 
 .resultadoLink {
 	font-weight: bold;
-	font-size: 17pt;
+	font-size: 15pt;
 	font-style: normal;
-	font-family: cursive;
+	font-family: Verdana, Arial, Tahoma, Calibri;
 	color: blue;
 	white-space: nowrap;
 	padding: 5px;
@@ -260,10 +260,10 @@ body {
 
 .valorResultado {
 	font-weight: bold;
-	font-size: 14pt;
+	font-size: 13pt;
 	font-style: normal;
-	font-family: cursive;
-	color: #006633;
+	font-family: Verdana, Arial;
+	color: #FF0000;
 	white-space: nowrap;
 	padding: 3px;
 }
@@ -289,4 +289,12 @@ body {
 }
 .textoJustificado {
     text-align : justify;
+}
+
+table {
+  
+}
+ 
+table td {
+  border: 0px solid black;
 }
