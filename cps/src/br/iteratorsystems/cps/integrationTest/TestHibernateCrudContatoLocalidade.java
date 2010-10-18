@@ -1,4 +1,4 @@
-package br.iteratorsystems.cps.test;
+package br.iteratorsystems.cps.integrationTest;
 
 import java.util.List;
 

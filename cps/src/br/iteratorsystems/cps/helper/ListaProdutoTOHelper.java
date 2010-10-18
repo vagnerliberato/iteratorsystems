@@ -124,8 +124,7 @@ public final class ListaProdutoTOHelper {
 	 * @param listaProduto - Lista de produto.
 	 * @param listaItems - Items da lista de produto.
 	 */
-	public static void atualizaObjetoItemLista(final ListaProduto listaProduto,
-											Collection<ListaProdutoItem> listaItems) {
+	public static void atualizaObjetoItemLista(final ListaProduto listaProduto,	Collection<ListaProdutoItem> listaItems) {
 		for(ListaProdutoItem item : listaItems) {
 			item.setListaProduto(listaProduto);
 		}

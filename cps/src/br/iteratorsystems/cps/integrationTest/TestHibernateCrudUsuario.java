@@ -1,7 +1,5 @@
-package br.iteratorsystems.cps.test;
+package br.iteratorsystems.cps.integrationTest;
 
-import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
 
 import br.iteratorsystems.cps.config.HibernateConfig;
 import br.iteratorsystems.cps.entities.Endereco;
@@ -14,7 +12,6 @@ public class TestHibernateCrudUsuario extends HibernateConfig{
 
 	
 	public void get() throws CpsHandlerException{
-		Session session = getSession();
 		Usuario result =  new LoginUserHandler().getUserRelated(new Integer(3));//(Usuario) session.createCriteria(Usuario.class).add(Restrictions.eq("idUsuario",new Integer(3))).uniqueResult();
 		System.out.println(result);
 		for(Endereco e : result.getEnderecos()){

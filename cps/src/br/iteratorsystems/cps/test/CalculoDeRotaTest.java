@@ -1,8 +1,7 @@
 package br.iteratorsystems.cps.test;
 
+import static org.junit.Assert.*;
 import java.math.BigDecimal;
-import junit.framework.Assert;
-
 import org.junit.Test;
 
 import br.iteratorsystems.cps.common.CalculoDeRota;
@@ -22,17 +21,17 @@ public class CalculoDeRotaTest{
 	
 	@Test
 	public void calcularDistanciaKM() {
-		BigDecimal resultado =
-				CalculoDeRota.calcularDistancia(
-						latitudeA, longitudeA, latitudeB, longitudeB,TipoResultado.KILOMETROS);
-		Assert.assertNotNull(resultado);
+		BigDecimal resultado = CalculoDeRota.calcularDistancia(latitudeA, longitudeA, latitudeB, longitudeB,TipoResultado.KILOMETROS);
+		
+		assertNotNull(resultado);
+		assertEquals(5.70d, resultado.doubleValue(), 0.01);
 	}
 	
 	@Test
 	public void calcularDistanciaMI() {
-		BigDecimal resultado = 
-				CalculoDeRota.calcularDistancia(
-						latitudeA, longitudeA, latitudeB, longitudeB,TipoResultado.MILHAS);
-		Assert.assertNotNull(resultado);
+		BigDecimal resultado = CalculoDeRota.calcularDistancia(latitudeA, longitudeA, latitudeB, longitudeB,TipoResultado.MILHAS);
+		
+		assertNotNull(resultado);
+		assertEquals(3.54d, resultado.doubleValue(), 0.01);
 	}
 }
