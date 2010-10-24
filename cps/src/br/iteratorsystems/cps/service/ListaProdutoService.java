@@ -35,8 +35,7 @@ public class ListaProdutoService {
 		Transaction transaction = HibernateConfig.getSession().getTransaction();
 		try{
 			transaction.begin();
-			ListaProdutoTOHelper.atualizaObjetoItemLista(
-					listaProduto, listaProduto.getListaProdutoItems());
+			ListaProdutoTOHelper.atualizaObjetoItemLista(listaProduto, listaProduto.getListaProdutoItems());
 			
 			excluirItensHQL(listaProduto);
 			session.evict(ListaProdutoItem.class);
@@ -166,6 +165,7 @@ public class ListaProdutoService {
 			}
 			
 			itemListaDao.salvarLista(itemLista);
+			session.flush();
 			transaction.commit();
 		}catch (CpsDaoException e) {
 			transaction.rollback();
