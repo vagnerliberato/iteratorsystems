@@ -60,7 +60,7 @@ public class FindAddress {
 			connection.setDoInput(true);
 			connection.setDoOutput(false);
 
-			//new ObterProxyHelper().createProxy(connection);
+			new ObterProxyHelper().createProxy(connection);
 
 			connection.connect();
 		} catch (Exception e) {
