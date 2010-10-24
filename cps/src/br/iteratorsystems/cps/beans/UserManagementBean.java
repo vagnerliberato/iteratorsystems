@@ -19,6 +19,7 @@ import br.iteratorsystems.cps.exceptions.CpsExceptions;
 import br.iteratorsystems.cps.exceptions.CpsHandlerException;
 import br.iteratorsystems.cps.handler.LoginUserHandler;
 import br.iteratorsystems.cps.handler.UserManagementHandler;
+import br.iteratorsystems.cps.helper.FormatadorEstadorHelper;
 
 public class UserManagementBean {
 
@@ -38,6 +39,7 @@ public class UserManagementBean {
 	private String mensagem_password;
 	private String mensagem_cpf;
 	private String mensagem_senha_antiga;
+	private String acaoBotaoIncluirNovoCadastro;
 	
 	private boolean firstAccess = false;
 	private boolean validUsername = true;
@@ -45,7 +47,7 @@ public class UserManagementBean {
 	private boolean validPassword = true;
 	private boolean validOldPassword = true;
 	private boolean administrador = false;
-
+	
 	protected FacesContext context = FacesContext.getCurrentInstance();
 	protected ELResolver el = context.getApplication().getELResolver();
 	private String nomeModalCepIncorreto;
@@ -56,7 +58,8 @@ public class UserManagementBean {
 			"E-mail já cadastrado na base de dados",
 			"A confirmação da senha não confere!",
 			"CPF já cadastrado em nossa base de dados",
-			"A senha antiga está incorreta!"};
+			"A senha antiga está incorreta!",
+			"Não é permitido senha em branco."};
 	
 	/**
 	 * Bean default.
@@ -111,10 +114,17 @@ public class UserManagementBean {
 				this.setValidPassword(true);
 			}
 		}else{
-			if(!this.getNova_senha().equals(this.getConfirma_nova_senha())){
+			boolean isSenhaEmBranco = this.getNova_senha().isEmpty();
+			boolean isSenhaConfirmaEmBranco = this.getConfirma_nova_senha().isEmpty();
+			boolean isSenhasDiferentes = !this.getNova_senha().equals( this.getConfirma_nova_senha());
+			
+			if(isSenhaEmBranco || isSenhaConfirmaEmBranco){
+				this.setValidPassword(false);
+				this.setMensagem_password(MENSAGENS_JSF[5]);
+			}else if (isSenhasDiferentes) {
 				this.setValidPassword(false);
 				this.setMensagem_password(MENSAGENS_JSF[2]);
-			}else{
+			} else {
 				valid = true;
 				this.setValidPassword(true);
 			}
@@ -131,6 +141,34 @@ public class UserManagementBean {
 			e.printStackTrace();
 		}
 		return newValid;
+	}
+	
+	public void validarCampos(){
+		acaoBotaoIncluirNovoCadastro = "";
+		Usuario usuario = this.getUsuarioEntity();
+		boolean isCamposPreenchidos = isDadosDoUsuarioPreenchido(usuario);
+		
+		if(isCamposPreenchidos) {
+			acaoBotaoIncluirNovoCadastro = "Richfaces.showModalPanel('modalGravarDadossSave');";
+		}
+	}
+
+	private boolean isDadosDoUsuarioPreenchido(Usuario usuario) {
+		boolean valido = true;
+		if (usuario.isNomeVazioOuNulo() || usuario.isSobreNomeVazioOuNulo() || usuario.isDataNascimentoVazioOuNulo()) {
+			valido = false;
+		}else if(usuario.isCPFVazioOuNulo() || usuario.isRGVazioOuNulo() || usuario.isEmailVazioOuNulo()){
+			valido = false;
+		}
+		
+		Set<Endereco> enderecos = usuario.getEnderecos();
+		for (Endereco endereco : enderecos) {
+			if(endereco.isCEPVazioOuNulo()){
+				valido = false;
+			}
+		}
+		
+		return valido;
 	}
 	
 	public void find() {
@@ -200,6 +238,9 @@ public class UserManagementBean {
 	}
 	
 	public String salva() throws CpsExceptions {
+		this.acaoBotaoIncluirNovoCadastro = "";
+		
+		
 		if(!this.validatePassword())
 			return "";
 		
@@ -277,7 +318,10 @@ public class UserManagementBean {
 		if(this.cpfExists(usuarioEntity.getCpfUsuario(),loginEntity.getNomeLogin()))
 			return;
 		
-		enderecoEntity.setEstado(this.getEstadoSigla());
+		if(enderecoEntity.getEstado()!= null && enderecoEntity.getEstado().length() > 2){
+			enderecoEntity.setEstado(FormatadorEstadorHelper.obterSiglaEstado(enderecoEntity.getEstado()));
+		}
+
 		userHandler = new UserManagementHandler();
 		try{
 			userHandler.update(this.getUsuarioEntity());
@@ -550,5 +594,19 @@ public class UserManagementBean {
 	 */
 	public String getNomeModalCepIncorreto() {
 		return nomeModalCepIncorreto;
+	}
+
+	/**
+	 * @return the acaoBotaoIncluirNovoCadastro
+	 */
+	public String getAcaoBotaoIncluirNovoCadastro() {
+		return acaoBotaoIncluirNovoCadastro;
+	}
+
+	/**
+	 * @param acaoBotaoIncluirNovoCadastro the acaoBotaoIncluirNovoCadastro to set
+	 */
+	public void setAcaoBotaoIncluirNovoCadastro(String acaoBotaoIncluirNovoCadastro) {
+		this.acaoBotaoIncluirNovoCadastro = acaoBotaoIncluirNovoCadastro;
 	}
 }

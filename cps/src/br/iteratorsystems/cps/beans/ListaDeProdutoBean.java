@@ -299,15 +299,16 @@ public class ListaDeProdutoBean {
 	 * @return - Entidade com os dados do usuário.
 	 */
 	private Usuario recuperarUsuario() {
-		Usuario usuario = null;
+		Usuario usuario = new Usuario();
 		FacesContext context = FacesContext.getCurrentInstance();
 		ELResolver el = context.getApplication().getELResolver();
 
-		LoginUserBean userBean = (LoginUserBean) el.getValue(context
-				.getELContext(), null, "loginUserBean");
+		LoginUserBean userBean = (LoginUserBean) el.getValue(context.getELContext(), null, "loginUserBean");
 		try {
-			usuario = userHandler.getUserRelated(userBean.getLogin()
-					.getIdLogin());
+			if(userBean.getLogin() != null){
+				usuario = userHandler.getUserRelated(userBean.getLogin().getIdLogin());
+			}
+			
 		} catch (CpsHandlerException e) {
 			e.printStackTrace();
 		}

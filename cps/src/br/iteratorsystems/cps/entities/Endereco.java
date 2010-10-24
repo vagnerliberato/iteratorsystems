@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import br.iteratorsystems.cps.interfaces.EntityAble;
 
@@ -259,5 +260,15 @@ public class Endereco implements java.io.Serializable, EntityAble {
 				+ dataultimamodificacao + ", estado=" + estado + ", id=" + id
 				+ ", logradouro=" + logradouro + ", numero=" + numero
 				+ ", pais=" + pais + "]";
+	}
+	
+	@Transient
+	public boolean isCEPVazioOuNulo(){
+		return this.cep == null || this.cep.isEmpty(); 
+	}
+
+	@Transient
+	public boolean isNumeroVazioOuNulo(){
+		return this.numero == null || this.numero.isEmpty(); 
 	}
 }

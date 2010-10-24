@@ -14,6 +14,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
 import org.hibernate.annotations.Cascade;
@@ -357,5 +358,35 @@ public class Usuario implements java.io.Serializable, EntityAble {
 				+ orgaoEspedidorUsu + ", rgUsuario=" + rgUsuario
 				+ ", sobrenomeUsuario=" + sobrenomeUsuario + ", telCel="
 				+ telCel + ", telRes=" + telRes + "]";
+	}
+	
+	@Transient
+	public boolean isNomeVazioOuNulo(){
+		return this.nomeUsuario == null || this.nomeUsuario == ""; 
+	}
+	
+	@Transient
+	public boolean isSobreNomeVazioOuNulo(){
+		return this.sobrenomeUsuario == null || this.sobrenomeUsuario == ""; 
+	}
+	
+	@Transient
+	public boolean isDataNascimentoVazioOuNulo(){
+		return this.dataNascimento == null; 
+	}
+	
+	@Transient
+	public boolean isCPFVazioOuNulo(){
+		return this.cpfUsuario == null || this.cpfUsuario.isEmpty(); 
+	}
+	
+	@Transient
+	public boolean isRGVazioOuNulo(){
+		return this.rgUsuario == null || this.rgUsuario.isEmpty(); 
+	}
+	
+	@Transient
+	public boolean isEmailVazioOuNulo(){
+		return this.email == null || this.email.isEmpty(); 
 	}
 }
