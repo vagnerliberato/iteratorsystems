@@ -58,6 +58,9 @@ public class LoginUserBean {
 			
 			FacesContext context = FacesContext.getCurrentInstance();
 			ServletContext servletContext = (ServletContext) context.getExternalContext().getContext();
+			
+			usuario = loginHandler.getUserRelated(this.login.getIdLogin());
+			this.getLogin().setUsuario(usuario);
 			servletContext.setAttribute("usuarioLogado", this.getLogin());
 			
 			this.setLogado(true);
