@@ -50,6 +50,7 @@ function initialize(lat,lng,contentString) {
 	
 	//seta o mapa da pagina no direction display
 	directionsDisplay.setMap(map);
+	directionsDisplay.setPanel(document.getElementById("directionsPanel"));
 }
 
 /**

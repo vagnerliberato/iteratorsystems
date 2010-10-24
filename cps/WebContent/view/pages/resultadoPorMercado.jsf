@@ -212,7 +212,11 @@
 							
 							<rich:separator lineType="solid"/>
 							<rich:spacer height="15"/>
-							<div id="map_canvas" style="width: 95%; height: 95%"/>	
+							<div id="map_canvas" style="width: 95%; height: 95%"/>
+							
+							<h:panelGroup rendered="false">
+								<div id="directionsPanel" style="float:left;width:30%;height 60%"/>
+							</h:panelGroup> 	
 						</rich:simpleTogglePanel>
 					</h:column>
 				</h:panelGrid>

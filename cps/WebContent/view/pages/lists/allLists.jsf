@@ -53,7 +53,7 @@
 								<h:outputText value="#{msg.mylists_atualizar_lista}"/>				
 							</f:facet>
 							<center>
-								<a4j:commandButton id="botaoAtualizarLista" onclick="#{rich:component('modalAtualizarLista')}.show();"
+								<a4j:commandButton id="botaoAtualizarLista" disabled="#{empty listaDeProdutoBean.listaPagina}" onclick="#{rich:component('modalAtualizarLista')}.show();"
 							   				       image="/view/images/addNewList.png"/>		
 							</center>
 						</rich:column>

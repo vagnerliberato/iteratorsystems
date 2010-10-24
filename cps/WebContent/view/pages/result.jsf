@@ -10,21 +10,21 @@
 	<ui:composition template="../template/template.jsf">
 		<ui:define name="content">
 
-			<style>
-.rich-table-cell {
-	border-bottom: 1px solid #FFFFFF; border-left : 1px solid #FFFFFF;
-	border-top : 1px solid #FFFFFF; border-right : 1px solid #FFFFFF; color
-	: #474747; font-family : Arial, Verdana, sans-serif; font-size : 11px;
-	padding : 4px;
-	border: 1px solid #ECECEC;
-	border-left: 1px solid #FFFFFF;
-	border-top: 1px solid #FFFFFF;
-	border-right: 1px solid #FFFFFF;
-	color: #474747;
-	font-family: Arial, Verdana, sans-serif;
-	font-size: 11px;
-	padding: 4px;
-}
+<style>
+	.rich-table-cell {
+		border-bottom: 1px solid #FFFFFF; border-left : 1px solid #FFFFFF;
+		border-top : 1px solid #FFFFFF; border-right : 1px solid #FFFFFF; color
+		: #474747; font-family : Arial, Verdana, sans-serif; font-size : 11px;
+		padding : 4px;
+		border: 1px solid #ECECEC;
+		border-left: 1px solid #FFFFFF;
+		border-top: 1px solid #FFFFFF;
+		border-right: 1px solid #FFFFFF;
+		color: #474747;
+		font-family: Arial, Verdana, sans-serif;
+		font-size: 11px;
+		padding: 4px;
+	}
 </style>
 
 			<h:inputHidden value="#{resultadoBean.campoHidden}" />
@@ -43,6 +43,9 @@
 				 <h:panelGroup>
 					<h:panelGrid columns="1">
 						<h:column>
+							<center>
+						 		<h:outputText value="tempo de comparação: #{resultadoBean.tempoComparacao} ms" rendered="#{not resultadoBean.mostrarResultadoDetalhe}"/>
+						 	</center>
 							<rich:dataTable id="dataTableResultado" width="600px;" rows="15"
 								columns="1"
 								rendered="#{not resultadoBean.mostrarResultadoDetalhe}"
@@ -68,7 +71,7 @@
 									<rich:toolTip followMouse="true" for="linkMercado"
 										event="onmouseover">
 										<h:outputText
-											value="Clique no Nome do mercado para mais detalhes" />
+											value="Clique no nome do mercado para mais detalhes" />
 									</rich:toolTip>
 
 									<br />

@@ -68,7 +68,12 @@
 									<h:outputText value="#{msg.default_producttable_description}"/>
 								</f:facet>
 							<center>
-								<h:outputText value="#{produto.produtoGeral.descricao}" styleClass="letrasDefault"/>
+								<h:outputText value="#{produto.produtoGeral.descricao}" id="descricaoProd" styleClass="letrasDefault"/>
+								<rich:toolTip event="onmouseover" followMouse="true" for="descricaoProd" direction="top-right" rendered="#{produto.possuiImagem}">
+									<a4j:outputPanel ajaxRendered="true">
+										<h:graphicImage id="imagem"	value="#{produto.imagem}" rendered="#{produto.possuiImagem}" />
+									</a4j:outputPanel> 
+								</rich:toolTip>
 							</center>
 						</rich:column>
 	

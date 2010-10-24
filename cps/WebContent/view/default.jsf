@@ -33,6 +33,9 @@
 					</td>
 				</table>
 				<rich:spacer height="5px" />
+				
+				
+				<br />
 
 				<center><h:panelGrid id="resultDataTable" rendered="true"
 					columns="1">
