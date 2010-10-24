@@ -45,7 +45,10 @@
 							</f:facet>
 							<center>
 								<a4j:commandButton image="/view/images/deleteRow.png" title="#{msg.mylists_table_header_delete}" 
-												   onclick="#{rich:component('modalExcluirListaBanco')}.show();"/>
+												   onclick="#{rich:component('modalExcluirListaBanco')}.show();">
+												 									
+									<f:setPropertyActionListener value="#{listas}" target="#{listaDeProdutoBean.listaSelecionadaTabela}" />  
+								</a4j:commandButton>
 							</center>
 						</rich:column>
 						<rich:column>
