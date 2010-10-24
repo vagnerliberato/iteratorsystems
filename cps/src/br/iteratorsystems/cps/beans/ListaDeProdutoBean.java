@@ -1,5 +1,6 @@
 package br.iteratorsystems.cps.beans;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -31,7 +32,12 @@ import br.iteratorsystems.cps.to.ProdutoTO;
  */
 public class ListaDeProdutoBean {
 
+	private static final String VARIAVEL_FOTO = "image?file=";
+	private static final String VARIAVEL_CAMINHO_FOTO = "&amp;dir=";
+	private static final String TIPO_IMAGEM = ".jpg";
+	
 	private String descricaoProduto;
+	private String diretorioImagem = "";
 	private String produtoDigitado;
 	private String nomeLista;
 	private String paginaAtual;
@@ -56,6 +62,7 @@ public class ListaDeProdutoBean {
 	 */
 	public ListaDeProdutoBean(){
 		listaProdutoService = new ListaProdutoService();
+		listaSelecionadaTabela = new ListaProduto();
 		userHandler = new LoginUserHandler();
 		numeroMaximoItensCarrinho = Integer.parseInt(obterParametrizacao().getNumMaxItensLista().trim());
 		instanciarListaDeCompras();
@@ -191,6 +198,14 @@ public class ListaDeProdutoBean {
 				ProdutoTO produtoTO = new ProdutoTO();
 				produtoTO.setProdutoGeral(produtoGeral);
 				produtoTO.setQuantidadeSelecionada(1);
+				
+				if(produtoGeral.getImagem().toString().equalsIgnoreCase("S")) {
+					produtoTO.setImagem(
+							criarCaminhoFoto(
+									produtoGeral.getCodigoBarras().trim()));
+					produtoTO.setPossuiImagem(true);
+				}
+				
 				listaBusca.add(produtoTO);
 			}
 			
@@ -198,6 +213,22 @@ public class ListaDeProdutoBean {
 		}catch (CpsHandlerException e) {
 			throw new CpsExceptions(e);
 		}
+	}
+	
+	
+	/**
+	 * Cria a String com o caminho da imagem na pasta.
+	 * @param codigoProduto - Código do produto para ser usado na busca.
+	 * @return Caminho concatenado com o nome do arquivo.
+	 */
+	private String criarCaminhoFoto(final String codigoProduto) {
+		StringBuilder builder = new StringBuilder();
+		builder.append(VARIAVEL_FOTO);
+		builder.append(codigoProduto);
+		builder.append(TIPO_IMAGEM);
+		builder.append(VARIAVEL_CAMINHO_FOTO);
+		builder.append(getDiretorioImagem().replace(File.separator,""));
+		return builder.toString();
 	}
 	
 	/**
@@ -267,24 +298,14 @@ public class ListaDeProdutoBean {
 		Usuario usuario = null;
 		FacesContext context = FacesContext.getCurrentInstance();
 		ELResolver el = context.getApplication().getELResolver();
-		
-		LoginUserBean userBean = (LoginUserBean)
-					el.getValue(context.getELContext(),null,"loginUserBean");
-		
-		if(userBean != null) {
-			if(userBean.getLogin() != null) {
-				usuario = userBean.getUsuario();
-				if(usuario == null || (usuario != null && 
-						(usuario.getListaProdutos() == null || 
-								usuario.getListaProdutos().isEmpty()))) {
-					try {
-						usuario = userHandler.getUserRelated(
-										userBean.getLogin().getIdLogin());
-					} catch (CpsHandlerException e) {
-						e.printStackTrace();
-					}
-				}
-			}
+
+		LoginUserBean userBean = (LoginUserBean) el.getValue(context
+				.getELContext(), null, "loginUserBean");
+		try {
+			usuario = userHandler.getUserRelated(userBean.getLogin()
+					.getIdLogin());
+		} catch (CpsHandlerException e) {
+			e.printStackTrace();
 		}
 		return usuario;
 	}
@@ -563,5 +584,19 @@ public class ListaDeProdutoBean {
 	 */
 	public ListaProduto getListaSelecionadaTabela() {
 		return listaSelecionadaTabela;
+	}
+
+	/**
+	 * @param diretorioImagem the diretorioImagem to set
+	 */
+	public void setDiretorioImagem(String diretorioImagem) {
+		this.diretorioImagem = diretorioImagem;
+	}
+
+	/**
+	 * @return the diretorioImagem
+	 */
+	public String getDiretorioImagem() {
+		return diretorioImagem;
 	}
 }

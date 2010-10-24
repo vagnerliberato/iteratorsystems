@@ -20,6 +20,7 @@ public class ResultadoComparacaoBean {
 	private String chaveGoogleMaps;
 	private FiltersBean filtersBean;
 	private String campoHidden;
+	private Long tempoComparacao;
 	private boolean mostrarResultadoDetalhe;
 	
 	/**
@@ -34,6 +35,7 @@ public class ResultadoComparacaoBean {
 		if (this.getFiltersBean() != null) {
 			setListaComparacao(this.getFiltersBean().getListaComparacao());
 			obterEscolhaComparacao();
+			setTempoComparacao(filtersBean.getTempoComparacao());
 		}
 	}
 	
@@ -147,5 +149,19 @@ public class ResultadoComparacaoBean {
 	 */
 	public ResultadoComparacaoTO getResultado() {
 		return resultado;
+	}
+
+	/**
+	 * @param tempoComparacao the tempoComparacao to set
+	 */
+	public void setTempoComparacao(Long tempoComparacao) {
+		this.tempoComparacao = tempoComparacao;
+	}
+
+	/**
+	 * @return the tempoComparacao
+	 */
+	public Long getTempoComparacao() {
+		return tempoComparacao;
 	}
 }

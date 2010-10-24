@@ -12,8 +12,11 @@ import br.iteratorsystems.cps.entities.Endereco;
 import br.iteratorsystems.cps.entities.ListaProduto;
 import br.iteratorsystems.cps.entities.Login;
 import br.iteratorsystems.cps.entities.Parametrizacao;
+import br.iteratorsystems.cps.entities.Usuario;
 import br.iteratorsystems.cps.enums.TipoDeComparacao;
 import br.iteratorsystems.cps.exceptions.CpsExceptions;
+import br.iteratorsystems.cps.exceptions.CpsHandlerException;
+import br.iteratorsystems.cps.handler.LoginUserHandler;
 import br.iteratorsystems.cps.helper.FormatadorEstadorHelper;
 import br.iteratorsystems.cps.helper.ListaProdutoTOHelper;
 import br.iteratorsystems.cps.interfaces.MotorComparacao;
@@ -30,6 +33,7 @@ public class FiltersBean {
 	
 	private static final int VALOR_MAX_LOJA_COMPARACAO = 5;
 	
+	private Long tempoComparacao;
 	private String cep;
 	private String cepAlternativo;
 	private String logradouro;
@@ -48,34 +52,54 @@ public class FiltersBean {
 	private String produtoSelecionadoCombo;
 
 	private MotorComparacao motorComparacao;
+	private LoginUserHandler loginUserHandler;
 	private Parametrizacao parametrizacao;
 	
 	/**
 	 * Carrega o combo da lista de usuario.
 	 */
 	private void carregarComboProdutosUsuario() {
-		List<ListaProduto> listaProdutos = null;
-		if(login != null) {
-			if(login.getUsuario() != null) {
-				listaProdutos = 
-					new ArrayList<ListaProduto>(login.getUsuario().getListaProdutos());
-				
+		if (login != null) {
+			if (login.getUsuario() != null) {
 				listasUsuario = new ArrayList<String>();
-				if(verificarCarrinhoPreenchido()) {
+				if (verificarCarrinhoPreenchido()) {
 					listasUsuario.add("Usar meu carrinho");
 				}
-				
-				for(ListaProduto lista : listaProdutos) {
-					listasUsuario.add(lista.getId()+" - "+lista.getNomeLista());
-				}
+				enriquecerListaDeProdutos(login);
 			}
 		}
 	}
 
 	/**
+	 * Enriquece o combo de lista de usuario com os valores da base.
+	 * @param login - login
+	 */
+	private void enriquecerListaDeProdutos(Login login) {
+		loginUserHandler = new LoginUserHandler();
+		Usuario usuario = new Usuario();
+		
+		try {
+			usuario = loginUserHandler.getUserRelated(login.getIdLogin());
+
+			if (usuario != null) {
+				List<ListaProduto> listaProdutos = new ArrayList<ListaProduto>(
+						usuario.getListaProdutos());
+				for (ListaProduto lista : listaProdutos) {
+					listasUsuario.add(lista.getId() + " - "
+							+ lista.getNomeLista());
+				}
+			}
+		} catch (CpsHandlerException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
 	 * Cria o motor de comparação de produtos
 	 */
 	public String compararProdutos() {
+		tempoComparacao = System.currentTimeMillis();
+		
 		this.limparDadosDefault();
 		String retorno = "";
 		if(verificarCamposPreenchidos()) {
@@ -175,6 +199,8 @@ public class FiltersBean {
 			this.setValorCampoComparacao("");
 			e.printStackTrace();
 		}
+		
+		tempoComparacao = System.currentTimeMillis() - tempoComparacao;
 		return retorno;
 	}
 	
@@ -250,12 +276,19 @@ public class FiltersBean {
 	 * @return Lista de produto TO
 	 */
 	private List<ProdutoTO> verificarProdutoParaComparacao() {
-		List<ProdutoTO> listaProdutoTO = null;
+		List<ProdutoTO> listaProdutoTO = new ArrayList<ProdutoTO>();
 		DefaultBean defaultBean = null;
 		
 		if(login != null) {
-			List<ListaProduto> listaProduto = 
-				new ArrayList<ListaProduto>(login.getUsuario().getListaProdutos());
+			Usuario usuario = new Usuario();
+			
+			try {
+				usuario = loginUserHandler.getUserRelated(login.getIdLogin());
+			} catch (CpsHandlerException e) {
+				e.printStackTrace();
+			}
+			
+			List<ListaProduto> listaProduto = new ArrayList<ListaProduto>(usuario.getListaProdutos()); 
 			
 			if(verificarEscolhaUsuario()) {
 				for(ListaProduto listaProdutoObj : listaProduto) {
@@ -588,5 +621,19 @@ public class FiltersBean {
 	 */
 	public String getValorInformacaoModal() {
 		return valorInformacaoModal;
+	}
+
+	/**
+	 * @param tempoComparacao the tempoComparacao to set
+	 */
+	public void setTempoComparacao(Long tempoComparacao) {
+		this.tempoComparacao = tempoComparacao;
+	}
+
+	/**
+	 * @return the tempoComparacao
+	 */
+	public Long getTempoComparacao() {
+		return tempoComparacao;
 	}
 }
