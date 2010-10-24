@@ -37,6 +37,7 @@ public class ItensListaProdutoDao  extends DaoGeneric<ListaProdutoItem, Integer>
 			Session session = HibernateConfig.getSession();
 			Query q = session.createQuery(query);
 			lastId = (Integer) q.uniqueResult();
+			lastId = lastId == null ? 1 : lastId;
 			return lastId;
 		}catch (Exception e) {
 			throw new CpsDaoException(e);
