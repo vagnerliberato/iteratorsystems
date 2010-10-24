@@ -10,7 +10,6 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-
 import br.iteratorsystems.cps.config.HibernateConfig;
 import br.iteratorsystems.cps.dao.ItensListaProdutoDao;
 import br.iteratorsystems.cps.dao.ListaProdutoDao;
@@ -150,22 +149,13 @@ public class ListaProdutoService {
 	 * @param itemLista - Os items da lista
 	 * @throws CpsHandlerException Se alguma exceção ocorrer nas camadas abaixo.
 	 */
-	public void incluirListaDeProdutos(final ListaProduto listaProduto,
-									  final Set<ListaProdutoItem> itemLista) throws CpsHandlerException {
+	public void incluirListaDeProdutos(final ListaProduto listaProduto) throws CpsHandlerException {
 		Transaction transaction = HibernateConfig.getSession().getTransaction();
-		transaction.begin();
 		try{
-			session.clear();
+			transaction.begin();
+
 			listaProdutoDao.salvar(listaProduto);
-			session.flush();
 			
-			ListaProduto newListaProduto = obterLista();
-			for(ListaProdutoItem item : itemLista) {
-				item.setListaProduto(newListaProduto);
-			}
-			
-			itemListaDao.salvarLista(itemLista);
-			session.flush();
 			transaction.commit();
 		}catch (CpsDaoException e) {
 			transaction.rollback();
@@ -173,6 +163,24 @@ public class ListaProdutoService {
 		}
 	}
 	
+	public void incluirItensNaListaDeProdutos(ListaProduto listaProduto, Set<ListaProdutoItem> itensProdutos) throws CpsDaoException, CpsHandlerException {
+
+		Transaction transaction = HibernateConfig.getSession().getTransaction();
+		try{
+			transaction.begin();
+			
+			for(ListaProdutoItem item : itensProdutos) {
+				item.setListaProduto(listaProduto);
+			}
+			
+			itemListaDao.salvarLista(itensProdutos);
+			
+			transaction.commit();
+		}catch (Exception e) {
+			transaction.rollback();
+			throw new CpsHandlerException(e);
+		}
+	}
 	/**
 	 * Obtem o ultimo Id da lista inserida no banco.
 	 * @return Uma Entidade Lista de produto.

@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.el.ELResolver;
 import javax.faces.context.ExternalContext;
@@ -246,9 +247,9 @@ public class ListaDeProdutoBean {
 	 * @throws CpsExceptions - Se ocorrer alguma exceção na camada abaixo do bean.
 	 */
 	public void excluirListaDeProdutos() throws CpsExceptions{
-		ListaProduto lista = (ListaProduto) tabelasListaDataTable.getRowData();
-		lista.getListaProdutoItems().clear();
-		listaProdutoService.excluirListaDeProdutos(lista);
+		
+		listaSelecionadaTabela.getListaProdutoItems().clear();
+		listaProdutoService.excluirListaDeProdutos(listaSelecionadaTabela);
 		
 		FacesContext context = FacesContext.getCurrentInstance();
 		ELResolver el = context.getApplication().getELResolver();
@@ -284,9 +285,12 @@ public class ListaDeProdutoBean {
 		if(usuario == null) {
 			usuario = recuperarUsuario();
 		}
-		listaProdutoService.incluirListaDeProdutos(
-				ListaProdutoTOHelper.popularUmaListaDeProduto(this.getNomeLista(), usuario),
-				ListaProdutoTOHelper.converteListaProdutoTO(listaComprasUsuario.getListaProdutos()));
+		ListaProduto listaProduto = ListaProdutoTOHelper.popularUmaListaDeProduto(this.getNomeLista(), usuario);
+		Set<ListaProdutoItem> itensProdutos = ListaProdutoTOHelper.converteListaProdutoTO(listaComprasUsuario.getListaProdutos());
+		
+		listaProdutoService.incluirListaDeProdutos(listaProduto);
+		listaProdutoService.incluirItensNaListaDeProdutos(listaProduto, itensProdutos);
+		
 		carregarPaginaBusca();
 	}
 	
