@@ -346,14 +346,16 @@
 								styleClass="letras" />
 						</h:column>
 						<h:column>
-							<h:inputText required="true" size="31" maxlength="30"
+							<h:inputText required="true" id="nomeusuario" size="31" maxlength="30"
 								value="#{userManagementBean.loginEntity.nomeLogin}"
 								styleClass="barraDefault"
 								style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
 								<a4j:support action="#{userManagementBean.userExists}"
 									ajaxSingle="true" event="onblur" reRender="panelErrUsername" />
 							</h:inputText>*	
-				<a4j:outputPanel id="panelErrUsername" rendered="true">
+							<rich:message rendered="true" for="nomeusuario"
+							styleClass="camposObr" />
+							<a4j:outputPanel id="panelErrUsername" rendered="true">
 								<h:graphicImage id="imgUsernameInvalid"
 									url="/view/images/information.png"
 									rendered="#{not userManagementBean.validUsername}" />
@@ -369,23 +371,27 @@
 								rendered="#{userManagementBean.firstAccess}" styleClass="letras" />
 						</h:column>
 						<h:column>
-							<h:inputSecret required="true"
+							<h:inputSecret required="true" id="senha1"
 								value="#{userManagementBean.nova_senha}" maxlength="8" size="10"
 								styleClass="barraDefault"
 								style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
 							</h:inputSecret>*
+							<rich:message rendered="true" for="senha1"
+							styleClass="camposObr" />
 			</h:column>
 						<h:column>
 							<h:outputText value="#{msg.preferences_repeat_password}"
 								styleClass="letras" />
 						</h:column>
 						<h:column>
-							<h:inputSecret required="true"
+							<h:inputSecret required="true" id="senha2"
 								value="#{userManagementBean.loginEntity.senha}" maxlength="8"
 								size="10" styleClass="barraDefault"
 								style="font-size:12px; font-family:Verdana; color:black; font-weight:bold">
 							</h:inputSecret>*
-				<a4j:outputPanel id="panelErrPass" rendered="true">
+							<rich:message rendered="true" for="senha2"
+							styleClass="camposObr" />
+							<a4j:outputPanel id="panelErrPass" rendered="true">
 								<h:graphicImage url="/view/images/information.png"
 									rendered="#{not userManagementBean.validPassword}" />
 								<rich:spacer width="3" />
@@ -486,10 +492,13 @@
 
 		<center><h:panelGroup>
 			<rich:spacer />
-			<a4j:commandButton value="#{msg.personaldata_save}"
+			<a4j:commandButton value="#{msg.personaldata_save}" action="#{userManagementBean.validarCampos}"
 				styleClass="botaoDefault"
 				rendered="#{userManagementBean.firstAccess}"
-				onclick="#{rich:component('modalGravarDadossSave')}.show();" />
+				oncomplete="#{userManagementBean.acaoBotaoIncluirNovoCadastro}">
+				
+				<f:setPropertyActionListener value="null" target="#{userManagementBean.acaoBotaoIncluirNovoCadastro}"/>	
+			</a4j:commandButton>
 
 			<a4j:commandButton value="#{msg.personaldata_update}"
 				styleClass="botaoDefault"
@@ -580,7 +589,7 @@
 			<rich:spacer width="5" />
 			<a4j:commandButton styleClass="botaoDefault"
 				value="#{msg.default_modal_delete_no}"
-				onclick="#{rich:component('modalGravarDados')}.hide();" />
+				onclick="#{rich:component('modalGravarDadosAtualiza')}.hide();" />
 		</h:form></center>
 	</rich:modalPanel>
 
