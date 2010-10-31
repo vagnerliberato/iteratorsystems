@@ -41,13 +41,13 @@
 					columns="1">
 					<h:column>
 						<a4j:outputPanel ajaxRendered="true">
-							<rich:dataTable id="tableProduct" width="750"
+							<rich:dataTable id="tableProduct" width="780"
 								value="#{defaultBean.listaProdutoTO}" rows="4" var="produto"
 								rendered="#{not empty defaultBean.listaProdutoTO}"
 								binding="#{defaultBean.listaProdutosDataTable}"
 								styleClass="letras">
 
-								<rich:column sortable="false" width="100" style="height: 50;">
+								<rich:column sortable="false" width="120" style="height: 60;">
 									<f:facet name="header">
 										<h:outputText value="#{msg.default_producttable_image}" />
 									</f:facet>
@@ -60,7 +60,7 @@
 									</center>
 								</rich:column>
 
-								<rich:column width="650">
+								<rich:column width="410">
 									<f:facet name="header">
 										<h:outputText value="#{msg.default_producttable_description}" />
 									</f:facet>
