@@ -33,7 +33,7 @@
 									<h:outputText value="#{msg.personalcontatc_CEP_info}" rendered="#{empty filtersBean.login}" styleClass="letrasInfo"/>
 								</h:column>
 								<h:column>
-									<a4j:commandButton action="#{filtersBean.find}" image="/view/images/Lupa.png" rendered="#{empty filtersBean.login}" title="#{msg.addfilters_findCep}" style="width:80%;" reRender="addFiltersForm,resultCepPanel"/>
+									<a4j:commandButton action="#{filtersBean.find}" oncomplete="#{filtersBean.completeCep}" image="/view/images/Lupa.png" rendered="#{empty filtersBean.login}" title="#{msg.addfilters_findCep}" style="width:80%;" reRender="addFiltersForm,resultCepPanel"/>
 								</h:column>
 								<h:column rendered="#{empty filtersBean.login}">
 									<rich:spacer width="4"/>
@@ -56,7 +56,7 @@
 						<h:inputText maxlength="9" value="#{filtersBean.cepAlternativo}" size="11" style="font-size:12px; font-family:Verdana; color:black; font-weight:bold"/>
 						<rich:spacer width="2"/>
 						<h:outputText value="#{msg.personalcontatc_CEP_info}" styleClass="letrasInfo"/>
-						<a4j:commandButton action="#{filtersBean.find}" image="/view/images/Lupa.png" title="#{msg.addfilters_findCep}" style="width:8%;" reRender="addFiltersForm,resultCepPanel"/>
+						<a4j:commandButton action="#{filtersBean.find}" image="/view/images/Lupa.png" title="#{msg.addfilters_findCep}" style="width:8%;" reRender="addFiltersForm,resultCepPanel" oncomplete="#{filtersBean.completeCep}"/>
 						</h:panelGroup>
 					</h:column>
 				</h:panelGrid>
@@ -259,6 +259,7 @@
 				</center>
 			</rich:modalPanel>
 			
+			<ui:include src="common/modalCepIncorreto.jsf"/>
 		</ui:define>
 </ui:composition>
 </jsp:root>
