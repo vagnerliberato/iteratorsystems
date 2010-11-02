@@ -43,6 +43,7 @@ public class FiltersBean {
 	private String campoHidden;
 	private String valorCampoComparacao;
 	private String valorInformacaoModal;
+	private String completeCep;
 	private Boolean buscarPeloMenorPreco;
 	private Boolean buscarPelaMenorDistancia;
 	private FindAddress findAddress;
@@ -398,6 +399,7 @@ public class FiltersBean {
 	 * Busca um cep
 	 */
 	public void find() {
+		completeCep = "";
 		findAddress = new FindAddress();
 		boolean sucesso = false;
 		if (cepAlternativo != null && !"".equals(cepAlternativo)) {
@@ -416,6 +418,7 @@ public class FiltersBean {
 			this.setBairro(null);
 			this.setCidade(null);
 			this.setEstado(null);
+			completeCep = "Richfaces.showModalPanel('modalCepIncorreto');";
 		}
 	}
 	
@@ -635,5 +638,19 @@ public class FiltersBean {
 	 */
 	public Long getTempoComparacao() {
 		return tempoComparacao;
+	}
+
+	/**
+	 * @param completeCep the completeCep to set
+	 */
+	public void setCompleteCep(String completeCep) {
+		this.completeCep = completeCep;
+	}
+
+	/**
+	 * @return the completeCep
+	 */
+	public String getCompleteCep() {
+		return completeCep;
 	}
 }
