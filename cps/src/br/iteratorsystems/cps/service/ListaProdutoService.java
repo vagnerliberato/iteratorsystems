@@ -16,6 +16,7 @@ import br.iteratorsystems.cps.dao.ListaProdutoDao;
 import br.iteratorsystems.cps.entities.ListaProduto;
 import br.iteratorsystems.cps.entities.ListaProdutoItem;
 import br.iteratorsystems.cps.exceptions.CpsDaoException;
+import br.iteratorsystems.cps.exceptions.CpsExceptions;
 import br.iteratorsystems.cps.exceptions.CpsHandlerException;
 import br.iteratorsystems.cps.helper.ListaProdutoTOHelper;
 
@@ -142,44 +143,45 @@ public class ListaProdutoService {
 			throw new CpsHandlerException(e);
 		}
 	}
+	
+	
+	public void salvarListaDeProdutos(ListaProduto listaProduto, Set<ListaProdutoItem> itensProdutos) throws CpsExceptions, CpsHandlerException{
+		Transaction transaction = session.getTransaction();
+		try{
+			transaction.begin();
+
+			this.incluirListaDeProdutos(listaProduto);
+			this.incluirItensNaListaDeProdutos(listaProduto, itensProdutos);
+			
+			session.flush();
+			transaction.commit();
+		
+		}catch (CpsDaoException e) {
+			transaction.rollback();
+			throw new CpsHandlerException(e);
+		}finally{
+			session.clear();
+		}
+	}
 
 	/**
 	 * Inclui uma lista de produtos e seus items.
 	 * @param listaProduto - A lista de produto
 	 * @param itemLista - Os items da lista
 	 * @throws CpsHandlerException Se alguma exceção ocorrer nas camadas abaixo.
+	 * @throws CpsDaoException 
 	 */
-	public void incluirListaDeProdutos(final ListaProduto listaProduto) throws CpsHandlerException {
-		Transaction transaction = HibernateConfig.getSession().getTransaction();
-		try{
-			transaction.begin();
-
+	public void incluirListaDeProdutos(final ListaProduto listaProduto) throws CpsHandlerException, CpsDaoException {
 			listaProdutoDao.salvar(listaProduto);
-			
-			transaction.commit();
-		}catch (CpsDaoException e) {
-			transaction.rollback();
-			throw new CpsHandlerException(e);
-		}
 	}
 	
 	public void incluirItensNaListaDeProdutos(ListaProduto listaProduto, Set<ListaProdutoItem> itensProdutos) throws CpsDaoException, CpsHandlerException {
 
-		Transaction transaction = HibernateConfig.getSession().getTransaction();
-		try{
-			transaction.begin();
-			
 			for(ListaProdutoItem item : itensProdutos) {
 				item.setListaProduto(listaProduto);
 			}
 			
 			itemListaDao.salvarLista(itensProdutos);
-			
-			transaction.commit();
-		}catch (Exception e) {
-			transaction.rollback();
-			throw new CpsHandlerException(e);
-		}
 	}
 	/**
 	 * Obtem o ultimo Id da lista inserida no banco.

@@ -288,8 +288,7 @@ public class ListaDeProdutoBean {
 		ListaProduto listaProduto = ListaProdutoTOHelper.popularUmaListaDeProduto(this.getNomeLista(), usuario);
 		Set<ListaProdutoItem> itensProdutos = ListaProdutoTOHelper.converteListaProdutoTO(listaComprasUsuario.getListaProdutos());
 		
-		listaProdutoService.incluirListaDeProdutos(listaProduto);
-		listaProdutoService.incluirItensNaListaDeProdutos(listaProduto, itensProdutos);
+		listaProdutoService.salvarListaDeProdutos(listaProduto, itensProdutos);
 		
 		carregarPaginaBusca();
 	}

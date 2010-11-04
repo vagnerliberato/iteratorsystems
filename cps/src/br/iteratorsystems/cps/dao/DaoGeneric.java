@@ -158,7 +158,7 @@ public class DaoGeneric<T, ID extends Serializable> implements InterfaceDao<T, I
 	 */
 	
 	public Session getSession() throws CpsDaoException{
-		return session;
+		return this.session;
 	}
 
 }
